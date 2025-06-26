@@ -22,8 +22,9 @@ class LeaveController extends AppBaseController
     public function index(Request $request)
     {
         /** @var Leave $leaves */
-        $leaves = Leave::paginate(10);
-
+        $leaves = Leave::select('leaves.*', 'users.name_bn as user_name')
+            ->join('users', 'leaves.employee_id', '=', 'users.id')
+            ->get();
         return view('leaves.index')
             ->with('leaves', $leaves);
     }
@@ -48,11 +49,16 @@ class LeaveController extends AppBaseController
     public function store(CreateLeaveRequest $request)
     {
         $input = $request->all();
+        $input['employee_id'] = auth()->user()->id;
+        $input['approved_from_date'] = $input['from_date'];
+        $input['approved_to_date'] = $input['to_date'];
+        $input['approved_total_day'] = $input['total_day'];
+        $input['approver_id'] = null;
 
         /** @var Leave $leave */
         $leave = Leave::create($input);
 
-        Flash::success('Leave saved successfully.');
+        Flash::success('ছুটি সফলভাবে সংরক্ষিত হয়েছে।');
 
         return redirect(route('leaves.index'));
     }
@@ -70,7 +76,7 @@ class LeaveController extends AppBaseController
         $leave = Leave::find($id);
 
         if (empty($leave)) {
-            Flash::error('Leave not found');
+            Flash::error('ছুটি খুঁজে পাওয়া যায়নি।');
 
             return redirect(route('leaves.index'));
         }
@@ -91,7 +97,7 @@ class LeaveController extends AppBaseController
         $leave = Leave::find($id);
 
         if (empty($leave)) {
-            Flash::error('Leave not found');
+            Flash::error('ছুটি খুঁজে পাওয়া যায়নি।');
 
             return redirect(route('leaves.index'));
         }
@@ -113,7 +119,7 @@ class LeaveController extends AppBaseController
         $leave = Leave::find($id);
 
         if (empty($leave)) {
-            Flash::error('Leave not found');
+            Flash::error('ছুটি খুঁজে পাওয়া যায়নি।');
 
             return redirect(route('leaves.index'));
         }
@@ -121,7 +127,7 @@ class LeaveController extends AppBaseController
         $leave->fill($request->all());
         $leave->save();
 
-        Flash::success('Leave updated successfully.');
+        Flash::success('ছুটি সফলভাবে আপডেট হয়েছে।');
 
         return redirect(route('leaves.index'));
     }
@@ -139,17 +145,12 @@ class LeaveController extends AppBaseController
     {
         /** @var Leave $leave */
         $leave = Leave::find($id);
-
         if (empty($leave)) {
-            Flash::error('Leave not found');
-
+            Flash::error('ছুটি খুঁজে পাওয়া যায়নি।');
             return redirect(route('leaves.index'));
         }
-
         $leave->delete();
-
-        Flash::success('Leave deleted successfully.');
-
+        Flash::success('ছুটি সফলভাবে ডিলিট হয়েছে।');
         return redirect(route('leaves.index'));
     }
 }

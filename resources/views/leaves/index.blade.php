@@ -23,19 +23,14 @@ Leaves @parent
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">Leaves</h5>
+            <h5 class="card-title d-inline">ছুটির তালিকা</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('leaves.create') }}">Add New</a>
+                <a class="btn btn-primary pull-right" href="{{ route('leaves.create') }}">নতুন যোগ করুন</a>
             </span>
         </section>
-        <div class="card-body table-responsive" >
+        <div class="card-body table-responsive">
             @include('leaves.table')
         </div>
-    </div>
-    <div class="text-center">
-        
-        @include('adminlte-templates::common.paginate', ['records' => $leaves])
-
     </div>
 </div>
 @endsection

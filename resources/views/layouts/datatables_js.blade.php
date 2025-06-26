@@ -1,6 +1,21 @@
 <script>
     $(document).ready(function() {
-        var table = $('.table_data').DataTable();
+        var table = $('.table_data').DataTable({
+            "language": {
+                "lengthMenu": "দেখুন _MENU_ ডাটা",
+                "zeroRecords": "কোনো ডাটা পাওয়া যায়নি",
+                "info": " _PAGE_ এর মধ্যে _PAGES_ পেজ",
+                "infoEmpty": "কোনো ডাটা পাওয়া যায়নি",
+                "infoFiltered": "( _MAX_   )",
+                "search": "অনুসন্ধান",
+                "paginate": {
+                    "first": "প্রথম",
+                    "last": "শেষ",
+                    "next": "পরবর্তী",
+                    "previous": "পূর্ববর্তী"
+                }
+            }
+        });
 
         // Clear the search box and redraw the table
         table.search('').draw();

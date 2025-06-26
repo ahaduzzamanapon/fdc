@@ -28,6 +28,7 @@ class Leave extends Model
 
 
     public $fillable = [
+        'employee_id',
         'from_date',
         'to_date',
         'total_day',
@@ -36,6 +37,7 @@ class Leave extends Model
         'approved_total_day',
         'remark',
         'status',
+        'approver_id',
         'approver_remark'
     ];
 
