@@ -19,6 +19,7 @@
     <title>{{ !empty($setting) ? $setting->name : 'Title' }} -
         {{ !empty($setting) ? $setting->slogan : 'Slogan' }}
     </title>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -298,7 +299,7 @@
                     <img src="{{ !empty($setting) ? asset($setting->logo) : 'assets/images/Picture1.jpg' }} "
                         class="img-fluid" alt="logo" style="height: 58px;width: 65px;">
                 </div>
-                <span class="logo-title">উপানুষ্ঠানিক <br> শিক্ষা বোর্ড, ঢাকা</span>
+                <span class="logo-title"> {{ !empty($setting) ? $setting->name : 'BFDC' }} </span>
             </a>
             <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
                 <i class="icon">
