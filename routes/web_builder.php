@@ -11,3 +11,6 @@ Route::resource('designations', 'DesignationController');
 Route::resource('districts', 'DistrictController');
 Route::resource('upazilas', 'UpazilaController');
 
+
+
+Route::resource('leaves', 'LeaveController');
