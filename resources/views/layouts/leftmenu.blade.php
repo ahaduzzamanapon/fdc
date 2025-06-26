@@ -8,13 +8,13 @@
 {{-- Users Management --}}
 @if (can('hr'))
     <li class="nav-item">
-        <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#users_menu" role="button"
-            aria-expanded="false" aria-controls="users_menu">
+        <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr" role="button"
+            aria-expanded="false" aria-controls="hr"> 
             <i class="icon im im-icon-Gear"></i>
-            <span class="item-name">আইচ আর</span>
+            <span class="item-name">এইচ আর</span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
-        <ul class="sub-nav collapse {!! Request::is('leaves*')  ? 'show' : '' !!}" id="users_menu" data-bs-parent="#sidebar-menu">
+        <ul class="sub-nav collapse {!! Request::is('leaves*')  ? 'show' : '' !!}" id="hr" data-bs-parent="#sidebar-menu">
             @if (can('leaves'))
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" href="{{ route('leaves.index') }}">
