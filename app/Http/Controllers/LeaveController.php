@@ -49,7 +49,6 @@ class LeaveController extends AppBaseController
     public function store(CreateLeaveRequest $request)
     {
         $input = $request->all();
-        $input['employee_id'] = auth()->user()->id;
         $input['approved_from_date'] = $input['from_date'];
         $input['approved_to_date'] = $input['to_date'];
         $input['approved_total_day'] = $input['total_day'];
@@ -117,14 +116,17 @@ class LeaveController extends AppBaseController
     {
         /** @var Leave $leave */
         $leave = Leave::find($id);
+        $input = $request->all();
 
         if (empty($leave)) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি।');
-
             return redirect(route('leaves.index'));
         }
+        $input['approved_from_date'] = $input['from_date'];
+        $input['approved_to_date'] = $input['to_date'];
+        $input['approved_total_day'] = $input['total_day'];
 
-        $leave->fill($request->all());
+        $leave->fill($input);
         $leave->save();
 
         Flash::success('ছুটি সফলভাবে আপডেট হয়েছে।');

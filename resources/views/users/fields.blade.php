@@ -1,4 +1,9 @@
 <!-- 🧍 ব্যক্তিগত তথ্য -->
+
+@php
+    $designations = \App\Models\Designation::all()->pluck('desi_name', 'id')->prepend('Select Designation', '')->toArray();
+    $districts = \App\Models\District::all()->pluck('name_en', key: 'id')->prepend('Select District', '')->toArray();
+@endphp
 <div class="col-md-12">
     <h4><strong>🧍 ব্যক্তিগত তথ্য</strong></h4>
     <hr>
@@ -271,3 +276,11 @@
     }
 </script>
 <div class="clearfix"></div>
+
+
+<!-- জমা দিন -->
+<div class="form-group col-sm-12" style="text-align-last: right;">
+    {!! Form::submit('সংরক্ষণ করুন', ['class' => 'btn btn-primary']) !!}
+    <a href="{{ route('users.index') }}" class="btn btn-danger">বাতিল করুন</a>
+</div>
+
