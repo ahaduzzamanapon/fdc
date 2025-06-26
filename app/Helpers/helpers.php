@@ -13,20 +13,16 @@ if (!function_exists('uploadFile')) {
     function uploadFile($file, $folder, $name = null)
     {
         $path = public_path($folder);
-
         // Ensure the directory exists
         if (!File::exists($path)) {
             File::makeDirectory($path, 0775, true, true);
         }
-
         // Generate a unique file name if not provided
         $filename = $name
             ? $name . '.' . $file->getClientOriginalExtension()
             : time() . '_' . $file->getClientOriginalName();
-
         // Move the file to the desired folder
         $file->move($path, $filename);
-
         // Return the relative path
         return $folder . '/' . $filename;
     }
@@ -71,12 +67,6 @@ if (!function_exists('get_notification')) {
             ->first();
         if(!empty($roll) ){
             if ($roll->key == 'admin') {
-                return [];
-            }elseif ($roll->key == 'districtadmin') {
-                return \App\Models\Student::where('status', 'Waiting for District Admin Approval')->where('notified', 'Pending')->orderBy('id', 'desc')->get();
-            }elseif ($roll->key == 'chairmen') {
-                return \App\Models\Student::where('status', 'Waiting for Chairman Approval')->where('notified', 'Pending')->orderBy('id', 'desc')->get();
-            }else{
                 return [];
             }
         }else{

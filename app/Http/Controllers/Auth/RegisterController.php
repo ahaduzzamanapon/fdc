@@ -53,7 +53,7 @@ class RegisterController extends Controller
         return Validator::make(
             $data,
             [
-                'name' => ['required', 'string', 'max:255'],
+             
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]
@@ -69,12 +69,37 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create(
-            [
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-            ]
-        );
+        $input =$data;
+        
+        if (request()->hasFile('picture')) {
+            $file = request()->file('picture');
+            $folder = 'picture/user';
+            $customName = 'user-'.time();
+            $input['picture'] = uploadFile($file, $folder, $customName);
+        }else{
+            $input['picture'] = 'no-image.png';
+        }
+
+        if (request()->hasFile('signature')) {
+            $file = request()->file('signature');
+            $folder = 'images/signature';
+            $customName = 'signature-'.time();
+            $input['signature'] = uploadFile($file, $folder, $customName);
+        }else{
+            $input['signature'] = 'no-image.png';
+        }
+
+
+        if (array_key_exists('password', $input)) {
+            $input['password'] = bcrypt($input['password']);
+        }else{
+            $input['password'] = bcrypt('12345678');
+        }
+        /** @var User $users */
+
+        $users = User::create($input);
+        return $users;
+       
+       
     }
 }

@@ -1,309 +1,261 @@
+<!-- 🧍 ব্যক্তিগত তথ্য -->
+<div class="col-md-12">
+    <h4><strong>🧍 ব্যক্তিগত তথ্য</strong></h4>
+    <hr>
+    <div class="row">
+        <!-- নাম (বাংলা) -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('name_bn', 'নাম (বাংলা)', ['class' => 'control-label']) !!}
+                {!! Form::text('name_bn', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
+        <!-- নাম (ইংরেজি) -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('name_en', 'নাম (ইংরেজি)', ['class' => 'control-label']) !!}
+                {!! Form::text('name_en', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
+        <!-- লিঙ্গ -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('gender', 'লিঙ্গ', ['class' => 'control-label']) !!}
+                {!! Form::select('gender', ['পুরুষ' => 'পুরুষ', 'মহিলা' => 'মহিলা'], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
+        <!-- ধর্ম -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('religion', 'ধর্ম', ['class' => 'control-label']) !!}
+                {!! Form::select('religion', ['ইসলাম' => 'ইসলাম', 'হিন্দু' => 'হিন্দু', 'খ্রিস্টান' => 'খ্রিস্টান', 'বৌদ্ধ' => 'বৌদ্ধ', 'অন্যান্য' => 'অন্যান্য'], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
+        <!-- পিতার নাম -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('father_name', 'পিতার নাম', ['class' => 'control-label']) !!}
+                {!! Form::text('father_name', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
+        <!-- মাতার নাম -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('mother_name', 'মাতার নাম', ['class' => 'control-label']) !!}
+                {!! Form::text('mother_name', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
+        <!-- জন্ম তারিখ -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('dob', 'জন্ম তারিখ', ['class' => 'control-label']) !!}
+                {!! Form::date('dob', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
-<!-- Emp Id Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('emp_id', 'Emp Id',['class'=>'control-label']) !!}
-        {!! Form::text('emp_id', null , ['class' => 'form-control','required']) !!}
+        <!-- এনআইডি -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('nid', 'এনআইডি', ['class' => 'control-label']) !!}
+                {!! Form::text('nid', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- মোবাইল নম্বর -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('mobile_no', 'মোবাইল নম্বর', ['class' => 'control-label']) !!}
+                {!! Form::text('mobile_no', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- ইমেল -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('email', 'ইমেল', ['class' => 'control-label']) !!}
+                {!! Form::email('email', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- রক্তের গ্রুপ -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('blood_group', 'রক্তের গ্রুপ', ['class' => 'control-label']) !!}
+                {!! Form::select('blood_group', ['A+' => 'A+', 'A-' => 'A-', 'B+' => 'B+', 'B-' => 'B-', 'AB+' => 'AB+', 'AB-' => 'AB-', 'O+' => 'O+', 'O-' => 'O-'], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- বৈবাহিক অবস্থা -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('marital_status', 'বৈবাহিক অবস্থা', ['class' => 'control-label']) !!}
+                {!! Form::select('marital_status', ['অবিবাহিত' => 'অবিবাহিত', 'বিবাহিত' => 'বিবাহিত'], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- সন্তানের সংখ্যা -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('no_of_child', 'সন্তানের সংখ্যা', ['class' => 'control-label']) !!}
+                {!! Form::number('no_of_child', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- সর্বোচ্চ শিক্ষাগত যোগ্যতা -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('highest_qualification', 'সর্বোচ্চ শিক্ষাগত যোগ্যতা', ['class' => 'control-label']) !!}
+                {!! Form::text('highest_qualification', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- জেলা আইডি -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('dis_id', 'জেলা', ['class' => 'control-label']) !!}
+                {!! Form::select('dis_id', $districts, null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- বর্তমান ঠিকানা -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('present_add', 'বর্তমান ঠিকানা', ['class' => 'control-label']) !!}
+                {!! Form::text('present_add', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- নোট -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('note', 'নোট', ['class' => 'control-label']) !!}
+                {!! Form::textarea('note', null, ['class' => 'form-control', 'rows' => 3]) !!}
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- 🏢 দাপ্তরিক তথ্য -->
+<div class="col-md-12 mt-4">
+    <h4><strong>🏢 দাপ্তরিক তথ্য</strong></h4>
+    <hr>
+    <div class="row">
+        <!-- কর্মচারীর ধরন -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('employee_type', 'কর্মচারীর ধরন', ['class' => 'control-label']) !!}
+                {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'প্রডিউসার' => 'প্রডিউসার'], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
-<!-- Name Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('name', 'First Name',['class'=>'control-label']) !!}
-        {!! Form::text('name', null, ['class' => 'form-control','required']) !!}
+        <!-- যোগদানের তারিখ -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('join_date', 'যোগদানের তারিখ', ['class' => 'control-label']) !!}
+                {!! Form::date('join_date', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- গ্রেড -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('grade', 'গ্রেড', ['class' => 'control-label']) !!}
+                {!! Form::select('grade', [
+    '1' => 'প্রথম গ্রেড',
+    '2' => 'দ্বিতীয় গ্রেড',
+    '3' => 'তৃতীয় গ্রেড',
+    '4' => 'চতুর্থ গ্রেড',
+    '5' => 'পঞ্চম গ্রেড',
+    '6' => 'ষষ্ঠ গ্রেড',
+    '7' => 'সপ্তম গ্রেড',
+    '8' => 'অষ্টম গ্রেড',
+    '9' => 'নবম গ্রেড',
+    '10' => 'দশম গ্রেড',
+    '11' => 'একাদশ গ্রেড',
+    '12' => 'দ্বাদশ গ্রেড',
+    '13' => 'ত্রয়োদশ গ্রেড',
+    '14' => 'চতুর্দশ গ্রেড',
+    '15' => 'পঞ্চদশ গ্রেড',
+    '16' => 'ষোড়শ গ্রেড',
+], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- পদবী -->
+        <div class="col-md-3">
+            <div class="form-group">
+
+                {!! Form::label('designation', 'পদবী', ['class' => 'control-label']) !!}
+                {!! Form::select('designation', $designations, null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+
+        <!-- বেসিক বেতন -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('basic_salary', 'বেসিক বেতন', ['class' => 'control-label']) !!}
+                {!! Form::number('basic_salary', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- বর্তমান অবস্থা -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('current_status', 'বর্তমান অবস্থা', ['class' => 'control-label']) !!}
+                {!! Form::select('current_status', ['active' => 'সক্রিয়', 'inactive' => 'নিষ্ক্রিয়'], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- ব্যবহারকারীর নাম -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('username', 'ব্যবহারকারীর নাম', ['class' => 'control-label']) !!}
+                {!! Form::text('username', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- পাসওয়ার্ড -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('password', 'পাসওয়ার্ড', ['class' => 'control-label']) !!}
+                {!! Form::password('password', ['class' => 'form-control']) !!}
+            </div>
+        </div>
     </div>
 </div>
 
-
-<!-- Last Name Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('last_name', 'Last Name',['class'=>'control-label']) !!}
-        {!! Form::text('last_name', null, ['class' => 'form-control','required']) !!}
-    </div>
-</div>
-
-
-<!-- Email Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('email', 'Email',['class'=>'control-label']) !!}
-        {!! Form::email('email', null, ['class' => 'form-control','required']) !!}
-    </div>
-</div>
-
-
-<!-- Date Of Birth Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('date_of_birth', 'Date Of Birth',['class'=>'control-label']) !!}
-        {!! Form::date('date_of_birth', null, ['class' => 'form-control','id'=>'date_of_birth','required']) !!}
-    </div>
-</div>
-
-
-<!-- Date Of Join Field -->
-<div class="col-md-3 d-none" >
-    <div class="form-group">
-        {!! Form::label('date_of_join', 'Date Of Join',['class'=>'control-label']) !!}
-        {!! Form::date('date_of_join', null, ['class' => 'form-control','id'=>'date_of_join']) !!}
-    </div>
-</div>
-
-
-
-<!-- Gender Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('gender', 'Gender',['class'=>'control-label']) !!}
-        {!! Form::select('gender', ['Male' => 'Male', 'Female' => 'Female'], null, ['class' => 'form-control','required']) !!}
-    </div>
-</div>
-@php
-    $designations = \App\Models\Designation::all()->pluck('desi_name','id')->prepend('Select Designation', '')->toArray();
-@endphp
-<!-- Gender Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('designation_id', 'Designation',['class'=>'control-label']) !!}
-        {!! Form::select('designation_id',$designations, null, ['class' => 'form-control','required']) !!}
-    </div>
-</div>
-
-@php
-  if(!can('chairman') && can('district_admin')) {
-      $districts = \App\Models\District::where('id', auth()->user()->district_id)->get()->pluck('name_en','id')->toArray();
-    }else {
-        $districts = \App\Models\District::all()->pluck('name_en','id')->prepend('Select District', '')->toArray();
-        $districts_multi = \App\Models\District::all()->pluck('name_en','id')->toArray();
-    }
-
-@endphp
-<!-- Gender Field -->
-<div class="col-md-3 @if(!can('chairman') && can('district_admin')) d-none @endif" >
-    <div class="form-group">
-        {!! Form::label('district_id', 'District',['class'=>'control-label']) !!}
-        {!! Form::select('district_id',$districts, null, ['class' => 'form-control','required']) !!}
-    </div>
-</div>
-
-
-<!-- Address Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('address', 'Address',['class'=>'control-label']) !!}
-        {!! Form::text('address', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Phone Number Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('phone_number', 'Phone Number',['class'=>'control-label']) !!}
-        {!! Form::number('phone_number', null, ['class' => 'form-control','required']) !!}
-    </div>
-</div>
-
-
-
-
-
-
-
-<!-- Salary Field -->
-<div class="col-md-3  d-none">
-    <div class="form-group">
-        {!! Form::label('salary', 'Salary',['class'=>'control-label']) !!}
-        {!! Form::number('salary', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Nid Field -->
-<div class="col-md-3  d-none">
-    <div class="form-group">
-        {!! Form::label('nid', 'Nid',['class'=>'control-label']) !!}
-        {!! Form::text('nid', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-@php
-    $AssessmentCenter = \App\Models\AssessmentCenter::all()->pluck('center_name','id')->prepend('Select Center', '')->toArray();
-    $Occupation = \App\Models\Occupation::all()->pluck('title','id')->prepend('Select Occupation', '')->toArray();
-
-      if(!can('chairman') && can('district_admin')) {
-          $roles = \App\Models\RoleAndPermission::where('key', 'assessment_centers_controller')->get()->pluck('name','id')->toArray();
-        }else {
-            $roles = \App\Models\RoleAndPermission::all()->pluck('name','id')->prepend('Select Roll', '')->toArray();
-        }
-
-@endphp
-
-
-<!-- Group Id Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('group_id', 'Roll',['class'=>'control-label']) !!}
-        {!! Form::select('group_id',$roles, null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-@php
-    if(isset($users)){
-        $user_id = $users->id;
-        $multiple_district = \DB::table('multiple_district')->where('user_id', $user_id)->pluck('district_id')->toArray();
-    }
-@endphp
-
-
-<!-- multiple district  Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('multiple_district', 'Multiple District',['class'=>'control-label']) !!}
-        {!! Form::select('multiple_district[]',$districts_multi,isset($multiple_district) ? $multiple_district : [], ['class' => 'form-control select2','multiple'=>'multiple']) !!}
-    </div>
-</div>
-
-<!-- Group Id Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('assessment_center', 'AssessmentCenter',['class'=>'control-label']) !!}
-        {!! Form::select('assessment_center',$AssessmentCenter, null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-<!-- Group Id Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('occupation', 'Occupation',['class'=>'control-label']) !!}
-        {!! Form::select('occupation',$Occupation, null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<!-- Education Field -->
-<div class="col-md-3  d-none">
-    <div class="form-group">
-        {!! Form::label('education', 'Education',['class'=>'control-label']) !!}
-        {!! Form::text('education', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Blood Group Field -->
-<div class="col-md-3 d-none">
-    <div class="form-group">
-        {!! Form::label('blood_group', 'Blood Group',['class'=>'control-label']) !!}
-        {!! Form::select('blood_group', [
-            'A+' => 'A+',
-            'A-' => 'A-',
-            'B+' => 'B+',
-            'B-' => 'B-',
-            'AB+' => 'AB+',
-            'AB-' => 'AB-',
-            'O+' => 'O+',
-            'O-' => 'O-'
-        ], null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-
-<!-- Religion Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('religion', 'Religion',['class'=>'control-label']) !!}
-        {!! Form::select('religion', ['Islam' => 'Islam', 'Hindu' => 'Hindu'], null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Marital Status Field -->
-<div class="col-md-3 d-none">
-    <div class="form-group">
-        {!! Form::label('marital_status', 'Marital Status',['class'=>'control-label']) !!}
-        {!! Form::select('marital_status', ['Single' => 'Single', 'Married' => 'Married'], null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Punch Id Field -->
-<div class="col-md-3  d-none">
-    <div class="form-group">
-        {!! Form::label('punch_id', 'Punch Id',['class'=>'control-label']) !!}
-        {!! Form::text('punch_id', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-
-
-<!-- Experience Field -->
-<div class="col-md-3  d-none">
-    <div class="form-group">
-        {!! Form::label('experience', 'Experience',['class'=>'control-label']) !!}
-        {!! Form::text('experience', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Email Verified At Field -->
-<div class="col-md-3  d-none">
-    <div class="form-group">
-        {!! Form::label('email_verified_at', 'Email Verified At',['class'=>'control-label']) !!}
-        {!! Form::text('email_verified_at', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Password Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('password', 'Password',['class'=>'control-label']) !!}
-        {!! Form::password('password', ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
-<!-- Remember Token Field -->
-<div class="col-md-3  d-none">
-    <div class="form-group">
-        {!! Form::label('remember_token', 'Remember Token',['class'=>'control-label']) !!}
-        {!! Form::text('remember_token', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-<!-- Image Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('image', 'Image',['class'=>'control-label']) !!}
-        {!! Form::file('image', ['onchange' => 'previewImage(event, "imagePreview")','accept' => 'image/*']) !!}
-        <img id="imagePreview" src="{{ isset($users) ? asset($users->image) : '' }}" alt="Image Preview" style="{{ isset($users) && $users->image ?  '': 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
-    </div>
-</div>
-<!-- Signature Field -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('signature', 'Signature',['class'=>'control-label']) !!}
-        {!! Form::file('signature', ['onchange' => 'previewImage(event, "signaturePreview")','accept' => 'image/*']) !!}
-        <img id="signaturePreview" src="{{ isset($users) ? asset($users->signature) : '' }}" alt="Signature Preview" style="{{ isset($users) && $users->image ?  '': 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
+<!-- ছবি ও স্বাক্ষর -->
+<div class="col-md-12 mt-4">
+    <h4><strong>📸 ছবি ও স্বাক্ষর</strong></h4>
+    <hr>
+    <div class="row">
+        <!-- ছবি -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('picture', 'ছবি', ['class' => 'control-label']) !!}
+                {!! Form::file('picture', ['onchange' => 'previewImage(event, "imagePreview")', 'accept' => 'image/*']) !!}
+                <img id="imagePreview" src="{{ isset($users) ? asset($users->image) : '' }}" alt="Image Preview"
+                    style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
+            </div>
+        </div>
+
+        <!-- স্বাক্ষর -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('signature', 'স্বাক্ষর', ['class' => 'control-label']) !!}
+                {!! Form::file('signature', ['onchange' => 'previewImage(event, "signaturePreview")', 'accept' => 'image/*']) !!}
+                <img id="signaturePreview" src="{{ isset($users) ? asset($users->signature) : '' }}"
+                    alt="Signature Preview"
+                    style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -311,7 +263,7 @@
 
         var file = event.target.files[0];
         var reader = new FileReader();
-        reader.onload = function() {
+        reader.onload = function () {
             document.getElementById(previewId).src = reader.result;
             document.getElementById(previewId).style.display = 'block';
         };
@@ -319,19 +271,3 @@
     }
 </script>
 <div class="clearfix"></div>
-
-
-<!-- Submit Field -->
-<div class="form-group col-sm-12" style="text-align-last: right;">
-    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    <a href="{{ route('users.index') }}" class="btn btn-danger">Cancel</a>
-</div>
-
-@section('footer_scripts')
-
-<script type="text/javascript">
-    
-</script>
-
-
-@endsection

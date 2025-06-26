@@ -433,7 +433,7 @@
                                 <div class="dropdown-menu dropdown-menu-end profile-dropdown"
                                     aria-labelledby="navbarDropdown">
                                     <div class="profile-dropdown-body p-3 bg-white rounded shadow-lg"
-                                        style="width: 269px;">
+                                        style="width: max-content;">
                                         <div class="d-flex align-items-center mb-3">
                                             @if (Auth::user()->image && file_exists(public_path(Auth::user()->image)))
                                                 <img src="{{ asset(Auth::user()->image) }}" alt="User Profile"
@@ -442,7 +442,7 @@
                                                 class="img-fluid rounded-circle me-2" @endif
                                                 style="width: 50px; height: 50px;" />
                                             <div>
-                                                <h6 class="mb-0">Hi, {{ Auth::user()->name }}
+                                                <h6 class="mb-0">Hi, {{ Auth::user()->name_bn }}
                                                     {{ Auth::user()->last_name }}
                                                 </h6>
                                                 <small class="text-muted">{{ Auth::user()->email }}</small>

@@ -39,7 +39,7 @@
             padding: 30px 40px;
             border-radius: 16px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            max-width: 590px;
+            max-width: 700px;
             width: 100%;
         }
 
@@ -147,9 +147,10 @@
         <div class="logo text-center">
             <img src="{{ asset('images/Picture1.jpg') }}" alt="Logo">
             <div class="logo-text">
-                <span>Board of Non-Formal Education</span>
+                <span>Bangladesh Film Development Corporation - BFDC</span>
             </div>
         </div>
+        <br>
         <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px 0px 38px;cursor: pointer;">
             <span class="text-center" style="font-weight: 650;font-size: 19px;">Sign In</span>
         </div>
@@ -157,36 +158,36 @@
         <form action="{{ route('login') }}" method="POST" class="sign_validator">
             @csrf
 
+            @error('email')
+                <span class="invalid-feedback d-block" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
             <div class="form-group">
                 <i class="bi bi-envelope input-icon"></i>
                 <input type="email" id="email" name="email"
                     class="form-control @error('email') is-invalid @enderror" placeholder="Email address"
                     value="{{ old('email') }}" required />
-                @error('email')
-                    <span class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
             </div>
 
             <div class="form-group">
                 <i class="bi bi-lock input-icon"></i>
                 <input type="password" id="password" name="password"
                     class="form-control @error('password') is-invalid @enderror" placeholder="Password" required />
-                @error('password')
-                    <span class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+              
             </div>
-
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">{{ __('Sign In') }}</button>
+            </div>
+            <div class="form-group" style="place-self: center;">
+                @if (Route::has('register'))
+                <p>Don't have an account? <a href="{{ route('register') }}" style="color: #8dc641;">{{ __('Register') }}</a></p>  
+                @endif
             </div>
         </form>
 
         <div class="login-footer">
-            <span>Copyright © 2025 <strong>Board of Non-Formal Education</strong></span>
+            <span>Copyright © 2025 <strong>Bangladesh Film Development Corporation - BFDC</strong></span>
             <span>Developed by: <strong><a href="https://mysoftheaven.com">Mysoftheaven (BD) Ltd.</a></strong></span>
         </div>
     </div>

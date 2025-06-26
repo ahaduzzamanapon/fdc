@@ -14,8 +14,8 @@ class UserController extends Controller
         /** @var User $users */
         $users = User::select('users.*', 'roles.name as role', 'designations.desi_name as designation','districts.name_en as district')
             ->leftjoin('roles', 'users.group_id', '=', 'roles.id')
-            ->leftjoin('districts', 'users.district_id', '=', 'districts.id')
-            ->leftjoin('designations', 'users.designation_id', '=', 'designations.id');
+            ->leftjoin('districts', 'users.dis_id', '=', 'districts.id')
+            ->leftjoin('designations', 'users.designation', '=', 'designations.id');
         if(!can('chairman') && can('district_admin')) {
             $users = $users->where('users.district_id', auth()->user()->district_id);
         }
@@ -39,21 +39,16 @@ class UserController extends Controller
     {
         $input = $request->all();
 
-        if(isset($input['multiple_district'])){
-            $multiple_district=$input['multiple_district'];
-            unset($input['multiple_district']);
-        }else{
-            $multiple_district=[];
-        }
+       
        
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $folder = 'images/user';
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $folder = 'picture/user';
             $customName = 'user-'.time();
-            $input['image'] = uploadFile($file, $folder, $customName);
+            $input['picture'] = uploadFile($file, $folder, $customName);
         }else{
-            $input['image'] = 'no-image.png';
+            $input['picture'] = 'no-image.png';
         }
 
         if ($request->hasFile('signature')) {
@@ -76,15 +71,7 @@ class UserController extends Controller
 
         /** @var User $users */
         $users = User::create($input);
-        $id=$users->id;
-
-         foreach ($multiple_district as $key => $value) {
-            DB::table('multiple_district')->insert([
-                'user_id' => $id,
-                'district_id' => $value,
-            ]);
-        }
-
+       
 
         Flash::success('User saved successfully.');
 

@@ -159,13 +159,6 @@
                     </div>
                 </a>
             </div>
-          
-
-      
-
-
-          
-
         </div>
     </section>
 @section('footer_scripts')
