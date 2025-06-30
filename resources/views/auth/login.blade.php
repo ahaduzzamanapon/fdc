@@ -71,12 +71,12 @@
     }
 
     .logo-text img {
-      height: 5.5rem;
+      height: 6.5rem;
     }
 
     @media (max-width: 576px) {
       .logo-text img {
-        height: 4.5rem;
+        height: 5rem;
       }
     }
 
@@ -107,11 +107,28 @@
       place-content: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      color: #000000;
     }
 
     @media (max-width: 576px) {
       .login-wrapper {
         padding: 30px 20px;
+      }
+
+      footer {
+        font-family: "Noto Sans Bengali", sans-serif;
+        font-weight: 500;
+        font-size: 16px !important;
+        line-height: 100%;
+        border-top: 2px solid #5f5e5e;
+        padding: 23px 34px;
+        display: flex;
+        place-content: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        color: #000000;
+        place-content: center;
+        gap: 13px;
       }
     }
 
@@ -132,12 +149,12 @@
         <div class="logo-text mb-4">
           <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
-        <h5 class="mb-4 text-primary login_text">লগইন করুন</h5>
+        <h5 class="mb-4 text-primary login_text" style="font-family: 'Noto Sans Bengali', sans-serif;">লগইন করুন</h5>
 
         <form action="{{ route('login') }}" method="POST">
           @csrf
           <p
-            style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;">
+            style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
             মোবাইল/ইমেইল</p>
           <div class="input-group mb-3">
             <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,7 +167,7 @@
           </div>
           <br>
           <p
-            style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;">
+            style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
             পাসওয়ার্ড</p>
 
           <div class="input-group mb-3">
@@ -172,10 +189,10 @@
           </div>
 
           <div class="d-flex justify-content-between helper-text mb-3">
-            <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;"
-              href="#" class="text-dark text-link">পাসওয়ার্ড ভুলে গেছেন?</a>
+            <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
+              href="#" class="text-link">পাসওয়ার্ড ভুলে গেছেন?</a>
             <span
-              style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;"
+              style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
               href="#" class="">অ্যাকাউন্ট নেই? <a href="{{ route('register') }}" class="text-primary text-link">
                 নিবন্ধন</a> </span>
           </div>

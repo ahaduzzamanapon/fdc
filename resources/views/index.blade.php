@@ -152,7 +152,82 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_students">
-                                <div class="spinner-border" role="status"><span class="sr-only">1</span></div>
+                                <div class="" role="status">1</div>
+                            </h3>
+                            <p>Total Lerner</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon green">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_students">
+                                <div class="" role="status">1</div>
+                            </h3>
+                            <p>Total Lerner</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon blue">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_students">
+                                <div class="" role="status">1</div>
+                            </h3>
+                            <p>Total Lerner</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon red">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_students">
+                                <div class="" role="status">1</div>
+                            </h3>
+                            <p>Total Lerner</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon aqua">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_students">
+                                <div class="" role="status">1</div>
+                            </h3>
+                            <p>Total Lerner</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon orange">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_students">
+                                <div class="" role="status">1</div>
                             </h3>
                             <p>Total Lerner</p>
                         </div>
