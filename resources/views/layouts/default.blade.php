@@ -289,7 +289,7 @@
 
 
 
-<body style="background: #d6e1ea;">
+<body style="background: #d6e1ea;font-family: 'Noto Sans Bengali', sans-serif;">
     @include('all_modal')
     <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all">
         <div class="sidebar-header d-flex align-items-center justify-content-start"
