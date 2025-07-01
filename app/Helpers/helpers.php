@@ -68,11 +68,14 @@ if (!function_exists('get_notification')) {
         if(!empty($roll) ){
             if ($roll->key == 'admin') {
                 return [];
+            } else {
+                return [];
+
             }
         }else{
             return [];
         }
-        
+
     }
 }
 
@@ -81,7 +84,7 @@ if (!function_exists('send_sms_new')) {
 
     function send_sms_new($to, $message)
     {
-        
+
         $curl = curl_init();
         $newto = '880' . $to;
         echo $newto;
@@ -97,11 +100,11 @@ if (!function_exists('send_sms_new')) {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{ 
-                "apikey": "075b59787c645957", 
-                "secretkey": "c48c5a54", 
-                "callerID": "LDTAX", 
-                "toUser": "' . $newto . '", 
+            CURLOPT_POSTFIELDS => '{
+                "apikey": "075b59787c645957",
+                "secretkey": "c48c5a54",
+                "callerID": "LDTAX",
+                "toUser": "' . $newto . '",
                 "messageContent": "' . $message . '"
                 }',
             CURLOPT_HTTPHEADER => array(

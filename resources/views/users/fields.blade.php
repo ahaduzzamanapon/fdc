@@ -1,8 +1,9 @@
 <!-- 🧍 ব্যক্তিগত তথ্য -->
 
 @php
-    $designations = \App\Models\Designation::all()->pluck('desi_name', 'id')->prepend('Select Designation', '')->toArray();
-    $districts = \App\Models\District::all()->pluck('name_en', key: 'id')->prepend('Select District', '')->toArray();
+    $departments = \App\Models\Department::all()->pluck('dept_name', 'id')->prepend('ডিপার্টমেন্ট নির্বাচন করুন', '')->toArray();
+    $designations = \App\Models\Designation::all()->pluck('desi_name', 'id')->prepend('পদবী নির্বাচন করুন', '')->toArray();
+    $districts = \App\Models\District::all()->pluck('name_en', key: 'id')->prepend('জেলা নির্বাচন করুন', '')->toArray();
 @endphp
 <div class="col-md-12">
     <h4><strong>🧍 ব্যক্তিগত তথ্য</strong></h4>
@@ -11,8 +12,9 @@
         <!-- নাম (বাংলা) -->
         <div class="col-md-3">
             <div class="form-group">
-                {!! Form::label('name_bn', 'নাম (বাংলা)', ['class' => 'control-label']) !!}
-                {!! Form::text('name_bn', null, ['class' => 'form-control']) !!}
+                {!! Form::label('name_bn', 'নাম (বাংলা) ', ['class' => 'control-label']) !!}
+                <span style="color:red">*</span>
+                {!! Form::text('name_bn', old('name_bn'), ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -28,7 +30,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('gender', 'লিঙ্গ', ['class' => 'control-label']) !!}
-                {!! Form::select('gender', ['পুরুষ' => 'পুরুষ', 'মহিলা' => 'মহিলা'], null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::select('gender', ['পুরুষ' => 'পুরুষ', 'মহিলা' => 'মহিলা', 'সাধারণ' => 'সাধারণ'], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -60,7 +63,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('dob', 'জন্ম তারিখ', ['class' => 'control-label']) !!}
-                {!! Form::date('dob', null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::date('dob', null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -76,7 +80,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('mobile_no', 'মোবাইল নম্বর', ['class' => 'control-label']) !!}
-                {!! Form::text('mobile_no', null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::text('mobile_no', null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -93,6 +98,14 @@
             <div class="form-group">
                 {!! Form::label('blood_group', 'রক্তের গ্রুপ', ['class' => 'control-label']) !!}
                 {!! Form::select('blood_group', ['A+' => 'A+', 'A-' => 'A-', 'B+' => 'B+', 'B-' => 'B-', 'AB+' => 'AB+', 'AB-' => 'AB-', 'O+' => 'O+', 'O-' => 'O-'], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <!-- মুক্তিযোদ্ধা অবস্থা -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('freedom_fighter', 'মুক্তিযোদ্ধা', ['class' => 'control-label']) !!}
+                {!! Form::select('freedom_fighter', ['হ্যাঁ' => 'হ্যাঁ', 'না' => 'না'], null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
@@ -128,18 +141,26 @@
             </div>
         </div>
 
-        <!-- বর্তমান ঠিকানা -->
+        <!-- Upazila Id Field -->
         <div class="col-md-3">
             <div class="form-group">
-                {!! Form::label('present_add', 'বর্তমান ঠিকানা', ['class' => 'control-label']) !!}
-                {!! Form::text('present_add', null, ['class' => 'form-control']) !!}
+                {!! Form::label('upazila_id', 'উপজেলা', ['class' => 'control-label']) !!}
+                {!! Form::select('upazila_id', ['' => 'উপজেলা নির্বাচন করুন'], null, ['class' => 'form-control select2']) !!}
             </div>
         </div>
 
-        <!-- নোট -->
+        <!-- গ্রাম / মহল্লা -->
         <div class="col-md-3">
             <div class="form-group">
-                {!! Form::label('note', 'নোট', ['class' => 'control-label']) !!}
+                {!! Form::label('present_add', 'গ্রাম / মহল্লা', ['class' => 'control-label']) !!}
+                {!! Form::textarea('present_add', null, ['class' => 'form-control', 'rows' => 3]) !!}
+            </div>
+        </div>
+
+        <!-- মন্তব্য -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('note', 'মন্তব্য', ['class' => 'control-label']) !!}
                 {!! Form::textarea('note', null, ['class' => 'form-control', 'rows' => 3]) !!}
             </div>
         </div>
@@ -167,40 +188,46 @@
             </div>
         </div>
 
-        <!-- গ্রেড -->
+        <!-- ডিপার্টমেন্ট -->
         <div class="col-md-3">
             <div class="form-group">
-                {!! Form::label('grade', 'গ্রেড', ['class' => 'control-label']) !!}
-                {!! Form::select('grade', [
-    '1' => 'প্রথম গ্রেড',
-    '2' => 'দ্বিতীয় গ্রেড',
-    '3' => 'তৃতীয় গ্রেড',
-    '4' => 'চতুর্থ গ্রেড',
-    '5' => 'পঞ্চম গ্রেড',
-    '6' => 'ষষ্ঠ গ্রেড',
-    '7' => 'সপ্তম গ্রেড',
-    '8' => 'অষ্টম গ্রেড',
-    '9' => 'নবম গ্রেড',
-    '10' => 'দশম গ্রেড',
-    '11' => 'একাদশ গ্রেড',
-    '12' => 'দ্বাদশ গ্রেড',
-    '13' => 'ত্রয়োদশ গ্রেড',
-    '14' => 'চতুর্দশ গ্রেড',
-    '15' => 'পঞ্চদশ গ্রেড',
-    '16' => 'ষোড়শ গ্রেড',
-], null, ['class' => 'form-control']) !!}
+                {!! Form::label('department', 'ডিপার্টমেন্ট', ['class' => 'control-label']) !!}
+                {!! Form::select('department', $designations, null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
         <!-- পদবী -->
         <div class="col-md-3">
             <div class="form-group">
-
                 {!! Form::label('designation', 'পদবী', ['class' => 'control-label']) !!}
                 {!! Form::select('designation', $designations, null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
+        <!-- গ্রেড -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('grade', 'গ্রেড', ['class' => 'control-label']) !!}
+                {!! Form::select('grade', [
+                    '1' => 'প্রথম গ্রেড',
+                    '2' => 'দ্বিতীয় গ্রেড',
+                    '3' => 'তৃতীয় গ্রেড',
+                    '4' => 'চতুর্থ গ্রেড',
+                    '5' => 'পঞ্চম গ্রেড',
+                    '6' => 'ষষ্ঠ গ্রেড',
+                    '7' => 'সপ্তম গ্রেড',
+                    '8' => 'অষ্টম গ্রেড',
+                    '9' => 'নবম গ্রেড',
+                    '10' => 'দশম গ্রেড',
+                    '11' => 'একাদশ গ্রেড',
+                    '12' => 'দ্বাদশ গ্রেড',
+                    '13' => 'ত্রয়োদশ গ্রেড',
+                    '14' => 'চতুর্দশ গ্রেড',
+                    '15' => 'পঞ্চদশ গ্রেড',
+                    '16' => 'ষোড়শ গ্রেড',
+                ], null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
 
         <!-- বেসিক বেতন -->
         <div class="col-md-3">
@@ -263,6 +290,7 @@
         </div>
     </div>
 </div>
+
 <script>
     function previewImage(event, previewId) {
 
@@ -284,3 +312,27 @@
     <a href="{{ route('users.index') }}" class="btn btn-danger">বাতিল করুন</a>
 </div>
 
+
+@section('footer_scripts')
+    <script>
+        $(document).ready(function() {
+            $('#dis_id').change(function() {
+                var districtId = $(this).val();
+                $.ajax({
+                    url: "{{ route('get_upazilas') }}",
+                    type: "GET",
+                    data: {
+                        district_id: districtId
+                    },
+                    success: function(data) {
+                        $('#upazila_id').empty();
+                        $('#upazila_id').append('<option value="">উপজেলা নির্বাচন করুন</option>');
+                        $.each(data, function(index, upajila) {
+                            $('#upazila_id').append('<option value="' + upajila.id + '">' + upajila.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+@endsection

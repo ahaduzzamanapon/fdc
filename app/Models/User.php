@@ -37,6 +37,7 @@ class User extends Authenticatable
         'no_of_child',
         'highest_qualification',
         'dis_id',
+        'upazila_id',
         'picture',
         'signature',
         'present_add',
@@ -54,6 +55,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-  
+
 }
 

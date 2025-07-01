@@ -39,9 +39,6 @@ class UserController extends Controller
     {
         $input = $request->all();
 
-       
-       
-
         if ($request->hasFile('picture')) {
             $file = $request->file('picture');
             $folder = 'picture/user';
@@ -71,7 +68,7 @@ class UserController extends Controller
 
         /** @var User $users */
         $users = User::create($input);
-       
+
 
         Flash::success('User saved successfully.');
 
@@ -122,37 +119,14 @@ class UserController extends Controller
         }
 
         $input = $request->all();
-
-          if(isset($input['multiple_district'])){
-            $multiple_district=$input['multiple_district'];
-            unset($input['multiple_district']);
-        }else{
-            $multiple_district=[];
-        }
-
-        DB::table('multiple_district')->where('user_id', $id)->delete();
-        foreach ($multiple_district as $key => $value) {
-            DB::table('multiple_district')->insert([
-                'user_id' => $id,
-                'district_id' => $value,
-            ]);
-        }
-
-
-
-
-
-
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $folder = 'images/user';
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $folder = 'picture/user';
             $customName = 'user-'.time();
-            $input['image'] = uploadFile($file, $folder, $customName);
+            $input['picture'] = uploadFile($file, $folder, $customName);
         }else{
-            unset($input['image']);
+            unset($input['picture']);
         }
-
 
         if ($request->hasFile('signature')) {
             $file = $request->file('signature');
@@ -164,12 +138,12 @@ class UserController extends Controller
         }
 
 
-
-        if ($request->has('password') && !empty($request->password)) {
+        if ($request->has('password')) {
             $input['password'] = bcrypt($request->password);
         }else{
             unset($input['password']);
         }
+
         $users->fill($input);
         $users->save();
         Flash::success('User updated successfully.');
