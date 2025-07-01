@@ -14,3 +14,5 @@ Route::resource('upazilas', 'UpazilaController');
 
 
 Route::resource('leaves', 'LeaveController');
+
+Route::resource('departments', 'DepartmentController');

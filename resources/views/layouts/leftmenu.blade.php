@@ -62,8 +62,12 @@
 {{-- সেটিংস --}}
 @if (can('settings'))
     <li class="nav-item">
-        <a class="nav-link {!! (Request::is('siteSettings*') || Request::is('districts*') ? 'active' : '') ||
-            (Request::is('designations*') ? 'active' : '') !!}" data-bs-toggle="collapse" href="#settings_menu" role="button"
+        <a class="nav-link 
+        {!! (Request::is('siteSettings*') ||
+         Request::is('districts*') || 
+         Request::is('departments*')||
+         Request::is('designations*')
+          ? 'active' : '') !!}" data-bs-toggle="collapse" href="#settings_menu" role="button"
             aria-expanded="false" aria-controls="settings_menu">
             <i class="icon im im-icon-Gear"></i>
             <span class="item-name">সেটিংস</span>
@@ -71,7 +75,8 @@
         </a>
         <ul class="sub-nav collapse {!! Request::is('siteSettings*') ||
         Request::is('designations*') ||
-        Request::is('districts*')
+        Request::is('districts*')||
+        Request::is('departments*')
             ? 'show'
             : '' !!}" id="settings_menu" data-bs-parent="#sidebar-menu">
             @if (can('site_settings'))
@@ -90,6 +95,15 @@
                         <i class="icon im im-icon-Teacher"></i>
                         <i class="sidenav-mini-icon"> ডি </i>
                         <span class="item-name">পদবী</span>
+                    </a>
+                </li>
+            @endif
+            @if (can('designations'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('departments*') ? 'active' : '' !!}" href="{{ route('departments.index') }}">
+                        <i class="icon im im-icon-Teacher"></i>
+                        <i class="sidenav-mini-icon"> ডি </i>
+                        <span class="item-name">departments</span>
                     </a>
                 </li>
             @endif
