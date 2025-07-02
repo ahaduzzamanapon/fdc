@@ -69,6 +69,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('general_students_waiting_for_chairman_approval', 'StudentController@students_waiting_for_chairman_approval')->name('general_students.students_waiting_for_chairman_approval');
 
 
+
+
+
+
+    //hguigig7ig
     Route::get('get_upazilas', 'HomeController@get_upazilas')->name('get_upazilas');
     Route::get('get_table', 'StudentController@get_table')->name('students.get_table');
     Route::get('forwardToAssessmentCenter_modal', 'StudentController@forwardToAssessmentCenter_modal')->name('forwardToAssessmentCenter_modal');
@@ -92,6 +97,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('generateCertificate_modal', 'StudentController@generateCertificate_modal')->name('generateCertificate_modal');
     Route::get('generateCertificate_send', 'StudentController@generateCertificate_send')->name('generateCertificate_send');
     Route::get('get_competences_by_occupation', 'StudentController@get_competences_by_occupation')->name('get_competences_by_occupation');
+
+
+
+
+
 
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
 
