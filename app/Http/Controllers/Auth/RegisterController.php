@@ -98,8 +98,6 @@ class RegisterController extends Controller
         /** @var User $users */
 
         $users = User::create($input);
-        return $users;
-       
-       
+        return $users; 
     }
 }
