@@ -64,6 +64,14 @@ class UserController extends Controller
             $input['password'] = bcrypt('12345678');
         }
 
+        if ($request->has('mobile_no')) {
+            $input['username'] = $request->mobile_no;
+            $user = User::where('username', $request->mobile_no)->first();
+            if($user){
+                Flash::error('Mobile No Already Exist.');
+                return redirect()->back();
+            }
+        }
 
 
         /** @var User $users */
@@ -146,6 +154,12 @@ class UserController extends Controller
 
         if ($request->has('mobile_no')) {
             $input['username'] = $request->mobile_no;
+
+            $user = User::where('username', $request->mobile_no)->first();
+            if($user && $user->id != $id){
+                Flash::error('Mobile No Already Exist.');
+                return redirect()->back();
+            }
         }
 
         $users->fill($input);
