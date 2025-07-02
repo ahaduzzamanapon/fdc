@@ -54,7 +54,17 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
+
+
+
+
+    //hguigig7ig
     Route::get('get_upazilas', 'HomeController@get_upazilas')->name('get_upazilas');
+
+
+
+
+
 
 
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
