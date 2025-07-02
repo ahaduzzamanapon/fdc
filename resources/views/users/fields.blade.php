@@ -285,14 +285,7 @@
                 {!! Form::password('password', ['class' => 'form-control']) !!}
             </div>
         </div>
-    </div>
-</div>
 
-<!-- ছবি ও স্বাক্ষর -->
-<div class="col-md-12 mt-4">
-    <h4><strong>📸 ছবি ও স্বাক্ষর</strong></h4>
-    <hr>
-    <div class="row">
         <!-- ছবি -->
         <div class="col-md-3">
             <div class="form-group">
@@ -315,6 +308,32 @@
         </div>
     </div>
 </div>
+
+<!-- ছবি ও স্বাক্ষর -->
+{{-- <div class="col-md-12 mt-4">
+    <h4><strong>📸 ছবি ও স্বাক্ষর</strong></h4>
+    <hr>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('picture', 'ছবি', ['class' => 'control-label']) !!}
+                {!! Form::file('picture', ['onchange' => 'previewImage(event, "imagePreview")', 'accept' => 'image/*']) !!}
+                <img id="imagePreview" src="{{ isset($users) ? asset($users->image) : '' }}" alt="Image Preview"
+                    style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('signature', 'স্বাক্ষর', ['class' => 'control-label']) !!}
+                {!! Form::file('signature', ['onchange' => 'previewImage(event, "signaturePreview")', 'accept' => 'image/*']) !!}
+                <img id="signaturePreview" src="{{ isset($users) ? asset($users->signature) : '' }}"
+                    alt="Signature Preview"
+                    style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
+            </div>
+        </div>
+    </div>
+</div> --}}
 
 <script>
     function previewImage(event, previewId) {
