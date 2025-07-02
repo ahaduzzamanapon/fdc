@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('students_waiting_for_district_approval', 'StudentController@students_waiting_for_district_approval')->name('students.students_waiting_for_district_approval');
     Route::get('students_waiting_for_chairman_approval', 'StudentController@students_waiting_for_chairman_approval')->name('students.students_waiting_for_chairman_approval');
-    
+
     Route::get('general_students_waiting_for_district_approval', 'StudentController@students_waiting_for_district_approval')->name('general_students.students_waiting_for_district_approval');
     Route::get('general_students_waiting_for_chairman_approval', 'StudentController@students_waiting_for_chairman_approval')->name('general_students.students_waiting_for_chairman_approval');
 
@@ -73,10 +73,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get_table', 'StudentController@get_table')->name('students.get_table');
     Route::get('forwardToAssessmentCenter_modal', 'StudentController@forwardToAssessmentCenter_modal')->name('forwardToAssessmentCenter_modal');
     Route::post('forwardToAssessmentCenter_send', 'StudentController@forwardToAssessmentCenter_send')->name('forwardToAssessmentCenter_send');
-    
+
     Route::get('forwardToDistrictAdmin_modal', 'StudentController@forwardToDistrictAdmin_modal')->name('forwardToDistrictAdmin_modal');
     Route::post('forwardToDistrictAdmin_send', 'StudentController@forwardToDistrictAdmin_send')->name('forwardToDistrictAdmin_send');
-   
+
     Route::get('forwardToChairman_modal', 'StudentController@forwardToChairman_modal')->name('forwardToChairman_modal');
     Route::post('forwardToChairman_send', 'StudentController@forwardToChairman_send')->name('forwardToChairman_send');
 
@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('backToDistrict_modal', 'StudentController@backToDistrict_modal')->name('backToDistrict_modal');
     Route::post('backToDistrict_send', 'StudentController@backToDistrict_send')->name('backToDistrict_send');
-    
+
     Route::get('approveStudent_modal', 'StudentController@approveStudent_modal')->name('approveStudent_modal');
     Route::post('approveStudent_send', 'StudentController@approveStudent_send')->name('approveStudent_send');
 
