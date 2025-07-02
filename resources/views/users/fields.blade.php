@@ -4,6 +4,7 @@
     $departments = \App\Models\Department::all()->pluck('name_bn', 'id')->prepend('ডিপার্টমেন্ট নির্বাচন করুন', '')->toArray();
     $designations = \App\Models\Designation::all()->pluck('desi_name', 'id')->prepend('পদবী নির্বাচন করুন', '')->toArray();
     $districts = \App\Models\District::all()->pluck('name_en', key: 'id')->prepend('জেলা নির্বাচন করুন', '')->toArray();
+    $userRoles = \App\Models\RoleAndPermission::all()->pluck('name_en', key: 'id')->prepend('রোল নির্বাচন করুন', '')->toArray();
 @endphp
 <div class="col-md-12">
     <h4><strong>🧍 ব্যক্তিগত তথ্য</strong></h4>
@@ -176,7 +177,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('employee_type', 'কর্মচারীর ধরন', ['class' => 'control-label']) !!}
-                {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'প্রডিউসার' => 'প্রডিউসার'], null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'প্রডিউসার' => 'প্রডিউসার'], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -184,7 +186,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('join_date', 'যোগদানের তারিখ', ['class' => 'control-label']) !!}
-                {!! Form::date('join_date', null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::date('join_date', null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -192,7 +195,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('department', 'ডিপার্টমেন্ট', ['class' => 'control-label']) !!}
-                {!! Form::select('department', $departments, null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::select('department', $departments, null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -200,7 +204,23 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('designation', 'পদবী', ['class' => 'control-label']) !!}
-                {!! Form::select('designation', $designations, null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::select('designation', $designations, null, ['class' => 'form-control', 'required' => true]) !!}
+            </div>
+        </div>
+
+        <!-- অফিসার শ্রেণী -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('staff_class', 'অফিসার শ্রেণী', ['class' => 'control-label']) !!}
+                <span style="color:red">*</span>
+                {!! Form::select('staff_class', [
+                    '' => 'শ্রেণী নির্বাচন করুন',
+                    '1' => 'শ্রেণী এ',
+                    '2' => 'শ্রেণী বি',
+                    '3' => 'শ্রেণী সি',
+                    '4' => 'শ্রেণী ডি',
+                ], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -208,7 +228,9 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('grade', 'গ্রেড', ['class' => 'control-label']) !!}
+                <span style="color:red">*</span>
                 {!! Form::select('grade', [
+                    '' => 'গ্রেড নির্বাচন করুন',
                     '1' => 'প্রথম গ্রেড',
                     '2' => 'দ্বিতীয় গ্রেড',
                     '3' => 'তৃতীয় গ্রেড',
@@ -225,7 +247,7 @@
                     '14' => 'চতুর্দশ গ্রেড',
                     '15' => 'পঞ্চদশ গ্রেড',
                     '16' => 'ষোড়শ গ্রেড',
-                ], null, ['class' => 'form-control']) !!}
+                ], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -233,7 +255,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('basic_salary', 'বেসিক বেতন', ['class' => 'control-label']) !!}
-                {!! Form::number('basic_salary', null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::number('basic_salary', null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -241,15 +264,17 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('current_status', 'বর্তমান অবস্থা', ['class' => 'control-label']) !!}
-                {!! Form::select('current_status', ['active' => 'সক্রিয়', 'inactive' => 'নিষ্ক্রিয়'], null, ['class' => 'form-control']) !!}
+                <span style="color:red">*</span>
+                {!! Form::select('current_status', ['active' => 'সক্রিয়', 'inactive' => 'নিষ্ক্রিয়'], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
-        <!-- ব্যবহারকারীর নাম -->
+        <!-- ইউজার রোল -->
         <div class="col-md-3">
             <div class="form-group">
-                {!! Form::label('username', 'ব্যবহারকারীর নাম', ['class' => 'control-label']) !!}
-                {!! Form::text('username', null, ['class' => 'form-control']) !!}
+                {!! Form::label('user_role', 'ইউজার রোল', ['class' => 'control-label']) !!}
+                <span style="color:red">*</span>
+                {!! Form::select('user_role', $userRoles, null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 

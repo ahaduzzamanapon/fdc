@@ -32,10 +32,5 @@ Departments @parent
             @include('departments.table')
         </div>
     </div>
-    <div class="text-center">
-        
-        @include('adminlte-templates::common.paginate', ['records' => $departments])
-
-    </div>
 </div>
 @endsection

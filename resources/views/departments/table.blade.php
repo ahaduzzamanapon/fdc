@@ -1,25 +1,21 @@
 <div class="table-responsive">
-    <table class="table" id="departments-table">
+    <table class="table table_data" id="departments-table">
         <thead>
             <tr>
-                <th>Id</th>
-        <th>Name Bn</th>
-        <th>Name En</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+                <th>Sl</th>
+                <th>Name Bn</th>
+                <th>Name En</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
         @foreach($departments as $key => $department)
             <tr>
-                <td>{{ $department->id }}</td>
+                <td>{{ ++$key }}</td>
             <td>{{ $department->name_bn }}</td>
             <td>{{ $department->name_en }}</td>
             <td>{{ $department->status }}</td>
-            <td>{{ $department->created_at }}</td>
-            <td>{{ $department->updated_at }}</td>
                 <td>
                     {!! Form::open(['route' => ['departments.destroy', $department->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

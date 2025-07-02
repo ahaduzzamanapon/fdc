@@ -144,6 +144,10 @@ class UserController extends Controller
             unset($input['password']);
         }
 
+        if ($request->has('mobile_no')) {
+            $input['username'] = $request->mobile_no;
+        }
+
         $users->fill($input);
         $users->save();
         Flash::success('User updated successfully.');

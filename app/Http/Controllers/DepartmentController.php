@@ -22,10 +22,9 @@ class DepartmentController extends AppBaseController
     public function index(Request $request)
     {
         /** @var Department $departments */
-        $departments = Department::paginate(10);
+        $departments = Department::all();
 
-        return view('departments.index')
-            ->with('departments', $departments);
+        return view('departments.index')->with('departments', $departments);
     }
 
     /**

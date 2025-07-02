@@ -9,7 +9,7 @@
 @if (can('hr'))
     <li class="nav-item">
         <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr" role="button"
-            aria-expanded="false" aria-controls="hr"> 
+            aria-expanded="false" aria-controls="hr">
             <i class="icon im im-icon-Gear"></i>
             <span class="item-name">এইচ আর</span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
@@ -62,9 +62,9 @@
 {{-- সেটিংস --}}
 @if (can('settings'))
     <li class="nav-item">
-        <a class="nav-link 
+        <a class="nav-link
         {!! (Request::is('siteSettings*') ||
-         Request::is('districts*') || 
+         Request::is('districts*') ||
          Request::is('departments*')||
          Request::is('designations*')
           ? 'active' : '') !!}" data-bs-toggle="collapse" href="#settings_menu" role="button"
@@ -88,7 +88,7 @@
                     </a>
                 </li>
             @endif
-           
+
             @if (can('designations'))
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('designations*') ? 'active' : '' !!}" href="{{ route('designations.index') }}">
@@ -103,7 +103,7 @@
                     <a class="nav-link {!! Request::is('departments*') ? 'active' : '' !!}" href="{{ route('departments.index') }}">
                         <i class="icon im im-icon-Teacher"></i>
                         <i class="sidenav-mini-icon"> ডি </i>
-                        <span class="item-name">departments</span>
+                        <span class="item-name">ডিপার্টমেন্ট</span>
                     </a>
                 </li>
             @endif
