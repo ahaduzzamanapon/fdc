@@ -1,7 +1,7 @@
 <!-- 🧍 ব্যক্তিগত তথ্য -->
 
 @php
-    $departments = \App\Models\Department::all()->pluck('dept_name', 'id')->prepend('ডিপার্টমেন্ট নির্বাচন করুন', '')->toArray();
+    $departments = \App\Models\Department::all()->pluck('name_bn', 'id')->prepend('ডিপার্টমেন্ট নির্বাচন করুন', '')->toArray();
     $designations = \App\Models\Designation::all()->pluck('desi_name', 'id')->prepend('পদবী নির্বাচন করুন', '')->toArray();
     $districts = \App\Models\District::all()->pluck('name_en', key: 'id')->prepend('জেলা নির্বাচন করুন', '')->toArray();
 @endphp
@@ -192,7 +192,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('department', 'ডিপার্টমেন্ট', ['class' => 'control-label']) !!}
-                {!! Form::select('department', $designations, null, ['class' => 'form-control']) !!}
+                {!! Form::select('department', $departments, null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
