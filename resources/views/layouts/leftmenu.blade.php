@@ -5,6 +5,15 @@
         <span class="item-name">ড্যাশবোর্ড</span>
     </a>
 </li>
+
+@if (can('profile'))
+<li class="nav-item">
+    <a class="nav-link {!! Request::is('/') ? 'active' : '' !!}" aria-current="page" href="{{ url('/') }}">
+        <i class="icon im im-icon-Home"></i>
+        <span class="item-name">প্রোফাইল</span>
+    </a>
+</li>
+@endif
 {{-- Users Management --}}
 @if (can('hr'))
     <li class="nav-item">
@@ -41,7 +50,7 @@
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('users*') ? 'active' : '' !!}" href="{{ route('users.index') }}">
                         <i class="icon im im-icon-User"></i>
-                        <i class="sidenav-mini-icon"> ব্য </i>
+                        <i class="sidenav-mini-icon"> ব্য</i>
                         <span class="item-name">ব্যবহারকারী</span>
                     </a>
                 </li>
