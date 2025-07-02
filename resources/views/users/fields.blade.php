@@ -4,7 +4,7 @@
     $departments = \App\Models\Department::all()->pluck('name_bn', 'id')->prepend('ডিপার্টমেন্ট নির্বাচন করুন', '')->toArray();
     $designations = \App\Models\Designation::all()->pluck('desi_name', 'id')->prepend('পদবী নির্বাচন করুন', '')->toArray();
     $districts = \App\Models\District::all()->pluck('name_en', key: 'id')->prepend('জেলা নির্বাচন করুন', '')->toArray();
-    $userRoles = \App\Models\RoleAndPermission::all()->pluck('name_en', key: 'id')->prepend('রোল নির্বাচন করুন', '')->toArray();
+    $userRoles = \App\Models\RoleAndPermission::all()->pluck('name', key: 'id')->prepend('রোল নির্বাচন করুন', '')->toArray();
 @endphp
 <div class="col-md-12">
     <h4><strong>🧍 ব্যক্তিগত তথ্য</strong></h4>
