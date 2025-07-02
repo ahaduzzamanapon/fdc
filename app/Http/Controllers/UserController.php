@@ -73,6 +73,9 @@ class UserController extends Controller
             }
         }
 
+        $input['group_id'] = $request->user_role;
+
+
 
         /** @var User $users */
         $users = User::create($input);
@@ -161,6 +164,7 @@ class UserController extends Controller
                 return redirect()->back();
             }
         }
+        $input['group_id'] = $request->user_role;
 
         $users->fill($input);
         $users->save();
