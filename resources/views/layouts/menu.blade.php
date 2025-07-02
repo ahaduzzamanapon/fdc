@@ -12,3 +12,10 @@
     </a>
 </li>
 
+<li class="{!! (Request::is('leaveTypes*') ? 'active' : '' ) !!}">
+    <a href="{{ route('leaveTypes.index') }}">
+        <span class="mm-text ">Leave Types</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+

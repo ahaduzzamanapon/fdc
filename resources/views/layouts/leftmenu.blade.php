@@ -125,6 +125,15 @@
                     </a>
                 </li>
             @endif
+            @if (can('leave_type'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('leaveTypes*') ? 'active' : '' !!}" href="{{ route('leaveTypes.index') }}">
+                        <i class="icon im im-icon-Structure"></i>
+                        <i class="sidenav-mini-icon"> ল </i>
+                        <span class="item-name">ছুটি প্রকার</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </li>
 @endif
