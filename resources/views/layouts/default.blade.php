@@ -413,8 +413,8 @@
                             <li class="nav-item dropdown custom-drop">
                                 <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    @if (Auth::user()->image && file_exists(public_path(Auth::user()->image)))
-                                        <img src="{{ asset(Auth::user()->image) }}" alt="User-Profile"
+                                    @if (Auth::user()->picture && file_exists(public_path(Auth::user()->picture)))
+                                        <img src="{{ asset(Auth::user()->picture) }}" alt="User-Profile"
                                             class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded" />
                                     @else
                                         <img src="{{ asset('assets/images/avatars/01.png') }}" alt="User-Profile"
@@ -436,9 +436,11 @@
                                     <div class="profile-dropdown-body p-3 bg-white rounded shadow-lg"
                                         style="width: max-content;">
                                         <div class="d-flex align-items-center mb-3">
-                                            @if (Auth::user()->image && file_exists(public_path(Auth::user()->image)))
-                                                <img src="{{ asset(Auth::user()->image) }}" alt="User Profile"
-                                            class="img-fluid rounded-circle me-2" @else <img
+                                            @if (Auth::user()->picture && file_exists(public_path(Auth::user()->picture)))
+                                                <img src="{{ asset(Auth::user()->picture) }}" alt="User Profile"
+                                            class="img-fluid rounded-circle me-2"
+                                            @else
+                                            <img
                                                     src="{{ asset('assets/images/avatars/01.png') }}" alt="User Profile"
                                                 class="img-fluid rounded-circle me-2" @endif
                                                 style="width: 50px; height: 50px;" />
@@ -448,6 +450,12 @@
                                                 </h6>
                                                 <small class="text-muted">{{ Auth::user()->email }}</small>
                                             </div>
+
+                                        </div>
+                                        <div>
+                                            <a href="{{ route('profile.index') }}" class="w-100">
+                                            <i class="bi bi-box-arrow-right me-1"></i> Go to Profile
+                                            </a>
                                         </div>
                                         <hr>
                                         <a href="{{ route('logout') }}" class="btn btn-sm btn-danger w-100"
