@@ -14,6 +14,14 @@
     </a>
 </li>
 @endif
+@if (can('producers_table'))
+<li class="nav-item">
+    <a class="nav-link {!! Request::is('producers*') ? 'active' : '' !!}" aria-current="page" href="{{ route('producers.index') }}">
+        <i class="icon im im-icon-Gear"></i>
+        <span class="item-name">প্রযোজক</span>
+    </a>
+</li>
+@endif
 {{-- Users Management --}}
 @if (can('hr'))
     <li class="nav-item">

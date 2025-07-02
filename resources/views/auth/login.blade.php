@@ -19,7 +19,7 @@
       box-sizing: border-box;
     }
     p {
-      margin: 3px;
+      margin: 8px;
       padding: 0;
     }
     body {
