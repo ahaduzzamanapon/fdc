@@ -32,10 +32,5 @@ Leave Types @parent
             @include('leave_types.table')
         </div>
     </div>
-    <div class="text-center">
-        
-        @include('adminlte-templates::common.paginate', ['records' => $leaveTypes])
-
-    </div>
 </div>
 @endsection
