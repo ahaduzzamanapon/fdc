@@ -64,10 +64,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('profile', ProfileController::class);
 
-
-
-
-
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
 
 });

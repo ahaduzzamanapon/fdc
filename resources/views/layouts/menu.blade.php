@@ -19,3 +19,10 @@
     </a>
 </li>
 
+<li class="{!! (Request::is('producers*') ? 'active' : '' ) !!}">
+    <a href="{{ route('producers.index') }}">
+        <span class="mm-text ">Producers</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
