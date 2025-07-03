@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'producer' => [
+            'driver' => 'session',
+            'provider' => 'producers',
+        ]
     ],
 
     /*
@@ -65,10 +70,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'producers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Producer::class, // your custom producer model
+        ],
     ],
 
     /*

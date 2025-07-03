@@ -15,10 +15,12 @@ class CreateProducersTable extends Migration
     {
         Schema::create('producers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('username');
             $table->string('organization_name');
             $table->string('address');
             $table->string('phone_number');
             $table->string('email');
+            $table->string('password');
             $table->string('bank_name');
             $table->string('bank_branch');
             $table->string('bank_account_number');

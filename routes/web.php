@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\Producer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProducerController;
 
 include 'demo.php';
 /*
@@ -71,6 +73,32 @@ Route::get('{name?}', 'JoshController@showView');
 
 
 
+
+
+Route::post('/producers_register', [ProducerController::class, 'producers_register'])->name('producers_register');
+
+
+
+Route::post('/producers_login', [ProducerController::class, 'producers_login'])->name('producers_login');
+
+
+Route::group(["middleware" => []], function () {
+    Route::prefix('producer')->controller(ProducerController::class)
+        ->group(function () {
+        Route::get('/dashboard', 'dashboard');
+    });
+});
+
+
+
+
+
+
+
+
 Route::get('/upload_exell', function () {
     return view('upload_exell');
+});
+Route::get('/get_who', function () {
+    dd(auth()->user()->group_id);
 });

@@ -9,6 +9,7 @@ use App\Models\Producer;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
+use Auth;
 
 class ProducerController extends AppBaseController
 {
@@ -49,12 +50,92 @@ class ProducerController extends AppBaseController
     {
         $input = $request->all();
 
+        $input_file = [
+            'bank_attachment',
+            'tin_attachment',
+            'vat_attachment',
+            'trade_license_attachment',
+            'nominee_photo',
+            'partnership_agreement',
+            'ltd_company_agreement',
+            'somobay_agreement',
+            'other_attachment',
+        ];
+        foreach ($input_file as $file_name) {
+            if ($request->hasFile($file_name)) {
+                $file = $request->file($file_name);
+                $folder = 'producers/' . $file_name;
+                $customName = 'producers-' . $file_name . '-' . time();
+                $input[$file_name] = uploadFile($file, $folder, $customName);
+            } else {
+                $input[$file_name] = 'no-image.png';
+            }
+        }
+
+
+
+        if ($request->has('password')) {
+            $input['password'] = bcrypt($request->password);
+        } else {
+            $input['password'] = bcrypt('12345678');
+        }
+
+        $input['status'] = 'Inactive';
+        $input['username'] = $input['phone_number'];
+
         /** @var Producer $producer */
         $producer = Producer::create($input);
 
         Flash::success('Producer saved successfully.');
 
         return redirect(route('producers.index'));
+    }
+    public function producers_register(CreateProducerRequest $request)
+    {
+        $input = $request->all();
+
+        $input_file = [
+            'bank_attachment',
+            'tin_attachment',
+            'vat_attachment',
+            'trade_license_attachment',
+            'nominee_photo',
+            'partnership_agreement',
+            'ltd_company_agreement',
+            'somobay_agreement',
+            'other_attachment',
+        ];
+        foreach ($input_file as $file_name) {
+            if ($request->hasFile($file_name)) {
+                $file = $request->file($file_name);
+                $folder = 'producers/' . $file_name;
+                $customName = 'producers-' . $file_name . '-' . time();
+                $input[$file_name] = uploadFile($file, $folder, $customName);
+            } else {
+                $input[$file_name] = 'no-image.png';
+            }
+        }
+
+
+
+        if ($request->has('password')) {
+            $input['password'] = bcrypt($request->password);
+        } else {
+            $input['password'] = bcrypt('12345678');
+        }
+
+        $input['status'] = 'Inactive';
+        $input['username'] = $input['phone_number'];
+
+
+
+
+        /** @var Producer $producer */
+        $producer = Producer::create($input);
+
+        Flash::success('Producer register successfully.');
+
+        return redirect(route('login'));
     }
 
     /**
@@ -118,6 +199,40 @@ class ProducerController extends AppBaseController
             return redirect(route('producers.index'));
         }
 
+         $input = $request->all();
+
+        $input_file = [
+            'bank_attachment',
+            'tin_attachment',
+            'vat_attachment',
+            'trade_license_attachment',
+            'nominee_photo',
+            'partnership_agreement',
+            'ltd_company_agreement',
+            'somobay_agreement',
+            'other_attachment',
+        ];
+        foreach ($input_file as $file_name) {
+            if ($request->hasFile($file_name)) {
+                $file = $request->file($file_name);
+                $folder = 'producers/'.$file_name;
+                $customName = 'producers-'.$file_name.'-' . time();
+                $input[$file_name] = uploadFile($file, $folder, $customName);
+            } else {
+                unset($input[$file_name]);
+            }
+        }
+
+
+
+        if ($request->has('password')) {
+            $input['password'] = bcrypt($request->password);
+        }else{
+            unset($input['password']);
+        }
+
+        $input['username'] = $input['phone_number'];
+
         $producer->fill($request->all());
         $producer->save();
 
@@ -152,4 +267,43 @@ class ProducerController extends AppBaseController
 
         return redirect(route('producers.index'));
     }
+
+
+
+    public function producers_login(Request $request)
+    {
+        $username = $request->username;
+        $password = $request->password;
+        Auth::guard('producer')->attempt([
+            'username' => $username,
+            'password' => $password,
+        ]);
+        
+        if (Auth::guard('producer')->check()) {
+            return redirect(url('producer/dashboard'));
+        }else{
+            Flash::error('Login Failed');
+            return redirect(url('/login'));
+        }
+    }
+
+    public function dashboard()
+    {
+        if (!Auth::guard('producer')->check()) {
+            Flash::error('First Login');
+            return redirect(url('/login'));
+        }
+        dd(Auth::guard('producer')->user());
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

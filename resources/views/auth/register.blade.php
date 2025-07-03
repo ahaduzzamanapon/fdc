@@ -7,10 +7,17 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" />
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100..900&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans Bengali", sans-serif;
+        }
+
         body {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: "Noto Sans Bengali", sans-serif;
             background: #f0f2f5;
             display: flex;
             justify-content: center;
@@ -71,8 +78,7 @@
 
         .form-control {
             border: 1px solid #8dc641;
-            border-radius: 7px;
-            font-size: 1rem;
+            border-radius: 4px;
             background-color: #ffffff;
             color: #333;
         }
@@ -146,317 +152,178 @@
 
 <body>
     <div class="login-card">
-        <div class="logo text-center" style="place-self: center;margin-bottom: 28px;">
-            <img src="{{ asset('images/Picture1.jpg') }}" alt="Logo">
-            <div class="logo-text">
-                <span>Bangladesh Film Development Corporation - BFDC</span>
-            </div>
+        <div class="" style="place-self: center;margin-bottom: 28px;">
+            <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
-        <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px 0px 38px;cursor: pointer;">
-            <span class="text-center" style="font-weight: 650;font-size: 19px;">Registration form</span>
+        <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px;cursor: pointer;">
+            <span class="text-center" style="font-weight: 650;font-size: 19px;">প্রযোজক রেজিস্ট্রেশন ফর্ম</span>
         </div>
 
-        <form action="{{ route('register') }}" method="POST">
+        <form action="{{ route('producers_register') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="col-md-12">
                 <div class="row">
 
-                    <!-- 🧍 ব্যক্তিগত তথ্য -->
-                    <div class="col-md-12">
-                        <h4><strong>🧍 ব্যক্তিগত তথ্য</strong></h4>
-                        <hr>
+                    <!-- Organization Info -->
+                    <fieldset class="border p-2 mb-3 col-md-12">
+                        <legend class="w-auto">প্রতিষ্ঠানের তথ্য</legend>
                         <div class="row">
-                            <!-- নাম (বাংলা) -->
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('name_bn', 'নাম (বাংলা)', ['class' => 'control-label']) !!}
-                                    {!! Form::text('name_bn', null, ['class' => 'form-control']) !!}
-                                </div>
+                                {!! Form::label('organization_name', 'প্রতিষ্ঠানের নাম') !!}
+                                {!! Form::text('organization_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-
-                            <!-- নাম (ইংরেজি) -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('name_en', 'নাম (ইংরেজি)', ['class' => 'control-label']) !!}
-                                    {!! Form::text('name_en', null, ['class' => 'form-control']) !!}
-                                </div>
+                            <div class="col-md-2">
+                                {!! Form::label('address', 'ঠিকানা') !!}
+                                {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!} 
                             </div>
-
-                            <!-- লিঙ্গ -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('gender', 'লিঙ্গ', ['class' => 'control-label']) !!}
-                                    {!! Form::select('gender', ['পুরুষ' => 'পুরুষ', 'মহিলা' => 'মহিলা'], null, ['class' => 'form-control']) !!}
-                                </div>
+                            <div class="col-md-2">
+                                {!! Form::label('phone_number', 'ফোন নম্বর') !!}
+                                {!! Form::text('phone_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-
-                            <!-- ধর্ম -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('religion', 'ধর্ম', ['class' => 'control-label']) !!}
-                                    {!! Form::select('religion', ['ইসলাম' => 'ইসলাম', 'হিন্দু' => 'হিন্দু', 'খ্রিস্টান' => 'খ্রিস্টান', 'বৌদ্ধ' => 'বৌদ্ধ', 'অন্যান্য' => 'অন্যান্য'], null, ['class' => 'form-control']) !!}
-                                </div>
+                            <div class="col-md-2">
+                                {!! Form::label('email', 'ই-মেইল') !!}
+                                {!! Form::email('email', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-
-                            <!-- পিতার নাম -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('father_name', 'পিতার নাম', ['class' => 'control-label']) !!}
-                                    {!! Form::text('father_name', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- মাতার নাম -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('mother_name', 'মাতার নাম', ['class' => 'control-label']) !!}
-                                    {!! Form::text('mother_name', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- জন্ম তারিখ -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('dob', 'জন্ম তারিখ', ['class' => 'control-label']) !!}
-                                    {!! Form::date('dob', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- এনআইডি -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('nid', 'এনআইডি', ['class' => 'control-label']) !!}
-                                    {!! Form::text('nid', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- মোবাইল নম্বর -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('mobile_no', 'মোবাইল নম্বর', ['class' => 'control-label']) !!}
-                                    {!! Form::text('mobile_no', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- ইমেল -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('email', 'ইমেল', ['class' => 'control-label']) !!}
-                                    {!! Form::email('email', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- রক্তের গ্রুপ -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('blood_group', 'রক্তের গ্রুপ', ['class' => 'control-label']) !!}
-                                    {!! Form::select('blood_group', ['A+' => 'A+', 'A-' => 'A-', 'B+' => 'B+', 'B-' => 'B-', 'AB+' => 'AB+', 'AB-' => 'AB-', 'O+' => 'O+', 'O-' => 'O-'], null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- বৈবাহিক অবস্থা -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('marital_status', 'বৈবাহিক অবস্থা', ['class' => 'control-label']) !!}
-                                    {!! Form::select('marital_status', ['অবিবাহিত' => 'অবিবাহিত', 'বিবাহিত' => 'বিবাহিত'], null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- সন্তানের সংখ্যা -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('no_of_child', 'সন্তানের সংখ্যা', ['class' => 'control-label']) !!}
-                                    {!! Form::number('no_of_child', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- সর্বোচ্চ শিক্ষাগত যোগ্যতা -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('highest_qualification', 'সর্বোচ্চ শিক্ষাগত যোগ্যতা', ['class' => 'control-label']) !!}
-                                    {!! Form::text('highest_qualification', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- জেলা আইডি -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('dis_id', 'জেলা', ['class' => 'control-label']) !!}
-                                    {!! Form::select('dis_id', $districts, null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- বর্তমান ঠিকানা -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('present_add', 'বর্তমান ঠিকানা', ['class' => 'control-label']) !!}
-                                    {!! Form::text('present_add', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- নোট -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('note', 'নোট', ['class' => 'control-label']) !!}
-                                    {!! Form::textarea('note', null, ['class' => 'form-control', 'rows' => 3]) !!}
-                                </div>
+                            <div class="col-md-2">
+                                {!! Form::label('password', 'পাসওয়ার্ড') !!}
+                                {!! Form::text('password', null, ['required','style="border: 1px solid #8dc641;border-radius: 4px;padding: 4px;"']) !!}
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <!-- 🏢 দাপ্তরিক তথ্য -->
-                    <div class="col-md-12 mt-4">
-                        <h4><strong>🏢 দাপ্তরিক তথ্য</strong></h4>
-                        <hr>
+                    <!-- Bank Details -->
+                    <fieldset class="border p-2 mb-3 col-md-12">
+                        <legend class="w-auto">ব্যাংক সংক্রান্ত তথ্য</legend>
                         <div class="row">
-                            <!-- কর্মচারীর ধরন -->
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('employee_type', 'কর্মচারীর ধরন', ['class' => 'control-label']) !!}
-                                    {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'প্রডিউসার' => 'প্রডিউসার'], null, ['class' => 'form-control']) !!}
-                                </div>
+                                {!! Form::label('bank_name', 'ব্যাংকের নাম') !!}
+                                {!! Form::text('bank_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-
-                            <!-- যোগদানের তারিখ -->
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('join_date', 'যোগদানের তারিখ', ['class' => 'control-label']) !!}
-                                    {!! Form::date('join_date', null, ['class' => 'form-control']) !!}
-                                </div>
+                                {!! Form::label('bank_branch', 'শাখা') !!}
+                                {!! Form::text('bank_branch', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-
-                            <!-- গ্রেড -->
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('grade', 'গ্রেড', ['class' => 'control-label']) !!}
-                                    {!! Form::select('grade', [
-                                            '1' => 'প্রথম গ্রেড',
-                                            '2' => 'দ্বিতীয় গ্রেড',
-                                            '3' => 'তৃতীয় গ্রেড',
-                                            '4' => 'চতুর্থ গ্রেড',
-                                            '5' => 'পঞ্চম গ্রেড',
-                                            '6' => 'ষষ্ঠ গ্রেড',
-                                            '7' => 'সপ্তম গ্রেড',
-                                            '8' => 'অষ্টম গ্রেড',
-                                            '9' => 'নবম গ্রেড',
-                                            '10' => 'দশম গ্রেড',
-                                            '11' => 'একাদশ গ্রেড',
-                                            '12' => 'দ্বাদশ গ্রেড',
-                                            '13' => 'ত্রয়োদশ গ্রেড',
-                                            '14' => 'চতুর্দশ গ্রেড',
-                                            '15' => 'পঞ্চদশ গ্রেড',
-                                            '16' => 'ষোড়শ গ্রেড',
-                                        ], null, ['class' => 'form-control']) !!}
-                                </div>
+                                {!! Form::label('bank_account_number', 'একাউন্ট নম্বর') !!}
+                                {!! Form::text('bank_account_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-
-                            <!-- পদবী -->
                             <div class="col-md-3">
-                                <div class="form-group">
-
-                                    {!! Form::label('designation', 'পদবী', ['class' => 'control-label']) !!}
-                                    {!! Form::select('designation', $designations, null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-
-                            <!-- বেসিক বেতন -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('basic_salary', 'বেসিক বেতন', ['class' => 'control-label']) !!}
-                                    {!! Form::number('basic_salary', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- বর্তমান অবস্থা -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('current_status', 'বর্তমান অবস্থা', ['class' => 'control-label']) !!}
-                                    {!! Form::select('current_status', ['active' => 'সক্রিয়', 'inactive' => 'নিষ্ক্রিয়'], null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- ব্যবহারকারীর নাম -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('username', 'ব্যবহারকারীর নাম', ['class' => 'control-label']) !!}
-                                    {!! Form::text('username', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-
-                            <!-- পাসওয়ার্ড -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('password', 'পাসওয়ার্ড', ['class' => 'control-label']) !!}
-                                    {!! Form::password('password', ['class' => 'form-control']) !!}
-                                </div>
+                                {!! Form::label('bank_attachment', 'সংযুক্তি') !!}
+                                {!! Form::file('bank_attachment', ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <!-- ছবি ও স্বাক্ষর -->
-                    <div class="col-md-12 mt-4">
-                        <h4><strong>📸 ছবি ও স্বাক্ষর</strong></h4>
-                        <hr>
+                    <!-- Tax Info -->
+                    <fieldset class="border p-2 mb-3 col-md-12">
+                        <legend class="w-auto">কর সংক্রান্ত তথ্য</legend>
                         <div class="row">
-                            <!-- ছবি -->
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('picture', 'ছবি', ['class' => 'control-label']) !!}
-                                    {!! Form::file('picture', ['onchange' => 'previewImage(event, "imagePreview")', 'accept' => 'image/*']) !!}
-                                    <img id="imagePreview" src="{{ isset($users) ? asset($users->image) : '' }}"
-                                        alt="Image Preview"
-                                        style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
-                                </div>
+                                {!! Form::label('tin_number', 'টিআইএন নম্বর') !!}
+                                {!! Form::text('tin_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
+                            <div class="col-md-3">
+                                {!! Form::label('tin_attachment', 'টিআইএন সংযুক্তি') !!}
+                                {!! Form::file('tin_attachment', ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('vat_registration_number', 'ভ্যাট রেজিস্ট্রেশন নম্বর') !!}
+                                {!! Form::number('vat_registration_number', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('vat_attachment', 'ভ্যাট সংযুক্তি') !!}
+                                {!! Form::file('vat_attachment', ['class' => 'form-control', 'required']) !!}
+                            </div>
+                        </div>
+                    </fieldset>
 
-                            <!-- স্বাক্ষর -->
+                    <!-- Trade License -->
+                    <fieldset class="border p-2 mb-3 col-md-12">
+                        <legend class="w-auto">ট্রেড লাইসেন্স</legend>
+                        <div class="row">
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('signature', 'স্বাক্ষর', ['class' => 'control-label']) !!}
-                                    {!! Form::file('signature', ['onchange' => 'previewImage(event, "signaturePreview")', 'accept' => 'image/*']) !!}
-                                    <img id="signaturePreview" src="{{ isset($users) ? asset($users->signature) : '' }}"
-                                        alt="Signature Preview"
-                                        style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
-                                </div>
+                                {!! Form::label('trade_license', 'ট্রেড লাইসেন্স নম্বর') !!}
+                                {!! Form::text('trade_license', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('trade_license_validity_date', 'বৈধতার তারিখ') !!}
+                                {!! Form::date('trade_license_validity_date', null, ['class' => 'form-control date', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('trade_license_attachment', 'সংযুক্তি') !!}
+                                {!! Form::file('trade_license_attachment', ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
-                    </div>
-                    <!-- সাবমিট বাটন -->
-                    <div class="col-md-12 text-end mt-3 pull-right">
-                        <div class="input-group pull-right" style="justify-content: right;">
-                            <a href="{{ route('login') }}" class="btn btn-danger">Cancel</a>&nbsp;
-                            <button type="reset" class="btn btn-secondary">Reset</button>&nbsp;
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                    </fieldset>
+
+                    <!-- Nominee Info -->
+                    <fieldset class="border p-2 mb-3 col-md-12">
+                        <legend class="w-auto">নমিনির তথ্য</legend>
+                        <div class="row">
+                            <div class="col-md-3">
+                                {!! Form::label('nominee_name', 'নাম') !!}
+                                {!! Form::text('nominee_name', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('nominee_relation', 'সম্পর্ক') !!}
+                                {!! Form::text('nominee_relation', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('nominee_nid', 'এনআইডি') !!}
+                                {!! Form::text('nominee_nid', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('nominee_photo', 'ছবি') !!}
+                                {!! Form::file('nominee_photo', ['class' => 'form-control', 'required']) !!}
+                            </div>
                         </div>
+                    </fieldset>
+
+                    <!-- Business Agreements -->
+                    <fieldset class="border p-2 mb-3 col-md-12">
+                        <legend class="w-auto">ব্যবসায়িক চুক্তি</legend>
+                        <div class="row">
+                            <div class="col-md-12" style="padding: 15px;">
+                                {!! Form::label('partnership_agreement', '(ক) যৌথ মালিকানাধীন ফার্ম হলে রেজিস্টার্ড পার্টনারশীপ ডীড এর সত্যায়িত ফটোকপি সংযুক্ত করতে হবে।') !!}
+                                <br>
+                                {!! Form::file('partnership_agreement') !!}
+                            </div>
+                            
+                            <div class="col-md-12" style="padding: 15px;">
+                                {!! Form::label('ltd_company_agreement', '(খ) লিমিটেড কোম্পানি হলে সার্টিফিকেট অব ইনকর্পোরেশন, মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন এবং কোম্পানীর রেজুলেশন সংযুক্ত করতে হবে।') !!}
+                                {!! Form::file('ltd_company_agreement') !!}
+                            </div>
+                            <div class="col-md-12" style="padding: 15px;">
+                                {!! Form::label('somobay_agreement', '(গ) সমবায় সমিতি হলে মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন, সমবায় সমিতি অধিদপ্তরের সার্টিফিকেট এবং সমিতির রেজুলেশন সংযুক্ত করতে হবে।') !!}
+
+                                {!! Form::file('somobay_agreement') !!}
+                            </div>
+                            <div class="col-md-12" style="padding: 15px;">
+                                {!! Form::label('other_attachment', '(ঘ) অন্যান্য') !!}
+                                                                <br>
+
+                                {!! Form::file('other_attachment') !!}
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Submit Buttons -->
+                    <div class="col-md-12 text-end mt-3" style="text-align-last: right;">
+                        <a href="{{ route('login') }}" class="btn btn-danger">বাতিল</a>&nbsp;
+                        <button type="reset" class="btn btn-secondary">রিসেট</button>&nbsp;
+                        <button type="submit" class="btn btn-primary">জমা দিন</button>
                     </div>
 
                 </div>
             </div>
-
-            <script>
-                function previewImage(event, previewId) {
-                    var file = event.target.files[0];
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        document.getElementById(previewId).src = reader.result;
-                        document.getElementById(previewId).style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            </script>
-
-
-            <!-- Submit Field -->
-
-
         </form>
 
         <div class="login-footer">
-            <span>Copyright © 2025 <strong>Bangladesh Film Development Corporation - BFDC</strong></span>
-            <span>Developed by: <strong><a href="https://mysoftheaven.com">Mysoftheaven (BD) Ltd.</a></strong></span>
+            <span>কপিরাইট © ২০২৫ <strong>বাংলাদেশ চলচ্চিত্র উন্নয়ন করপোরেশন - বিএফডিসি</strong></span>
+            <span>উন্নয়নে: <strong><a href="https://mysoftheaven.com">Mysoftheaven (BD) Ltd.</a></strong></span>
         </div>
     </div>
 </body>
+
 
 </html>
