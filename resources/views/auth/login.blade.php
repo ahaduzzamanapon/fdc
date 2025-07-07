@@ -160,6 +160,7 @@
         <div class="logo-text mb-4">
           <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
+         @include('flash::message')
         <ul class="nav nav-tabs mb-4 col-md-12" id="myTab" role="tablist">
           <li class="nav-item col-md-6" role="presentation">
             <button class="nav-link active col-md-12" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button"
@@ -215,7 +216,7 @@
             </form>
           </div>
           <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('producers_login') }}" method="POST">
               @csrf
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">

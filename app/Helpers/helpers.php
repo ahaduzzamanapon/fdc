@@ -120,3 +120,17 @@ if (!function_exists('send_sms_new')) {
 
 
 
+if (!function_exists('get_who')) {
+
+    function get_who()
+    {
+        $user = \Auth::guard('producer')->user();
+        dd($user);
+
+        dd(dd(Auth::guard('producer')->user()));
+        dd(\Auth::guard('producer')->user());
+        dd(auth()->user());
+    }
+}
+
+

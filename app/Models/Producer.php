@@ -2,39 +2,9 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-/**
- * Class Producer
- * @package App\Models
- * @version July 2, 2025, 12:12 pm UTC
- *
- * @property string $organization_name
- * @property string $address
- * @property string $phone_number
- * @property string $email
- * @property string $bank_name
- * @property string $bank_branch
- * @property string $bank_account_number
- * @property string $bank_attachment
- * @property string $tin_number
- * @property string $trade_license
- * @property string $vat_registration_number
- * @property string $nominee_name
- * @property string $nominee_relation
- * @property string $nominee_nid
- * @property string $nominee_photo
- * @property string $partnership_agreement
- * @property string $ltd_company_agreement
- * @property string $somobay_agreement
- * @property string $other_attachment
- * @property string $trade_license_validity_date
- * @property string $trade_license_attachment
- * @property string $vat_attachment
- * @property string $tin_attachment
- * @property string $status
- */
-class Producer extends Model
+class Producer extends Authenticatable
 {
 
     public $table = 'producers';
@@ -43,10 +13,13 @@ class Producer extends Model
 
 
     public $fillable = [
+        'who',
+        'username',
         'organization_name',
         'address',
         'phone_number',
         'email',
+        'password',
         'bank_name',
         'bank_branch',
         'bank_account_number',
