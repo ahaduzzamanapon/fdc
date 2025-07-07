@@ -18,6 +18,7 @@ include 'demo.php';
 |
 */
 
+
 Auth::routes();
 
 // login2, register2 pages

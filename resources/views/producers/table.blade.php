@@ -15,7 +15,7 @@
             <tr>
                 <td>{{ $producer->id }}</td>
             <td>{{ $producer->organization_name }}</td>
-            <td>{{ $producer->address }}</td>
+           
             <td>{{ $producer->phone_number }}</td>
             <td>{{ $producer->email }}</td>
            

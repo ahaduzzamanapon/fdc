@@ -6,6 +6,7 @@
     </a>
 </li>
 
+
 @if (can('profile'))
 <li class="nav-item">
     <a class="nav-link {!! Request::is('/') ? 'active' : '' !!}" aria-current="page" href="{{ url('/') }}">
@@ -14,6 +15,9 @@
     </a>
 </li>
 @endif
+
+
+
 @if (can('producers_table'))
 <li class="nav-item">
     <a class="nav-link {!! Request::is('producers*') ? 'active' : '' !!}" aria-current="page" href="{{ route('producers.index') }}">
@@ -22,6 +26,11 @@
     </a>
 </li>
 @endif
+
+
+
+
+
 {{-- Users Management --}}
 @if (can('hr'))
     <li class="nav-item">
@@ -44,6 +53,8 @@
         </ul>
     </li>
 @endif
+
+
 {{-- ব্যবহারকারী ব্যবস্থাপনা --}}
 @if (can('user_management'))
     <li class="nav-item">

@@ -22,6 +22,8 @@ class ProducerController extends AppBaseController
      */
     public function index(Request $request)
     {
+
+      
         /** @var Producer $producers */
         $producers = Producer::all();
 
@@ -61,17 +63,16 @@ class ProducerController extends AppBaseController
             'somobay_agreement',
             'other_attachment',
         ];
-        foreach ($input_file as $file_name) {
+         foreach ($input_file as $file_name) {
             if ($request->hasFile($file_name)) {
                 $file = $request->file($file_name);
-                $folder = 'producers/' . $file_name;
-                $customName = 'producers-' . $file_name . '-' . time();
+                $folder = 'producers_file/'.$file_name;
+                $customName = 'producers_file-'.$file_name.'-' . time();
                 $input[$file_name] = uploadFile($file, $folder, $customName);
             } else {
-                $input[$file_name] = 'no-image.png';
+                unset($input[$file_name]);
             }
         }
-
 
 
         if ($request->has('password')) {
@@ -108,11 +109,11 @@ class ProducerController extends AppBaseController
         foreach ($input_file as $file_name) {
             if ($request->hasFile($file_name)) {
                 $file = $request->file($file_name);
-                $folder = 'producers/' . $file_name;
-                $customName = 'producers-' . $file_name . '-' . time();
+                $folder = 'producers_file/'.$file_name;
+                $customName = 'producers_file-'.$file_name.'-' . time();
                 $input[$file_name] = uploadFile($file, $folder, $customName);
             } else {
-                $input[$file_name] = 'no-image.png';
+                unset($input[$file_name]);
             }
         }
 
@@ -215,8 +216,8 @@ class ProducerController extends AppBaseController
         foreach ($input_file as $file_name) {
             if ($request->hasFile($file_name)) {
                 $file = $request->file($file_name);
-                $folder = 'producers/'.$file_name;
-                $customName = 'producers-'.$file_name.'-' . time();
+                $folder = 'producers_file/'.$file_name;
+                $customName = 'producers_file-'.$file_name.'-' . time();
                 $input[$file_name] = uploadFile($file, $folder, $customName);
             } else {
                 unset($input[$file_name]);
@@ -233,7 +234,7 @@ class ProducerController extends AppBaseController
 
         $input['username'] = $input['phone_number'];
 
-        $producer->fill($request->all());
+        $producer->fill($input);
         $producer->save();
 
         Flash::success('Producer updated successfully.');
@@ -293,7 +294,8 @@ class ProducerController extends AppBaseController
             Flash::error('First Login');
             return redirect(url('/login'));
         }
-        dd(Auth::guard('producer')->user());
+
+        return view('producers.dashboard');
     }
 
 

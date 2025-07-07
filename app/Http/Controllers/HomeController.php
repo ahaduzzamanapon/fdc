@@ -33,8 +33,6 @@ class HomeController extends Controller
     }
     public function items_dashboard(){
         $items=Item::all();
-
-        
         return view('items.item_dashboard',compact('items'));
     }
 

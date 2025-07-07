@@ -32,7 +32,15 @@ if (!function_exists('can')) {
 
     function can($key)
     {
-        $group_id = auth()->user()->group_id;
+
+        if(isset(auth()->user()->group_id)){
+            $group_id = auth()->user()->group_id;
+        }elseif(isset(Auth::guard('producer')->user()->group_id)){
+            $group_id = Auth::guard('producer')->user()->group_id;
+        }else{
+            return false;
+        }
+
         $permissions = \App\Models\RollHas::where('roll_id', $group_id)
             ->join('permissions', 'roll_has.permission_id', '=', 'permissions.id')
             ->select('permissions.key')
@@ -62,7 +70,13 @@ if (!function_exists('get_notification')) {
 
     function get_notification()
     {
-        $group_id = auth()->user()->group_id;
+         if(isset(auth()->user()->group_id)){
+            $group_id = auth()->user()->group_id;
+        }elseif(isset(Auth::guard('producer')->user()->group_id)){
+            $group_id = Auth::guard('producer')->user()->group_id;
+        }else{
+            return [];
+        }
         $roll=\App\Models\RoleAndPermission::where('id', $group_id)
             ->first();
         if(!empty($roll) ){
@@ -115,21 +129,6 @@ if (!function_exists('send_sms_new')) {
         $response = curl_exec($curl);
 
         return $response;
-    }
-}
-
-
-
-if (!function_exists('get_who')) {
-
-    function get_who()
-    {
-        $user = \Auth::guard('producer')->user();
-        dd($user);
-
-        dd(dd(Auth::guard('producer')->user()));
-        dd(\Auth::guard('producer')->user());
-        dd(auth()->user());
     }
 }
 
