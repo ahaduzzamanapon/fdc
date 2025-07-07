@@ -474,6 +474,12 @@
                                                 
                                                 </small>
                                             </div>
+
+                                        </div>
+                                        <div>
+                                            <a href="{{ route('profile.index') }}" class="w-100">
+                                            <i class="bi bi-box-arrow-right me-1"></i> Go to Profile
+                                            </a>
                                         </div>
                                         <hr>
                                         <a href="{{ route('logout') }}" class="btn btn-sm btn-danger w-100"

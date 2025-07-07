@@ -9,7 +9,7 @@
 
 @if (can('profile'))
 <li class="nav-item">
-    <a class="nav-link {!! Request::is('/') ? 'active' : '' !!}" aria-current="page" href="{{ url('/') }}">
+    <a class="nav-link {!! Request::is('profile') ? 'active' : '' !!}" aria-current="page" href="{{ url('/profile') }}">
         <i class="icon im im-icon-Home"></i>
         <span class="item-name">প্রোফাইল</span>
     </a>
