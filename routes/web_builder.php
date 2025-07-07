@@ -21,3 +21,10 @@ Route::resource('leaveTypes', 'LeaveTypeController');
 
 Route::resource('producers', 'ProducerController');
 
+
+
+Route::resource('itemUnits', 'ItemUnitController');
+
+Route::resource('itemCategories', 'ItemCategoryController');
+
+Route::resource('items', 'ItemController');
