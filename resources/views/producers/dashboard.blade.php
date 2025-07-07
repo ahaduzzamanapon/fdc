@@ -20,18 +20,7 @@
 
     @include('flash::message')
 
-    <div class="clearfix"></div>
-    <div class="card" width="88vw;">
-        <section class="card-header">
-            <h5 class="card-title d-inline">প্রযোজক</h5>
-            <span class="float-right">
-                {{-- <a class="btn btn-primary pull-right" href="{{ route('producers.create') }}">Add New</a> --}}
-            </span>
-        </section>
-        <div class="card-body table-responsive" >
-            @include('producers.table')
-        </div>
-    </div>
+   
 
 </div>
 @endsection

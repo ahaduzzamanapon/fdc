@@ -6,12 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Producer extends Authenticatable
 {
-
     public $table = 'producers';
-    
-
-
-
     public $fillable = [
         'who',
         'username',

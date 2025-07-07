@@ -17,12 +17,8 @@ class ProducerLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guard('producer')->check()) {
             return true;
-        } else {
-            session()->flash('error', 'Please login first');
-            return redirect()->route('producer.login');
-        }
+       
         
     }
 }

@@ -413,8 +413,8 @@
                             <li class="nav-item dropdown custom-drop">
                                 <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    @if (Auth::user()->picture && file_exists(public_path(Auth::user()->picture)))
-                                        <img src="{{ asset(Auth::user()->picture) }}" alt="User-Profile"
+                                    @if (Auth::user() && Auth::user()->image && file_exists(public_path(Auth::user()->image)))
+                                        <img src="{{ asset(Auth::user()->image) }}" alt="User-Profile"
                                             class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded" />
                                     @else
                                         <img src="{{ asset('assets/images/avatars/01.png') }}" alt="User-Profile"
@@ -424,7 +424,13 @@
 
                                     <div class="caption ms-3 d-none d-md-block">
                                         <h6 class="mb-0 caption-title" style="color: white;">
-                                            {{ Auth::user()->name }} {{ Auth::user()->last_name }}
+                                            @if(isset(auth()->user()->group_id))
+                                                {{ auth()->user()->name }} {{ auth()->user()->last_name }}
+                                            @elseif(isset(Auth::guard('producer')->user()->group_id))
+                                                {{ Auth::guard('producer')->user()->organization_name }}
+                                            @else
+                                                {{ __('Unauthorized') }}
+                                            @endif
                                         </h6>
                                         {{-- <p class="mb-0 caption-sub-title" style="color: white;">
                                             {{ Auth::user()->role ?? 'User' }}
@@ -436,19 +442,37 @@
                                     <div class="profile-dropdown-body p-3 bg-white rounded shadow-lg"
                                         style="width: max-content;">
                                         <div class="d-flex align-items-center mb-3">
-                                            @if (Auth::user()->picture && file_exists(public_path(Auth::user()->picture)))
-                                                <img src="{{ asset(Auth::user()->picture) }}" alt="User Profile"
-                                            class="img-fluid rounded-circle me-2"
-                                            @else
-                                            <img
+                                            @if (isset(Auth::user()->image) && file_exists(public_path(Auth::user()->image)))
+                                                <img src="{{ asset(Auth::user()->image) }}" alt="User Profile"
+                                            class="img-fluid rounded-circle me-2" @else <img
                                                     src="{{ asset('assets/images/avatars/01.png') }}" alt="User Profile"
                                                 class="img-fluid rounded-circle me-2" @endif
                                                 style="width: 50px; height: 50px;" />
                                             <div>
-                                                <h6 class="mb-0">Hi, {{ Auth::user()->name_bn }}
-                                                    {{ Auth::user()->last_name }}
+                                                <h6 class="mb-0">Hi, 
+
+
+                                                    @if(isset(auth()->user()->group_id))
+                                                {{ auth()->user()->name }} {{ auth()->user()->last_name }}
+                                            @elseif(isset(Auth::guard('producer')->user()->group_id))
+                                                {{ Auth::guard('producer')->user()->organization_name }}
+                                            @else
+                                                {{ __('Unauthorized') }}
+                                            @endif
+
+
                                                 </h6>
-                                                <small class="text-muted">{{ Auth::user()->email }}</small>
+                                                <small class="text-muted">
+                                                    
+                                                     @if(isset(auth()->user()->group_id))
+                                                {{ auth()->user()->name }} {{ auth()->user()->email }}
+                                            @elseif(isset(Auth::guard('producer')->user()->group_id))
+                                                {{ Auth::guard('producer')->user()->email }}
+                                            @else
+                                                {{ __('Unauthorized') }}
+                                            @endif
+                                                
+                                                </small>
                                             </div>
 
                                         </div>

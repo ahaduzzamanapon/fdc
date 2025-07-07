@@ -4,8 +4,8 @@ use App\Models\Producer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProducerController;
+use App\Http\Controllers\ProfileController;
 
 include 'demo.php';
 /*
@@ -18,6 +18,7 @@ include 'demo.php';
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 Auth::routes();
 
@@ -65,6 +66,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get_upazilas', 'HomeController@get_upazilas')->name('get_upazilas');
 
     Route::resource('profile', ProfileController::class);
+
+
+
+
 
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
 

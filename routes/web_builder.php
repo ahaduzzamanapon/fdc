@@ -28,3 +28,4 @@ Route::resource('itemUnits', 'ItemUnitController');
 Route::resource('itemCategories', 'ItemCategoryController');
 
 Route::resource('items', 'ItemController');
+
