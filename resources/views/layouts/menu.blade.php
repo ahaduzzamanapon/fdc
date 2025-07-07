@@ -26,3 +26,24 @@
     </a>
 </li>
 
+<li class="{!! (Request::is('itemUnits*') ? 'active' : '' ) !!}">
+    <a href="{{ route('itemUnits.index') }}">
+        <span class="mm-text ">Item Units</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
+<li class="{!! (Request::is('itemCategories*') ? 'active' : '' ) !!}">
+    <a href="{{ route('itemCategories.index') }}">
+        <span class="mm-text ">Item Categories</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
+<li class="{!! (Request::is('items*') ? 'active' : '' ) !!}">
+    <a href="{{ route('items.index') }}">
+        <span class="mm-text ">Items</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+

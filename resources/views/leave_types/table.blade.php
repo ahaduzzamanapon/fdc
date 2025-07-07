@@ -1,15 +1,13 @@
 <div class="table-responsive">
-    <table class="table" id="leaveTypes-table">
+    <table class="table table_data" id="leaveTypes-table">
         <thead>
             <tr>
                 <th>Id</th>
-        <th>Name Bn</th>
-        <th>Name En</th>
-        <th>Type</th>
-        <th>Day</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+                <th>Name Bn</th>
+                <th>Name En</th>
+                <th>Type</th>
+                <th>Day</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -17,13 +15,11 @@
         @foreach($leaveTypes as $key => $leaveType)
             <tr>
                 <td>{{ $leaveType->id }}</td>
-            <td>{{ $leaveType->name_bn }}</td>
-            <td>{{ $leaveType->name_en }}</td>
-            <td>{{ $leaveType->type }}</td>
-            <td>{{ $leaveType->day }}</td>
-            <td>{{ $leaveType->status }}</td>
-            <td>{{ $leaveType->created_at }}</td>
-            <td>{{ $leaveType->updated_at }}</td>
+                <td>{{ $leaveType->name_bn }}</td>
+                <td>{{ $leaveType->name_en }}</td>
+                <td>{{ $leaveType->type }}</td>
+                <td>{{ $leaveType->day }}</td>
+                <td>{{ $leaveType->status }}</td>
                 <td>
                     {!! Form::open(['route' => ['leaveTypes.destroy', $leaveType->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

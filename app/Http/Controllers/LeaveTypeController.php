@@ -22,7 +22,7 @@ class LeaveTypeController extends AppBaseController
     public function index(Request $request)
     {
         /** @var LeaveType $leaveTypes */
-        $leaveTypes = LeaveType::paginate(10);
+        $leaveTypes = LeaveType::all();
 
         return view('leave_types.index')
             ->with('leaveTypes', $leaveTypes);

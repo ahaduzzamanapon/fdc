@@ -87,6 +87,46 @@
     </li>
 @endif
 
+{{-- ইনভেন্টরি --}}
+@if (can('inventory'))
+    <li class="nav-item">
+        <a class="nav-link {!! (Request::is('inventory*') ? 'active' : '') !!}" data-bs-toggle="collapse"  href="#inventory_menu" role="button" aria-expanded="false" aria-controls="inventory_menu">
+            <i class="icon im im-icon-Gear"></i>
+            <span class="item-name">ইনভেন্টরি</span>
+            <i class="right-icon im im-icon-Arrow-Right"></i>
+        </a>
+        <ul class="sub-nav collapse {!! Request::is('inventory*') ? 'show' : '' !!}" id="inventory_menu" data-bs-parent="#sidebar-menu">
+            @if (can('items'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('items*') ? 'active' : '' !!}" href="{{ route('items.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> আই </i>
+                        <span class="item-name">আইটেম তালিকা</span>
+                    </a>
+                </li>
+            @endif
+            @if (can('item_categories'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('itemCategories*') ? 'active' : '' !!}" href="{{ route('itemCategories.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> ক </i>
+                        <span class="item-name">ক্যাটাগরি</span>
+                    </a>
+                </li>
+            @endif
+            @if (can('item_units'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('itemUnits*') ? 'active' : '' !!}" href="{{ route('itemUnits.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> উ </i>
+                        <span class="item-name">ইউনিট</span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
 {{-- সেটিংস --}}
 @if (can('settings'))
     <li class="nav-item">

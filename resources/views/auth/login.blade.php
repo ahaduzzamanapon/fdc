@@ -24,13 +24,13 @@
     }
     body {
       background-color: #D9DDFF;
-      
+
       font-family: 'Segoe UI', sans-serif;
     }
 
     .login-wrapper {
       background: #ECF2FAB8;
-     
+
 
       border-radius: 16px;
       max-width: 550px;
@@ -178,7 +178,7 @@
               @csrf
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                মোবাইল/ইমেইল</p>
+                মোবাইল</p>
               <div class="input-group mb-3">
                 <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -186,7 +186,7 @@
                     d="M34 26C37.3141 26 40 23.3141 40 20C40 16.6859 37.3141 14 34 14C30.6859 14 28 16.6859 28 20C28 23.3141 30.6859 26 34 26ZM38.4906 27.5281L36.25 36.5L34.75 30.125L36.25 27.5H31.75L33.25 30.125L31.75 36.5L29.5094 27.5281C26.1672 27.6875 23.5 30.4203 23.5 33.8V35.75C23.5 36.9922 24.5078 38 25.75 38H42.25C43.4922 38 44.5 36.9922 44.5 35.75V33.8C44.5 30.4203 41.8328 27.6875 38.4906 27.5281Z"
                     fill="white" />
                 </svg>
-                <input type="text" class="form-control" name="username" placeholder="মোবাইল/ইমেইল" required>
+                <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
               </div>
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
@@ -220,7 +220,7 @@
               @csrf
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                মোবাইল/ইমেইল</p>
+                মোবাইল</p>
               <div class="input-group mb-3">
                 <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -228,7 +228,7 @@
                     d="M34 26C37.3141 26 40 23.3141 40 20C40 16.6859 37.3141 14 34 14C30.6859 14 28 16.6859 28 20C28 23.3141 30.6859 26 34 26ZM38.4906 27.5281L36.25 36.5L34.75 30.125L36.25 27.5H31.75L33.25 30.125L31.75 36.5L29.5094 27.5281C26.1672 27.6875 23.5 30.4203 23.5 33.8V35.75C23.5 36.9922 24.5078 38 25.75 38H42.25C43.4922 38 44.5 36.9922 44.5 35.75V33.8C44.5 30.4203 41.8328 27.6875 38.4906 27.5281Z"
                     fill="white" />
                 </svg>
-                <input type="text" class="form-control" name="username" placeholder="মোবাইল/ইমেইল" required>
+                <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
               </div>
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">

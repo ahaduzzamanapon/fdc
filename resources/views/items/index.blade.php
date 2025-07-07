@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-Leave Types @parent
+Items @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Leave Types</h1>
+        <h1>Items</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -23,14 +23,19 @@ Leave Types @parent
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">Leave Types</h5>
+            <h5 class="card-title d-inline">Items</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('leaveTypes.create') }}">Add New</a>
+                <a class="btn btn-primary pull-right" href="{{ route('items.create') }}">Add New</a>
             </span>
         </section>
         <div class="card-body table-responsive" >
-            @include('leave_types.table')
+            @include('items.table')
         </div>
+    </div>
+    <div class="text-center">
+        
+        @include('adminlte-templates::common.paginate', ['records' => $items])
+
     </div>
 </div>
 @endsection

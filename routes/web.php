@@ -6,6 +6,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProducerController;
 
 include 'demo.php';
 /*
