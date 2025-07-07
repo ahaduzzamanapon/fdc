@@ -3,16 +3,13 @@
         <thead>
             <tr>
                 <th>Id</th>
-        <th>Name Bn</th>
-        <th>Name En</th>
-        <th>Cat Id</th>
-        <th>Unit Id</th>
-        <th>Duration</th>
-        <th>Max Times</th>
-        <th>Amount</th>
-        <th>Description</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Unit</th>
+                <th>Duration</th>
+                <th>Max Times</th>
+                <th>Amount</th>
+                <th>Description</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -20,16 +17,13 @@
         @foreach($items as $key => $item)
             <tr>
                 <td>{{ $item->id }}</td>
-            <td>{{ $item->name_bn }}</td>
-            <td>{{ $item->name_en }}</td>
-            <td>{{ $item->cat_id }}</td>
-            <td>{{ $item->unit_id }}</td>
-            <td>{{ $item->duration }}</td>
-            <td>{{ $item->max_times }}</td>
-            <td>{{ $item->amount }}</td>
-            <td>{{ $item->description }}</td>
-            <td>{{ $item->created_at }}</td>
-            <td>{{ $item->updated_at }}</td>
+                <td>{{ $item->name_bn }}</td>
+                <td>{{ $item->cat_id }}</td>
+                <td>{{ $item->unit_id }}</td>
+                <td>{{ $item->duration }}</td>
+                <td>{{ $item->max_times }}</td>
+                <td>{{ $item->amount }}</td>
+                <td>{{ $item->description }}</td>
                 <td>
                     {!! Form::open(['route' => ['items.destroy', $item->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

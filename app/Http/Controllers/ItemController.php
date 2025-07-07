@@ -22,7 +22,7 @@ class ItemController extends AppBaseController
     public function index(Request $request)
     {
         /** @var Item $items */
-        $items = Item::paginate(10);
+        $items = Item::all();
 
         return view('items.index')
             ->with('items', $items);
