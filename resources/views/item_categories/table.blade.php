@@ -15,11 +15,9 @@
         @foreach($itemCategories as $key => $itemCategory)
             <tr>
                 <td>{{ $itemCategory->id }}</td>
-            <td>{{ $itemCategory->name_bn }}</td>
-            <td>{{ $itemCategory->name_en }}</td>
-            <td>{{ $itemCategory->status }}</td>
-            <td>{{ $itemCategory->created_at }}</td>
-            <td>{{ $itemCategory->updated_at }}</td>
+                <td>{{ $itemCategory->name_bn }}</td>
+                <td>{{ $itemCategory->name_en }}</td>
+                <td>{{ $itemCategory->status }}</td>
                 <td>
                     {!! Form::open(['route' => ['itemCategories.destroy', $itemCategory->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

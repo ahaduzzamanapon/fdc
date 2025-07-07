@@ -22,7 +22,7 @@ class ItemUnitController extends AppBaseController
     public function index(Request $request)
     {
         /** @var ItemUnit $itemUnits */
-        $itemUnits = ItemUnit::paginate(10);
+        $itemUnits = ItemUnit::all();
 
         return view('item_units.index')
             ->with('itemUnits', $itemUnits);

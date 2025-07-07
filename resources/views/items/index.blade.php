@@ -32,10 +32,5 @@ Items @parent
             @include('items.table')
         </div>
     </div>
-    <div class="text-center">
-        
-        @include('adminlte-templates::common.paginate', ['records' => $items])
-
-    </div>
 </div>
 @endsection

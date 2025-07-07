@@ -22,7 +22,7 @@ class ItemCategoryController extends AppBaseController
     public function index(Request $request)
     {
         /** @var ItemCategory $itemCategories */
-        $itemCategories = ItemCategory::paginate(10);
+        $itemCategories = ItemCategory::all();
 
         return view('item_categories.index')
             ->with('itemCategories', $itemCategories);

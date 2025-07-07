@@ -10,7 +10,11 @@ Route::resource('upazilas', 'UpazilaController');
 Route::resource('leaves', 'LeaveController');
 Route::resource('departments', 'DepartmentController');
 Route::resource('leaveTypes', 'LeaveTypeController');
+
 Route::resource('producers', 'ProducerController');
+
+
+
 Route::resource('itemUnits', 'ItemUnitController');
 Route::resource('itemCategories', 'ItemCategoryController');
 Route::resource('items', 'ItemController');

@@ -3,11 +3,9 @@
         <thead>
             <tr>
                 <th>Id</th>
-        <th>Name Bn</th>
-        <th>Name En</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+                <th>Name Bn</th>
+                <th>Name En</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -15,11 +13,9 @@
         @foreach($itemUnits as $key => $itemUnit)
             <tr>
                 <td>{{ $itemUnit->id }}</td>
-            <td>{{ $itemUnit->name_bn }}</td>
-            <td>{{ $itemUnit->name_en }}</td>
-            <td>{{ $itemUnit->status }}</td>
-            <td>{{ $itemUnit->created_at }}</td>
-            <td>{{ $itemUnit->updated_at }}</td>
+                <td>{{ $itemUnit->name_bn }}</td>
+                <td>{{ $itemUnit->name_en }}</td>
+                <td>{{ $itemUnit->status }}</td>
                 <td>
                     {!! Form::open(['route' => ['itemUnits.destroy', $itemUnit->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
