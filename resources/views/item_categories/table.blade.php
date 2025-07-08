@@ -2,19 +2,17 @@
     <table class="table" id="itemCategories-table">
         <thead>
             <tr>
-                <th>Id</th>
-        <th>Name Bn</th>
-        <th>Name En</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+                <th>Sl</th>
+                <th>Name Bn</th>
+                <th>Name En</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
         @foreach($itemCategories as $key => $itemCategory)
             <tr>
-                <td>{{ $itemCategory->id }}</td>
+                <td>{{ $key+1 }}</td>
                 <td>{{ $itemCategory->name_bn }}</td>
                 <td>{{ $itemCategory->name_en }}</td>
                 <td>{{ $itemCategory->status }}</td>

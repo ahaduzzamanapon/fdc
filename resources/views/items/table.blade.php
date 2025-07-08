@@ -2,7 +2,7 @@
     <table class="table" id="items-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Sl</th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Unit</th>
@@ -16,7 +16,7 @@
         <tbody>
         @foreach($items as $key => $item)
             <tr>
-                <td>{{ $item->id }}</td>
+                <td>{{ $key+1 }}</td>
                 <td>{{ $item->name_bn }}</td>
                 <td>{{ $item->cat_id }}</td>
                 <td>{{ $item->unit_id }}</td>
