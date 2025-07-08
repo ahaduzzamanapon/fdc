@@ -4,8 +4,9 @@ use App\Models\Producer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProducerController;
+use App\Http\Controllers\LeaveController;
 
 
 include 'demo.php';
@@ -68,7 +69,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('profile', ProfileController::class);
 
-
+    // leave action Dept Head / MD
+    Route::get('leave-apply-list', 'LeaveController@applyLeaveList')->name('leaves.apply.leave.list');
+    Route::get('/forward-to-dept-head/{id}', 'LeaveController@forwardToDeptHead')->name('forward.to.dept.head');
+    Route::get('/forward-to-md/{id}', 'LeaveController@forwardToMd')->name('forward.to.md');
+    Route::get('/forward-to-director-finance/{id}', 'LeaveController@forwardToDirectorFinance')->name('forward.to.director.finance');
+    Route::get('/leave-approved/{id}', 'LeaveController@leaveApproved')->name('leaves.approved');
+    Route::get('/leave-rejected/{id}', 'LeaveController@leaveRejected')->name('leaves.rejected');
+    // end leave action .....
 
 
 

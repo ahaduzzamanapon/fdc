@@ -50,6 +50,15 @@
                     </a>
                 </li>
             @endif
+            @if (can('leave_apply_list'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('leave-apply-list') ? 'active' : '' !!}" href="{{ route('leaves.apply.leave.list') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> ছু আ তা</i>
+                        <span class="item-name">ছুটি আবেদন তালিকা</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </li>
 @endif

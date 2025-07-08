@@ -8,12 +8,14 @@
 @endphp
 
 <!-- কর্মচারী -->
-<div class="col-md-3">
-    <div class="form-group">
-        {!! Form::label('employee_id', 'কর্মচারী', ['class' => 'control-label']) !!}
-        {!! Form::select('employee_id', $employees, null, ['class' => 'form-control date', 'autocomplete' => 'off','required']) !!}
+@if(Auth::user()->user_role == 1)
+    <div class="col-md-3">
+        <div class="form-group">
+            {!! Form::label('employee_id', 'কর্মচারী', ['class' => 'control-label']) !!}
+            {!! Form::select('employee_id', $employees, null, ['class' => 'form-control date', 'autocomplete' => 'off','required']) !!}
+        </div>
     </div>
-</div>
+@endif
 
 <!-- শুরুর তারিখ -->
 <div class="col-md-3">

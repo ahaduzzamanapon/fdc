@@ -31,7 +31,7 @@ class LeaveController extends AppBaseController
     public function applyLeaveList(Request $request)
     {
 
-        $leaves = Leave::select('leaves.*','leaves.id as leave_id', 'users.*')->join('users', 'leaves.employee_id', '=', 'users.id')->get();
+        $leaves = Leave::select('leaves.*', 'users.*')->join('users', 'leaves.employee_id', '=', 'users.id')->get();
         return view('leaves.leave_apply_list')->with('leaves', $leaves);
     }
 
@@ -169,7 +169,6 @@ class LeaveController extends AppBaseController
     public function forwardToDeptHead($id)
     {
         $leave = Leave::find($id);
-        // dd($leave);
         if (!$leave) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect()->back();
@@ -184,9 +183,7 @@ class LeaveController extends AppBaseController
 
     public function forwardToMd($id)
     {
-        // dd($id);
         $leave = Leave::find($id);
-
         if (!$leave) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect()->back();

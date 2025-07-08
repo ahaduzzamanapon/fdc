@@ -413,15 +413,13 @@
                             <li class="nav-item dropdown custom-drop">
                                 <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    @if (Auth::user() && Auth::user()->image && file_exists(public_path(Auth::user()->image)))
-                                        <img src="{{ asset(Auth::user()->image) }}" alt="User-Profile"
+                                    @if (Auth::user() && Auth::user()->picture && file_exists(public_path(Auth::user()->picture)))
+                                        <img src="{{ asset(Auth::user()->picture) }}" alt="User-Profile"
                                             class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded" />
                                     @else
                                         <img src="{{ asset('assets/images/avatars/01.png') }}" alt="User-Profile"
                                             class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded" />
                                     @endif
-
-
                                     <div class="caption ms-3 d-none d-md-block">
                                         <h6 class="mb-0 caption-title" style="color: white;">
                                             @if(isset(auth()->user()->group_id))
@@ -442,18 +440,17 @@
                                     <div class="profile-dropdown-body p-3 bg-white rounded shadow-lg"
                                         style="width: max-content;">
                                         <div class="d-flex align-items-center mb-3">
-                                            @if (isset(Auth::user()->image) && file_exists(public_path(Auth::user()->image)))
-                                                <img src="{{ asset(Auth::user()->image) }}" alt="User Profile"
+                                            @if (isset(Auth::user()->picture) && file_exists(public_path(Auth::user()->picture)))
+                                                <img src="{{ asset(Auth::user()->picture) }}" alt="User Profile"
                                             class="img-fluid rounded-circle me-2" @else <img
                                                     src="{{ asset('assets/images/avatars/01.png') }}" alt="User Profile"
                                                 class="img-fluid rounded-circle me-2" @endif
                                                 style="width: 50px; height: 50px;" />
                                             <div>
-                                                <h6 class="mb-0">Hi, 
-
-
+                                                <h6 class="mb-0">Hi,
+                                                    {{-- @dd(Auth::user()) --}}
                                                     @if(isset(auth()->user()->group_id))
-                                                {{ auth()->user()->name }} {{ auth()->user()->last_name }}
+                                                {{ auth()->user()->name_en }}
                                             @elseif(isset(Auth::guard('producer')->user()->group_id))
                                                 {{ Auth::guard('producer')->user()->organization_name }}
                                             @else
@@ -463,7 +460,7 @@
 
                                                 </h6>
                                                 <small class="text-muted">
-                                                    
+
                                                      @if(isset(auth()->user()->group_id))
                                                 {{ auth()->user()->name }} {{ auth()->user()->email }}
                                             @elseif(isset(Auth::guard('producer')->user()->group_id))
@@ -471,7 +468,7 @@
                                             @else
                                                 {{ __('Unauthorized') }}
                                             @endif
-                                                
+
                                                 </small>
                                             </div>
 
