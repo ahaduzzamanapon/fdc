@@ -19,6 +19,11 @@ Leave Types @parent
     <div class="clearfix"></div>
 
     @include('flash::message')
+    <script>
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 2000);
+    </script>
 
     <div class="clearfix"></div>
     <div class="card" width="88vw;">

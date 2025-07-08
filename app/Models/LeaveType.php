@@ -19,7 +19,7 @@ class LeaveType extends Model
 {
 
     public $table = 'leave_types';
-    
+
 
 
 
@@ -28,7 +28,7 @@ class LeaveType extends Model
         'name_en',
         'type',
         'day',
-        'status'
+        'status',
     ];
 
     /**
@@ -51,8 +51,8 @@ class LeaveType extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }
