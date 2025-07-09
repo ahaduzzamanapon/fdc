@@ -304,7 +304,7 @@
                     <a href="#"><img src="{{ asset('portal/image/facebook.png') }}" alt="Facebook"></a>
                     <a href="#"><img src="{{ asset('portal/image/x.png') }}" alt="X"></a>
                     <a href="#"><img src="{{ asset('portal/image/instagram.png') }}" alt="Instagram"></a>
-                    <a href="#"><img src="{{ asset('portal/image/youtube.png') }}g') }}" alt="YouTube"></a>
+                    <a href="#"><img src="{{ asset('portal/image/youtube.png') }}" alt="YouTube"></a>
                 </div>
             </div>
         </div>
