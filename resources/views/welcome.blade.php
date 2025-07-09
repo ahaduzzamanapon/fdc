@@ -144,7 +144,7 @@
 
                                         <p class="S_Title">সাধারণ জিজ্ঞাসাসমূহ</p>
                                         <div class="col-md-12"
-                                            style="background-image: url('{{ asset('portal/image/question.svg') }}');overflow: hidden;padding: 0px;background-repeat:no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;padding-top: 29px;">
+                                            style="background-image: url('{{ asset('portal/image/question.svg') }}');overflow: hidden;padding: 0px;background-repeat:no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
                                             <div class="panel-group" id="accordion">
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
@@ -231,7 +231,7 @@
                                     <div class="container">
                                         <p class="S_Title">যোগাযোগ</p>
                                         <div class="col-md-12"
-                                            style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;padding-top: 29px;">
+                                            style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" name="name" class="inputField" id="name"
