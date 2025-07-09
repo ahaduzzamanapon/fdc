@@ -1,6 +1,6 @@
 {{-- Dashboard --}}
 <li class="nav-item">
-    <a class="nav-link {!! Request::is('/') ? 'active' : '' !!}" aria-current="page" href="{{ url('/') }}">
+    <a class="nav-link {!! Request::is('/') ? 'active' : '' !!}" aria-current="page" href="{{ url('/dashboard') }}">
         <i class="icon im im-icon-Home"></i>
         <span class="item-name">ড্যাশবোর্ড</span>
     </a>

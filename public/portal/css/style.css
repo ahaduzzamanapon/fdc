@@ -1,0 +1,267 @@
+/* @import url("https://fonts.googleapis.com/css?family=Titillium+Web"); */
+* {
+  font-family: "Noto Sans Bengali", sans-serif;
+}
+
+
+
+.navbar {
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 80px;
+}
+
+.navbar .navbar-brand {
+  font-size: 30px;
+}
+
+.navbar .nav-link {
+  font-size: 20px;
+  margin-left: 10px;
+  color: black;
+  font-weight: 400;
+  font-size: 20px;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.navbar .nav-link:hover {
+  color: #001BFE;
+}
+
+.fa-bars {
+  color: #080B00;
+  font-size: 30px;
+}
+
+.login_btn {
+  gap: 3px;
+  display: flex;
+  border-radius: 3px;
+  background-color: #001BFE;
+  font-family: Open Sans;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 7px;
+  color: #FFFFFF;
+  text-decoration: none;
+  align-items: center;
+  max-width: fit-content;
+}
+
+.login_btn:hover {
+  background-color: #0215c3;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.heroSection {
+  background-color: #E1EDFF;
+}
+
+.heroTitle {
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 33px;
+  line-height: 139%;
+  letter-spacing: 0%;
+
+}
+
+.heroImg {
+  height: 278px;
+  margin-top: 24px;
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  place-content: center;
+  flex-wrap: wrap;
+  padding-top: 19px;
+}
+
+.heroDesc {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 139%;
+  color: #494949;
+}
+
+.cardSection {
+  margin-top: 50px;
+  background-color: white;
+}
+
+.cardSection p {
+  font-family: Noto Sans Bengali;
+  font-weight: 500;
+  font-size: 30px;
+  place-self: center;
+}
+
+.card {
+  box-shadow: 0px 1px 4px 0px #1987547D;
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  gap: 20px;
+}
+
+.card img {
+  height: 80px;
+}
+
+.card:hover {
+  box-shadow: 0px 1px 4px 0px #0e5333;
+  cursor: pointer;
+}
+
+.cardTitle {
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 20px;
+  line-height: 131%;
+  letter-spacing: 0%;
+  color: #000000;
+}
+
+.S_Title {
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 24px;
+  line-height: 31px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #001BFE;
+
+}
+
+
+.collapsed_button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background: #001BFE;
+  color: white;
+}
+
+.collapsed_button:hover {
+  background: #0215c3;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.collapsed {
+  background: #f5f5f5b0;
+  color: black;
+  border: 1px solid #999999;
+}
+
+.collapsed:hover {
+  background: #f5f5f5df;
+  color: black;
+}
+
+.panel-default {
+  background: #ffffffb5;
+}
+
+.inputField {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-bottom: 8px;
+  resize: vertical;
+  background: #F7F8FFCC;
+}
+
+.inpusubmitField {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-bottom: 8px;
+  resize: vertical;
+  background: #001BFE;
+  color: white;
+}
+
+.inpusubmitField:hover {
+  background: #0215c3;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+p{
+  margin: 0px;
+  padding: 0px;
+}
+
+.footer {
+    background: #edf0fc;
+    padding: 16px 0px 0px 0px;
+    margin-top: 46px;
+    box-shadow: 1px 0px 4px 0px #848484;
+}
+.footer-column {
+    flex: 1;
+    min-width: 250px;
+    margin: 10px;
+    place-items: center;
+}
+
+.footer-column ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.footer-column li {
+  margin-bottom: 10px;
+  font-family: 'SolaimanLipi', sans-serif;
+  color: #000;
+  font-size: 16px;
+}
+
+.footer-column p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.social-icons a img {
+  width: 32px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+.bottom-text {
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    border-top: 1px solid #8c8c8c;
+    margin: 0px 26px;
+}
+@media (max-width: 976px) {
+  .bottom-text {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .heroImg {
+    height: 230px;
+    margin-top: 17px;
+}
+}
+
+

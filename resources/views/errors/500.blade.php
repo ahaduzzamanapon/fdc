@@ -62,7 +62,7 @@
         had its name changed, or is temporarily unavailable.
     </div>
     <div class="home-button">
-        <a href="{{ url('/') }}">Back to Home</a>
+        <a href="{{ url('/dashboard') }}">Back to Home</a>
     </div>
 </section>
 @stop

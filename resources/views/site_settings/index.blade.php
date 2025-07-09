@@ -9,7 +9,7 @@ Site Settings @parent
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div aria-label="breadcrumb" class="card-breadcrumb">
-        <h5><a href="{{ url('/') }}"  style="text-decoration: none; color: black;">Dashboard</a> > Site Settings </h5>
+        <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">Dashboard</a> > Site Settings </h5>
     </div>
     <div class="separator-breadcrumb border-top"></div>
 </section>

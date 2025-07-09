@@ -294,7 +294,7 @@
     <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all">
         <div class="sidebar-header d-flex align-items-center justify-content-start"
             style="background: #8dc641;height: 58px;border-bottom: 2px solid;">
-            <a href="{{ url('/') }}" class="navbar-brand">
+            <a href="{{ url('/dashboard') }}" class="navbar-brand">
                 <div class="logo-main">
                     <img src="{{ !empty($setting) ? asset($setting->logo) : 'assets/images/Picture1.jpg' }} "
                         class="img-fluid" alt="logo" style="height: 58px;width: 65px;">
