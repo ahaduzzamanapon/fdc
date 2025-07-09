@@ -7,10 +7,12 @@ Leave @parent
 
 @section('content')
     <section class="content-header">
-    {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} Leave</h1>
-    </div>
-    <div class="separator-breadcrumb border-top"></div>--}}
+        @include('flash::message')
+        <script>
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 2000);
+        </script>
     </section>
     <div class="content">
         @include('adminlte-templates::common.errors')

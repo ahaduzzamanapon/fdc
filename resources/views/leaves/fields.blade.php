@@ -40,6 +40,12 @@
         {!! Form::text('total_day', null, ['class' => 'form-control', 'autocomplete' => 'off', 'readonly' => true, 'id' => 'total_day']) !!}
     </div>
 </div>
+<div class="col-md-3">
+    <div class="form-group">
+        {!! Form::label('leave_type', 'ছুটির ধরণ', ['class' => 'control-label']) !!}
+        {!! Form::select('leave_type', ['1' => 'ক্যাসুয়াল ছুটি', '2' => 'সিক লিভ'], null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'leave_type', 'placeholder' => 'ছুটির ধরণ নির্বাচন করুন']) !!}
+    </div>
+</div>
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function () {

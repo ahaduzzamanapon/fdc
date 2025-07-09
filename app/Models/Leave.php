@@ -23,10 +23,6 @@ class Leave extends Model
 {
 
     public $table = 'leaves';
-    
-
-
-
     public $fillable = [
         'employee_id',
         'from_date',
@@ -37,6 +33,7 @@ class Leave extends Model
         'approved_total_day',
         'remark',
         'status',
+        'leave_type',
         'approver_id',
         'approver_remark'
     ];
@@ -57,6 +54,7 @@ class Leave extends Model
         'approved_total_day' => 'integer',
         'remark' => 'string',
         'status' => 'string',
+        'leave_type' => 'integer',
         'approver_id' => 'integer',
         'approver_remark' => 'string'
     ];
@@ -67,8 +65,8 @@ class Leave extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }
