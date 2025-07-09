@@ -1,3 +1,7 @@
+@php
+    $categories = \App\Models\ItemCategory::all()->pluck('name_bn', key: 'id')->prepend('ক্যাটেগরি নির্বাচন করুন', '')->toArray();
+    $units = \App\Models\ItemUnit::all()->pluck('name_bn', key: 'id')->prepend('ইউনিট নির্বাচন করুন', '')->toArray();
+@endphp
 <!-- Name Bn Field -->
 <div class="col-md-3">
     <div class="form-group">
@@ -20,7 +24,7 @@
 <div class="col-md-3">
     <div class="form-group">
         {!! Form::label('cat_id', 'Cat Id',['class'=>'control-label']) !!}
-        {!! Form::select('cat_id', ['' => ''], null, ['class' => 'form-control']) !!}
+        {!! Form::select('cat_id', $categories, null, ['class' => 'form-control']) !!}
     </div>
 </div>
 
@@ -29,7 +33,7 @@
 <div class="col-md-3">
     <div class="form-group">
         {!! Form::label('unit_id', 'Unit Id',['class'=>'control-label']) !!}
-        {!! Form::select('unit_id', ['' => ''], null, ['class' => 'form-control']) !!}
+        {!! Form::select('unit_id', $units, null, ['class' => 'form-control']) !!}
     </div>
 </div>
 

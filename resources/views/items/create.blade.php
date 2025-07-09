@@ -7,10 +7,10 @@ Item @parent
 
 @section('content')
     <section class="content-header">
-    {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} Item</h1>
-    </div>
-    <div class="separator-breadcrumb border-top"></div>--}}
+        {{--<div aria-label="breadcrumb" class="card-breadcrumb">
+            <h1>{{ __('Create New') }} Item</h1>
+        </div>
+        <div class="separator-breadcrumb border-top"></div>--}}
     </section>
     <div class="content">
         @include('adminlte-templates::common.errors')
