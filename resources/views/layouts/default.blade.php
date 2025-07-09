@@ -51,11 +51,16 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
+
     @include('layouts/datatables_css')
 
 
 
     <style>
+
+        * {
+            font-family: "Noto Sans Bengali", sans-serif;
+        }
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {

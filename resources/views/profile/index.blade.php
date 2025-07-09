@@ -24,7 +24,7 @@ Profile @parent
                 <div class="col-lg-12" >
                     <div class="card shadow-lg border-0 rounded-lg" >
                         <div class="card-header text-white d-flex justify-content-between align-items-center">
-                            <h3 class="card-title mb-0">User Profile</h3>
+                            <h3 class="card-title mb-0">ব্যাবহারকারীর প্রোফাইল</h3>
                         </div>
                         <div class="card-body" >
                             <div class="row">
@@ -43,20 +43,28 @@ Profile @parent
                                     <table class="table table-bordered table-striped table-hover">
                                         <tbody>
                                             <tr>
-                                                <th scope="row"><i class="fas fa-user mr-1 text-primary"></i> Name</th>
-                                                <td>{{ Auth::user()->name_bn }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"><i class="fas fa-envelope mr-1 text-primary"></i> Email</th>
-                                                <td>{{ Auth::user()->email }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"><i class="fas fa-phone-alt mr-1 text-primary"></i> Phone</th>
+                                                <th scope="row"><i class="fas fa-phone-alt mr-1 text-primary"></i> ফোন</th>
                                                 <td>{{ Auth::user()->mobile_no }}</td>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> যোগদানের তারিখ</th>
+                                                <td>{{ Auth::user()->created_at->format('d M, Y') }}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> Member Since</th>
-                                                <td>{{ Auth::user()->created_at->format('d M, Y') }}</td>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> পিতার নাম</th>
+                                                <td>{{ Auth::user()->father_name }}</td>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> মাতার নাম</th>
+                                                <td>{{ Auth::user()->mother_name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> এন আইডি</th>
+                                                <td>{{ Auth::user()->nid }}</td>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> ধর্ম</th>
+                                                <td>{{ Auth::user()->religion }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> শিক্ষাগত যোগ্যতা</th>
+                                                <td>{{ Auth::user()->highest_qualification }}</td>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> রক্তের গ্রুপ</th>
+                                                <td>{{ Auth::user()->blood_group }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

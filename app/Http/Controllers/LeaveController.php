@@ -9,6 +9,7 @@ use App\Models\Leave;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
 use Flash;
+use Auth;
 use Response;
 use Carbon\Carbon;
 
@@ -28,10 +29,14 @@ class LeaveController extends AppBaseController
         $leaves = Leave::select('leaves.*', 'users.name_bn as user_name')
             ->join('users', 'leaves.employee_id', '=', 'users.id')
             ->get();
-        return view('leaves.index',[
+        $data = [
             'leaves'=> $leaves,
             'total_leaves'=>LeaveType::all(),
-        ]);
+            'sl_leaves'=>Leave::selectRaw('sum(total_day) as total_days')->where('leave_type', 1)->where('status',3)->where('employee_id',Auth::user()->id)->get(),
+            'cl_leaves'=>Leave::selectRaw('sum(total_day) as total_days')->where('leave_type', 2)->where('status',3)->where('employee_id',Auth::user()->id)->get(),
+        ];
+        // dd($data['sl_leaves'][0]->total_days);
+        return view('leaves.index',$data);
     }
     public function applyLeaveList(Request $request)
     {
