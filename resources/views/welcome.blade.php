@@ -47,10 +47,12 @@
                     </li>
                 </ul>
                 @if (Auth::check())
-                    <a href="{{ url('/dashboard') }}" class="login_btn justify-content-end"><img src="{{ asset('portal/image/login_icon.svg') }}" alt="">ড্যাশবোর্ড</a>
+                    <a href="{{ url('/dashboard') }}" class="login_btn justify-content-end"><img
+                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">ড্যাশবোর্ড</a>
 
                 @else
-                <a href="{{ url('/login') }}" class="login_btn justify-content-end"><img src="{{ asset('portal/image/login_icon.svg') }}" alt="">লগইন</a>
+                    <a href="{{ url('/login') }}" class="login_btn justify-content-end"><img
+                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">লগইন</a>
                 @endif
             </div>
         </div>
@@ -142,7 +144,7 @@
 
                                         <p class="S_Title">সাধারণ জিজ্ঞাসাসমূহ</p>
                                         <div class="col-md-12"
-                                            style="background-image: url('{{ asset('portal/image/question.svg') }}');overflow: hidden;padding: 0px;background-repeat:no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;">
+                                            style="background-image: url('{{ asset('portal/image/question.svg') }}');overflow: hidden;padding: 0px;background-repeat:no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;padding-top: 29px;">
                                             <div class="panel-group" id="accordion">
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
@@ -229,7 +231,7 @@
                                     <div class="container">
                                         <p class="S_Title">যোগাযোগ</p>
                                         <div class="col-md-12"
-                                            style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;">
+                                            style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;padding-top: 29px;">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" name="name" class="inputField" id="name"
@@ -260,8 +262,7 @@
         </div>
     </section>
     <footer class="footer">
-        <div class="container"
-            style="margin: auto;display: flex;flex-wrap: wrap;justify-content: space-between;">
+        <div class="container" style="margin: auto;display: flex;flex-wrap: wrap;justify-content: space-between;">
             <!-- Left Links -->
             <div class="footer-column">
                 <ul>
@@ -303,7 +304,7 @@
                     <a href="#"><img src="{{ asset('portal/image/facebook.png') }}" alt="Facebook"></a>
                     <a href="#"><img src="{{ asset('portal/image/x.png') }}" alt="X"></a>
                     <a href="#"><img src="{{ asset('portal/image/instagram.png') }}" alt="Instagram"></a>
-                    <a href="#"><img src="{{ asset('portal/image/youtube.pn') }}g') }}" alt="YouTube"></a>
+                    <a href="#"><img src="{{ asset('portal/image/youtube.png') }}g') }}" alt="YouTube"></a>
                 </div>
             </div>
         </div>
