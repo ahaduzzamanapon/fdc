@@ -23,7 +23,7 @@ class ProducerController extends AppBaseController
     public function index(Request $request)
     {
 
-      
+
         /** @var Producer $producers */
         $producers = Producer::all();
 
@@ -63,11 +63,11 @@ class ProducerController extends AppBaseController
             'somobay_agreement',
             'other_attachment',
         ];
-         foreach ($input_file as $file_name) {
+        foreach ($input_file as $file_name) {
             if ($request->hasFile($file_name)) {
                 $file = $request->file($file_name);
-                $folder = 'producers_file/'.$file_name;
-                $customName = 'producers_file-'.$file_name.'-' . time();
+                $folder = 'producers_file/' . $file_name;
+                $customName = 'producers_file-' . $file_name . '-' . time();
                 $input[$file_name] = uploadFile($file, $folder, $customName);
             } else {
                 unset($input[$file_name]);
@@ -91,53 +91,85 @@ class ProducerController extends AppBaseController
 
         return redirect(route('producers.index'));
     }
-    public function producers_register(CreateProducerRequest $request)
+    public function producers_register(Request $request)
     {
         $input = $request->all();
 
+        // Handle single file uploads
         $input_file = [
             'bank_attachment',
             'tin_attachment',
             'vat_attachment',
             'trade_license_attachment',
             'nominee_photo',
-            'partnership_agreement',
-            'ltd_company_agreement',
-            'somobay_agreement',
-            'other_attachment',
         ];
+
         foreach ($input_file as $file_name) {
             if ($request->hasFile($file_name)) {
                 $file = $request->file($file_name);
-                $folder = 'producers_file/'.$file_name;
-                $customName = 'producers_file-'.$file_name.'-' . time();
+                $folder = 'producers_file/' . $file_name;
+                $customName = 'producers_file-' . $file_name . '-' . time();
                 $input[$file_name] = uploadFile($file, $folder, $customName);
             } else {
                 unset($input[$file_name]);
             }
         }
 
+        // Handle multiple file-name pairs as JSON and store in a single string column
+        $multi_file_fields = [
+            'partnership' => 'partnership_attachment',
+            'ltd_company' => 'ltd_company_attachment',
+            'somobay' => 'somobay_attachment',
+            'other' => 'other_attachment',
+        ];
 
+        foreach ($multi_file_fields as $field => $fileField) {
+            $nameInput = $request->input($field . '_name', []);
+            $fileInput = $request->file($fileField, []);
+            $combinedData = [];
 
-        if ($request->has('password')) {
-            $input['password'] = bcrypt($request->password);
-        } else {
-            $input['password'] = bcrypt('12345678');
+            foreach ($nameInput as $index => $name) {
+                if (!empty($name) && isset($fileInput[$index])) {
+                    $file = $fileInput[$index];
+                    $folder = 'producers_file/' . $fileField;
+                    $customName = $field . '-' . $index . '-' . time();
+                    $filePath = uploadFile($file, $folder, $customName);
+                    $combinedData[] = [
+                        'name' => $name,
+                        'file' => $filePath,
+                    ];
+                }
+            }
+
+            // Save as JSON string into corresponding single column
+            $columnName = $field . '_agreement'; // e.g. partnership_agreement
+            $input[$columnName] = json_encode($combinedData); // Store as JSON string
         }
 
+        // Handle password
+        $input['password'] = bcrypt($request->input('password', '12345678'));
         $input['status'] = 'Inactive';
         $input['username'] = $input['phone_number'];
+        $input['other_attachment'] = $input['other_agreement'];
+        unset(
+            $input['partnership_name'],
+            $input['ltd_company_name'],
+            $input['somobay_name'],
+            $input['other_name'],
+            $input['partnership_attachment'],
+            $input['ltd_company_attachment'],
+            $input['somobay_attachment'],
+            $input['other_agreement']
+        );
 
-
-
-
-        /** @var Producer $producer */
+        // Save producer
         $producer = Producer::create($input);
 
-        Flash::success('Producer register successfully.');
-
+        Flash::success('Producer registered successfully.');
         return redirect(route('login'));
+
     }
+
 
     /**
      * Display the specified Producer.
@@ -200,7 +232,7 @@ class ProducerController extends AppBaseController
             return redirect(route('producers.index'));
         }
 
-         $input = $request->all();
+        $input = $request->all();
 
         $input_file = [
             'bank_attachment',
@@ -216,8 +248,8 @@ class ProducerController extends AppBaseController
         foreach ($input_file as $file_name) {
             if ($request->hasFile($file_name)) {
                 $file = $request->file($file_name);
-                $folder = 'producers_file/'.$file_name;
-                $customName = 'producers_file-'.$file_name.'-' . time();
+                $folder = 'producers_file/' . $file_name;
+                $customName = 'producers_file-' . $file_name . '-' . time();
                 $input[$file_name] = uploadFile($file, $folder, $customName);
             } else {
                 unset($input[$file_name]);
@@ -228,7 +260,7 @@ class ProducerController extends AppBaseController
 
         if ($request->has('password')) {
             $input['password'] = bcrypt($request->password);
-        }else{
+        } else {
             unset($input['password']);
         }
 
@@ -279,10 +311,10 @@ class ProducerController extends AppBaseController
             'username' => $username,
             'password' => $password,
         ]);
-        
+
         if (Auth::guard('producer')->check()) {
             return redirect(url('producer/dashboard'));
-        }else{
+        } else {
             Flash::error('Login Failed');
             return redirect(url('/login'));
         }
