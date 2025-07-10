@@ -170,22 +170,27 @@
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('organization_name', 'প্রতিষ্ঠানের নাম') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('organization_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('address', 'ঠিকানা') !!}
+                                 <span class="text-danger">*</span>
                                 {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!} 
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('phone_number', 'ফোন নম্বর') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('phone_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('email', 'ই-মেইল') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::email('email', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('password', 'পাসওয়ার্ড') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('password', null, ['required','style="border: 1px solid #8dc641;border-radius: 4px;padding: 4px;"']) !!}
                             </div>
                         </div>
@@ -197,18 +202,22 @@
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('bank_name', 'ব্যাংকের নাম') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('bank_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('bank_branch', 'শাখা') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('bank_branch', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('bank_account_number', 'একাউন্ট নম্বর') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('bank_account_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('bank_attachment', 'সংযুক্তি') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::file('bank_attachment', ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
@@ -220,19 +229,21 @@
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('tin_number', 'টিআইএন নম্বর') !!}
-                                {!! Form::text('tin_number', null, ['class' => 'form-control', 'required']) !!}
+                                {!! Form::text('tin_number', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('tin_attachment', 'টিআইএন সংযুক্তি') !!}
-                                {!! Form::file('tin_attachment', ['class' => 'form-control', 'required']) !!}
+                                {!! Form::file('tin_attachment', ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('vat_registration_number', 'ভ্যাট রেজিস্ট্রেশন নম্বর') !!}
-                                {!! Form::number('vat_registration_number', null, ['class' => 'form-control', 'required']) !!}
+                                <span class="text-danger">*</span>
+                                {!! Form::number('vat_registration_number', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('vat_attachment', 'ভ্যাট সংযুক্তি') !!}
-                                {!! Form::file('vat_attachment', ['class' => 'form-control', 'required']) !!}
+                                <span class="text-danger">*</span>
+                                {!! Form::file('vat_attachment', ['class' => 'form-control']) !!}
                             </div>
                         </div>
                     </fieldset>
@@ -243,15 +254,15 @@
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('trade_license', 'ট্রেড লাইসেন্স নম্বর') !!}
-                                {!! Form::text('trade_license', null, ['class' => 'form-control', 'required']) !!}
+                                {!! Form::text('trade_license', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('trade_license_validity_date', 'বৈধতার তারিখ') !!}
-                                {!! Form::date('trade_license_validity_date', null, ['class' => 'form-control date', 'required']) !!}
+                                {!! Form::date('trade_license_validity_date', null, ['class' => 'form-control date']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('trade_license_attachment', 'সংযুক্তি') !!}
-                                {!! Form::file('trade_license_attachment', ['class' => 'form-control', 'required']) !!}
+                                {!! Form::file('trade_license_attachment', ['class' => 'form-control']) !!}
                             </div>
                         </div>
                     </fieldset>
@@ -262,18 +273,22 @@
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('nominee_name', 'নাম') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('nominee_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('nominee_relation', 'সম্পর্ক') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('nominee_relation', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('nominee_nid', 'এনআইডি') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::text('nominee_nid', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('nominee_photo', 'ছবি') !!}
+                                <span class="text-danger">*</span>
                                 {!! Form::file('nominee_photo', ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
@@ -283,29 +298,64 @@
                     <fieldset class="border p-2 mb-3 col-md-12">
                         <legend class="w-auto">ব্যবসায়িক চুক্তি</legend>
                         <div class="row">
-                            <div class="col-md-12" style="padding: 15px;">
-                                {!! Form::label('partnership_agreement', '(ক) যৌথ মালিকানাধীন ফার্ম হলে রেজিস্টার্ড পার্টনারশীপ ডীড এর সত্যায়িত ফটোকপি সংযুক্ত করতে হবে।') !!}
-                                <br>
-                                {!! Form::file('partnership_agreement') !!}
-                            </div>
-                            
-                            <div class="col-md-12" style="padding: 15px;">
-                                {!! Form::label('ltd_company_agreement', '(খ) লিমিটেড কোম্পানি হলে সার্টিফিকেট অব ইনকর্পোরেশন, মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন এবং কোম্পানীর রেজুলেশন সংযুক্ত করতে হবে।') !!}
-                                {!! Form::file('ltd_company_agreement') !!}
-                            </div>
-                            <div class="col-md-12" style="padding: 15px;">
-                                {!! Form::label('somobay_agreement', '(গ) সমবায় সমিতি হলে মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন, সমবায় সমিতি অধিদপ্তরের সার্টিফিকেট এবং সমিতির রেজুলেশন সংযুক্ত করতে হবে।') !!}
-
-                                {!! Form::file('somobay_agreement') !!}
-                            </div>
-                            <div class="col-md-12" style="padding: 15px;">
-                                {!! Form::label('other_attachment', '(ঘ) অন্যান্য') !!}
-                                                                <br>
-
-                                {!! Form::file('other_attachment') !!}
-                            </div>
+                            @foreach (['partnership', 'ltd_company', 'somobay', 'other'] as $type)
+                                <div class="col-md-12" style="padding: 15px;">
+                                    {!! Form::label("{$type}_agreement", [
+                                        'partnership' => '(ক) যৌথ মালিকানাধীন ফার্ম হলে রেজিস্টার্ড পার্টনারশীপ ডীড এর সত্যায়িত ফটোকপি সংযুক্ত করতে হবে।',
+                                        'ltd_company' => '(খ) লিমিটেড কোম্পানি হলে সার্টিফিকেট অব ইনকর্পোরেশন, মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন এবং কোম্পানীর রেজুলেশন সংযুক্ত করতে হবে।',
+                                        'somobay' => '(গ) সমবায় সমিতি হলে মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন, সমবায় সমিতি অধিদপ্তরের সার্টিফিকেট এবং সমিতির রেজুলেশন সংযুক্ত করতে হবে।',
+                                        'other' => '(ঘ) অন্যান্য'
+                                    ][$type]) !!}
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>নাম</th>
+                                                <th>সংযুক্তি</th>
+                                                <td>
+                                                    <span href="#" class="btn btn-success add-row" data-type="{{ $type }}">নতুন করুন</span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {!! Form::text("{$type}_name[]", null, ['class' => 'form-control']) !!}
+                                                </td>
+                                                <td>
+                                                    {!! Form::file("{$type}_attachment[]", ['class' => 'form-control']) !!}
+                                                </td>
+                                                <td>
+                                                    <span class="btn btn-danger remove-row">মুছে ফেলুন</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endforeach
                         </div>
                     </fieldset>
+
+<script>
+    document.querySelectorAll('.add-row').forEach(button => {
+        button.addEventListener('click', function() {
+            const type = this.getAttribute('data-type');
+            const tableBody = this.closest('table').querySelector('tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" name="${type}_name" class="form-control"></td>
+                <td><input type="file" name="${type}_attachment" class="form-control"></td>
+                <td><span class="btn btn-danger remove-row">মুছে ফেলুন</span></td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+    });
+
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-row')) {
+            event.target.closest('tr').remove();
+        }
+    });
+</script>
 
                     <!-- Submit Buttons -->
                     <div class="col-md-12 text-end mt-3" style="text-align-last: right;">
