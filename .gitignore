@@ -48,4 +48,4 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
-public/producers_file
+/public/producers_file
