@@ -342,7 +342,8 @@ class ProducerController extends AppBaseController
             Flash::error('First Login');
             return redirect(url('/login'));
         }
-        $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+       
+        $booking_requests  = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
             ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
             ->select('bookings.*', 'producers.organization_name as producer_name')
             ->get();
@@ -448,7 +449,7 @@ class ProducerController extends AppBaseController
 
             DB::commit();
             Flash::success('Booking created successfully!');
-            return view('producers.mainView.booking');
+            return redirect(route('producer.booking'));
         } catch (\Exception $e) {
             DB::rollBack();
             Flash::error('Failed to create booking: ' . $e->getMessage());

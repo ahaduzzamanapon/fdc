@@ -29,7 +29,7 @@
             </span>
         </section>
         <div class="card-body table-responsive" >
-            <table class="table table-default">
+            <table class="table table-default table-hover table-striped">
                 <thead>
                 <tr>
                     <th>ক্রম</th>
