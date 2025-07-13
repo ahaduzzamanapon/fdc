@@ -51,12 +51,14 @@
                     <td>{{ $booking_request->total_price }}</td>
                     <td>{{ $booking_request->created_at }}</td>
                     <td>
-                        <div class='btn-group'>
-                        <a class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
-                        <a class='btn btn-outline-primary btn-xs'><i
-                            class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
-                      
-                    </div>
+                       <div class='dropdown'>
+                                <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                    ক্রিয়া
+                                </button>
+                                <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                                    <a  class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
+                                </div>
+                            </div>
                     </td>
                 </tr>
                 @endforeach
