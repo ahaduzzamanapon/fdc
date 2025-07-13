@@ -81,10 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/leave-rejected/{id}', 'LeaveController@leaveRejected')->name('leaves.rejected');
     // end leave action .....
 
-
-
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
-
 });
 Route::get('empty_table', 'JoshController@emptyTable');
 Route::get('remove_all_files', 'JoshController@remove_all_files');
@@ -105,7 +102,13 @@ Route::post('/producers_login', [ProducerController::class, 'producers_login'])-
 Route::group(["middleware" => []], function () {
     Route::prefix('producer')->controller(ProducerController::class)
         ->group(function () {
-        Route::get('/dashboard', 'dashboard');
+        Route::get('/dashboard', 'dashboard')->name('producer.dashboard');
+        Route::get('/booking', 'booking')->name('producer.booking');
+        Route::get('/create_page', 'create_page')->name('producer.create_page');
+        Route::post('/book_store', 'book_store')->name('producer.book_store');
+        Route::get('/get_items_by_category', 'get_items_by_category')->name('producer.get_items_by_category');
+        Route::get('/get_booking_date_by_item', 'get_booking_date_by_item')->name('producer.get_booking_date_by_item');
+        Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
     });
 });
 
