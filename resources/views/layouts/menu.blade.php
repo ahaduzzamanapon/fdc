@@ -47,3 +47,10 @@
     </a>
 </li>
 
+<li class="{!! (Request::is('divisions*') ? 'active' : '' ) !!}">
+    <a href="{{ route('divisions.index') }}">
+        <span class="mm-text ">Divisions</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+

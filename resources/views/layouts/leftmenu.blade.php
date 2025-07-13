@@ -189,6 +189,15 @@
                         </a>
                     </li>
                 @endif
+                @if (can('divisions'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('divisions*') ? 'active' : '' !!}" href="{{ route('divisions.index') }}">
+                            <i class="icon im im-icon-Structure"></i>
+                            <i class="sidenav-mini-icon"> বি </i>
+                            <span class="item-name">বিভাগ</span>
+                        </a>
+                    </li>
+                @endif
                 @if (can('districts'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('districts*') ? 'active' : '' !!}" href="{{ route('districts.index') }}">
