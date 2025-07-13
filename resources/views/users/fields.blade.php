@@ -178,7 +178,7 @@
             <div class="form-group">
                 {!! Form::label('employee_type', 'কর্মচারীর ধরন', ['class' => 'control-label']) !!}
                 <span style="color:red">*</span>
-                {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'প্রডিউসার' => 'প্রডিউসার'], null, ['class' => 'form-control', 'required' => true]) !!}
+                {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'কর্মচারী' => 'কর্মচারী'], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 

@@ -9,6 +9,7 @@
             <tr>
                 <th>SL</th>
                 <th>Name</th>
+                <th>Username</th>
                 <th>Group</th>
                 <th>Email</th>
                 <th>Status</th>
@@ -20,6 +21,7 @@
             <tr>
                 <td>{{ $key+1 }}</td>
             <td>{{ $users->name_bn }}</td>
+            <td>{{ $users->mobile_no }}</td>
             <td>{{ $users->role }}</td>
             <td>{{ $users->email }}</td>
             <td>
