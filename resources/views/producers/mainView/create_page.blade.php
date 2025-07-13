@@ -82,33 +82,43 @@
                         </div>
                     </div>
                     <div class="row" id="booking_date_div" style="justify-self: right;padding: 19px;margin-bottom: 16px;">
-                        <a class="btn btn-primary" id="booking_request_btn" style="width: fit-content;"
+                        <a class="btn btn-primary" style="width: fit-content;"
                             href="javascript:void(0)" onclick="add_to_cart()">বুকিং লিস্ট এ যোগ
                             করুন</a>
                     </div>
                     <div class="row" id="booking_request_div">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>ক্রম</th>
-                                            <th>বিভাগ</th>
-                                            <th>বিবরণ</th>
-                                            <th>একক</th>
-                                            <th>বিএফডিসি'র <br> বিদ্যমান হার</th>
-                                            <th>তারিখ</th>
-                                            <th>প্রস্তাবিত হার</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="booking_request_table">
-                                    </tbody>
-                                </table>
+                        <form action="{{ route('producer.producer_booking_request') }}" method="post" id="booking_request_form">
+                            @csrf
+
+                            <div class="col-md-12" style="padding: 0">
+                                <div class="form-group">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ক্রম</th>
+                                                <th>বিবরণ</th>
+                                                <th>হার</th>
+                                                <th>তারিখ</th>
+                                                <th>প্রস্তাবিত হার</th>
+                                                <th>অ্যাকশন</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="booking_request_table">
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4" style="text-align: right">সর্বমোট হার</td>
+                                                <td><input type="text" name="total_price_input_total" id="total_price_input_total" readonly></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+
+                        </form>
                     </div>
                     <div class="row" id="booking_date_div" style="justify-self: right;padding: 19px;margin-bottom: 16px;">
-                        <a class="btn btn-primary" id="booking_request_btn" style="width: fit-content;">বুকিং প্রস্তাব
+                        <a class="btn btn-primary" id="booking_request_btn" href="javascript:void(0)" onclick="submit_booking_request()" style="width: fit-content;">বুকিং প্রস্তাব
                             করুন</a>
                     </div>
                 </div>
@@ -254,6 +264,7 @@
         </script>
 
         <script>
+            var last_cart = 0
             function add_to_cart() {
                 var item_id = $('#item_id').val();
                 var category_id = $('#category_id').val();
@@ -276,24 +287,55 @@
                     type: "POST",
                     data: data,
                     success: function (data) {
-                        tr=`<tr>
-                            <td>${data.item_id}</td>
-                            <td>${data.item_category_name}</td>
-                            <td>${data.item_name}</td>
-                            <td>${data.item_unit}</td>
-                            <td>${data.item_price}</td>
-                            <td>${data.booking_start_date} <br> to <br> ${data.booking_end_date} </td>
-                            <td>${data.total_price}</td>
-                        </tr>
-                        `
+                        last_cart++;
+                        tr = `<tr>
+                                    <td>
+                                        ${last_cart}
+                                        <input type="hidden" name="item_id[]" value="${data.item_id}">
+                                        <input type="hidden" name="category_id[]" value="${data.category_id}">
+                                        <input type="hidden" name="booking_start_date[]" value="${data.booking_start_date}">
+                                        <input type="hidden" name="booking_end_date[]" value="${data.booking_end_date}">
+                                        <input type="hidden" name="total_price[]" value="${data.total_price}">
+                                    </td>
+                                    <td>${data.item_name}<br> (${data.item_unit})</td>
+                                    <td>${data.item_price}</td>
+                                    <td>${data.booking_start_date} <br> to <br> ${data.booking_end_date} </td>
+                                    <td>${data.total_price}</td>
+                                    <td><button type="button" class="btn btn-danger" onclick="remove_from_cart(${last_cart})">Remove</button></td>
+                                </tr>
+                                `
                         $('#booking_request_table').append(tr);
                         $('#item_id').val('');
                         $('#category_id').val('');
                         $('#booking_start_date').val('');
                         $('#booking_end_date').val('');
+                        calculate_total_price()
                     }
                 });
 
+            }
+            function calculate_total_price() {
+                var total_price = 0;
+                $('input[name="total_price[]"]').each(function () {
+                    total_price += parseInt($(this).val());
+                });
+                $('#total_price_input_total').val(total_price);
+            }
+        </script>
+        <script>
+            function remove_from_cart(index) {
+                $('tr').eq(index).remove();
+                calculate_total_price()
+            }
+        </script>
+        <script>
+            function submit_booking_request() {
+                if(!confirm('আপনি কি নিশ্চিত?')) return false;
+                if(last_cart == 0){
+                    alert('কোন বুকিং পাওয়া যাচ্ছে না');
+                    return false;
+                }
+                $('#booking_request_form').submit();
             }
         </script>
 

@@ -3,7 +3,8 @@
 @php
     $departments = \App\Models\Department::all()->pluck('name_bn', 'id')->prepend('ডিপার্টমেন্ট নির্বাচন করুন', '')->toArray();
     $designations = \App\Models\Designation::all()->pluck('desi_name', 'id')->prepend('পদবী নির্বাচন করুন', '')->toArray();
-    $districts = \App\Models\District::all()->pluck('name_en', key: 'id')->prepend('জেলা নির্বাচন করুন', '')->toArray();
+    $divisions = \App\Models\Division::all()->pluck('name_bn', key: 'id')->prepend('বিভাগ নির্বাচন করুন', '')->toArray();
+    $districts = \App\Models\District::all()->pluck('name_bn', key: 'id')->prepend('জেলা নির্বাচন করুন', '')->toArray();
     $userRoles = \App\Models\RoleAndPermission::all()->pluck('name', key: 'id')->prepend('রোল নির্বাচন করুন', '')->toArray();
 @endphp
 <div class="col-md-12">
@@ -134,6 +135,14 @@
             </div>
         </div>
 
+        <!-- বিভাগ আইডি -->
+        <div class="col-md-3">
+            <div class="form-group">
+                {!! Form::label('div_id', 'বিভাগ', ['class' => 'control-label']) !!}
+                {!! Form::select('div_id', $divisions, null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
         <!-- জেলা আইডি -->
         <div class="col-md-3">
             <div class="form-group">
@@ -178,7 +187,7 @@
             <div class="form-group">
                 {!! Form::label('employee_type', 'কর্মচারীর ধরন', ['class' => 'control-label']) !!}
                 <span style="color:red">*</span>
-                {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'প্রডিউসার' => 'প্রডিউসার'], null, ['class' => 'form-control', 'required' => true]) !!}
+                {!! Form::select('employee_type', ['কর্মকর্তা' => 'কর্মকর্তা', 'কর্মচারী' => 'কর্মচারী'], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 

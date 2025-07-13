@@ -14,6 +14,9 @@ use Response;
 use Auth;
 use DateTime;
 use DateTimeZone;
+use App\Models\Booking;
+use App\Models\BookingDetail;
+use Illuminate\Support\Facades\DB;
 
 class ProducerController extends AppBaseController
 {
@@ -262,7 +265,7 @@ class ProducerController extends AppBaseController
 
 
 
-        if ($request->has('password')) {
+        if ($request->has('password') && !empty($request->password) && $request->password != '') {
             $input['password'] = bcrypt($request->password);
         } else {
             unset($input['password']);
@@ -339,8 +342,12 @@ class ProducerController extends AppBaseController
             Flash::error('First Login');
             return redirect(url('/login'));
         }
+        $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+            ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            ->select('bookings.*', 'producers.organization_name as producer_name')
+            ->get();
 
-        return view('producers.mainView.booking');
+        return view('producers.mainView.booking', compact('booking_requests'));
     }
     public function create_page()
     {
@@ -359,19 +366,12 @@ class ProducerController extends AppBaseController
     }
     public function get_booking_date_by_item(Request $request)
     {
-
         $item_id = $request->item_id;
-        $dates = [];
-        $dates[] = [
-            'from' => date('Y-m-d', strtotime('2025-07-13')),
-            'to' => date('Y-m-d', strtotime('2025-07-15')),
-        ];
-        $dates[] = [
-            'from' => date('Y-m-d', strtotime('2025-07-20')),
-            'to' => date('Y-m-d', strtotime('2025-07-25')),
-        ];
-
-        return response()->json($dates);
+        // Get all date ranges where the item is booked
+        $bookedDates = BookingDetail::where('item_id', $item_id)
+            ->select('start_date as from', 'end_date as to')
+            ->get();
+        return response()->json($bookedDates);
     }
 
     public function add_to_cart(Request $request)
@@ -383,7 +383,7 @@ class ProducerController extends AppBaseController
         $start_date = new DateTime($booking_start_date);
         $end_date = new DateTime($booking_end_date);
         $interval = $start_date->diff($end_date);
-        $total_day = $interval->format('%d')+1;
+        $total_day = $interval->format('%d') + 1;
         $item = Item::join('itemunits', 'items.unit_id', '=', 'itemunits.id')
             ->where('items.id', $item_id)
             ->select('items.*', 'itemunits.name_bn as unit_name_bn')
@@ -405,13 +405,55 @@ class ProducerController extends AppBaseController
     }
 
 
+    public function producer_booking_request(Request $request)
+    {
+        if (!Auth::guard('producer')->check()) {
+                Flash::error('First Login');
+                return redirect(url('/login'));
+            }
+        DB::beginTransaction();
 
+        try {
+            
+            // 1. Create Booking
+            $booking = Booking::create([
+                'book_id' => 'BOOK-' . time().'-'.Auth::guard('producer')->user()->id.'-'.rand(1000,9999),
+                'status' => 'pending',
+                'producer_id' => Auth::guard('producer')->user()->id, // or pass producer_id from $request
 
+                'total_price' => $request->input('total_price_input_total'),
+            ]);
+            // 2. Loop through booking details
+            $item_ids = $request->input('item_id');
+            $category_ids = $request->input('category_id');
+            $start_dates = $request->input('booking_start_date');
+            $end_dates = $request->input('booking_end_date');
+            $total_prices = $request->input('total_price');
 
+            foreach ($item_ids as $i => $item_id) {
+                $start = \Carbon\Carbon::parse($start_dates[$i]);
+                $end = \Carbon\Carbon::parse($end_dates[$i]);
+                $total_day = $start->diffInDays($end) + 1;
+                BookingDetail::create([
+                    'booking_id' => $booking->id,
+                    'catagori' => $category_ids[$i],
+                    'item_id' => $item_id,
+                    'amount' => 1, // If there's a separate quantity field, use that instead
+                    'start_date' => $start_dates[$i],
+                    'end_date' => $end_dates[$i],
+                    'total_day' => $total_day,
+                    'total_amount' => $total_prices[$i],
+                ]);
+            }
 
-
-
-
-
-
+            DB::commit();
+            Flash::success('Booking created successfully!');
+            return view('producers.mainView.booking');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Flash::error('Failed to create booking: ' . $e->getMessage());
+            return back()->with('error', 'Failed to create booking: ' . $e->getMessage());
+        }
+    }
 }
+
