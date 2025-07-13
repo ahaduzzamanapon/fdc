@@ -5,9 +5,6 @@
                 <th>Sl</th>
                 <th>Name</th>
                 <th>Category</th>
-                <th>Unit</th>
-                <th>Duration</th>
-                <th>Max Times</th>
                 <th>Amount</th>
                 <th>Description</th>
                 <th>Action</th>
@@ -18,10 +15,7 @@
             <tr>
                 <td>{{ $key+1 }}</td>
                 <td>{{ $item->name_bn }}</td>
-                <td>{{ $item->cat_id }}</td>
-                <td>{{ $item->unit_id }}</td>
-                <td>{{ $item->duration }}</td>
-                <td>{{ $item->max_times }}</td>
+                <td>{{ $item->cat_name_bn }}</td>
                 <td>{{ $item->amount }}</td>
                 <td>{{ $item->description }}</td>
                 <td>

@@ -6,10 +6,14 @@ use App\Http\Requests\CreateProducerRequest;
 use App\Http\Requests\UpdateProducerRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Producer;
+use App\Models\Item;
+use App\Models\ItemCategory;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
 use Auth;
+use DateTime;
+use DateTimeZone;
 
 class ProducerController extends AppBaseController
 {
@@ -327,7 +331,72 @@ class ProducerController extends AppBaseController
             return redirect(url('/login'));
         }
 
-        return view('producers.dashboard');
+        return view('producers.mainView.dashboard');
+    }
+    public function booking()
+    {
+        if (!Auth::guard('producer')->check()) {
+            Flash::error('First Login');
+            return redirect(url('/login'));
+        }
+
+        return view('producers.mainView.booking');
+    }
+    public function create_page()
+    {
+        if (!Auth::guard('producer')->check()) {
+            Flash::error('First Login');
+            return redirect(url('/login'));
+        }
+        return view('producers.mainView.create_page');
+    }
+    public function get_items_by_category(Request $request)
+    {
+
+        $cat_id = $request->category_id;
+        $items = Item::where('cat_id', $cat_id)->get();
+        return response()->json($items);
+    }
+    public function get_booking_date_by_item(Request $request)
+    {
+
+        $item_id = $request->item_id;
+        $dates = [];
+        $dates[] = [
+            'from' => date('Y-m-d', strtotime('2025-07-13')),
+            'to' => date('Y-m-d', strtotime('2025-07-15')),
+        ];
+        $dates[] = [
+            'from' => date('Y-m-d', strtotime('2025-07-20')),
+            'to' => date('Y-m-d', strtotime('2025-07-25')),
+        ];
+
+        return response()->json($dates);
+    }
+
+    public function add_to_cart(Request $request)
+    {
+        $item_id = $request->item_id;
+        $category_id = $request->category_id;
+        $booking_start_date = $request->booking_start_date;
+        $booking_end_date = $request->booking_end_date;
+        $start_date = new DateTime($booking_start_date);
+        $end_date = new DateTime($booking_end_date);
+        $interval = $start_date->diff($end_date);
+        $total_day = $interval->format('%d')+1;
+        $item = Item::where('id', $item_id)->first();
+        $item_category = ItemCategory::where('id', $category_id)->first();
+        $data = [
+            'item_id' => $item->id,
+            'item_name' => $item->name_bn,
+            'category_id' => $item_category->id,
+            'item_category_name' => $item_category->name_bn,
+            'booking_start_date' => $booking_start_date,
+            'booking_end_date' => $booking_end_date,
+            'total_day' => $total_day,
+            'total_price' => $item->amount * $total_day
+        ];
+        return response()->json($data);
     }
 
 

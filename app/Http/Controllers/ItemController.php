@@ -22,7 +22,9 @@ class ItemController extends AppBaseController
     public function index(Request $request)
     {
         /** @var Item $items */
-        $items = Item::all();
+        $items = Item::select('items.*', 'itemcategorys.name_bn as cat_name_bn', 'itemcategorys.name_en as cat_name_en')
+            ->join('itemcategorys', 'items.cat_id', '=', 'itemcategorys.id')
+            ->get();
 
         return view('items.index')
             ->with('items', $items);
