@@ -16,9 +16,9 @@ class UserController extends Controller
             ->leftjoin('roles', 'users.group_id', '=', 'roles.id')
             ->leftjoin('districts', 'users.dis_id', '=', 'districts.id')
             ->leftjoin('designations', 'users.designation', '=', 'designations.id');
-        if(!can('chairman') && can('district_admin')) {
-            $users = $users->where('users.district_id', auth()->user()->district_id);
-        }
+        // if(!can('chairman') && can('district_admin')) {
+        //     $users = $users->where('users.district_id', auth()->user()->district_id);
+        // }
         $users = $users->get();
         return view('users.index')
             ->with('users', $users);
