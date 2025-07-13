@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Leave Types @parent
+ছুটি প্রকার @parent
 @stop
 
 @section('content')

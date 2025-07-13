@@ -52,17 +52,13 @@
     </style>
 @stop
 
+
+
 {{-- Page content --}}
 @section('content')
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+
 <section class="content error-page">
-    <div class="error-code">404</div>
-    <div class="error-message">Oops! Page Not Found</div>
-    <div class="error-description">
-        The page you're looking for might have been removed,<br>
-        had its name changed, or is temporarily unavailable.
-    </div>
-    <div class="home-button">
-        <a href="{{ url('/dashboard') }}">Back to Home</a>
-    </div>
+  <dotlottie-wc src="https://lottie.host/3794b84b-21be-4a8b-9b2e-7fc9e4621333/4AsxXbohEy.lottie" style="width: 300px;height: 300px" speed="1" autoplay loop></dotlottie-wc>
 </section>
 @stop

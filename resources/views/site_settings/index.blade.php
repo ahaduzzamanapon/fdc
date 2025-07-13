@@ -26,7 +26,7 @@ Site Settings @parent
         <section class="card-header">
             <h5 class="card-title d-inline">Site Settings</h5>
             <span class="float-right">
-                {{-- <a class="btn btn-primary pull-right" href="{{ route('siteSettings.create') }}">Add New</a> --}}
+                {{-- <a class="btn btn-primary pull-right" href="{{ route('siteSettings.create') }}">নতুন যোগ করুন</a> --}}
             </span>
         </section>
         <div class="card-body">

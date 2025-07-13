@@ -26,7 +26,7 @@ Designations @parent
         <section class="card-header">
             <h5 class="card-title d-inline">Designations</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('designations.create') }}">Add New</a>
+                <a class="btn btn-primary pull-right" href="{{ route('designations.create') }}">নতুন যোগ করুন</a>
             </span>
         </section>
         <div class="card-body table-responsive" >

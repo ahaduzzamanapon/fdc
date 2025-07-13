@@ -25,7 +25,7 @@ Role And Permissions @parent
         <section class="card-header">
             <h5 class="card-title d-inline">Role And Permissions</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('roleAndPermissions.create') }}">Add New</a>
+                <a class="btn btn-primary pull-right" href="{{ route('roleAndPermissions.create') }}">নতুন যোগ করুন</a>
             </span>
         </section>
         <div class="card-body table-responsive" >
