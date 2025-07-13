@@ -197,7 +197,12 @@ class LeaveController extends AppBaseController
         }
         $leave->delete();
         Flash::success('ছুটি সফলভাবে ডিলিট হয়েছে');
-        return redirect(route('leaves.index'));
+        if(in_aarray(Auth::user()->user_role,[5,6,7,8,9,10])){
+            return redirect(route('leaves.apply.leave.list'));
+        }else{
+            return redirect(route('leaves.index'));
+        }
+
     }
 
     public function forwardToDeptHead($id)
@@ -213,7 +218,6 @@ class LeaveController extends AppBaseController
         }
         Flash::success('ছুটি সফলভাবে বিভাগীয় প্রধানের কাছে প্রেরণ করা হয়েছে');
         return redirect()->route('leaves.index');
-        // return redirect()->route('leaves.apply.leave.list');
     }
 
     public function forwardToMd($id)
@@ -238,7 +242,7 @@ class LeaveController extends AppBaseController
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect()->back();
         }else{
-            $leave->status = 2;
+            $leave->status = 2 ;
             $leave->save();
         }
         Flash::success('ছুটি সফলভাবে ফিন্যান্স ডিরেক্টরের কাছে প্রেরণ করা হয়েছে');

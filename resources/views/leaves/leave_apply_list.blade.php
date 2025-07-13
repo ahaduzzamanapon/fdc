@@ -51,6 +51,7 @@ Leaves @parent
                             {{-- 6= dept head finance, 7 = dept head admin, 8 = dept head production, 9 = dept head engg. --}}
                             @if(Auth::check() && in_array(Auth::user()->user_role, [6,7,8,9]))
                                 @foreach($leaves as $key => $leave)
+                                {{-- @dd($leave) --}}
                                     @if (($leave->department == Auth::user()->department) && $leave->status !=0)
                                     <tr>
                                         <td>{{ $i++ }}</td>

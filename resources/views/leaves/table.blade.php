@@ -72,7 +72,7 @@
                             @elseif($leave->status == 1)
                                 <span class="badge badge-primary"  style="font-size: 12px">{{ 'চলমান' }}</span>
                             @elseif($leave->status == 2)
-                                <span class="badge badge-success"  style="font-size: 12px">{{ 'প্রেরণ প্রেরণ' }}</span>
+                                <span class="badge badge-success"  style="font-size: 12px">{{ 'ডাইরেক্টর অনুমোদিত' }}</span>
                             @elseif($leave->status == 3)
                                 <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদন' }}</span>
                             @else
