@@ -81,7 +81,21 @@
             display: none;
         }
 
+        .sidebar-base .nav-item .nav-link:not(.disabled) {
+            color: #000000;
+        }
 
+        .table > :not(caption) > * > * {
+            color: black;
+        }
+
+        .form-control {
+            color: #2e2d2d;
+        }
+
+        .form-control:focus {
+            color: #2e2d2d;
+        }
 
         .btn:hover {
             color: #ffffff !important;
