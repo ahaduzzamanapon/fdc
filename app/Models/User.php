@@ -43,6 +43,7 @@ class User extends Authenticatable
         'marital_status',
         'no_of_child',
         'highest_qualification',
+        'div_id',
         'dis_id',
         'upazila_id',
         'present_add',
