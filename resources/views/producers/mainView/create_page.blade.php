@@ -96,7 +96,7 @@
                                             <th>বিভাগ</th>
                                             <th>বিবরণ</th>
                                             <th>একক</th>
-                                            <th>বিএফডিসি'র বিদ্যমান হার</th>
+                                            <th>বিএফডিসি'র <br> বিদ্যমান হার</th>
                                             <th>তারিখ</th>
                                             <th>প্রস্তাবিত হার</th>
                                         </tr>
@@ -276,21 +276,21 @@
                     type: "POST",
                     data: data,
                     success: function (data) {
-                        tr=`
+                        tr=`<tr>
+                            <td>${data.item_id}</td>
+                            <td>${data.item_category_name}</td>
+                            <td>${data.item_name}</td>
+                            <td>${data.item_unit}</td>
+                            <td>${data.item_price}</td>
+                            <td>${data.booking_start_date} <br> to <br> ${data.booking_end_date} </td>
+                            <td>${data.total_price}</td>
+                        </tr>
                         `
-                        $('#booking_request_table').append(
-                            '<tr style="display: none;">' +
-                            '<td>' + data.booking_end_date + '</td>' +
-                            '<td>' + data.booking_start_date + '</td>' +
-                            '<td>' + data.category_id + '</td>' +
-                            '<td>' + data.item_category_name + '</td>' +
-                            '<td>' + data.item_id + '</td>' +
-                            '<td>' + data.item_name + '</td>' +
-                            '<td>' + data.total_day + '</td>' +
-                            '<td>' + data.total_price + '</td>' +
-                            '</tr>'
-                        );
-
+                        $('#booking_request_table').append(tr);
+                        $('#item_id').val('');
+                        $('#category_id').val('');
+                        $('#booking_start_date').val('');
+                        $('#booking_end_date').val('');
                     }
                 });
 

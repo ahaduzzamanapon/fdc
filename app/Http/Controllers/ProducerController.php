@@ -384,11 +384,16 @@ class ProducerController extends AppBaseController
         $end_date = new DateTime($booking_end_date);
         $interval = $start_date->diff($end_date);
         $total_day = $interval->format('%d')+1;
-        $item = Item::where('id', $item_id)->first();
+        $item = Item::join('itemunits', 'items.unit_id', '=', 'itemunits.id')
+            ->where('items.id', $item_id)
+            ->select('items.*', 'itemunits.name_bn as unit_name_bn')
+            ->first();
         $item_category = ItemCategory::where('id', $category_id)->first();
         $data = [
             'item_id' => $item->id,
             'item_name' => $item->name_bn,
+            'item_unit' => $item->unit_name_bn,
+            'item_price' => $item->amount,
             'category_id' => $item_category->id,
             'item_category_name' => $item_category->name_bn,
             'booking_start_date' => $booking_start_date,
