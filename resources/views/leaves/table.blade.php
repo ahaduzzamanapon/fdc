@@ -70,7 +70,7 @@
                             @if($leave->status == 0)
                                 <span class="badge badge-warning" style="font-size: 12px">{{ 'ড্রাফ্ট' }}</span>
                             @elseif($leave->status == 1)
-                                <span class="badge badge-success"  style="font-size: 12px">{{ 'প্রেরণ' }}</span>
+                                <span class="badge badge-primary"  style="font-size: 12px">{{ 'চলমান' }}</span>
                             @elseif($leave->status == 2)
                                 <span class="badge badge-success"  style="font-size: 12px">{{ 'প্রেরণ প্রেরণ' }}</span>
                             @elseif($leave->status == 3)
@@ -93,7 +93,7 @@
                                     @if(in_array(Auth::user()->staff_class, [1, 2]))
                                         <a href="{{ route('forward.to.dept.head', $leave->id) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="প্রেরণ করুন"></i> প্রেরণ করুন</a>
                                     @else
-                                        <a href="{{ route('forward.to.dept.finance', $leave->id) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="প্রেরণ করুন"></i> প্রেরণ করুন</a>
+                                        <a href="{{ route('forward.to.director.finance', $leave->id) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="প্রেরণ করুন"></i> প্রেরণ করুন</a>
                                     @endif
                                     @endif
                                     {!! Form::open(['route' => ['leaves.destroy', $leave->id], 'method' => 'delete', 'style' => 'display:inline']) !!}

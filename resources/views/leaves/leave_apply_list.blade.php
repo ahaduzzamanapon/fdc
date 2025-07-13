@@ -30,23 +30,164 @@ Leaves @parent
         </section>
         <div class="card-body table-responsive">
             <div class="table-responsive">
-                <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">ড্রাফ্ট</a>
-                      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">অনুমোদন</a>
-                      <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">বাতিল</a>
-                    </div>
-                </nav>
                 <br>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        @include('leaves.leave_process.pending')
-                    </div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">@include('leaves.leave_process.approved')</div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        @include('leaves.leave_process.rejected')
-                    </div>
-                </div>
+                <table class="table table_data table-bordered" id="leaves-table">
+                    <thead>
+                        <tr>
+                            <th>ক্রমিক</th>
+                            <th>নাম</th>
+                            <th>শুরুর তারিখ</th>
+                            <th>শেষ তারিখ</th>
+                            <th>অনু.শুরুর তারিখ</th>
+                            <th>অনু.শেষ তারিখ</th>
+                            <th>অনু.মোট দিন</th>
+                            <th>অবস্থা</th>
+                            <th>ক্রিয়া</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{-- @dd($leaves) --}}
+                            @php $i = 1; @endphp
+                            {{-- 6= dept head finance, 7 = dept head admin, 8 = dept head production, 9 = dept head engg. --}}
+                            @if(Auth::check() && in_array(Auth::user()->user_role, [6,7,8,9]))
+                                @foreach($leaves as $key => $leave)
+                                    @if (($leave->department == Auth::user()->department) && $leave->status !=0)
+                                    <tr>
+                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $leave->name_bn }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->from_date)) }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->to_date)) }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->approved_from_date)) }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->approved_to_date)) }}</td>
+                                        <td>{{ $leave->approved_total_day }}</td>
+                                        <td>
+                                            @if($leave->status == 1)
+                                                <span class="badge badge-primary" style="font-size: 12px">{{ 'চলমান' }}</span>
+                                            @elseif($leave->status == 2)
+                                                <span class="badge badge-info"  style="font-size: 12px">{{ 'ডাইরেক্টর অনুমোদিত' }}</span>
+                                            @elseif($leave->status == 3)
+                                                <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদন' }}</span>
+                                            @else
+                                                <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
+                                            @endif
+                                            </td>
+                                        <td>
+                                            <div class='dropdown'>
+                                                <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                                    ক্রিয়া
+                                                </button>
+                                                <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                                                    <a href="{{ route('leaves.show', [$leave->leave_id]) }}" class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
+                                                    <a href="{{ route('leaves.edit', [$leave->id]) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="সম্পাদনা করুন"></i> সম্পাদনা করুন</a>
+                                                    @if($leave->status == 1)
+                                                        @if($leave->staff_class == 1)
+                                                            <a href="{{ route('forward.to.md', $leave->leave_id) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="প্রেরণ করুন"></i> প্রেরণ করুন</a>
+                                                        @elseif(in_array($leave->staff_class, [3,4]))
+                                                            <a href="{{ route('forward.to.director.finance', $leave->leave_id) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="প্রেরণ করুন"></i> প্রেরণ করুন</a>
+                                                        @endif
+                                                    @endif
+                                                    {!! Form::open(['route' => ['leaves.destroy', $leave->leave_id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                                        {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছে ফেলুন"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
+                                                    {!! Form::close() !!}
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            @endif
+
+                            {{-- 5 = MD --}}
+                            @if(Auth::check() && (Auth::user()->user_role == 5))
+                                @foreach($leaves as $key => $leave)
+                                    @if ($leave->status != 0 && $leave->status != 1 && in_array($leave->staff_class,[1,2]))
+                                    <tr>
+                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $leave->name_bn }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->from_date)) }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->to_date)) }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->approved_from_date)) }}</td>
+                                        <td>{{ date('d M Y', strtotime($leave->approved_to_date)) }}</td>
+                                        <td>{{ $leave->approved_total_day }}</td>
+                                        <td>
+                                            @if($leave->status == 2)
+                                                <span class="badge badge-info" style="font-size: 12px">{{ 'ডাইরেক্টর অনুমোদিত' }}</span>
+                                            @elseif($leave->status == 3)
+                                                <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদন' }}</span>
+                                            @elseif ($leave->status == 4)
+                                                <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
+                                            @endif
+                                            </td>
+                                        <td>
+                                            <div class='dropdown'>
+                                                <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                                    ক্রিয়া
+                                                </button>
+                                                <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                                                    <a href="{{ route('leaves.show', [$leave->leave_id]) }}" class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
+                                                    <a href="{{ route('leaves.approved', [$leave->leave_id]) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="অনুমদন করুন"></i> অনুমদন করুন</a>
+                                                    {{-- @if($leave->status == 1) --}}
+                                                    <a href="{{ route('leaves.rejected', $leave->leave_id) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="বাতিল করুন"></i> বাতিল করুন</a>
+                                                    {{-- @endif --}}
+                                                    {!! Form::open(['route' => ['leaves.destroy', $leave->leave_id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                                        {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছে ফেলুন"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
+                                                    {!! Form::close() !!}
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            @endif
+                            {{-- 10 = MD --}}
+                            @if(Auth::check() && (Auth::user()->user_role == 10))
+                                @foreach($leaves as $key => $leave)
+                                    @if ($leave->status != 0 && $leave->status != 1 && in_array($leave->staff_class,[3,4]))
+                                        <tr>
+                                            <td>{{ $i++ }}</td>
+                                            <td>{{ $leave->name_bn }}</td>
+                                            <td>{{ date('d M Y', strtotime($leave->from_date)) }}</td>
+                                            <td>{{ date('d M Y', strtotime($leave->to_date)) }}</td>
+                                            <td>{{ date('d M Y', strtotime($leave->approved_from_date)) }}</td>
+                                            <td>{{ date('d M Y', strtotime($leave->approved_to_date)) }}</td>
+                                            <td>{{ $leave->approved_total_day }}</td>
+                                            <td>
+                                                @if($leave->status == 2)
+                                                    <span class="badge badge-info" style="font-size: 12px">{{ 'ডাইরেক্টর অনুমোদিত' }}</span>
+                                                @elseif($leave->status == 3)
+                                                    <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদন' }}</span>
+                                                @elseif ($leave->status == 4)
+                                                    <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
+                                                @endif
+                                                </td>
+                                            <td>
+                                                <div class='dropdown'>
+                                                    <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                                        ক্রিয়া
+                                                    </button>
+                                                    <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                                                        <a href="{{ route('leaves.show', [$leave->leave_id]) }}" class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
+                                                        <a href="{{ route('leaves.approved', [$leave->leave_id]) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="অনুমদন করুন"></i> অনুমদন করুন</a>
+                                                        {{-- @if($leave->status == 1) --}}
+                                                        <a href="{{ route('leaves.rejected', $leave->leave_id) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="প্রেরণ করুন"></i> বাতিল করুন</a>
+                                                        {{-- @endif --}}
+                                                        {!! Form::open(['route' => ['leaves.destroy', $leave->leave_id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                                            {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছে ফেলুন"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
+                                                        {!! Form::close() !!}
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
+                    </tbody>
+                </table>
+
+
             </div>
         </div>
     </div>
