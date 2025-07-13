@@ -25,7 +25,7 @@ $MODEL_NAME_PLURAL_HUMAN$ @parent
         <section class="card-header">
             <h5 class="card-title d-inline">$MODEL_NAME_PLURAL_HUMAN$</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.create') }}">Add New</a>
+                <a class="btn btn-primary pull-right" href="{{ route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.create') }}">নতুন যোগ করুন</a>
             </span>
         </section>
         <div class="card-body table-responsive" >

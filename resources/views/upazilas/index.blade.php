@@ -25,7 +25,7 @@ Upazilas @parent
         <section class="card-header">
             <h5 class="card-title d-inline">Upazilas</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('upazilas.create') }}">Add New</a>
+                <a class="btn btn-primary pull-right" href="{{ route('upazilas.create') }}">নতুন যোগ করুন</a>
             </span>
         </section>
         <div class="card-body table-responsive" >

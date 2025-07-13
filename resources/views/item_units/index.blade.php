@@ -25,7 +25,7 @@ Item Units @parent
         <section class="card-header">
             <h5 class="card-title d-inline">Item Units</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('itemUnits.create') }}">Add New</a>
+                <a class="btn btn-primary pull-right" href="{{ route('itemUnits.create') }}">নতুন যোগ করুন</a>
             </span>
         </section>
         <div class="card-body table-responsive" >
