@@ -6,12 +6,15 @@ use App\Http\Requests\CreateLeaveRequest;
 use App\Http\Requests\UpdateLeaveRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Leave;
+use App\Models\LeaveUserTransfer;
 use App\Models\LeaveType;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Flash;
 use Auth;
 use Response;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class LeaveController extends AppBaseController
 {
@@ -69,6 +72,7 @@ class LeaveController extends AppBaseController
         // default to current user if none passed
         if (empty($input['employee_id'])) {
             $input['employee_id'] = auth()->id();
+            $input['dpt_id'] = auth()->user()->department;
         }
 
         // parse dates through Carbon so you’re guaranteed proper format
@@ -99,10 +103,25 @@ class LeaveController extends AppBaseController
         $input['leave_type']         = $input['leave_type'];
         $input['approver_id']        = null;
 
-        Leave::create($input);
-
+        $leave = Leave::create($input);
         Flash::success('ছুটি সফলভাবে সংরক্ষিত হয়েছে');
         return redirect()->route('leaves.index');
+
+        DB::beginTransaction();
+        try {
+            if (!empty($leave)) {
+                $data = array(
+                    'leave_id' => $leave->id,
+                    'user_id' => $leave->employee_id
+                );
+                LeaveUserTransfer::create($data);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            Flash::error('Failed to Insert: ' . $e->getMessage());
+            return back()->with('error', 'Failed to Insert: ' . $e->getMessage());
+        }
     }
 
     /**
