@@ -21,7 +21,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h4 class="mb-0">📦 প্রোডাক্ট বুকিং ফর্ম</h4>
+                <h4 class="mb-0">বুকিং ফর্ম</h4>
             </div>
 
             <div class="card-body">
