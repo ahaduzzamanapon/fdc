@@ -37,7 +37,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::resource('filmApplications', 'FilmApplicationController');
 
 // GUI crud builder routes
 Route::group(['middleware' => 'auth'], function () {

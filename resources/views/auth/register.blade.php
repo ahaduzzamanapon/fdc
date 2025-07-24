@@ -342,8 +342,8 @@
             const tableBody = this.closest('table').querySelector('tbody');
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td><input type="text" name="${type}_name" class="form-control"></td>
-                <td><input type="file" name="${type}_attachment" class="form-control"></td>
+                <td><input type="text" name="${type}_name[]" class="form-control"></td>
+                <td><input type="file" name="${type}_attachment[]" class="form-control"></td>
                 <td><span class="btn btn-danger remove-row">মুছে ফেলুন</span></td>
             `;
             tableBody.appendChild(newRow);
