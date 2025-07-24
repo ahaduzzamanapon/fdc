@@ -15,6 +15,12 @@
             <span class="item-name">বুকিং</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" aria-current="page" href="{{ route('filmApplications.index') }}">
+            <i class="icon im im-icon-Home"></i>
+            <span class="item-name">ফিল্ম অ্যাপ্লিকেশন</span>
+        </a>
+    </li>
 @else
 
     {{-- Dashboard --}}
@@ -176,6 +182,15 @@
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> সি </i>
                             <span class="item-name">সাইট সেটিংস</span>
+                        </a>
+                    </li>
+                @endif
+                @if (can('packages'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('packages*') ? 'active' : '' !!}" href="{{ route('packages.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> প </i>
+                            <span class="item-name">প্যাকেজ</span>
                         </a>
                     </li>
                 @endif

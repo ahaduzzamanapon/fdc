@@ -1,3 +1,9 @@
+@if (Auth::guard('producer')->check())
+    <script>
+        window.location.href = '/producer/dashboard';
+    </script>
+@endif
+
 <!DOCTYPE html>
 <html lang="bn">
 
@@ -15,7 +21,7 @@
   <style>
     * {
       margin: 0;
-      padding: 0;
+      padding: 0;z
       box-sizing: border-box;
     }
     p {

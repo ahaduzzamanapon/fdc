@@ -54,3 +54,17 @@
     </a>
 </li>
 
+<li class="{!! (Request::is('packages*') ? 'active' : '' ) !!}">
+    <a href="{{ route('packages.index') }}">
+        <span class="mm-text ">Packages</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
+<li class="{!! (Request::is('filmApplications*') ? 'active' : '' ) !!}">
+    <a href="{{ route('filmApplications.index') }}">
+        <span class="mm-text ">Film Applications</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
