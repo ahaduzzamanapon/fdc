@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\FilmApplicationController;
 
 
 include 'demo.php';
@@ -38,6 +39,19 @@ Route::get('/', function () {
 });
 
 Route::resource('filmApplications', 'FilmApplicationController');
+Route::prefix('film-applications')->name('filmApplications.')->group(function () {
+    Route::get('{filmApplication}/forward/{desk}', [FilmApplicationController::class, 'forward'])->name('forward');
+    Route::get('{filmApplication}/back/{desk}', [FilmApplicationController::class, 'back'])->name('back');
+    Route::get('{filmApplication}/final-forward/{desk}', [FilmApplicationController::class, 'finalForwardToMD'])->name('final_forward_to_md');
+});
+Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');
+Route::get('filmApplications_backward_table', [FilmApplicationController::class, 'backward_table'])->name('filmApplications.backward.table');
+
+
+
+
+
+
 
 // GUI crud builder routes
 Route::group(['middleware' => 'auth'], function () {

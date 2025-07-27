@@ -32,10 +32,5 @@ Film Applications @parent
             @include('film_applications.table')
         </div>
     </div>
-    <div class="text-center">
-        
-        @include('adminlte-templates::common.paginate', ['records' => $filmApplications])
-
-    </div>
 </div>
 @endsection
