@@ -172,6 +172,15 @@
                         </a>
                     </li>
                 @endif
+                @if (can('items'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('shifts*') ? 'active' : '' !!}" href="{{ route('shifts.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> শ </i>
+                            <span class="item-name">শিফ্ট</span>
+                        </a>
+                    </li>
+                @endif
                 @if (can('item_categories'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('itemCategories*') ? 'active' : '' !!}"

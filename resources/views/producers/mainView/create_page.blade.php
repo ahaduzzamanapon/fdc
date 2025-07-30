@@ -27,7 +27,7 @@
             <div class="card-body">
                 <div class="row g-3">
                     <!-- Category Select -->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="category_id" class="form-label">ক্যাটাগরি সিলেক্ট করুন</label>
                         <select id="category_id" class="form-select">
                             <option value="">-- ক্যাটাগরি নির্বাচন করুন --</option>
@@ -38,9 +38,14 @@
                     </div>
 
                     <!-- Item Select -->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="item_id" class="form-label">আইটেম সিলেক্ট করুন</label>
                         <select id="item_id" class="form-select"></select>
+                    </div>
+                    <!-- Item Select -->
+                    <div class="col-md-4">
+                        <label for="shift_id" class="form-label">শিফ্ট সিলেক্ট করুন</label>
+                        <select id="shift_id" class="form-select"></select>
                     </div>
                 </div>
 
@@ -82,7 +87,8 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="4" class="text-end">মোট মূল্য</td>
-                                    <td><input type="text" readonly class="form-control" name="total_price_input_total" id="total_price_input_total" value="0"></td>
+                                    <td><input type="text" readonly class="form-control" name="total_price_input_total"
+                                            id="total_price_input_total" value="0"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -90,9 +96,10 @@
 
                     <!-- Total Price -->
                     <div class="row mt-3">
-                       
+
                         <div class="col-md-8 text-end mt-4">
-                            <button type="button" class="btn btn-success" onclick="submit_booking_request()">✅ চূড়ান্ত বুকিং</button>
+                            <button type="button" class="btn btn-success" onclick="submit_booking_request()">✅ চূড়ান্ত
+                                বুকিং</button>
                         </div>
                     </div>
                 </form>
@@ -100,189 +107,214 @@
         </div>
     </div>
     @section('scripts')
-<script>
-    $(document).ready(function () {
-        let bookedRanges = [], bookedDates = [];
-        let last_cart = 0;
+        <script>
+            $(document).ready(function () {
+                let bookedRanges = [], bookedDates = [];
+                let last_cart = 0;
 
-        $('#category_id').on('change', function () {
-            $('#item_id').empty();
-            const category_id = $(this).val();
-            if (!category_id) return;
+                $('#category_id').on('change', function () {
+                    $('#item_id').empty();
+                    const category_id = $(this).val();
+                    if (!category_id) return;
 
-            $.ajax({
-                url: "{{ route('producer.get_items_by_category') }}",
-                type: "GET",
-                data: { category_id },
-                success: function (data) {
-                    $('#item_id').append('<option value="">-- আইটেম নির্বাচন করুন --</option>');
-                    $.each(data, function (i, item) {
-                        $('#item_id').append(`<option value="${item.id}">${item.name_bn}</option>`);
+                    $.ajax({
+                        url: "{{ route('producer.get_items_by_category') }}",
+                        type: "GET",
+                        data: { category_id },
+                        success: function (data) {
+                            $('#item_id').append('<option value="">-- আইটেম নির্বাচন করুন --</option>');
+                            $.each(data, function (i, item) {
+                                $('#item_id').append(`<option value="${item.id}">${item.name_bn}</option>`);
+                            });
+                        }
                     });
-                }
-            });
-        });
+                });
+                $('#item_id').on('change', function () {
+                    $('#shift_id').empty();
+                    const item_id = $(this).val();
+                    if (!item_id) return;
 
-        $('#item_id').on('change', function () {
-            const item_id = $(this).val();
-            $('#booking_date_div, #add_cart_div').hide();
-            $('#booking_start_date, #booking_end_date').val('');
+                    $.ajax({
+                        url: "{{ route('producer.get_shift_by_item') }}",
+                        type: "GET",
+                        data: { item_id },
+                        success: function (data) {
+                            $('#shift_id').append('<option value="">-- শিফ্ট নির্বাচন করুন --</option>');
+                            $.each(data, function (i, shift) {
+                                $('#shift_id').append(`<option value="${shift.id}">${shift.name}</option>`);
+                            });
+                        }
+                    });
+                });
 
-            let exist = false;
-            $('input[name="item_id[]"]').each(function () {
-                if ($(this).val() == item_id) exist = true;
-            });
 
-            if (exist) {
-                alert("এই আইটেমটি ইতিমধ্যে যোগ করা হয়েছে।");
-                return;
-            }
 
-            if (item_id) {
-                $.ajax({
-                    url: "{{ route('producer.get_booking_date_by_item') }}",
-                    type: "GET",
-                    data: { item_id },
-                    success: function (data) {
-                        bookedRanges = data;
-                        bookedDates = getBookedDates(data);
 
-                        $('#booking_date_div, #add_cart_div').show();
 
-                        flatpickr("#booking_start_date", {
-                            dateFormat: "Y-m-d",
-                            minDate: "today",
-                            disable: bookedRanges,
-                            onDayCreate: highlightBooked,
-                            onChange: function (selectedDates, dateStr) {
-                                endPicker.set('minDate', dateStr);
-                            }
-                        });
 
-                        const endPicker = flatpickr("#booking_end_date", {
-                            dateFormat: "Y-m-d",
-                            disable: bookedRanges,
-                            onDayCreate: highlightBooked,
-                            onClose: function (selectedDates, dateStr) {
-                                const start = $('#booking_start_date').val();
-                                if (!start) return;
+                $('#shift_id').on('change', function () {
+                    const shift_id = $('#shift_id').val();
+                    const item_id = $('#item_id').val();
+                    $('#booking_date_div, #add_cart_div').hide();
+                    $('#booking_start_date, #booking_end_date').val('');
 
-                                if (new Date(dateStr) < new Date(start)) {
-                                    alert("শেষ তারিখ অবশ্যই শুরুর পরে হতে হবে।");
-                                    $('#item_id').trigger('change');
-                                }
+                    let exist = false;
+                    $('input[name="item_id[]"]').each(function () {
+                        if ($(this).val() == item_id) exist = true;
+                    });
 
-                                if (checkOverlap(start, dateStr, bookedRanges)) {
-                                    alert("এই সময়টি ইতিমধ্যে বুক করা হয়েছে। অন্য একটি তারিখ নির্বাচন করুন।");
-                                    $('#item_id').trigger('change');
-                                }
+                    if (exist) {
+                        alert("এই আইটেমটি ইতিমধ্যে যোগ করা হয়েছে।");
+                        return;
+                    }
+
+                    if (item_id) {
+                        $.ajax({
+                            url: "{{ route('producer.get_booking_date_by_shift') }}",
+                            type: "GET",
+                            data: { shift_id },
+                            success: function (data) {
+                                bookedRanges = data;
+                                bookedDates = getBookedDates(data);
+
+                                $('#booking_date_div, #add_cart_div').show();
+
+                                flatpickr("#booking_start_date", {
+                                    dateFormat: "Y-m-d",
+                                    minDate: "today",
+                                    disable: bookedRanges,
+                                    onDayCreate: highlightBooked,
+                                    onChange: function (selectedDates, dateStr) {
+                                        endPicker.set('minDate', dateStr);
+                                    }
+                                });
+
+                                const endPicker = flatpickr("#booking_end_date", {
+                                    dateFormat: "Y-m-d",
+                                    disable: bookedRanges,
+                                    onDayCreate: highlightBooked,
+                                    onClose: function (selectedDates, dateStr) {
+                                        const start = $('#booking_start_date').val();
+                                        if (!start) return;
+
+                                        if (new Date(dateStr) < new Date(start)) {
+                                            alert("শেষ তারিখ অবশ্যই শুরুর পরে হতে হবে।");
+                                            $('#item_id').trigger('change');
+                                        }
+
+                                        if (checkOverlap(start, dateStr, bookedRanges)) {
+                                            alert("এই সময়টি ইতিমধ্যে বুক করা হয়েছে। অন্য একটি তারিখ নির্বাচন করুন।");
+                                            $('#item_id').trigger('change');
+                                        }
+                                    }
+                                });
                             }
                         });
                     }
                 });
-            }
-        });
 
-        function highlightBooked(dObj, dStr, fp, dayElem) {
-            const date = dayElem.dateObj.toISOString().split('T')[0];
-            if (bookedDates.includes(date)) {
-                dayElem.classList.add("booked");
-            }
-        }
-
-        function getBookedDates(ranges) {
-            let dates = [];
-            ranges.forEach(range => {
-                let current = new Date(range.from + "T00:00:00");
-                const end = new Date(range.to + "T00:00:00");
-                while (current <= end) {
-                    dates.push(current.toISOString().split('T')[0]);
-                    current.setDate(current.getDate() + 1);
+                function highlightBooked(dObj, dStr, fp, dayElem) {
+                    const date = dayElem.dateObj.toISOString().split('T')[0];
+                    if (bookedDates.includes(date)) {
+                        dayElem.classList.add("booked");
+                    }
                 }
-            });
-            return dates;
-        }
 
-        function checkOverlap(start, end, ranges) {
-            const s = new Date(start), e = new Date(end);
-            for (let r of ranges) {
-                const rStart = new Date(r.from), rEnd = new Date(r.to);
-                if (s <= rEnd && e >= rStart) return true;
-            }
-            return false;
-        }
+                function getBookedDates(ranges) {
+                    let dates = [];
+                    ranges.forEach(range => {
+                        let current = new Date(range.from + "T00:00:00");
+                        const end = new Date(range.to + "T00:00:00");
+                        while (current <= end) {
+                            dates.push(current.toISOString().split('T')[0]);
+                            current.setDate(current.getDate() + 1);
+                        }
+                    });
+                    return dates;
+                }
 
-        window.add_to_cart = function () {
-            const item_id = $('#item_id').val();
-            const category_id = $('#category_id').val();
-            const booking_start_date = $('#booking_start_date').val();
-            const booking_end_date = $('#booking_end_date').val();
+                function checkOverlap(start, end, ranges) {
+                    const s = new Date(start), e = new Date(end);
+                    for (let r of ranges) {
+                        const rStart = new Date(r.from), rEnd = new Date(r.to);
+                        if (s <= rEnd && e >= rStart) return true;
+                    }
+                    return false;
+                }
 
-            if (!item_id || !category_id || !booking_start_date || !booking_end_date) {
-                alert("সব তথ্য পূরণ করুন");
-                return;
-            }
+                window.add_to_cart = function () {
+                    const item_id = $('#item_id').val();
+                    const category_id = $('#category_id').val();
+                    const shift_id = $('#shift_id').val();
+                    const booking_start_date = $('#booking_start_date').val();
+                    const booking_end_date = $('#booking_end_date').val();
 
-            $.ajax({
-                url: "{{ route('producer.add_to_cart') }}",
-                type: "POST",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    item_id, category_id, booking_start_date, booking_end_date
-                },
-                success: function (data) {
-                    last_cart++;
-                    const row = `
-                        <tr id="row_${last_cart}">
-                            <td>
-                                ${last_cart}
-                                <input type="hidden" name="item_id[]" value="${data.item_id}">
-                                <input type="hidden" name="category_id[]" value="${data.category_id}">
-                                <input type="hidden" name="booking_start_date[]" value="${data.booking_start_date}">
-                                <input type="hidden" name="booking_end_date[]" value="${data.booking_end_date}">
-                                <input type="hidden" name="total_price[]" value="${data.total_price}">
-                            </td>
-                            <td>${data.item_name} <br><small>(${data.item_unit})</small></td>
-                            <td>${data.item_price}</td>
-                            <td>${data.booking_start_date} <br> থেকে <br> ${data.booking_end_date}</td>
-                            <td>${data.total_price}</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="remove_from_cart(${last_cart})">X</button>
-                            </td>
-                        </tr>`;
-                    $('#booking_request_table').append(row);
-                    $('#item_id').val('');
-                    $('#booking_start_date').val('');
-                    $('#booking_end_date').val('');
+                    if (!item_id || !category_id || !booking_start_date || !booking_end_date || !shift_id) {
+                        alert("সব তথ্য পূরণ করুন");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "{{ route('producer.add_to_cart') }}",
+                        type: "POST",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            item_id, category_id,shift_id, booking_start_date, booking_end_date
+                        },
+                        success: function (data) {
+                            last_cart++;
+                            const row = `
+                                <tr id="row_${last_cart}">
+                                    <td>
+                                        ${last_cart}
+                                        <input type="hidden" name="item_id[]" value="${data.item_id}">
+                                        <input type="hidden" name="shift_id[]" value="${data.shift_id}">
+                                        <input type="hidden" name="category_id[]" value="${data.category_id}">
+                                        <input type="hidden" name="booking_start_date[]" value="${data.booking_start_date}">
+                                        <input type="hidden" name="booking_end_date[]" value="${data.booking_end_date}">
+                                        <input type="hidden" name="total_price[]" value="${data.total_price}">
+                                    </td>
+                                    <td>${data.item_name} <br><small>(${data.item_unit})</small> <br><small>(${data.shift_name})</small></td>
+                                    <td>${data.item_price}</td>
+                                    <td>${data.booking_start_date} <br> থেকে <br> ${data.booking_end_date}</td>
+                                    <td>${data.total_price}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="remove_from_cart(${last_cart})">X</button>
+                                    </td>
+                                </tr>`;
+                            $('#booking_request_table').append(row);
+                            $('#item_id').val('');
+                            $('#booking_start_date').val('');
+                            $('#booking_end_date').val('');
+                            calculate_total_price();
+                        }
+                    });
+                }
+
+                window.remove_from_cart = function (index) {
+                    $('#row_' + index).remove();
                     calculate_total_price();
                 }
+
+                function calculate_total_price() {
+                    let total = 0;
+                    $('input[name="total_price[]"]').each(function () {
+                        total += parseFloat($(this).val());
+                    });
+                    $('#total_price_input_total').val(total);
+                }
+
+                window.submit_booking_request = function () {
+                    if (last_cart === 0) {
+                        alert("বুকিং তালিকা খালি।");
+                        return false;
+                    }
+                    if (confirm("আপনি কি নিশ্চিত?")) {
+                        $('#booking_request_form').submit();
+                    }
+                }
             });
-        }
-
-        window.remove_from_cart = function (index) {
-            $('#row_' + index).remove();
-            calculate_total_price();
-        }
-
-        function calculate_total_price() {
-            let total = 0;
-            $('input[name="total_price[]"]').each(function () {
-                total += parseFloat($(this).val());
-            });
-            $('#total_price_input_total').val(total);
-        }
-
-        window.submit_booking_request = function () {
-            if (last_cart === 0) {
-                alert("বুকিং তালিকা খালি।");
-                return;
-            }
-            if (confirm("আপনি কি নিশ্চিত?")) {
-                $('#booking_request_form').submit();
-            }
-        }
-    });
-</script>
-@endsection
+        </script>
+    @endsection
 
 @endsection

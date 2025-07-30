@@ -24,3 +24,6 @@ Route::resource('divisions', 'DivisionController');
 
 Route::resource('packages', 'PackageController');
 
+
+
+Route::resource('shifts', 'ShiftController');

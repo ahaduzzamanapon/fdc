@@ -121,7 +121,8 @@ Route::group(["middleware" => []], function () {
         Route::get('/create_page', 'create_page')->name('producer.create_page');
         Route::post('/book_store', 'book_store')->name('producer.book_store');
         Route::get('/get_items_by_category', 'get_items_by_category')->name('producer.get_items_by_category');
-        Route::get('/get_booking_date_by_item', 'get_booking_date_by_item')->name('producer.get_booking_date_by_item');
+        Route::get('/get_shift_by_item', 'get_shift_by_item')->name('producer.get_shift_by_item');
+        Route::get('/get_booking_date_by_shift', 'get_booking_date_by_shift')->name('producer.get_booking_date_by_shift');
         Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
         Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
     });

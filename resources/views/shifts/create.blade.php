@@ -2,25 +2,24 @@
 
 {{-- Page title --}}
 @section('title')
-User @parent
+Shift @parent
 @stop
 
 @section('content')
     <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} User</h1>
+        <h1>{{ __('Create New') }} Shift</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>
     <div class="content">
         @include('adminlte-templates::common.errors')
-        @include('flash::message')
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'users.store', 'files' => true,'class' => 'form-horizontal col-md-12']) !!}
+                    {!! Form::open(['route' => 'shifts.store','class' => 'form-horizontal col-md-12']) !!}
                     <div class="row">
-                        @include('users.fields')
+                        @include('shifts.fields')
                     </div>
 
                     {!! Form::close() !!}
