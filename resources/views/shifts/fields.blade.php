@@ -1,4 +1,3 @@
-
 @php
     $categories = \App\Models\ItemCategory::all()->pluck('name_bn', key: 'id')->prepend('ক্যাটাগরি নির্বাচন করুন', '')->toArray();
     $items = \App\Models\Item::all()->pluck('name_bn', key: 'id')->prepend('ইটেম নির্বাচন করুন', '')->toArray();
@@ -7,7 +6,7 @@
 <!-- Name Field -->
 <div class="col-md-4">
     <div class="form-group">
-        {!! Form::label('name', 'নাম',['class'=>'control-label']) !!}
+        {!! Form::label('name', 'নাম', ['class' => 'control-label']) !!}
         {!! Form::text('name', null, ['class' => 'form-control']) !!}
     </div>
 </div>
@@ -16,7 +15,7 @@
 <!-- Category Id Field -->
 <div class="col-md-4">
     <div class="form-group">
-        {!! Form::label('category_id', 'ক্যাটাগরি নির্বাচন',['class'=>'control-label']) !!}
+        {!! Form::label('category_id', 'ক্যাটাগরি নির্বাচন', ['class' => 'control-label']) !!}
         {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
     </div>
 </div>
@@ -25,7 +24,7 @@
 <!-- Item Id Field -->
 <div class="col-md-4">
     <div class="form-group">
-        {!! Form::label('item_id', 'আইটেম নির্বাচন',['class'=>'control-label']) !!}
+        {!! Form::label('item_id', 'আইটেম নির্বাচন', ['class' => 'control-label']) !!}
         {!! Form::select('item_id', $items, null, ['class' => 'form-control']) !!}
     </div>
 </div>
@@ -55,7 +54,7 @@
 <!-- Start Time Field -->
 <div class="col-md-3">
     <div class="form-group">
-        {!! Form::label('start_time', 'Start Time',['class'=>'control-label']) !!}
+        {!! Form::label('start_time', 'Start Time', ['class' => 'control-label']) !!}
         {!! Form::time('start_time', null, ['class' => 'form-control']) !!}
     </div>
 </div>
@@ -64,7 +63,7 @@
 <!-- End Time Field -->
 <div class="col-md-3">
     <div class="form-group">
-        {!! Form::label('end_time', 'End Time',['class'=>'control-label']) !!}
+        {!! Form::label('end_time', 'End Time', ['class' => 'control-label']) !!}
         {!! Form::time('end_time', null, ['class' => 'form-control']) !!}
     </div>
 </div>
@@ -73,7 +72,7 @@
 <!-- Description Field -->
 <div class="col-md-12">
     <div class="form-group ">
-        {!! Form::label('description', 'Description',['class'=>'control-label']) !!}
+        {!! Form::label('description', 'Description', ['class' => 'control-label']) !!}
         {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
     </div>
 </div>

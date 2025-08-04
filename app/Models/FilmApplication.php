@@ -63,6 +63,7 @@ class FilmApplication extends Model
 
 
     public $fillable = [
+        'producer_id',
         'desk',
         'state',
         'film_title',

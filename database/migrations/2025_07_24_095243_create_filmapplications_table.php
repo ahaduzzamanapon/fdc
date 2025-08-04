@@ -15,6 +15,9 @@ class CreateFilmapplicationsTable extends Migration
     {
         Schema::create('filmapplications', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('producer_id');
+            $table->string('desk');
+            $table->string('state');
             $table->string('film_title');
             $table->string('applicant_name');
             $table->string('father_name');

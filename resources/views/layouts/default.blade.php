@@ -192,16 +192,6 @@
             color: rgb(40 41 44 / 75%) !important;
         }
 
-        .card-body {
-            -webkit-box-flex: 1;
-            -webkit-flex: 1 1 auto;
-            -ms-flex: 1 1 auto;
-            flex: 1 1 auto;
-            padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-            color: #000000;
-            /* font-size: 13px!important; */
-        }
-
         .btn-outline-primary:not(:disabled):not(.disabled).active,
         .btn-outline-primary:not(:disabled):not(.disabled):active,
         .show>.btn-outline-primary.dropdown-toggle {
@@ -242,14 +232,7 @@
             font-weight: 500;
         }
 
-        .card {
-            -webkit-box-shadow: 0 10px 30px 0 rgba(17, 38, 146, 0.05);
-            box-shadow: 0 0px 4px 3px rgb(0 0 0 / 5%);
-            /* margin-bottom: 2rem; */
-            border: 1px solid #acacac;
-            min-height: 88vh;
-            margin: 0;
-        }
+     
 
         .table {
             font-size: 13px;
@@ -290,18 +273,36 @@
             --bs-btn-disabled-border-color: #0aa699;
         }
 
+           .card {
+            -webkit-box-shadow: 0 10px 30px 0 rgba(17, 38, 146, 0.05);
+            box-shadow: 0 0px 4px 3px rgb(0 0 0 / 5%);
+            border-radius: 0;
+            min-height: 78vh;
+            margin: 20px;
+
+        }
+
         .card .card-header {
             margin-bottom: 0;
             border: 0;
             padding-bottom: 0;
-            -webkit-border-radius: var(--bs-border-radius-lg);
             padding: 7px;
             background: #8dc542;
-            border-top: 3px solid red;
+            border-top: 4px solid red;
             margin: 0px;
-            border-radius: 6px 6px 0px 0;
             color: white;
+            border-radius: 0;
+
         }
+        .card-body {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+    color: #000000;
+    /* font-size: 13px!important; */
+}
     </style>
 
 </head>
@@ -434,7 +435,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown custom-drop">
+                            <li class="nav-item dropdown custom-drop" style="margin: 4px !important;">
                                 <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @if (Auth::user() && Auth::user()->picture && file_exists(public_path(Auth::user()->picture)))
@@ -522,7 +523,7 @@
             </nav>
             <!-- Nav Header Component End -->
             <!--Nav End-->
-            <div style="margin: 8px;height: 100%;width: 98%;">
+            <div style="margin: 8px;height: 85vh;width: 99%;overflow-y: scroll;">
                 @yield('content')
             </div>
         </div>
