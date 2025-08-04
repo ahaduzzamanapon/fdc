@@ -53,6 +53,28 @@ if (!function_exists('can')) {
         return false;
     }
 }
+if (!function_exists('my_all_permissions')) {
+
+    function my_all_permissions()
+    {
+
+        if(isset(auth()->user()->group_id)){
+            $group_id = auth()->user()->group_id;
+        }elseif(isset(Auth::guard('producer')->user()->group_id)){
+            $group_id = Auth::guard('producer')->user()->group_id;
+        }else{
+            return false;
+        }
+
+        $permissions = \App\Models\RollHas::where('roll_id', $group_id)
+            ->join('permissions', 'roll_has.permission_id', '=', 'permissions.id')
+            ->select('permissions.key')
+            ->get()
+            ->pluck('key')
+            ->toArray();
+        return $permissions;
+    }
+}
 if (!function_exists('who')) {
     function who($key)
     {

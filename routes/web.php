@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\FilmApplicationController;
+use App\Http\Controllers\PaymentController;
 
 
 include 'demo.php';
@@ -38,6 +40,26 @@ Route::get('/', function () {
 });
 
 Route::resource('filmApplications', 'FilmApplicationController');
+Route::prefix('film-applications')->name('filmApplications.')->group(function () {
+    Route::get('{filmApplication}/forward/{desk}', [FilmApplicationController::class, 'forward'])->name('forward');
+    Route::get('{filmApplication}/back/{desk}', [FilmApplicationController::class, 'back'])->name('back');
+    Route::get('{filmApplication}/final-forward/{desk}', [FilmApplicationController::class, 'finalForwardToMD'])->name('final_forward_to_md');
+    Route::get('{filmApplication}/approve_md/{desk}', [FilmApplicationController::class, 'approve_md'])->name('approve_md');
+    Route::get('{filmApplication}/make_payment/{package_id}', [FilmApplicationController::class, 'make_payment'])->name('make_payment');
+    Route::get('{filmApplication}/payment_data', [FilmApplicationController::class, 'payment_data'])->name('payment_data');
+});
+Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');
+Route::get('filmApplications_backward_table', [FilmApplicationController::class, 'backward_table'])->name('filmApplications.backward.table');
+
+
+
+
+
+Route::get('/innitiate_payment/{transaction_id}', [PaymentController::class, 'innitiate_payment'])->name('innitiate_payment');
+
+// EkPay callback routes (success, cancel)
+Route::get('/filmApplications/payment/success', [PaymentController::class, 'ekPaySuccess']);
+Route::get('/filmApplications/payment/cancel', [PaymentController::class, 'ekPayCancel']);
 
 // GUI crud builder routes
 Route::group(['middleware' => 'auth'], function () {
@@ -103,7 +125,8 @@ Route::group(["middleware" => []], function () {
         Route::get('/create_page', 'create_page')->name('producer.create_page');
         Route::post('/book_store', 'book_store')->name('producer.book_store');
         Route::get('/get_items_by_category', 'get_items_by_category')->name('producer.get_items_by_category');
-        Route::get('/get_booking_date_by_item', 'get_booking_date_by_item')->name('producer.get_booking_date_by_item');
+        Route::get('/get_shift_by_item', 'get_shift_by_item')->name('producer.get_shift_by_item');
+        Route::get('/get_booking_date_by_shift', 'get_booking_date_by_shift')->name('producer.get_booking_date_by_shift');
         Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
         Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
     });
@@ -116,9 +139,7 @@ Route::group(["middleware" => []], function () {
 
 
 
+
 Route::get('/upload_exell', function () {
     return view('upload_exell');
-});
-Route::get('/get_who', function () {
-    dd(auth()->user()->group_id);
 });
