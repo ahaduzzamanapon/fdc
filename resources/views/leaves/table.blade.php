@@ -2,15 +2,15 @@
     <table class="table table_data" id="leaves-table">
         <thead>
             <tr>
-                <th>ক্রমিক</th>
-                <th>নাম</th>
-                <th>শুরুর তারিখ</th>
-                <th>শেষ তারিখ</th>
-                <th>অনু.শুরুর তারিখ</th>
-                <th>অনু.শেষ তারিখ</th>
-                <th>অনু.মোট দিন</th>
-                <th>অবস্থা</th>
-                <th>ক্রিয়া</th>
+                <th style="padding-left: 6px !important;text-align:center">ক্রমিক</th>
+                <th style="padding-left: 6px !important;text-align:center">নাম</th>
+                <th style="padding-left: 6px !important;text-align:center">শুরুর তারিখ</th>
+                <th style="padding-left: 6px !important;text-align:center">শেষ তারিখ</th>
+                <th style="padding-left: 6px !important;text-align:center">অনু.শুরুর তারিখ</th>
+                <th style="padding-left: 6px !important;text-align:center">অনু.শেষ তারিখ</th>
+                <th style="padding-left: 6px !important;text-align:center">অনু.মোট দিন</th>
+                <th style="padding-left: 6px !important;text-align:center">অবস্থা</th>
+                <th style="padding-left: 6px !important;text-align:center">ক্রিয়া</th>
             </tr>
         </thead>
         <tbody>
@@ -18,14 +18,14 @@
                 @php $i = 1; @endphp
                 @foreach($leaves as $key => $leave)
                     <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $leave->user_name }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->from_date)) }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->to_date)) }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->approved_from_date)) }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->approved_to_date)) }}</td>
-                        <td>{{ $leave->approved_total_day }}</td>
-                        <td>
+                        <td style="padding: 0px !important;text-align:center">{{ $i++ }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ $leave->user_name }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->from_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->to_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->approved_from_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->approved_to_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ $leave->approved_total_day }}</td>
+                        <td style="padding: 0px !important;text-align:center">
                             @if($leave->status == 0)
                                 <span class="badge badge-warning" style="font-size: 12px">{{ 'ড্রাফ্ট' }}</span>
                             @elseif($leave->status == 1)
@@ -38,7 +38,7 @@
                                 <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
                             @endif
                         </td>
-                        <td>
+                        <td style="padding: 4px !important;text-center">
                             <div class='dropdown'>
                                 <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                     ক্রিয়া
@@ -59,14 +59,14 @@
                 @foreach($leaves as $key => $leave)
                     @if ($leave->employee_id == Auth::user()->id)
                     <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $leave->user_name }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->from_date)) }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->to_date)) }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->approved_from_date)) }}</td>
-                        <td>{{ date('d M Y', strtotime($leave->approved_to_date)) }}</td>
-                        <td>{{ $leave->approved_total_day }}</td>
-                        <td>
+                        <td style="padding: 0px !important;text-align:center">{{ $i++ }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ $leave->user_name }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->from_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->to_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->approved_from_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ date('d M Y', strtotime($leave->approved_to_date)) }}</td>
+                        <td style="padding: 0px !important;text-align:center">{{ $leave->approved_total_day }}</td>
+                        <td style="padding: 0px !important;text-align:center">
                             @if($leave->status == 0)
                                 <span class="badge badge-warning" style="font-size: 12px">{{ 'ড্রাফ্ট' }}</span>
                             @elseif($leave->status == 1)
@@ -79,7 +79,7 @@
                                 <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
                             @endif
                             </td>
-                        <td>
+                        <td style="padding: 4px !important;text-align:center">
                             <div class='dropdown'>
                                 <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                     ক্রিয়া

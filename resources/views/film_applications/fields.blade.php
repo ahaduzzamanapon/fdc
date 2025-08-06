@@ -57,7 +57,7 @@
             </select>
         </div>
         <div class="mb-3 col-md-4">
-            <label for="film_duration" class="form-label">চলচ্চিত্রের সময়কাল(মাস)</label>
+            <label for="film_duration" class="form-label">চলচ্চিত্রের সময়কাল (মাস)</label>
             <input type="number" class="form-control" id="film_duration" name="film_duration" placeholder="মিনিটে সময়কাল লিখুন">
         </div>
     </div>
