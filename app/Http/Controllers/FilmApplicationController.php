@@ -253,4 +253,11 @@ class FilmApplicationController extends AppBaseController
 
         return view('film_applications.payment_data', compact('filmPackage', 'filmApplication'));
     }
+
+    public function single_payment_receipt(FilmPackage $filmPackage)
+    {
+        $filmPackage->load('filmApplication', 'package');
+        $filmApplication = $filmPackage->filmApplication;
+        return view('film_applications.payment_receipt', compact('filmPackage', 'filmApplication'));
+    }
 }

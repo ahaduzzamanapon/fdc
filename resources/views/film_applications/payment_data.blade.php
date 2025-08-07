@@ -1,61 +1,60 @@
 @extends('layouts.default')
 
-{{-- Page title --}}
 @section('title')
-Film Applications @parent
+Payment Data @parent
 @stop
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
-    {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Film Applications</h1>
-    </div>
-    <div class="separator-breadcrumb border-top"></div>--}}
+    <h1>Payment Data for Film: {{ $filmApplication->film_title ?? 'N/A' }}</h1>
 </section>
 
-<!-- Main content -->
 <div class="content">
     <div class="clearfix"></div>
 
     @include('flash::message')
 
     <div class="clearfix"></div>
-    <div class="card" width="88vw;">
-        <section class="card-header">
-            <h5 class="card-title d-inline">Film Applications</h5>
+    <div class="card">
+        <div class="card-header text-white" style="background-color: #8dc542;">
+            <h4 class="card-title d-inline mb-0">Payment List</h4>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" onclick="showMakePaymentModal({{ $filmApplication->id }})" href="javascript:void(0);">Make Payment</a>
+                <a class="btn text-white" style="background-color: #8dc542; border-color: #8dc542;" href="{{ route('filmApplications.index') }}">Back to Film Applications</a>
             </span>
-        </section>
-        <div class="card-body table-responsive" >
+        </div>
+        <div class="card-body">
             <div class="table-responsive">
-                <table class="table table_data" id="filmApplications-table">
-                    <thead>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="text-white" style="background-color: #8dc542;">
                         <tr>
-                            <th>SL</th>
-                           
                             <th>Package Name</th>
                             <th>Amount</th>
                             <th>Transaction ID</th>
                             <th>Status</th>
+                            <th>Paid At</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($filmPackage as $key => $filmApplicationPayment)
+                        @forelse($filmPackage as $payment)
                         <tr>
-                            <td>{{ $key+1 }}</td>
-
-                            <td>{{ $filmApplicationPayment->package_name }}</td>
-                            <td>{{ $filmApplicationPayment->amount }}</td>
-                            <td>{{ $filmApplicationPayment->trn_id }}</td>
-                            <td>{{ $filmApplicationPayment->status }}</td>
+                            <td>{{ $payment->package_name ?? 'N/A' }}</td>
+                            <td>{{ $payment->amount ?? 'N/A' }}</td>
+                            <td>{{ $payment->trn_id ?? 'N/A' }}</td>
+                            <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
+                            <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
+                            <td>
+                                <a href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">View Receipt</a>
+                            </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center">No payment records found for this film application.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-          
         </div>
     </div>
 </div>

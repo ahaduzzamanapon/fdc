@@ -47,6 +47,7 @@ Route::prefix('film-applications')->name('filmApplications.')->group(function ()
     Route::get('{filmApplication}/approve_md/{desk}', [FilmApplicationController::class, 'approve_md'])->name('approve_md');
     Route::get('{filmApplication}/make_payment/{package_id}', [FilmApplicationController::class, 'make_payment'])->name('make_payment');
     Route::get('{filmApplication}/payment_data', [FilmApplicationController::class, 'payment_data'])->name('payment_data');
+    Route::get('single_payment_receipt/{filmPackage}', [FilmApplicationController::class, 'single_payment_receipt'])->name('single_payment_receipt');
 });
 Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');
 Route::get('filmApplications_backward_table', [FilmApplicationController::class, 'backward_table'])->name('filmApplications.backward.table');
