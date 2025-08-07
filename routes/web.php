@@ -133,6 +133,7 @@ Route::group(["middleware" => []], function () {
         Route::get('/get_booking_date_by_shift', 'get_booking_date_by_shift')->name('producer.get_booking_date_by_shift');
         Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
         Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
+        
     });
 });
 

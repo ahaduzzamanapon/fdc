@@ -25,7 +25,24 @@
             </div>
 
             <div class="card-body">
-                <div class="row g-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="film_id" class="form-label">ফিল্ম সিলেক্ট করুন</label>
+                        <select id="film_id" class="form-select">
+                            <option value=""> -- ফিল্ম নির্বাচন করুন --</option>
+                            @foreach (\App\Models\FilmApplication::where('producer_id', Auth::guard('producer')->user()->id)->where('desk', 'MD Approved')->get() as $FilmApplication)
+                                <option data-balance="{{ $FilmApplication->balance }}" value="{{ $FilmApplication->id }}">
+                                    {{ $FilmApplication->film_title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="film_balance" class="form-label">অবশিষ্ট ব্যালেন্স</label>
+                        <input type="text" class="form-control" id="film_balance" readonly>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-3">
                     <!-- Category Select -->
                     <div class="col-md-4">
                         <label for="category_id" class="form-label">ক্যাটাগরি সিলেক্ট করুন</label>
@@ -109,12 +126,23 @@
     @section('scripts')
         <script>
             $(document).ready(function () {
+                $('#film_id').on('change', function () {
+                    var filmId = $(this).val();
+                    var balance = $('#film_id option[value="' + filmId + '"]').data('balance');
+                    $('#film_balance').val(balance);
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
                 let bookedRanges = [], bookedDates = [];
                 let last_cart = 0;
 
                 $('#category_id').on('change', function () {
                     $('#item_id').empty();
                     const category_id = $(this).val();
+                    console.log(category_id);
+
                     if (!category_id) return;
 
                     $.ajax({
@@ -259,29 +287,31 @@
                         type: "POST",
                         data: {
                             _token: '{{ csrf_token() }}',
-                            item_id, category_id,shift_id, booking_start_date, booking_end_date
+                            item_id, category_id, shift_id, booking_start_date, booking_end_date
                         },
                         success: function (data) {
+                            film_id = $('#film_id').val();
                             last_cart++;
                             const row = `
-                                <tr id="row_${last_cart}">
-                                    <td>
-                                        ${last_cart}
-                                        <input type="hidden" name="item_id[]" value="${data.item_id}">
-                                        <input type="hidden" name="shift_id[]" value="${data.shift_id}">
-                                        <input type="hidden" name="category_id[]" value="${data.category_id}">
-                                        <input type="hidden" name="booking_start_date[]" value="${data.booking_start_date}">
-                                        <input type="hidden" name="booking_end_date[]" value="${data.booking_end_date}">
-                                        <input type="hidden" name="total_price[]" value="${data.total_price}">
-                                    </td>
-                                    <td>${data.item_name} <br><small>(${data.item_unit})</small> <br><small>(${data.shift_name})</small></td>
-                                    <td>${data.item_price}</td>
-                                    <td>${data.booking_start_date} <br> থেকে <br> ${data.booking_end_date}</td>
-                                    <td>${data.total_price}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="remove_from_cart(${last_cart})">X</button>
-                                    </td>
-                                </tr>`;
+                                        <tr id="row_${last_cart}">
+                                            <td>
+                                                ${last_cart}
+                                                <input type="hidden" name="item_id[]" value="${data.item_id}">
+                                                <input type="hidden" name="shift_id[]" value="${data.shift_id}">
+                                                <input type="hidden" name="category_id[]" value="${data.category_id}">
+                                                <input type="hidden" name="booking_start_date[]" value="${data.booking_start_date}">
+                                                <input type="hidden" name="booking_end_date[]" value="${data.booking_end_date}">
+                                                <input type="hidden" name="total_price[]" value="${data.total_price}">
+                                                <input type="hidden" name="film_id" value="${film_id}">
+                                            </td>
+                                            <td>${data.item_name} <br><small>(${data.item_unit})</small> <br><small>(${data.shift_name})</small></td>
+                                            <td>${data.item_price}</td>
+                                            <td>${data.booking_start_date} <br> থেকে <br> ${data.booking_end_date}</td>
+                                            <td>${data.total_price}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="remove_from_cart(${last_cart})">X</button>
+                                            </td>
+                                        </tr>`;
                             $('#booking_request_table').append(row);
                             $('#item_id').val('');
                             $('#booking_start_date').val('');
@@ -309,9 +339,28 @@
                         alert("বুকিং তালিকা খালি।");
                         return false;
                     }
-                    if (confirm("আপনি কি নিশ্চিত?")) {
-                        $('#booking_request_form').submit();
+
+                    film_balance = $('#film_balance').val();
+                    total_price = $('#total_price_input_total').val();
+                    
+                    
+                    if (total_price > film_balance) {
+                        alert("আপনার ফিল্ম ব্যালেন্স নেই।");
+                        return false;
                     }
+                    
+                    Swal.fire({
+                    title: "Are you sure?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#booking_request_form').submit();
+                        }
+                    });
                 }
             });
         </script>

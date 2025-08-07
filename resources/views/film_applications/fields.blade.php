@@ -4,7 +4,7 @@
     <div class="row">
         <div class="mb-3 col-md-4">
             <label for="film_title" class="form-label">ক্যাটাগরিঃ</label>
-            <select class="form-select" id="category" name="category">
+            <select class="form-select" id="category" name="category" re>
                 <option selected>ক্যাটাগরি নির্বাচন করুন</option>
                 <option value="cinema">চিনেমা</option>
                 <option value="adds">বিজ্ঞাপন</option>

@@ -66,6 +66,7 @@ class FilmApplication extends Model
         'producer_id',
         'desk',
         'state',
+        'balance',
         'film_title',
         'applicant_name',
         'father_name',
