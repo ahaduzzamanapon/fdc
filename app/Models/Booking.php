@@ -14,4 +14,14 @@ class Booking extends Model
     {
         return $this->hasMany(BookingDetail::class);
     }
+
+    public function film()
+    {
+        return $this->belongsTo(FilmApplication::class, 'film_id');
+    }
+
+    public function producer()
+    {
+        return $this->belongsTo(Producer::class, 'producer_id');
+    }
 }

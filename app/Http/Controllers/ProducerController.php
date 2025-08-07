@@ -341,15 +341,19 @@ class ProducerController extends AppBaseController
     }
     public function booking()
     {
+       
         if (!Auth::guard('producer')->check()) {
-            Flash::error('First Login');
-            return redirect(url('/login'));
-        }
-
-        $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+          $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+            ->select('bookings.*', 'producers.organization_name as producer_name')
+            ->get();
+        }else{
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
             ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
             ->select('bookings.*', 'producers.organization_name as producer_name')
             ->get();
+        }
+
+        
 
         return view('producers.mainView.booking', compact('booking_requests'));
     }
@@ -423,10 +427,7 @@ class ProducerController extends AppBaseController
 
     public function producer_booking_request(Request $request)
     {
-        if (!Auth::guard('producer')->check()) {
-            Flash::error('First Login');
-            return redirect(url('/login'));
-        }
+       
         DB::beginTransaction();
 
         try {
@@ -477,6 +478,37 @@ class ProducerController extends AppBaseController
             Flash::error('Failed to create booking: ' . $e->getMessage());
             return back()->with('error', 'Failed to create booking: ' . $e->getMessage());
         }
+    }
+
+    public function approve_booking($id)
+    {
+       
+        $booking = Booking::find($id);
+
+        if (empty($booking)) {
+            Flash::error('Booking not found');
+            return redirect(route('producer.booking'));
+        }
+
+        $booking->status = 'approved';
+        $booking->save();
+
+        Flash::success('Booking approved successfully!');
+        return redirect(route('producer.booking_details', $id));
+    }
+
+    public function show_booking_details($id)
+    {
+        
+
+        $booking = Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($id);
+
+        if (empty($booking)) {
+            Flash::error('Booking not found');
+            return redirect(route('producer.booking'));
+        }
+
+        return view('producers.mainView.booking_details', compact('booking'));
     }
 }
 

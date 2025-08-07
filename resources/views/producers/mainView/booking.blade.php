@@ -56,7 +56,7 @@
                                     ক্রিয়া
                                 </button>
                                 <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                                    <a  class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
+                                    <a  class='dropdown-item' href="{{ route('producer.booking_details', $booking_request->id) }}"><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
                                 </div>
                             </div>
                     </td>
