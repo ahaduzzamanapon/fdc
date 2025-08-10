@@ -57,10 +57,10 @@
 
 
     <style>
-
         * {
             font-family: "Noto Sans Bengali", sans-serif;
         }
+
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
@@ -85,7 +85,7 @@
             color: #000000;
         }
 
-        .table > :not(caption) > * > * {
+        .table> :not(caption)>*>* {
             color: black;
         }
 
@@ -232,7 +232,7 @@
             font-weight: 500;
         }
 
-     
+
 
         .table {
             font-size: 13px;
@@ -273,7 +273,7 @@
             --bs-btn-disabled-border-color: #0aa699;
         }
 
-           .card {
+        .card {
             -webkit-box-shadow: 0 10px 30px 0 rgba(17, 38, 146, 0.05);
             box-shadow: 0 0px 4px 3px rgb(0 0 0 / 5%);
             border-radius: 0;
@@ -294,15 +294,16 @@
             border-radius: 0;
 
         }
+
         .card-body {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-    color: #000000;
-    /* font-size: 13px!important; */
-}
+            -webkit-box-flex: 1;
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+            color: #000000;
+            /* font-size: 13px!important; */
+        }
     </style>
 
 </head>
@@ -315,27 +316,27 @@
         <div class="sidebar-header d-flex align-items-center justify-content-start"
             style="background: #8dc641;height: 58px;border-bottom: 2px solid;">
             @if (Auth::guard('producer')->check())
-            <a href="{{ route('producer.dashboard') }}" class="navbar-brand">
+                <a href="{{ route('producer.dashboard') }}" class="navbar-brand">
             @else
-                <a href="{{ url('/dashboard') }}" class="navbar-brand">
-            @endif
+                    <a href="{{ url('/dashboard') }}" class="navbar-brand">
+                @endif
 
-                <div class="logo-main">
-                    <img src="{{ !empty($setting) ? asset($setting->logo) : 'assets/images/Picture1.jpg' }} "
-                        class="img-fluid" alt="logo" style="height: 58px;width: 65px;">
+                    <div class="logo-main">
+                        <img src="{{ !empty($setting) ? asset($setting->logo) : 'assets/images/Picture1.jpg' }} "
+                            class="img-fluid" alt="logo" style="height: 58px;width: 65px;">
+                    </div>
+                    <span class="logo-title"> {{ !empty($setting) ? $setting->name : 'BFDC' }} </span>
+                </a>
+                <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
+                    <i class="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.25 12.2744L19.25 12.2744" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M10.2998 18.2988L4.2498 12.2748L10.2998 6.24976" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </i>
                 </div>
-                <span class="logo-title"> {{ !empty($setting) ? $setting->name : 'BFDC' }} </span>
-            </a>
-            <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
-                <i class="icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.25 12.2744L19.25 12.2744" stroke="currentColor" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M10.2998 18.2988L4.2498 12.2748L10.2998 6.24976" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                </i>
-            </div>
         </div>
         <div class="sidebar-body pt-0">
             <div class="sidebar-list">
@@ -475,24 +476,24 @@
                                                 <h6 class="mb-0">Hi,
                                                     {{-- @dd(Auth::user()) --}}
                                                     @if(isset(auth()->user()->group_id))
-                                                {{ auth()->user()->name_en }}
-                                            @elseif(isset(Auth::guard('producer')->user()->group_id))
-                                                {{ Auth::guard('producer')->user()->organization_name }}
-                                            @else
-                                                {{ __('Unauthorized') }}
-                                            @endif
+                                                        {{ auth()->user()->name_en }}
+                                                    @elseif(isset(Auth::guard('producer')->user()->group_id))
+                                                        {{ Auth::guard('producer')->user()->organization_name }}
+                                                    @else
+                                                        {{ __('Unauthorized') }}
+                                                    @endif
 
 
                                                 </h6>
                                                 <small class="text-muted">
 
-                                                     @if(isset(auth()->user()->group_id))
-                                                {{ auth()->user()->name }} {{ auth()->user()->email }}
-                                            @elseif(isset(Auth::guard('producer')->user()->group_id))
-                                                {{ Auth::guard('producer')->user()->email }}
-                                            @else
-                                                {{ __('Unauthorized') }}
-                                            @endif
+                                                    @if(isset(auth()->user()->group_id))
+                                                        {{ auth()->user()->name }} {{ auth()->user()->email }}
+                                                    @elseif(isset(Auth::guard('producer')->user()->group_id))
+                                                        {{ Auth::guard('producer')->user()->email }}
+                                                    @else
+                                                        {{ __('Unauthorized') }}
+                                                    @endif
 
                                                 </small>
                                             </div>
@@ -500,7 +501,7 @@
                                         </div>
                                         <div>
                                             <a href="{{ route('profile.index') }}" class="w-100">
-                                            <i class="bi bi-box-arrow-right me-1"></i> Go to Profile
+                                                <i class="bi bi-box-arrow-right me-1"></i> Go to Profile
                                             </a>
                                         </div>
                                         <hr>
@@ -576,9 +577,25 @@
         function alert(message) {
             Swal.fire({
                 text: message,
+                showClass: {
+                    popup: `
+      animate__animated
+      animate__fadeInUp
+      animate__faster
+    `
+                },
+                hideClass: {
+                    popup: `
+      animate__animated
+      animate__fadeOutDown
+      animate__faster
+    `
+                }
             });
         }
     </script>
+
+   
 
 
     <script>

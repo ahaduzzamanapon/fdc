@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FilmPackage;
+use App\Models\FilmApplication;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Flash;
@@ -123,6 +124,16 @@ class PaymentController extends Controller
         }
         $film_package->status = 'paid';
         $film_package->save();
+
+
+        $film_id = $film_package->film_id;
+        $film = FilmApplication::find($film_id);
+        $film->balance = $film->balance + $film_package->amount;
+        $film->save();
+
+
+
+
         Flash::success('Payment successful');
         return redirect()->route('filmApplications.index');
 

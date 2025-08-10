@@ -15,5 +15,14 @@ class FilmPackage extends Model
         'trn_id',
         'status'
     ];
-    
+
+    public function filmApplication()
+    {
+        return $this->belongsTo(FilmApplication::class, 'film_id');
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class, 'package_id');
+    }
 }

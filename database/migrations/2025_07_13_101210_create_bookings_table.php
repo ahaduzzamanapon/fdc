@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('producer_id');
             $table->string('book_id');
+            $table->string('film_id');
             $table->string('status')->default('pending');
             $table->decimal('total_price', 10, 2)->default(0);
             $table->timestamps();

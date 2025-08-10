@@ -29,6 +29,15 @@
             <span class="item-name">ড্যাশবোর্ড</span>
         </a>
     </li>
+    @if (can('booking_table'))
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
+            href="{{ route('producer.booking') }}">
+            <i class="icon im im-icon-Home"></i>
+            <span class="item-name">বুকিং</span>
+        </a>
+    </li>
+    @endif
     @if (can('filmApplications_table'))
         <li class="nav-item">
             <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"

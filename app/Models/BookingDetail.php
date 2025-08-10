@@ -18,4 +18,14 @@ class BookingDetail extends Model
     {
         return $this->belongsTo(Booking::class);
     }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
 }

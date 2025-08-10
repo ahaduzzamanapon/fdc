@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProducerRequest;
 use App\Http\Requests\UpdateProducerRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Package;
 use App\Models\Producer;
 use App\Models\Item;
 use App\Models\ItemCategory;
+use App\Models\FilmApplication as Film;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -339,15 +341,19 @@ class ProducerController extends AppBaseController
     }
     public function booking()
     {
-        if (!Auth::guard('producer')->check()) {
-            Flash::error('First Login');
-            return redirect(url('/login'));
-        }
        
-        $booking_requests  = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+        if (!Auth::guard('producer')->check()) {
+          $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+            ->select('bookings.*', 'producers.organization_name as producer_name')
+            ->get();
+        }else{
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
             ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
             ->select('bookings.*', 'producers.organization_name as producer_name')
             ->get();
+        }
+
+        
 
         return view('producers.mainView.booking', compact('booking_requests'));
     }
@@ -366,6 +372,7 @@ class ProducerController extends AppBaseController
         $items = Item::where('cat_id', $cat_id)->get();
         return response()->json($items);
     }
+  
     public function get_shift_by_item(Request $request)
     {
 
@@ -420,20 +427,17 @@ class ProducerController extends AppBaseController
 
     public function producer_booking_request(Request $request)
     {
-        if (!Auth::guard('producer')->check()) {
-                Flash::error('First Login');
-                return redirect(url('/login'));
-            }
+       
         DB::beginTransaction();
 
         try {
-            
+
             // 1. Create Booking
             $booking = Booking::create([
-                'book_id' => 'BOOK-' . time().'-'.Auth::guard('producer')->user()->id.'-'.rand(1000,9999),
+                'book_id' => 'BOOK-' . time() . '-' . Auth::guard('producer')->user()->id . '-' . rand(1000, 9999),
                 'status' => 'pending',
+                'film_id' => $request->input('film_id'),
                 'producer_id' => Auth::guard('producer')->user()->id, // or pass producer_id from $request
-
                 'total_price' => $request->input('total_price_input_total'),
             ]);
             // 2. Loop through booking details
@@ -444,6 +448,11 @@ class ProducerController extends AppBaseController
             $end_dates = $request->input('booking_end_date');
             $total_prices = $request->input('total_price');
 
+            $film = Film::where('id', $request->input('film_id'))->first();
+            $film->balance = $film->balance - $request->input('total_price_input_total');
+            $film->save();
+
+
             foreach ($item_ids as $i => $item_id) {
                 $start = \Carbon\Carbon::parse($start_dates[$i]);
                 $end = \Carbon\Carbon::parse($end_dates[$i]);
@@ -453,7 +462,7 @@ class ProducerController extends AppBaseController
                     'catagori' => $category_ids[$i],
                     'item_id' => $item_id,
                     'shift_id' => $shift_ids[$i],
-                    'amount' => 1, // If there's a separate quantity field, use that instead
+                    'amount' => 1, 
                     'start_date' => $start_dates[$i],
                     'end_date' => $end_dates[$i],
                     'total_day' => $total_day,
@@ -469,6 +478,37 @@ class ProducerController extends AppBaseController
             Flash::error('Failed to create booking: ' . $e->getMessage());
             return back()->with('error', 'Failed to create booking: ' . $e->getMessage());
         }
+    }
+
+    public function approve_booking($id)
+    {
+       
+        $booking = Booking::find($id);
+
+        if (empty($booking)) {
+            Flash::error('Booking not found');
+            return redirect(route('producer.booking'));
+        }
+
+        $booking->status = 'approved';
+        $booking->save();
+
+        Flash::success('Booking approved successfully!');
+        return redirect(route('producer.booking_details', $id));
+    }
+
+    public function show_booking_details($id)
+    {
+        
+
+        $booking = Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($id);
+
+        if (empty($booking)) {
+            Flash::error('Booking not found');
+            return redirect(route('producer.booking'));
+        }
+
+        return view('producers.mainView.booking_details', compact('booking'));
     }
 }
 

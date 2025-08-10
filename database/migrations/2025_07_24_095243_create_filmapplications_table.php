@@ -18,6 +18,7 @@ class CreateFilmapplicationsTable extends Migration
             $table->string('producer_id');
             $table->string('desk');
             $table->string('state');
+            $table->integer('balance');
             $table->string('film_title');
             $table->string('applicant_name');
             $table->string('father_name');
