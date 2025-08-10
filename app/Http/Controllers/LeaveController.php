@@ -62,6 +62,8 @@ class LeaveController extends AppBaseController
     public function getEmpByDept(Request $request)
     {
         $get_leave = Leave::find($request->id);
+
+        // dd($get_leave);
         if (!$get_leave) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect()->back();

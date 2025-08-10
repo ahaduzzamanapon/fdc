@@ -100,8 +100,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/leave-approved/{id}', 'LeaveController@leaveApproved')->name('leaves.approved');
     Route::get('/leave-rejected/{id}', 'LeaveController@leaveRejected')->name('leaves.rejected');
     Route::get('leave-apporved-rejected-list', 'LeaveController@leaveApprovedRejectedList')->name('leaves.app.reject.list');
-    Route::POST('/get-employee-by-dept', 'LeaveController@getEmpByDept')->name('leaves.get_emp_by_dept');
-    Route::POST('/forward-to-dept-emp', 'LeaveController@forwardToDeptEmp')->name('leaves.forward.to.dept.emp');
+    Route::post('/get-employee-by-dept', 'LeaveController@getEmpByDept')->name('leaves.get_emp_by_dept');
+    Route::post('/forward-to-dept-emp', 'LeaveController@forwardToDeptEmp')->name('leaves.forward.to.dept.emp');
     // end leave action .....
 
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
