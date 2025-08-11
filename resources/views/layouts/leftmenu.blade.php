@@ -102,7 +102,7 @@
             <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
                 role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name">এইচ আর</span>
+                <span class="item-name">মানব সম্পদ</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('leaves*') ? 'show' : '' !!}" id="hr" data-bs-parent="#sidebar-menu">
