@@ -37,10 +37,17 @@ class LeaveController extends AppBaseController
     public function applyLeaveList(Request $request)
     {
         $userId = Auth::user()->id;
-        $leaves = Leave::select( 'leave_user_transfers.*', 'leaves.*','leaves.id as leave_id', 'users.department','users.name_bn')
-        ->join('leave_user_transfers', 'leave_user_transfers.leave_id', '=', 'leaves.id')
-        ->join('users', 'leaves.employee_id', '=', 'users.id')
-        ->where('leave_user_transfers.user_id', $userId)->get();
+        if(Auth::user()->user_role != 5){
+            $leaves = Leave::select( 'leave_user_transfers.*', 'leaves.*','leaves.id as leave_id', 'users.department','users.name_bn')
+            ->join('leave_user_transfers', 'leave_user_transfers.leave_id', '=', 'leaves.id')
+            ->join('users', 'leaves.employee_id', '=', 'users.id')
+            ->where('leave_user_transfers.user_id', $userId)->get();
+        }else{
+            $leaves = Leave::select( 'leaves.*','leaves.id as leave_id', 'users.department','users.name_bn')
+            ->join('users', 'leaves.employee_id', '=', 'users.id')
+            ->where('leaves.dpt_head_id', '!=', '')
+            ->where('leaves.status', 2)->get();
+        }
     //   dd($leaves);
         return view('leaves.leave_apply_list')->with('leaves', $leaves);
     }
@@ -52,23 +59,29 @@ class LeaveController extends AppBaseController
         ->where('leaves.dpt_head_id', $userId)->get();
 
         $leave_md = Leave::select('leaves.*','leaves.id as leave_id', 'users.department','users.name_bn', 'userss.name_bn as user_name')
-                                ->join('users', 'leaves.employee_id', '=', 'users.id')
-                                ->join('users as userss', 'leaves.dpt_head_id', '=', 'userss.id')
-                                ->get();
+        ->join('users', 'leaves.employee_id', '=', 'users.id')
+        ->join('users as userss', 'leaves.dpt_head_id', '=', 'userss.id')
+        ->get();
 
         // dd($leave_md);
         return view('leaves.leave_approved_rejected_list',['leaves'=> $leaves, 'leave_md' => $leave_md]);
     }
+
     public function getEmpByDept(Request $request)
     {
         $get_leave = Leave::find($request->id);
 
-        // dd($get_leave);
         if (!$get_leave) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect()->back();
         }else{
-            $get_emp_by_dept = User::where('department', $get_leave->dpt_id)->where('id', '!=', $get_leave->employee_id)->get()->all();
+            $get_emp_by_dept = User::select('users.*')
+                                ->join('roles', 'users.user_role', '=', 'roles.id')
+                                ->where('users.department', $get_leave->dpt_id)
+                                ->where('users.id', '!=', $get_leave->employee_id)
+                                ->whereNotIn('key',['super_admin','admin','md'])
+                                ->get()
+                                ->all();
         }
         $data   = [
             'get_emp_by_dept' => $get_emp_by_dept,
@@ -163,6 +176,8 @@ class LeaveController extends AppBaseController
         /** @var Leave $leave */
         $leave = Leave::find($id);
 
+        // dd(($leave));
+
         if (empty($leave)) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
 
@@ -170,10 +185,30 @@ class LeaveController extends AppBaseController
         }
         $leave->to_date = date('Y-m-d', strtotime($leave->to_date));
         $leave->from_date = date('Y-m-d', strtotime($leave->from_date));
+        $all_leaves = LeaveType::select('type', 'day')->where('type', $leave->leave_type)->where('status', 'Active')->first();
 
-        // dd($leave);
+        $take_leaves = DB::table('leaves')
+            ->select('leave_type', DB::raw('SUM(total_day) as total_days'))
+            ->where('employee_id', $leave->employee_id)
+            ->groupBy('leave_type')
+            ->get();
+        $leave_taken = null;
+        $type = null;
 
-        return view('leaves.edit')->with('leave', $leave);
+        foreach ($take_leaves as $take_leave) {
+            if ($take_leave->leave_type == $leave->leave_type) {
+                $type = $take_leave->leave_type;
+                $leave_taken = $take_leave->total_days;
+                break;
+            }
+        }
+
+        $data = [
+            'leave_taken' => $leave_taken,
+            'type' => $type
+        ];
+        // dd($all_leaves->day);
+        return view('leaves.edit',['leave' =>$leave, 'all_leaves'=>$all_leaves, 'leave_data'=>$data]);
     }
 
 
@@ -274,7 +309,6 @@ class LeaveController extends AppBaseController
             $leave->status = 3;
             $leave->dpt_head_id = Auth::user()->id;
             $leave->save();
-
             if ($leave && $leave->id) {
                 LeaveUserTransfer::where('leave_id', $leave->id)->delete();
             }

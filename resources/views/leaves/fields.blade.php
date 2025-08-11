@@ -1,10 +1,24 @@
+<style>
+
+    .card {
+        box-shadow: 0 0px 4px 10px rgb(0 0 0 / 5%);
+        border-radius: 0;
+        min-height: 0vh;
+        margin: 20px;
+    }
+
+</style>
+
+
 @php
     $employees = \App\Models\User::all()->pluck('name_bn', 'id')->prepend('কর্মচারী নির্বাচন করুন', '')->toArray();
 @endphp
 
+{{-- @dd(($leave_data)); --}}
+
 <!-- কর্মচারী -->
 @if(Auth::user()->user_role == 1)
-<div class="col-md-3">
+<div class=" col-md-3">
     <div class="form-group">
         {!! Form::label('employee_id', 'কর্মচারী', ['class' => 'control-label']) !!}
         {!! Form::select('employee_id', $employees, old('employee_id'), ['class' => 'form-control', 'autocomplete' => 'off', 'required']) !!}
@@ -14,6 +28,34 @@
     </div>
 </div>
 @endif
+
+@if(Auth::user()->user_role == 5)
+    <div class="row col-md-12 d-flex justify-content-between">
+        <div class="col-md-3 d-flex align-items-center justify-content-between" style="margin-left: -15px">
+            <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
+                <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
+                    <span>মোট ছুটি: {{$all_leaves->day}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-between">
+            <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
+                <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
+                    <span>মোট ছুটি নেওয়া হয়েছে: {{ $leave_data['leave_taken'] }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 d-flex align-items-center justify-content-between">
+            <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
+                <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
+                    <span>অবশিষ্ট ছুটি: {{( $all_leaves->day - $leave_data['leave_taken']) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+
 
 <!-- শুরুর তারিখ -->
 <div class="col-md-3">
@@ -52,7 +94,7 @@
 <div class="col-md-3">
     <div class="form-group">
         {!! Form::label('leave_type', 'ছুটির ধরণ', ['class' => 'control-label']) !!}
-        {!! Form::select('leave_type', ['1' => 'ক্যাসুয়াল ছুটি', '2' => 'সিক লিভ'], old('leave_type'), ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'leave_type', 'placeholder' => 'ছুটির ধরণ নির্বাচন করুন']) !!}
+        {!! Form::select('leave_type', ['cl' => 'ক্যাসুয়াল ছুটি', 'sl' => 'সিক লিভ'], old('leave_type'), ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'leave_type', 'placeholder' => 'ছুটির ধরণ নির্বাচন করুন']) !!}
         @error('leave_type')
             <span class="text-danger">{{ $message }}</span>
         @enderror
@@ -63,7 +105,7 @@
 <div class="col-md-12">
     <div class="form-group">
         {!! Form::label('remark', 'মন্তব্য', ['class' => 'control-label']) !!}
-        {!! Form::textarea('remark', old('remark'), ['class' => 'form-control']) !!}
+        {!! Form::textarea('remark', old('remark'), ['class' => 'form-control', 'rows' => 5]) !!}
         @error('remark')
             <span class="text-danger">{{ $message }}</span>
         @enderror
@@ -72,17 +114,20 @@
 
 <!-- জমা দিন -->
 <div class="form-group col-sm-12" style="text-align-last: right;">
-    {!! Form::submit('সংরক্ষণ করুন', ['class' => 'btn btn-primary']) !!}
+    {{-- @if(auth::user()->user_role == 5)
+    <a href="{{ route('leaves.approved', $leave->id) }}" class="btn btn-success">অনুমোদন করুন</a>
+    @endif --}}
+    @if(isset($leave) && $leave->employee_id != auth()->user()->id)
+        {!! Form::submit('সংরক্ষন করুন', ['class' => 'btn btn-primary']) !!}
+    @else
+        {!! Form::submit('আবেদন করুন', ['class' => 'btn btn-primary']) !!}
+    @endif
     <a href="{{ route('leaves.index') }}" class="btn btn-danger">বাতিল করুন</a>
 </div>
 
 @section('scripts')
-<script type="text/javascript">
+<script>
     $(document).ready(function () {
-        setTimeout(function () {
-            $('#to_date').trigger('change');
-        }, 1000);
-
         $('#from_date, #to_date').change(function () {
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
@@ -109,6 +154,3 @@
     });
 </script>
 @endsection
-
-
-

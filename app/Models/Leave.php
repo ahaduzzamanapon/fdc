@@ -56,7 +56,7 @@ class Leave extends Model
         'approved_total_day' => 'integer',
         'remark' => 'string',
         'status' => 'string',
-        'leave_type' => 'integer',
+        'leave_type' => 'string',
         'approver_id' => 'integer',
         'approver_remark' => 'string'
     ];
