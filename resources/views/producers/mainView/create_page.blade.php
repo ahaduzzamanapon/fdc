@@ -29,7 +29,7 @@
                     <div class="col-md-3">
                         <label for="film_id" class="form-label">ফিল্ম সিলেক্ট করুন</label>
                         <select id="film_id" class="form-select">
-                            <option value=""> -- ফিল্ম নির্বাচন করুন --</option>
+                            <option value=""> -- ফিল্ম নির্বাচন করুন -- </option>
                             @foreach (\App\Models\FilmApplication::where('producer_id', Auth::guard('producer')->user()->id)->where('desk', 'MD Approved')->get() as $FilmApplication)
                                 <option data-balance="{{ $FilmApplication->balance }}" value="{{ $FilmApplication->id }}">
                                     {{ $FilmApplication->film_title }}</option>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="film_balance" class="form-label">অবশিষ্ট ব্যালেন্স</label>
-                        <input type="text" class="form-control" id="film_balance" readonly>
+                        <input type="number" class="form-control" id="film_balance" readonly>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="4" class="text-end">মোট মূল্য</td>
-                                    <td><input type="text" readonly class="form-control" name="total_price_input_total"
+                                    <td><input type="number" readonly class="form-control" name="total_price_input_total"
                                             id="total_price_input_total" value="0"></td>
                                 </tr>
                             </tfoot>
@@ -161,6 +161,7 @@
                     $('#shift_id').empty();
                     const item_id = $(this).val();
                     if (!item_id) return;
+                    
 
                     $.ajax({
                         url: "{{ route('producer.get_shift_by_item') }}",
@@ -344,7 +345,7 @@
                     total_price = $('#total_price_input_total').val();
                     
                     
-                    if (total_price > film_balance) {
+                    if (total_price < film_balance) {
                         alert("আপনার ফিল্ম ব্যালেন্স নেই।");
                         return false;
                     }
