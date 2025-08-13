@@ -6,7 +6,7 @@
             <label for="film_title" class="form-label">ক্যাটাগরিঃ</label>
             <select class="form-select" id="category" name="category" re>
                 <option selected>ক্যাটাগরি নির্বাচন করুন</option>
-                <option value="cinema">চিনেমা</option>
+                <option value="cinema">সিনেমা </option>
                 <option value="adds">বিজ্ঞাপন</option>
 
             </select>

@@ -29,7 +29,7 @@
                     <div class="col-md-3">
                         <label for="film_id" class="form-label">ফিল্ম সিলেক্ট করুন</label>
                         <select id="film_id" class="form-select">
-                            <option value=""> -- ফিল্ম নির্বাচন করুন -- </option>
+                            <option value=""> -- ফিল্ম নির্বাচন করুন --</option>
                             @foreach (\App\Models\FilmApplication::where('producer_id', Auth::guard('producer')->user()->id)->where('desk', 'MD Approved')->get() as $FilmApplication)
                                 <option data-balance="{{ $FilmApplication->balance }}" value="{{ $FilmApplication->id }}">
                                     {{ $FilmApplication->film_title }}</option>
@@ -161,7 +161,6 @@
                     $('#shift_id').empty();
                     const item_id = $(this).val();
                     if (!item_id) return;
-                    
 
                     $.ajax({
                         url: "{{ route('producer.get_shift_by_item') }}",
@@ -343,12 +342,14 @@
 
                     film_balance = $('#film_balance').val();
                     total_price = $('#total_price_input_total').val();
-                    
+
+
                     
                     if (total_price < film_balance) {
                         alert("আপনার ফিল্ম ব্যালেন্স নেই।");
                         return false;
                     }
+                    
                     
                     Swal.fire({
                     title: "Are you sure?",

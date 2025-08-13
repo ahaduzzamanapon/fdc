@@ -473,7 +473,7 @@
                                                 class="img-fluid rounded-circle me-2" @endif
                                                 style="width: 50px; height: 50px;" />
                                             <div>
-                                                <h6 class="mb-0">Hi,
+                                                <h6 class="mb-0">
                                                     {{-- @dd(Auth::user()) --}}
                                                     @if(isset(auth()->user()->group_id))
                                                         {{ auth()->user()->name_en }}

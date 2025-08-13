@@ -186,7 +186,7 @@
                         <a class="nav-link {!! Request::is('shifts*') ? 'active' : '' !!}" href="{{ route('shifts.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> শ </i>
-                            <span class="item-name">শিফ্ট</span>
+                            <span class="item-name">শিফট</span>
                         </a>
                     </li>
                 @endif

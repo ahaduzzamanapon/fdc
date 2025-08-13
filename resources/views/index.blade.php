@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="row">
                 <h3 class="col-md-6 pull-left">
-                    Dashboard
+                    ড্যাশবোর্ড
                 </h3>
             </div>
         </div>
@@ -154,7 +154,7 @@
                             <h3 id="total_students">
                                 <div class="" role="status">1</div>
                             </h3>
-                            <p>Total Lerner</p>
+                            <p>মোট চলমান সিনেমা</p>
                         </div>
                     </div>
                 </a>
@@ -169,7 +169,7 @@
                             <h3 id="total_students">
                                 <div class="" role="status">1</div>
                             </h3>
-                            <p>Total Lerner</p>
+                            <p>মোট সম্পূর্ণ সিনেমা</p>
                         </div>
                     </div>
                 </a>
@@ -184,7 +184,7 @@
                             <h3 id="total_students">
                                 <div class="" role="status">1</div>
                             </h3>
-                            <p>Total Lerner</p>
+                            <p> অনুমোদনের অপেক্ষামান সিনেমা</p>
                         </div>
                     </div>
                 </a>
@@ -199,7 +199,7 @@
                             <h3 id="total_students">
                                 <div class="" role="status">1</div>
                             </h3>
-                            <p>Total Lerner</p>
+                            <p>অনুমোদনের অপেক্ষামান বিজ্ঞাপন চিত্র</p>
                         </div>
                     </div>
                 </a>
@@ -214,7 +214,7 @@
                             <h3 id="total_students">
                                 <div class="" role="status">1</div>
                             </h3>
-                            <p>Total Lerner</p>
+                            <p>মোট প্রযোজক তালিকা</p>
                         </div>
                     </div>
                 </a>
@@ -229,7 +229,7 @@
                             <h3 id="total_students">
                                 <div class="" role="status">1</div>
                             </h3>
-                            <p>Total Lerner</p>
+                            <p>মোট অনুমোদন প্রযোজক অপেক্ষমান তালিকা</p>
                         </div>
                     </div>
                 </a>
