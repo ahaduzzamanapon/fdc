@@ -317,6 +317,7 @@ return [
     'faq' => 'FAQ',
     'planned_implemented_by' => 'Planned and Implemented by',
     'technical_assistance' => 'Technical Assistance',
+    'users' => 'Users',
 
     'josh_admin_template' => 'Josh Admin Template',
     'shift' => 'Shift',

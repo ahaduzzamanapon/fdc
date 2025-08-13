@@ -288,6 +288,7 @@ return [
     'bank_account_info_and_name' => 'ব্যাংক হিসাব সংক্রান্ত তথ্য ও ব্যাংকের নাম',
     'nominee_info' => 'নমিনি তথ্য',
     'relationship_with_applicant' => 'আবেদনকারীর সাথে সম্পর্ক',
+    'users' => 'ব্যবহারকারীরা',
 
     'fdc_title' => 'এফডিসি',
     'about_us' => 'আমাদের সম্পর্কে',
