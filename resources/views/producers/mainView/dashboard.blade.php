@@ -1,7 +1,7 @@
 @extends('layouts.default')
 {{-- Page title --}}
 @section('title')
-    Dashboard @parent
+    Dashboard {{ __('messages.dashboard') }} @parent
 @stop
 {{-- page level styles --}}
 @section('header_styles')
@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="row">
                 <h3 class="col-md-6 pull-left">
-                    Dashboard
+                    Dashboard {{ __('messages.dashboard') }}
                 </h3>
             </div>
         </div>
@@ -154,7 +154,7 @@
                             <h3 id="total_students">
                                 <div class="" role="status">1</div>
                             </h3>
-                            <p>Total bookings</p>
+                            <p>{{ __('messages.total_bookings') }}</p>
                         </div>
                     </div>
                 </a>

@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Leave @parent
+Leave {{ __('messages.leave') }} @parent
 @stop
 
 @section('content')

@@ -117,7 +117,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="makePaymentModalTitle">Select Package</h5>
+                <h5 class="modal-title" id="makePaymentModalTitle">{{ __('messages.select_package') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                     onclick="$('#makePayment').modal('hide')">
                     <span aria-hidden="true">&times;</span>
@@ -159,8 +159,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="$('#makePayment').modal('hide')"
-                    data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="submitPaymentRequest()">Save changes</button>
+                    data-dismiss="modal">{{ __('messages.close') }}</button>
+                <button type="button" class="btn btn-primary" onclick="submitPaymentRequest()">{{ __('messages.save_changes') }}</button>
             </div>
         </div>
     </div>

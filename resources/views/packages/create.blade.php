@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-Package @parent
+Package {{ __('messages.package') }} @parent
 @stop
 
 @section('content')
     <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} Package</h1>
+        <h1>{{ __('messages.create_new') }} {{ __('messages.package') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>

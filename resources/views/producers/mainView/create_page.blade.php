@@ -21,15 +21,15 @@
 
         <div class="card">
             <div class="card-header">
-                <h4 class="mb-0">বুকিং ফর্ম</h4>
+                <h4 class="mb-0">{{ __('messages.booking_form') }}</h4>
             </div>
 
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <label for="film_id" class="form-label">ফিল্ম সিলেক্ট করুন</label>
+                        <label for="film_id" class="form-label">{{ __('messages.select_film') }}</label>
                         <select id="film_id" class="form-select">
-                            <option value=""> -- ফিল্ম নির্বাচন করুন --</option>
+                            <option value="">{{ __('messages.select_film_placeholder') }}</option>
                             @foreach (\App\Models\FilmApplication::where('producer_id', Auth::guard('producer')->user()->id)->where('desk', 'MD Approved')->get() as $FilmApplication)
                                 <option data-balance="{{ $FilmApplication->balance }}" value="{{ $FilmApplication->id }}">
                                     {{ $FilmApplication->film_title }}</option>
@@ -37,7 +37,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label for="film_balance" class="form-label">অবশিষ্ট ব্যালেন্স</label>
+                        <label for="film_balance" class="form-label">{{ __('messages.remaining_balance') }}</label>
                         <input type="number" class="form-control" id="film_balance" readonly>
                     </div>
                 </div>
@@ -45,9 +45,9 @@
                 <div class="row g-3 mt-3">
                     <!-- Category Select -->
                     <div class="col-md-4">
-                        <label for="category_id" class="form-label">ক্যাটাগরি সিলেক্ট করুন</label>
+                        <label for="category_id" class="form-label">{{ __('messages.select_category_label') }}</label>
                         <select id="category_id" class="form-select">
-                            <option value="">-- ক্যাটাগরি নির্বাচন করুন --</option>
+                            <option value="">{{ __('messages.select_category_placeholder') }}</option>
                             @foreach (\App\Models\ItemCategory::all() as $category)
                                 <option value="{{ $category->id }}">{{ $category->name_bn }}</option>
                             @endforeach
@@ -56,12 +56,12 @@
 
                     <!-- Item Select -->
                     <div class="col-md-4">
-                        <label for="item_id" class="form-label">আইটেম সিলেক্ট করুন</label>
+                        <label for="item_id" class="form-label">{{ __('messages.select_item') }}</label>
                         <select id="item_id" class="form-select"></select>
                     </div>
                     <!-- Item Select -->
                     <div class="col-md-4">
-                        <label for="shift_id" class="form-label">শিফ্ট সিলেক্ট করুন</label>
+                        <label for="shift_id" class="form-label">{{ __('messages.select_shift') }}</label>
                         <select id="shift_id" class="form-select"></select>
                     </div>
                 </div>
@@ -69,19 +69,19 @@
                 <div class="row g-3 mt-3" id="booking_date_div" style="display: none;">
                     <!-- Start Date -->
                     <div class="col-md-6">
-                        <label for="booking_start_date" class="form-label">শুরুর তারিখ</label>
-                        <input type="text" class="form-control" id="booking_start_date" placeholder="তারিখ নির্বাচন করুন">
+                        <label for="booking_start_date" class="form-label">{{ __('messages.start_date') }}</label>
+                        <input type="text" class="form-control" id="booking_start_date" placeholder="{{ __('messages.select_date') }}">
                     </div>
                     <!-- End Date -->
                     <div class="col-md-6">
-                        <label for="booking_end_date" class="form-label">শেষ তারিখ</label>
-                        <input type="text" class="form-control" id="booking_end_date" placeholder="তারিখ নির্বাচন করুন">
+                        <label for="booking_end_date" class="form-label">{{ __('messages.end_date') }}</label>
+                        <input type="text" class="form-control" id="booking_end_date" placeholder="{{ __('messages.select_date') }}">
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-end mt-3" id="add_cart_div" style="display: none;">
                     <button class="btn btn-primary" onclick="add_to_cart()">
-                        ➕ বুকিং তালিকায় যোগ করুন
+                        {{ __('messages.add_to_booking_list') }}
                     </button>
                 </div>
 
@@ -92,18 +92,18 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ক্রমিক</th>
-                                    <th>বিবরণ</th>
-                                    <th>দর</th>
-                                    <th>তারিখ</th>
-                                    <th>মোট মূল্য</th>
-                                    <th>একশন</th>
+                                    <th>{{ __('messages.serial') }}</th>
+                                    <th>{{ __('messages.description_label') }}</th>
+                                    <th>{{ __('messages.rate') }}</th>
+                                    <th>{{ __('messages.date_label') }}</th>
+                                    <th>{{ __('messages.total_price_label') }}</th>
+                                    <th>{{ __('messages.action_label') }}</th>
                                 </tr>
                             </thead>
                             <tbody id="booking_request_table"></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" class="text-end">মোট মূল্য</td>
+                                    <td colspan="4" class="text-end">{{ __('messages.total_price_label') }}</td>
                                     <td><input type="number" readonly class="form-control" name="total_price_input_total"
                                             id="total_price_input_total" value="0"></td>
                                 </tr>
@@ -115,8 +115,7 @@
                     <div class="row mt-3">
 
                         <div class="col-md-8 text-end mt-4">
-                            <button type="button" class="btn btn-success" onclick="submit_booking_request()">✅ চূড়ান্ত
-                                বুকিং</button>
+                            <button type="button" class="btn btn-success" onclick="submit_booking_request()">{{ __('messages.final_booking') }}</button>
                         </div>
                     </div>
                 </form>
@@ -150,7 +149,7 @@
                         type: "GET",
                         data: { category_id },
                         success: function (data) {
-                            $('#item_id').append('<option value="">-- আইটেম নির্বাচন করুন --</option>');
+                            $('#item_id').append('<option value="">{{ __('messages.select_item_placeholder') }}</option>');
                             $.each(data, function (i, item) {
                                 $('#item_id').append(`<option value="${item.id}">${item.name_bn}</option>`);
                             });
@@ -167,7 +166,7 @@
                         type: "GET",
                         data: { item_id },
                         success: function (data) {
-                            $('#shift_id').append('<option value="">-- শিফ্ট নির্বাচন করুন --</option>');
+                            $('#shift_id').append('<option value="">{{ __('messages.select_shift_placeholder') }}</option>');
                             $.each(data, function (i, shift) {
                                 $('#shift_id').append(`<option value="${shift.id}">${shift.name}</option>`);
                             });
@@ -192,7 +191,7 @@
                     });
 
                     if (exist) {
-                        alert("এই আইটেমটি ইতিমধ্যে যোগ করা হয়েছে।");
+                        alert("{{ __('messages.item_already_added') }}");
                         return;
                     }
 
@@ -226,12 +225,12 @@
                                         if (!start) return;
 
                                         if (new Date(dateStr) < new Date(start)) {
-                                            alert("শেষ তারিখ অবশ্যই শুরুর পরে হতে হবে।");
+                                            alert("{{ __('messages.end_date_after_start_date') }}");
                                             $('#item_id').trigger('change');
                                         }
 
                                         if (checkOverlap(start, dateStr, bookedRanges)) {
-                                            alert("এই সময়টি ইতিমধ্যে বুক করা হয়েছে। অন্য একটি তারিখ নির্বাচন করুন।");
+                                            alert("{{ __('messages.time_already_booked') }}");
                                             $('#item_id').trigger('change');
                                         }
                                     }
@@ -278,7 +277,7 @@
                     const booking_end_date = $('#booking_end_date').val();
 
                     if (!item_id || !category_id || !booking_start_date || !booking_end_date || !shift_id) {
-                        alert("সব তথ্য পূরণ করুন");
+                        alert("{{ __('messages.fill_all_information') }}");
                         return;
                     }
 
@@ -336,7 +335,7 @@
 
                 window.submit_booking_request = function () {
                     if (last_cart === 0) {
-                        alert("বুকিং তালিকা খালি।");
+                        alert("{{ __('messages.booking_list_empty') }}");
                         return false;
                     }
 
@@ -346,7 +345,7 @@
 
                     
                     if (total_price < film_balance) {
-                        alert("আপনার ফিল্ম ব্যালেন্স নেই।");
+                        alert("{{ __('messages.no_film_balance') }}");
                         return false;
                     }
                     

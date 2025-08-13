@@ -42,7 +42,7 @@ class HomeController extends Controller
 
         $upazilas = Upazila::where('dis_id', $request->district_id)->get(['id', 'name_en as name']);
         if ($upazilas->isEmpty()) {
-            return response()->json(['message' => 'No upazilas found for the given district ID.'], 404);
+            return response()->json(['message' => __('messages.no_upazilas_found')], 404);
         }
         return response()->json($upazilas);
     }

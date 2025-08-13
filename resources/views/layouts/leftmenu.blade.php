@@ -3,21 +3,21 @@
         <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.dashboard') }}">
             <i class="icon im im-icon-Home"></i>
-            <span class="item-name">ড্যাশবোর্ড</span>
+            <span class="item-name">{{ __('messages.dashboard') }}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.booking') }}">
             <i class="icon im im-icon-Home"></i>
-            <span class="item-name">বুকিং</span>
+            <span class="item-name">{{ __('messages.booking') }}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('filmApplications.index') }}">
             <i class="icon im im-icon-Home"></i>
-            <span class="item-name">ফিল্ম অ্যাপ্লিকেশন</span>
+            <span class="item-name">{{ __('messages.film_application') }}</span>
         </a>
     </li>
 @else
@@ -26,7 +26,7 @@
     <li class="nav-item">
         <a class="nav-link {!! Request::is('/') ? 'active' : '' !!}" aria-current="page" href="{{ url('/dashboard') }}">
             <i class="icon im im-icon-Home"></i>
-            <span class="item-name">ড্যাশবোর্ড</span>
+            <span class="item-name">{{ __('messages.dashboard') }}</span>
         </a>
     </li>
     @if (can('booking_table'))
@@ -34,7 +34,7 @@
         <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.booking') }}">
             <i class="icon im im-icon-Home"></i>
-            <span class="item-name">বুকিং</span>
+            <span class="item-name">{{ __('messages.booking') }}</span>
         </a>
     </li>
     @endif
@@ -43,7 +43,7 @@
             <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#filmApplications" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name">ফিল্ম অ্যাপ্লিকেশন</span>
+                <span class="item-name">{{ __('messages.film_application') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('filmApplications*') ? 'show' : '' !!}" id="filmApplications"
@@ -53,7 +53,7 @@
                         href="{{ route('filmApplications.index') }}">
                         <i class="icon im im-icon-Settings-Window"></i>
                         <i class="sidenav-mini-icon"> তা </i>
-                        <span class="item-name">তালিকা</span>
+                        <span class="item-name">{{ __('messages.list') }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -61,7 +61,7 @@
                         href="{{ route('filmApplications.forward.table') }}">
                         <i class="icon im im-icon-Settings-Window"></i>
                         <i class="sidenav-mini-icon"> অ </i>
-                        <span class="item-name">অপেক্ষমান তালিকা</span>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -69,7 +69,7 @@
                         href="{{ route('filmApplications.backward.table') }}">
                         <i class="icon im im-icon-Settings-Window"></i>
                         <i class="sidenav-mini-icon"> রি </i>
-                        <span class="item-name">রিভিউ তালিকা</span>
+                        <span class="item-name">{{ __('messages.review_list') }}</span>
                     </a>
                 </li>
 
@@ -82,7 +82,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('profile') ? 'active' : '' !!}" aria-current="page" href="{{ url('/profile') }}">
                 <i class="icon im im-icon-Home"></i>
-                <span class="item-name">প্রোফাইল</span>
+                <span class="item-name">{{ __('messages.profile') }}</span>
             </a>
         </li>
     @endif
@@ -92,7 +92,7 @@
             <a class="nav-link {!! Request::is('producers*') ? 'active' : '' !!}" aria-current="page"
                 href="{{ route('producers.index') }}">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name">প্রযোজক</span>
+                <span class="item-name">{{ __('messages.producer') }}</span>
             </a>
         </li>
     @endif
@@ -102,7 +102,7 @@
             <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
                 role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name">মানব সম্পদ</span>
+                <span class="item-name">{{ __('messages.human_resources') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('leaves*') ? 'show' : '' !!}" id="hr" data-bs-parent="#sidebar-menu">
@@ -111,7 +111,7 @@
                         <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" href="{{ route('leaves.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> ছু </i>
-                            <span class="item-name">ছুটি</span>
+                            <span class="item-name">{{ __('messages.leave') }}</span>
                         </a>
                     </li>
                 @endif
@@ -121,7 +121,7 @@
                             href="{{ route('leaves.apply.leave.list') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> ছু আ তা</i>
-                            <span class="item-name">ছুটি আবেদন তালিকা</span>
+                            <span class="item-name">{{ __('messages.leave_application_list') }}</span>
                         </a>
                     </li>
                 @endif
@@ -134,7 +134,7 @@
             <a class="nav-link {!! Request::is('users*') || Request::is('roleAndPermissions*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#users_menu" role="button" aria-expanded="false" aria-controls="users_menu">
                 <i class="icon im im-icon-User"></i>
-                <span class="item-name">ব্যবহারকারী ব্যবস্থাপনা</span>
+                <span class="item-name">{{ __('messages.user_management') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('users*') || Request::is('roleAndPermissions*') ? 'show' : '' !!}"
@@ -144,7 +144,7 @@
                         <a class="nav-link {!! Request::is('users*') ? 'active' : '' !!}" href="{{ route('users.index') }}">
                             <i class="icon im im-icon-User"></i>
                             <i class="sidenav-mini-icon"> ব্য</i>
-                            <span class="item-name">ব্যবহারকারী</span>
+                            <span class="item-name">{{ __('messages.user') }}</span>
                         </a>
                     </li>
                 @endif
@@ -154,7 +154,7 @@
                             href="{{ route('roleAndPermissions.index') }}">
                             <i class="icon im im-icon-Security-Settings"></i>
                             <i class="sidenav-mini-icon"> রো </i>
-                            <span class="item-name">রোল ব্যবস্থাপনা</span>
+                            <span class="item-name">{{ __('messages.role_management') }}</span>
                         </a>
                     </li>
                 @endif
@@ -167,7 +167,7 @@
             <a class="nav-link {!! (Request::is('inventory*') ? 'active' : '') !!}" data-bs-toggle="collapse"
                 href="#inventory_menu" role="button" aria-expanded="false" aria-controls="inventory_menu">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name">ইনভেন্টরি</span>
+                <span class="item-name">{{ __('messages.inventory') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('inventory*') ? 'show' : '' !!}" id="inventory_menu"
@@ -177,7 +177,7 @@
                         <a class="nav-link {!! Request::is('items*') ? 'active' : '' !!}" href="{{ route('items.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> আই </i>
-                            <span class="item-name">আইটেম তালিকা</span>
+                            <span class="item-name">{{ __('messages.item_list') }}</span>
                         </a>
                     </li>
                 @endif
@@ -186,7 +186,7 @@
                         <a class="nav-link {!! Request::is('shifts*') ? 'active' : '' !!}" href="{{ route('shifts.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> শ </i>
-                            <span class="item-name">শিফট</span>
+                            <span class="item-name">{{ __('messages.shift') }}</span>
                         </a>
                     </li>
                 @endif
@@ -196,7 +196,7 @@
                             href="{{ route('itemCategories.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> ক </i>
-                            <span class="item-name">ক্যাটাগরি</span>
+                            <span class="item-name">{{ __('messages.category') }}</span>
                         </a>
                     </li>
                 @endif
@@ -205,7 +205,7 @@
                         <a class="nav-link {!! Request::is('itemUnits*') ? 'active' : '' !!}" href="{{ route('itemUnits.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> উ </i>
-                            <span class="item-name">ইউনিট</span>
+                            <span class="item-name">{{ __('messages.unit') }}</span>
                         </a>
                     </li>
                 @endif
@@ -223,7 +223,7 @@
                     ? 'active' : '') !!}" data-bs-toggle="collapse" href="#settings_menu" role="button"
                 aria-expanded="false" aria-controls="settings_menu">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name">সেটিংস</span>
+                <span class="item-name">{{ __('messages.settings') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('siteSettings*') ||
@@ -238,7 +238,7 @@
                             href="{{ route('siteSettings.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> সি </i>
-                            <span class="item-name">সাইট সেটিংস</span>
+                            <span class="item-name">{{ __('messages.site_settings') }}</span>
                         </a>
                     </li>
                 @endif
@@ -247,7 +247,7 @@
                         <a class="nav-link {!! Request::is('packages*') ? 'active' : '' !!}" href="{{ route('packages.index') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> প </i>
-                            <span class="item-name">প্যাকেজ</span>
+                            <span class="item-name">{{ __('messages.package') }}</span>
                         </a>
                     </li>
                 @endif
@@ -258,7 +258,7 @@
                             href="{{ route('designations.index') }}">
                             <i class="icon im im-icon-Teacher"></i>
                             <i class="sidenav-mini-icon"> ডি </i>
-                            <span class="item-name">পদবী</span>
+                            <span class="item-name">{{ __('messages.designation') }}</span>
                         </a>
                     </li>
                 @endif
@@ -268,7 +268,7 @@
                             href="{{ route('departments.index') }}">
                             <i class="icon im im-icon-Teacher"></i>
                             <i class="sidenav-mini-icon"> ডি </i>
-                            <span class="item-name">ডিপার্টমেন্ট</span>
+                            <span class="item-name">{{ __('messages.department') }}</span>
                         </a>
                     </li>
                 @endif
@@ -277,7 +277,7 @@
                         <a class="nav-link {!! Request::is('divisions*') ? 'active' : '' !!}" href="{{ route('divisions.index') }}">
                             <i class="icon im im-icon-Structure"></i>
                             <i class="sidenav-mini-icon"> বি </i>
-                            <span class="item-name">বিভাগ</span>
+                            <span class="item-name">{{ __('messages.division') }}</span>
                         </a>
                     </li>
                 @endif
@@ -286,7 +286,7 @@
                         <a class="nav-link {!! Request::is('districts*') ? 'active' : '' !!}" href="{{ route('districts.index') }}">
                             <i class="icon im im-icon-Structure"></i>
                             <i class="sidenav-mini-icon"> জে </i>
-                            <span class="item-name">জেলা</span>
+                            <span class="item-name">{{ __('messages.district') }}</span>
                         </a>
                     </li>
                 @endif
@@ -295,7 +295,7 @@
                         <a class="nav-link {!! Request::is('upazilas*') ? 'active' : '' !!}" href="{{ route('upazilas.index') }}">
                             <i class="icon im im-icon-Structure"></i>
                             <i class="sidenav-mini-icon"> উ </i>
-                            <span class="item-name">উপজেলা</span>
+                            <span class="item-name">{{ __('messages.upazila') }}</span>
                         </a>
                     </li>
                 @endif
@@ -305,7 +305,7 @@
                             href="{{ route('leaveTypes.index') }}">
                             <i class="icon im im-icon-Structure"></i>
                             <i class="sidenav-mini-icon"> ল </i>
-                            <span class="item-name">ছুটি প্রকার</span>
+                            <span class="item-name">{{ __('messages.leave_type') }}</span>
                         </a>
                     </li>
                 @endif

@@ -2,7 +2,7 @@
 <html lang="en-US">
 
 <head>
-    <title>Josh {{ __('Reset Password') }}</title>
+    <title>{{ __('messages.app_name_josh') }} {{ __('messages.reset_password') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico')}}" />
     <!--page level css -->
@@ -31,22 +31,19 @@
 
                             <div class="row">
                                 <div class="col-md-10 mx-auto px-2 pb-3">
-                                    <p class="text-center">Even if you forget your password, you can still social login!
-                                    </p>
+                                    <p class="text-center">{{ __('messages.social_login_info') }}</p>
                                     <div class="row social-buttons">
                                         <div class="  col-sm-8 col-md-10 col-10 text-center mx-auto">
                                             <button type="button" class="btn btn-primary   m-t-10 btn-block"><span
-                                                    class="mr-15"><i class="im im-icon-Facebook-2"></i></span> Sign In
-                                                with Facebook</button>
+                                                    class="mr-15"><i class="im im-icon-Facebook-2"></i></span> {{ __('messages.sign_in_with_facebook') }}</button>
                                         </div>
                                         <div class=" col-sm-8 col-md-10 col-10 text-center mx-auto">
                                             <button type="button" class="btn btn-primary    m-t-10 btn-block"><span
-                                                    class="mr-15"><i class="im im-icon-Twitter"></i></span> Sign In with
-                                                Twitter</button>
+                                                    class="mr-15"><i class="im im-icon-Twitter"></i></span> {{ __('messages.sign_in_with_twitter') }}</button>
                                         </div>
                                     </div>
                                     <div>
-                                        <p class="text-center mt-25">--OR--</p>
+                                        <p class="text-center mt-25">{{ __('messages.or') }}</p>
                                     </div>
 
                                 </div>
@@ -63,7 +60,7 @@
                                             {{--<label for="email"> E-mail</label>--}}
                                             <input type="email"
                                                 class="form-control   form-control-lg border-bottom border-top-0 border-left-0 border-right-0 @error('email') is-invalid @enderror"
-                                                id="email" name="email" placeholder="E-mail Address"
+                                                id="email" name="email"                                                 placeholder="{{ __('messages.email_address') }}"
                                                 value="{{ old('email') }}" required autocomplete="email" autofocus />
                                             @error('email')
                                             <span class="invalid-feedback" role="alert">
@@ -74,7 +71,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mt-4">
-                                            <input type="submit" value="{{ __('Send Password Reset Link') }}"
+                                            <input type="submit" value="{{ __('messages.send_password_reset_link') }}"
                                                 class="btn btn-primary btn-block signin-btn" />
                                         </div>
                                     </div>
@@ -88,8 +85,8 @@
                         <div class="card-body  card-login-bg d-none d-md-block">
                             <div class="overlay"></div>
                             <div class="col-12 text-white login2-text">
-                                <h4 class="text-white login2-text font-weight-bold">HEY<br>Glad to See You</h4>
-                                <p class="">Please Keep Connect with us</p>
+                                <h4 class="text-white login2-text font-weight-bold">{{ __('messages.hey') }}<br>{{ __('messages.glad_to_see_you') }}</h4>
+                                <p class="">{{ __('messages.please_keep_connect_with_us') }}</p>
                             </div>
                         </div>
                     </div>

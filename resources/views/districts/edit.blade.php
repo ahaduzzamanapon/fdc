@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-District @parent
+District {{ __('messages.district') }} @parent
 @stop
 
 @section('content')
    <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Edit') }} District</h1>
+        <h1>{{ __('messages.edit') }} {{ __('messages.district') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>

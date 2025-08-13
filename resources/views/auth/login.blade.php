@@ -10,7 +10,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>এফডিসি লগইন</title>
+  <title>{{ __('messages.fdc_login') }}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -170,11 +170,11 @@
         <ul class="nav nav-tabs mb-4 col-md-12" id="myTab" role="tablist">
           <li class="nav-item col-md-6" role="presentation">
             <button class="nav-link active col-md-12" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button"
-              role="tab" aria-controls="login" aria-selected="true">প্রশাসনিক</button>
+              role="tab" aria-controls="login" aria-selected="true">{{ __('messages.administrative') }}</button>
           </li>
           <li class="nav-item col-md-6" role="presentation">
             <button class="nav-link col-md-12" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button"
-              role="tab" aria-controls="register" aria-selected="false">প্রযোজক</button>
+              role="tab" aria-controls="register" aria-selected="false">{{ __('messages.producer') }}</button>
           </li>
         </ul>
 
@@ -184,7 +184,7 @@
               @csrf
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                মোবাইল</p>
+                {{ __('messages.mobile') }}</p>
               <div class="input-group mb-3">
                 <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -196,7 +196,7 @@
               </div>
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                পাসওয়ার্ড</p>
+                {{ __('messages.password') }}</p>
               <div class="input-group mb-3">
                 <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -211,14 +211,14 @@
                     </clipPath>
                   </defs>
                 </svg>
-                <input type="password" class="form-control" name="password" placeholder="পাসওয়ার্ড" required>
+                <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
               </div>
 
               <div class="d-flex justify-content-between helper-text mb-3">
                 <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
-                  href="#" class="text-link">পাসওয়ার্ড ভুলে গেছেন?</a>
+                  href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
               </div>
-              <button type="submit" class="btn btn-login w-100">লগইন করুন</button>
+              <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
             </form>
           </div>
           <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
@@ -226,7 +226,7 @@
               @csrf
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                মোবাইল</p>
+                {{ __('messages.mobile') }}</p>
               <div class="input-group mb-3">
                 <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -238,7 +238,7 @@
               </div>
               <p
                 style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                পাসওয়ার্ড</p>
+                {{ __('messages.password') }}</p>
 
 
               <div class="input-group mb-3">
@@ -256,18 +256,18 @@
                   </defs>
                 </svg>
 
-                <input type="password" class="form-control" name="password" placeholder="পাসওয়ার্ড" required>
+                <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
               </div>
 
               <div class="d-flex justify-content-between helper-text mb-3">
                 <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
-                  href="#" class="text-link">পাসওয়ার্ড ভুলে গেছেন?</a>
+                  href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
                 <span
                   style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
-                  href="#" class="">অ্যাকাউন্ট নেই? <a href="{{ route('register') }}" class="text-primary text-link">
-                    নিবন্ধন</a> </span>
+                  href="#" class="">{{ __('messages.no_account') }} <a href="{{ route('register') }}" class="text-primary text-link">
+                    {{ __('messages.register') }}</a> </span>
               </div>
-              <button type="submit" class="btn btn-login w-100">লগইন করুন</button>
+              <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
             </form>
           </div>
 
@@ -276,8 +276,8 @@
 
         </div>
         <footer class="text-center">
-          <span>Copyrights © 2025 - FDC</span>
-          <span> কারিগরি সহায়তায়: <a href="https://mysoftheaven.com"><svg width="130" height="23" viewBox="0 0 130 23"
+          <span>{{ __('messages.copyright') }}</span>
+          <span> {{ __('messages.technical_support') }} <a href="https://mysoftheaven.com"><svg width="130" height="23" viewBox="0 0 130 23"
                 fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <rect width="129.749" height="22.8986" fill="url(#pattern0_18_49)" />
                 <defs>

@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-Packages @parent
+Packages {{ __('messages.packages') }} @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Package</h1>
+        <h1>{{ __('messages.package') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -29,6 +29,6 @@ Packages @parent
         </div>
     </div>
     <a href="{{ route('packages.index') }}"
-                class="btn btn-primary">Back</a>
+                class="btn btn-primary">{{ __('messages.back') }}</a>
 </div>
 @endsection

@@ -10,14 +10,14 @@
 
     @php
         if (!Auth::check()) {
-            // dd("Please login first");
+            // dd("{{ __('messages.please_login_first') }}");
             // redirect(route('welcome'));
         }
         $setting = DB::table(table: 'sitesettings')->first();
     @endphp
 
-    <title>{{ !empty($setting) ? $setting->name : 'Title' }} -
-        {{ !empty($setting) ? $setting->slogan : 'Slogan' }}
+    <title>{{ !empty($setting) ? $setting->name : __('messages.title') }} -
+        {{ !empty($setting) ? $setting->slogan : __('messages.slogan') }}
     </title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -349,8 +349,7 @@
         </div>
         <div class="sidebar-footer"
             style="bottom: 0;position: absolute;border: 1px solid #8dc641;width: 100%;padding: 7px;color: black;font-size: 12px;background: #8dc641;font-weight: bold;">
-            Developed by - <a href="https://mysoftheaven.com" target="_blank" style="color: white;">Mysoftheaven (BD)
-                Ltd.</a>
+            {{ __('messages.developed_by_text') }} <a href="https://mysoftheaven.com" target="_blank" style="color: white;">{{ __('messages.mysoftheaven_ltd') }}</a>
         </div>
     </aside>
     <main class="main-content">
@@ -382,6 +381,15 @@
                     <!-- Navbar Content -->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
+                            <li class="nav-item dropdown language-dropdown" style="background: white;border-radius: 9px;">
+                                <a style="padding: 4px 14px;" class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="ms-2">{{ strtoupper(app()->getLocale())==='BN' ? 'বাংলা' : 'English' }}</span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="languageDropdown" style="padding: 11px;">
+                                    <li><a class="dropdown-item" href="/lang/en"><span class="ms-2">English</span></a></li>
+                                    <li><a class="dropdown-item" href="/lang/bn"><span class="ms-2">বাংলা</span></a></li>
+                                </ul>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link" id="notification-drop" data-bs-toggle="dropdown">
                                     <svg class="icon-24" width="24" viewBox="0 0 24 24" fill="none"

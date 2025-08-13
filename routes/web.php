@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
+
+Route::get('lang/{locale}', [LanguageController::class, 'switch']);
+
 use App\Models\Producer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;

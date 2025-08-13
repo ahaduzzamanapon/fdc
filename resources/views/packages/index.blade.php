@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-Packages @parent
+Packages {{ __('messages.packages') }} @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Packages</h1>
+        <h1>{{ __('messages.packages') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -23,9 +23,9 @@ Packages @parent
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">Packages</h5>
+            <h5 class="card-title d-inline">{{ __('messages.packages') }}</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('packages.create') }}">নতুন যোগ করুন</a>
+                <a class="btn btn-primary pull-right" href="{{ route('packages.create') }}">{{ __('messages.add_new') }}</a>
             </span>
         </section>
         <div class="card-body table-responsive" >
