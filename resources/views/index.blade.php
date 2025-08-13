@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="row">
                 <h3 class="col-md-6 pull-left">
-                    ড্যাশবোর্ড {{ __('messages.dashboard') }}
+                    {{ __('messages.dashboard') }}
                 </h3>
             </div>
         </div>
@@ -151,8 +151,8 @@
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_students">
-                                <div class="" role="status">1</div>
+                            <h3 id="total_running_movies">
+                                <div class="" role="status">{{ $totalRunningMovies }}</div>
                             </h3>
                             <p>{{ __('messages.total_running_movies') }}</p>
                         </div>
@@ -166,8 +166,8 @@
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_students">
-                                <div class="" role="status">1</div>
+                            <h3 id="total_completed_movies">
+                                <div class="" role="status">{{ $totalCompletedMovies }}</div>
                             </h3>
                             <p>{{ __('messages.total_completed_movies') }}</p>
                         </div>
@@ -181,8 +181,8 @@
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_students">
-                                <div class="" role="status">1</div>
+                            <h3 id="movies_awaiting_approval">
+                                <div class="" role="status">{{ $moviesAwaitingApproval }}</div>
                             </h3>
                             <p>{{ __('messages.movies_awaiting_approval') }}</p>
                         </div>
@@ -196,8 +196,8 @@
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_students">
-                                <div class="" role="status">1</div>
+                            <h3 id="commercials_awaiting_approval">
+                                <div class="" role="status">{{ $commercialsAwaitingApproval }}</div>
                             </h3>
                             <p>{{ __('messages.commercials_awaiting_approval') }}</p>
                         </div>
@@ -211,8 +211,8 @@
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_students">
-                                <div class="" role="status">1</div>
+                            <h3 id="total_producer_list">
+                                <div class="" role="status">{{ $totalProducerList }}</div>
                             </h3>
                             <p>{{ __('messages.total_producer_list') }}</p>
                         </div>
@@ -226,8 +226,8 @@
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_students">
-                                <div class="" role="status">1</div>
+                            <h3 id="total_approved_producer_pending_list">
+                                <div class="" role="status">{{ $totalApprovedProducerPendingList }}</div>
                             </h3>
                             <p>{{ __('messages.total_approved_producer_pending_list') }}</p>
                         </div>

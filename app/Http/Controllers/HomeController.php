@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FilmApplication;
+use App\Models\Producer;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Upazila;
@@ -29,7 +31,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $totalRunningMovies = FilmApplication::where('status', 'running')->count();
+        $totalCompletedMovies = FilmApplication::where('status', 'completed')->count();
+        $moviesAwaitingApproval = FilmApplication::where('status', 'pending')->count();
+        $commercialsAwaitingApproval = FilmApplication::where('status', 'pending')->count();
+        $totalProducerList = Producer::count();
+        $totalApprovedProducerPendingList = Producer::where('status', 'pending')->count();
+
+        return view('index', compact('totalRunningMovies', 'totalCompletedMovies', 'moviesAwaitingApproval', 'commercialsAwaitingApproval', 'totalProducerList', 'totalApprovedProducerPendingList'));
     }
   
 
