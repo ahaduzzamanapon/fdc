@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-Producer @parent
+Producer {{ __('messages.producer') }} @parent
 @stop
 
 @section('content')
    <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Edit') }} Producer</h1>
+        <h1>{{ __('messages.edit') }} {{ __('messages.producer') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>

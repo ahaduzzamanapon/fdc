@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এফডিসি</title>
+    <title>{{ __('messages.fdc_title') }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -28,31 +28,31 @@
                 style="z-index: 999999; background: white;">
                 <ul class="navbar-nav mr-auto w-100 justify-content-center">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">আমাদের সম্পর্কে</a>
+                        <a class="nav-link" href="#">{{ __('messages.about_us') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">চিত্র সংক্রমণিকা</a>
+                        <a class="nav-link" href="#">{{ __('messages.film_transmission') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">প্রতিবেদন</a>
+                        <a class="nav-link" href="#">{{ __('messages.report') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">নোটিশ সমূহ</a>
+                        <a class="nav-link" href="#">{{ __('messages.notices') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">কার্যবিবরণী</a>
+                        <a class="nav-link" href="#">{{ __('messages.proceedings') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">যোগাযোগ</a>
+                        <a class="nav-link" href="#">{{ __('messages.contact') }}</a>
                     </li>
                 </ul>
                 @if (Auth::check())
                     <a href="{{ url('/dashboard') }}" class="login_btn justify-content-end"><img
-                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">ড্যাশবোর্ড</a>
+                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">{{ __('messages.dashboard') }}</a>
 
                 @else
                     <a href="{{ url('/login') }}" class="login_btn justify-content-end"><img
-                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">লগইন</a>
+                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">{{ __('messages.login') }}</a>
                 @endif
             </div>
         </div>
@@ -62,11 +62,8 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-7 heroLeft">
-                        <span class="heroTitle">ডিজিটাল চলচ্চিত্র ব্যবস্থাপনায় নতুন অধ্যায় চলচ্চিত্র নির্মাণ এখন আরও
-                            স্মার্ট ও সহজ ।</span>
-                        <span class="heroDesc">একটি আধুনিক ও ইউজার-ফ্রেন্ডলি সল্যুশন, যা চলচ্চিত্র নির্মাতাদের জন্য
-                            এনেছে এক ছাদের নিচে সব সুবিধা। আপনার প্রোডাকশন, এখন সম্পূর্ণ ডিজিটালি নিয়ন্ত্রিত।প্রযোজকদের
-                            জন্য তৈরি একটি সহজ ও কার্যকর সফটওয়্যার</span>
+                        <span class="heroTitle">{{ __('messages.digital_film_management_new_chapter') }}</span>
+                        <span class="heroDesc">{{ __('messages.modern_user_friendly_solution') }}</span>
                     </div>
                     <div class="col-md-5">
                         <img class="heroImg" src="{{ asset('portal/image/hero.svg') }}" alt="hero.svg" alt="">
@@ -79,7 +76,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p>বাংলাদেশ চলচ্চিত্র উন্নয়ন কর্পোরেশন আপনাকে স্বাগতম</p>
+                    <p>{{ __('messages.welcome_to_bfdc') }}</p>
                 </div>
                 <div class="col-md-12 mt-3">
                     <div class="container">
@@ -90,7 +87,7 @@
                                         <img src="{{ asset('portal/image/card1.svg') }}" alt="">
                                     </div>
                                     <div>
-                                        <span class="cardTitle">নিবন্ধন করুন</span>
+                                        <span class="cardTitle">{{ __('messages.register') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +97,7 @@
                                         <img src="{{ asset('portal/image/card2.svg') }}" alt="card2.svg">
                                     </div>
                                     <div>
-                                        <span class="cardTitle">টিউটোরিয়াল</span>
+                                        <span class="cardTitle">{{ __('messages.tutorial') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +107,7 @@
                                         <img src="{{ asset('portal/image/card3.svg') }}" alt="card3.svg">
                                     </div>
                                     <div>
-                                        <span class="cardTitle">নির্দেশিকা</span>
+                                        <span class="cardTitle">{{ __('messages.guideline') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +117,7 @@
                                         <img src="{{ asset('portal/image/card4.svg') }}" alt="card4.svg">
                                     </div>
                                     <div>
-                                        <span class="cardTitle">নোটিশ</span>
+                                        <span class="cardTitle">{{ __('messages.notice') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +139,7 @@
                                 <div class="row">
                                     <div class="container">
 
-                                        <p class="S_Title">সাধারণ জিজ্ঞাসাসমূহ</p>
+                                        <p class="S_Title">{{ __('messages.general_questions') }}</p>
                                         <div class="col-md-12"
                                             style="background-image: url('{{ asset('portal/image/question.svg') }}');overflow: hidden;padding: 0px;background-repeat:no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
                                             <div class="panel-group" id="accordion">
@@ -151,17 +148,13 @@
                                                         <h4 class="panel-title">
                                                             <a data-toggle="collapse" class="collapsed_button collapsed"
                                                                 data-parent="#accordion" href="#collapse1">
-                                                                <span>এফডিসি কী?</span>
+                                                                <span>{{ __('messages.what_is_fdc') }}</span>
                                                                 <span class="pull-right clickable">+</span>
                                                             </a>
                                                         </h4>
                                                     </div>
                                                     <div id="collapse1" class="panel-collapse collapse in">
-                                                        <div class="panel-body">এফডিসি (বাংলাদেশ চলচ্চিত্র উন্নয়ন
-                                                            কর্পোরেশন) হলো বাংলাদেশের চলচ্চিত্র নির্মাণ, প্রযোজনা ও
-                                                            উন্নয়নের জন্য দায়িত্বপ্রাপ্ত একটি সরকারি সংস্থা। এটি
-                                                            চলচ্চিত্রের টেকনিক্যাল সাপোর্ট, স্টুডিও সুবিধা, সম্পাদনা,
-                                                            ডাবিং, এবং অন্যান্য প্রোডাকশন সুবিধা প্রদান করে।</div>
+                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="panel panel-default">
@@ -169,17 +162,13 @@
                                                         <h4 class="panel-title">
                                                             <a data-toggle="collapse" class="collapsed_button collapsed"
                                                                 data-parent="#accordion" href="#collapse2">
-                                                                <span>শুটিংয়ের জন্য কিভাবে বুকিং করতে হয়?</span>
+                                                                <span>{{ __('messages.how_to_book_for_shooting') }}</span>
                                                                 <span class="pull-right clickable">+</span>
                                                             </a>
                                                         </h4>
                                                     </div>
                                                     <div id="collapse2" class="panel-collapse collapse in">
-                                                        <div class="panel-body">এফডিসি (বাংলাদেশ চলচ্চিত্র উন্নয়ন
-                                                            কর্পোরেশন) হলো বাংলাদেশের চলচ্চিত্র নির্মাণ, প্রযোজনা ও
-                                                            উন্নয়নের জন্য দায়িত্বপ্রাপ্ত একটি সরকারি সংস্থা। এটি
-                                                            চলচ্চিত্রের টেকনিক্যাল সাপোর্ট, স্টুডিও সুবিধা, সম্পাদনা,
-                                                            ডাবিং, এবং অন্যান্য প্রোডাকশন সুবিধা প্রদান করে।</div>
+                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="panel panel-default">
@@ -187,17 +176,13 @@
                                                         <h4 class="panel-title">
                                                             <a data-toggle="collapse" class="collapsed_button collapsed"
                                                                 data-parent="#accordion" href="#collapse3">
-                                                                <span>প্রোফাইল থেকে কী সুবিধা পাওয়া যাবে?</span>
+                                                                <span>{{ __('messages.benefits_from_profile') }}</span>
                                                                 <span class="pull-right clickable">+</span>
                                                             </a>
                                                         </h4>
                                                     </div>
                                                     <div id="collapse3" class="panel-collapse collapse in">
-                                                        <div class="panel-body">এফডিসি (বাংলাদেশ চলচ্চিত্র উন্নয়ন
-                                                            কর্পোরেশন) হলো বাংলাদেশের চলচ্চিত্র নির্মাণ, প্রযোজনা ও
-                                                            উন্নয়নের জন্য দায়িত্বপ্রাপ্ত একটি সরকারি সংস্থা। এটি
-                                                            চলচ্চিত্রের টেকনিক্যাল সাপোর্ট, স্টুডিও সুবিধা, সম্পাদনা,
-                                                            ডাবিং, এবং অন্যান্য প্রোডাকশন সুবিধা প্রদান করে।</div>
+                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="panel panel-default">
@@ -205,17 +190,13 @@
                                                         <h4 class="panel-title">
                                                             <a data-toggle="collapse" class="collapsed_button collapsed"
                                                                 data-parent="#accordion" href="#collapse4">
-                                                                <span>কিভাবে এফডিসি সংক্রান্ত আপডেট জানা যায়?</span>
+                                                                <span>{{ __('messages.how_to_know_fdc_updates') }}</span>
                                                                 <span class="pull-right clickable">+</span>
                                                             </a>
                                                         </h4>
                                                     </div>
                                                     <div id="collapse4" class="panel-collapse collapse in">
-                                                        <div class="panel-body">এফডিসি (বাংলাদেশ চলচ্চিত্র উন্নয়ন
-                                                            কর্পোরেশন) হলো বাংলাদেশের চলচ্চিত্র নির্মাণ, প্রযোজনা ও
-                                                            উন্নয়নের জন্য দায়িত্বপ্রাপ্ত একটি সরকারি সংস্থা। এটি
-                                                            চলচ্চিত্রের টেকনিক্যাল সাপোর্ট, স্টুডিও সুবিধা, সম্পাদনা,
-                                                            ডাবিং, এবং অন্যান্য প্রোডাকশন সুবিধা প্রদান করে।</div>
+                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,25 +210,25 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="container">
-                                        <p class="S_Title">যোগাযোগ</p>
+                                        <p class="S_Title">{{ __('messages.contact') }}</p>
                                         <div class="col-md-12"
                                             style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" name="name" class="inputField" id="name"
-                                                        placeholder="নাম">
+                                                        placeholder="{{ __('messages.name') }}">
                                                 </div>
                                                 <div class="col-md-12">
                                                     <input type="email" name="email" class="inputField" id="email"
-                                                        placeholder="ইমেইল">
+                                                        placeholder="{{ __('messages.email') }}">
                                                 </div>
                                                 <div class="col-md-12">
                                                     <textarea name="message" class="inputField" id=""
-                                                        placeholder="বার্তা"></textarea>
+                                                        placeholder="{{ __('messages.message') }}"></textarea>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <button type="submit" class="inpusubmitField"
-                                                        id="submit">পাঠান</button>
+                                                        id="submit">{{ __('messages.send') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,17 +247,17 @@
             <!-- Left Links -->
             <div class="footer-column">
                 <ul>
-                    <li>চলচ্চিত্র সম্পর্কিত</li>
-                    <li>গোপনীয়তার নীতিমালা</li>
-                    <li>ব্যবহারের শর্তাবলি</li>
+                    <li>{{ __('messages.film_related') }}</li>
+                    <li>{{ __('messages.privacy_policy') }}</li>
+                    <li>{{ __('messages.terms_of_use') }}</li>
                 </ul>
             </div>
             <!-- Center Links -->
             <div class="footer-column">
                 <ul>
-                    <li>নোটিশ সমূহ</li>
-                    <li>সচরাচর জিজ্ঞাসা</li>
-                    <li>যোগাযোগ</li>
+                    <li>{{ __('messages.notices') }}</li>
+                    <li>{{ __('messages.faq') }}</li>
+                    <li>{{ __('messages.contact') }}</li>
                 </ul>
             </div>
             <!-- Contact Info -->
@@ -310,7 +291,7 @@
         </div>
         <div class="bottom-text">
             <div>
-                <p>পরিকল্পনা ও বাস্তবায়নে</p>
+                <p>{{ __('messages.planned_implemented_by') }}</p>
                 <svg width="136" height="32" viewBox="0 0 136 32" fill="none" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
                     <rect width="136" height="32" fill="url(#pattern0_240_3310)" />
@@ -330,7 +311,7 @@
                 </span>
             </div>
             <div>
-                <span>কারিগরি সহায়তায়</span>
+                <span>{{ __('messages.technical_assistance') }}</span>
                 <svg width="177" height="41" viewBox="0 0 177 41" fill="none" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
                     <rect y="0.638916" width="177" height="40" fill="url(#pattern0_240_3309)" />

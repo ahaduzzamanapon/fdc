@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-Designation @parent
+Designation {{ __('messages.designation') }} @parent
 @stop
 
 @section('content')
     <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} Designation</h1>
+        <h1>{{ __('messages.create_new') }} {{ __('messages.designation') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>

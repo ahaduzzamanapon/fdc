@@ -2,7 +2,7 @@
 <html lang="en-US">
 
 <head>
-    <title>Josh {{ __('Confirm Password') }}</title>
+    <title>{{ __('messages.app_name_josh') }} {{ __('messages.confirm_password') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico')}}" />
     <!--page level css -->
@@ -30,7 +30,7 @@
                         <div class="card-body ">
 
                             <div class="row">
-                                <strong>{{ __('Please confirm your password before continuing.') }}</strong><br>
+                                <strong>{{ __('messages.please_confirm_password') }}</strong><br>
                                 <form action="{{ route('password.confirm') }}" id="authentication" method="post"
                                     class="sign_validator mx-auto col-11">
                                     @csrf
@@ -39,7 +39,7 @@
                                             {{--<label for="password">Password</label>--}}
                                             <input type="password"
                                                 class="form-control form-control-lg border-bottom border-top-0 border-left-0 border-right-0  @error('password') is-invalid @enderror"
-                                                id="password" name="password" placeholder="Password" required
+                                                id="password" name="password"                                                 placeholder="{{ __('messages.password_label') }}" required
                                                 autocomplete="current-password" />
                                             @error('password')
                                             <span class="invalid-feedback" role="alert">
@@ -51,7 +51,7 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group mt-4">
-                                            <input type="submit" value="{{ __('Confirm Password') }}"
+                                            <input type="submit" value="{{ __('messages.confirm_password') }}"
                                                 class="btn btn-primary btn-block signin-btn" />
                                         </div>
                                     </div>
@@ -65,8 +65,8 @@
                         <div class="card-body  card-login-bg d-none d-md-block">
                             <div class="overlay"></div>
                             <div class="col-12 text-white login2-text">
-                                <h4 class="text-white login2-text font-weight-bold">HEY<br>Glad to See You</h4>
-                                <p class="">Please Keep Connect with us</p>
+                                <h4 class="text-white login2-text font-weight-bold">{{ __('messages.hey') }}<br> {{ __('messages.glad_to_see_you') }}</h4>
+                                <p class="">{{ __('messages.please_keep_connect_with_us') }}</p>
                             </div>
                         </div>
                     </div>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a33a9a6403f7072dbd11fb5a1767800a",
+    "content-hash": "728bba428fa1c68cde89ce4ebfe3f1cd",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5038,6 +5038,55 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.0"
             },
             "time": "2025-06-25T14:20:11+00:00"
+        },
+        {
+            "name": "sayeed/payment-by-ekpay",
+            "version": "0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jbhasan/Payment-By-Ekpay.git",
+                "reference": "b4cefb22f392dc10565c6c8a19cd3d8537483d8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jbhasan/Payment-By-Ekpay/zipball/b4cefb22f392dc10565c6c8a19cd3d8537483d8c",
+                "reference": "b4cefb22f392dc10565c6c8a19cd3d8537483d8c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/framework": ">=8.0",
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sayeed\\PaymentByEkpay\\Providers\\PaymentByEkpayServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sayeed\\PaymentByEkpay\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Md. Hasan Sayeed",
+                    "email": "jbhasan@gmail.com"
+                }
+            ],
+            "description": "The package offers straightforward installation instructions, ensuring that developers can quickly set up Ekpay payment gateway within their Laravel projects. Its empowers developers to seamlessly integrate Ekpay's payment services into their Laravel applications",
+            "support": {
+                "issues": "https://github.com/jbhasan/Payment-By-Ekpay/issues",
+                "source": "https://github.com/jbhasan/Payment-By-Ekpay/tree/0.7"
+            },
+            "time": "2024-05-02T12:22:05+00:00"
         },
         {
             "name": "sentry/sdk",

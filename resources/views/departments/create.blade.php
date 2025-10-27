@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-Department @parent
+Department {{ __('messages.department') }} @parent
 @stop
 
 @section('content')
     <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} Department</h1>
+        <h1>{{ __('messages.create_new') }} {{ __('messages.department') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>

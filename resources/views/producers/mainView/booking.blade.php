@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-প্রোডাক্ট  বুকিং  @parent
+প্রোডাক্ট  বুকিং  {{ __('messages.product_booking') }} @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Producers</h1>
+        <h1>{{ __('messages.producers') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -23,22 +23,22 @@
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">প্রোডাক্ট  বুকিং </h5>
+            <h5 class="card-title d-inline">{{ __('messages.product_booking') }}</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('producer.create_page') }}">প্রোডাক্ট  বুকিং করুন</a>
+                <a class="btn btn-primary pull-right" href="{{ route('producer.create_page') }}">{{ __('messages.book_product') }}</a>
             </span>
         </section>
         <div class="card-body table-responsive" >
             <table class="table table-default table-hover table-striped">
                 <thead>
                 <tr>
-                    <th>ক্রম</th>
-                    <th>বুকিং আইডি</th>
-                    <th>অবস্থা</th>
-                    <th>প্রযোজক </th>
-                    <th>সর্বমোট মূল্য</th>
-                    <th>তৈরির তারিখ</th>
-                    <th>অ্যাকশন</th>
+                    <th>{{ __('messages.serial') }}</th>
+                    <th>{{ __('messages.booking_id') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th>{{ __('messages.producer') }} </th>
+                    <th>{{ __('messages.total_price_label') }}</th>
+                    <th>{{ __('messages.created_at') }}</th>
+                    <th>{{ __('messages.action_label') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,10 +53,10 @@
                     <td>
                        <div class='dropdown'>
                                 <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                    ক্রিয়া
+                                    {{ __('messages.action_label') }}
                                 </button>
                                 <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                                    <a  class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
+                                    <a  class='dropdown-item' href="{{ route('producer.booking_details', $booking_request->id) }}"><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view_label') }}"></i> {{ __('messages.view_label') }}</a>
                                 </div>
                             </div>
                     </td>

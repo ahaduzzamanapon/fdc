@@ -2,18 +2,19 @@
 
 {{-- Page title --}}
 @section('title')
-User @parent
+User {{ __('messages.user') }} @parent
 @stop
 
 @section('content')
     <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} User</h1>
+        <h1>{{ __('messages.create_new') }} {{ __('messages.user') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>
     <div class="content">
         @include('adminlte-templates::common.errors')
+        @include('flash::message')
         <div class="card">
             <div class="card-body">
                 <div class="row">

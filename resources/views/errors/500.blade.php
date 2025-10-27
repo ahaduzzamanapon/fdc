@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-    Error @parent
+    Error {{ __('messages.error') }} @parent
 @stop
 
 {{-- Page level styles --}}

@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-প্রযোজক @parent
+প্রযোজক {{ __('messages.producer') }} @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Producer</h1>
+        <h1>{{ __('messages.producer') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -29,6 +29,6 @@
         </div>
     </div>
     <a href="{{ route('producers.index') }}"
-                class="btn btn-primary">Back</a>
+                class="btn btn-primary">{{ __('messages.back') }}</a>
 </div>
 @endsection

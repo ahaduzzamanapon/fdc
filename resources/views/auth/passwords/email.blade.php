@@ -2,7 +2,7 @@
 <html lang="en-US">
 
 <head>
-    <title>Josh {{ __('Reset Password') }}</title>
+    <title>{{ __('messages.app_name_josh') }} {{ __('messages.reset_password') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico')}}" />
     <!--page level css -->
@@ -25,7 +25,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h2 class="text-center">
-                                            <span>JOSH</span>
+                                            <span>{{ __('messages.app_name_josh') }}</span>
                                         </h2>
                                     </div>
                                 </div>
@@ -33,7 +33,7 @@
                             <div class="card-body pt-0">
                                 <div class="row">
                                     <div class="col-md-12 signup-header-text">
-                                        <span class="active fs-18">{{ __('Reset Password') }}</span>
+                                        <span class="active fs-18">{{ __('messages.reset_password') }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -47,10 +47,10 @@
                                             class="sign_validator">
                                             @csrf
                                             <div class="form-group">
-                                                <label for="email"> {{ __('E-Mail Address') }}</label>
+                                                <label for="email"> {{ __('messages.email_address') }}</label>
                                                 <input type="email"
                                                     class="form-control  form-control-lg @error('email') is-invalid @enderror"
-                                                    id="email" name="email" placeholder="E-mail"
+                                                    id="email" name="email" placeholder="{{ __('messages.email_placeholder') }}"
                                                     value="{{ old('email') }}" required />
                                                 @error('email')
                                                 <span class="invalid-feedback" role="alert">
@@ -60,7 +60,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="submit" value="{{ __('Send Password Reset Link') }}"
+                                                <input type="submit" value="{{ __('messages.send_password_reset_link') }}"
                                                     class="btn btn-primary btn-block" />
                                             </div>
                                         </form>

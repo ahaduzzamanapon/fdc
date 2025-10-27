@@ -9,7 +9,7 @@ class BookingDetail extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'booking_id', 'catagori', 'item_id',
+        'booking_id', 'catagori', 'item_id','shift_id',
         'amount', 'start_date', 'end_date',
         'total_day', 'total_amount'
     ];
@@ -17,5 +17,15 @@ class BookingDetail extends Model
     public function booking()
     {
         return $this->belongsTo(Booking::class);
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
     }
 }

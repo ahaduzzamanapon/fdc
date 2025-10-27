@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-Leave Type @parent
+Leave Type {{ __('messages.leave_type') }} @parent
 @stop
 
 @section('content')
     <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} Leave Type</h1>
+        <h1>{{ __('messages.create_new') }} {{ __('messages.leave_type') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>

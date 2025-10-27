@@ -1,12 +1,12 @@
 @extends('layouts.default')
 @section('title')
-Profile @parent
+Profile {{ __('messages.profile') }} @parent
 @stop
 @section('content')
 <!-- Content Header (Page header) -->
     <section class="content-header">
         <div aria-label="breadcrumb" class="card-breadcrumb">
-            <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">Dashboard</a> > Profile </h5>
+            <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">{{ __('messages.dashboard') }}</a> > {{ __('messages.profile') }} </h5>
         </div>
         <div class="separator-breadcrumb border-top"></div>
     </section>
@@ -24,7 +24,7 @@ Profile @parent
                 <div class="col-lg-12" >
                     <div class="card shadow-lg border-0 rounded-lg" >
                         <div class="card-header text-white d-flex justify-content-between align-items-center">
-                            <h3 class="card-title mb-0">ব্যাবহারকারীর প্রোফাইল</h3>
+                            <h3 class="card-title mb-0">{{ __('messages.user_profile') }}</h3>
                         </div>
                         <div class="card-body" >
                             <div class="row">
@@ -43,33 +43,33 @@ Profile @parent
                                     <table class="table table-bordered table-striped table-hover">
                                         <tbody>
                                             <tr>
-                                                <th scope="row"><i class="fas fa-phone-alt mr-1 text-primary"></i> ফোন</th>
+                                                <th scope="row"><i class="fas fa-phone-alt mr-1 text-primary"></i> {{ __('messages.phone') }}</th>
                                                 <td>{{ Auth::user()->mobile_no }}</td>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> যোগদানের তারিখ</th>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> {{ __('messages.joining_date') }}</th>
                                                 <td>{{ Auth::user()->created_at->format('d M, Y') }}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> পিতার নাম</th>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> {{ __('messages.father_name') }}</th>
                                                 <td>{{ Auth::user()->father_name }}</td>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> মাতার নাম</th>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> {{ __('messages.mother_name') }}</th>
                                                 <td>{{ Auth::user()->mother_name }}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> এন আইডি</th>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> {{ __('messages.nid') }}</th>
                                                 <td>{{ Auth::user()->nid }}</td>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> ধর্ম</th>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> {{ __('messages.religion') }}</th>
                                                 <td>{{ Auth::user()->religion }}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> শিক্ষাগত যোগ্যতা</th>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> {{ __('messages.educational_qualification') }}</th>
                                                 <td>{{ Auth::user()->highest_qualification }}</td>
-                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> রক্তের গ্রুপ</th>
+                                                <th scope="row"><i class="fas fa-clock mr-1 text-primary"></i> {{ __('messages.blood_group') }}</th>
                                                 <td>{{ Auth::user()->blood_group }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <a href="{{ route('profile.edit' ,Auth::id() ) }}" class="btn btn-outline-info mt-3 float-right">
-                                        <i class="fas fa-edit"></i> Edit Profile
+                                        <i class="fas fa-edit"></i> {{ __('messages.edit_profile') }}
                                     </a>
                                 </div>
                             </div>

@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-Designations @parent
+Designations {{ __('messages.designations') }} @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Designation</h1>
+        <h1>{{ __('messages.designation') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -29,6 +29,6 @@ Designations @parent
         </div>
     </div>
     <a href="{{ route('designations.index') }}"
-                class="btn btn-primary">Back</a>
+                class="btn btn-primary">{{ __('messages.back') }}</a>
 </div>
 @endsection

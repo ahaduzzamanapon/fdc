@@ -39,49 +39,45 @@ class UserController extends Controller
     {
         $input = $request->all();
 
-        if ($request->hasFile('picture')) {
-            $file = $request->file('picture');
-            $folder = 'picture/user';
-            $customName = 'user-'.time();
-            $input['picture'] = uploadFile($file, $folder, $customName);
-        }else{
-            $input['picture'] = 'no-image.png';
-        }
-
-        if ($request->hasFile('signature')) {
-            $file = $request->file('signature');
-            $folder = 'images/signature';
-            $customName = 'signature-'.time();
-            $input['signature'] = uploadFile($file, $folder, $customName);
-        }else{
-            $input['signature'] = 'no-image.png';
-        }
-
-
-        if ($request->has('password')) {
-            $input['password'] = bcrypt($request->password);
-        }else{
-            $input['password'] = bcrypt('12345678');
-        }
-
-        if ($request->has('mobile_no')) {
-            $input['username'] = $request->mobile_no;
-            $user = User::where('username', $request->mobile_no)->first();
-            if($user){
-                Flash::error('Mobile No Already Exist.');
-                return redirect()->back();
+        try {
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $folder = 'picture/user';
+                $customName = 'user-'.time();
+                $input['picture'] = uploadFile($file, $folder, $customName);
+            } else {
+                $input['picture'] = 'no-image.png';
             }
+
+            if ($request->hasFile('signature')) {
+                $file = $request->file('signature');
+                $folder = 'images/signature';
+                $customName = 'signature-'.time();
+                $input['signature'] = uploadFile($file, $folder, $customName);
+            } else {
+                $input['signature'] = 'no-image.png';
+            }
+
+            $input['password'] = bcrypt($request->input('password', '12345678'));
+
+            if ($request->filled('mobile_no')) {
+                $input['username'] = $request->mobile_no;
+                $user = User::where('username', $request->mobile_no)->first();
+                if ($user) {
+                    Flash::error('Mobile No Already Exist.');
+                    return redirect()->back();
+                }
+            }
+
+            $input['group_id'] = $request->user_role;
+
+            /** @var User $users */
+            $users = User::create($input);
+
+            Flash::success('User saved successfully.');
+        } catch (\Exception $e) {
+            Flash::error($e->getMessage());
         }
-
-        $input['group_id'] = $request->user_role;
-
-
-
-        /** @var User $users */
-        $users = User::create($input);
-
-
-        Flash::success('User saved successfully.');
 
         return redirect(route('users.index'));
     }

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Registration</title>
+    <title>{{ __('messages.registration') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" />
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -156,7 +156,7 @@
             <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
         <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px;cursor: pointer;">
-            <span class="text-center" style="font-weight: 650;font-size: 19px;">প্রযোজক রেজিস্ট্রেশন ফর্ম</span>
+            <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ __('messages.producer_registration_form') }}</span>
         </div>
 
         <form action="{{ route('producers_register') }}" method="POST" enctype="multipart/form-data">
@@ -166,30 +166,30 @@
 
                     <!-- Organization Info -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">প্রতিষ্ঠানের তথ্য</legend>
+                        <legend class="w-auto">{{ __('messages.organization_information') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
-                                {!! Form::label('organization_name', 'প্রতিষ্ঠানের নাম') !!}
+                                {!! Form::label('organization_name', __('messages.organization_name')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('organization_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-2">
-                                {!! Form::label('address', 'ঠিকানা') !!}
+                                {!! Form::label('address', __('messages.address')) !!}
                                  <span class="text-danger">*</span>
                                 {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!} 
                             </div>
                             <div class="col-md-2">
-                                {!! Form::label('phone_number', 'ফোন নম্বর') !!}
+                                {!! Form::label('phone_number', __('messages.phone_number')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('phone_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-2">
-                                {!! Form::label('email', 'ই-মেইল') !!}
+                                {!! Form::label('email', __('messages.email')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::email('email', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-2">
-                                {!! Form::label('password', 'পাসওয়ার্ড') !!}
+                                {!! Form::label('password', __('messages.password_label')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('password', null, ['required','style="border: 1px solid #8dc641;border-radius: 4px;padding: 4px;"']) !!}
                             </div>
@@ -198,25 +198,25 @@
 
                     <!-- Bank Details -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">ব্যাংক সংক্রান্ত তথ্য</legend>
+                        <legend class="w-auto">{{ __('messages.bank_related_information') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
-                                {!! Form::label('bank_name', 'ব্যাংকের নাম') !!}
+                                {!! Form::label('bank_name', __('messages.bank_name')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('bank_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('bank_branch', 'শাখা') !!}
+                                {!! Form::label('bank_branch', __('messages.branch')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('bank_branch', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('bank_account_number', 'একাউন্ট নম্বর') !!}
+                                {!! Form::label('bank_account_number', __('messages.account_number')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('bank_account_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('bank_attachment', 'সংযুক্তি') !!}
+                                {!! Form::label('bank_attachment', __('messages.attachment')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::file('bank_attachment', ['class' => 'form-control', 'required']) !!}
                             </div>
@@ -225,23 +225,23 @@
 
                     <!-- Tax Info -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">কর সংক্রান্ত তথ্য</legend>
+                        <legend class="w-auto">{{ __('messages.tax_related_information') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
-                                {!! Form::label('tin_number', 'টিআইএন নম্বর') !!}
+                                {!! Form::label('tin_number', __('messages.tin_number')) !!}
                                 {!! Form::text('tin_number', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('tin_attachment', 'টিআইএন সংযুক্তি') !!}
+                                {!! Form::label('tin_attachment', __('messages.tin_attachment')) !!}
                                 {!! Form::file('tin_attachment', ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('vat_registration_number', 'ভ্যাট রেজিস্ট্রেশন নম্বর') !!}
+                                {!! Form::label('vat_registration_number', __('messages.vat_registration_number')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::number('vat_registration_number', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('vat_attachment', 'ভ্যাট সংযুক্তি') !!}
+                                {!! Form::label('vat_attachment', __('messages.vat_attachment')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::file('vat_attachment', ['class' => 'form-control']) !!}
                             </div>
@@ -250,18 +250,18 @@
 
                     <!-- Trade License -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">ট্রেড লাইসেন্স</legend>
+                        <legend class="w-auto">{{ __('messages.trade_license') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
-                                {!! Form::label('trade_license', 'ট্রেড লাইসেন্স নম্বর') !!}
+                                {!! Form::label('trade_license', __('messages.trade_license_number')) !!}
                                 {!! Form::text('trade_license', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('trade_license_validity_date', 'বৈধতার তারিখ') !!}
+                                {!! Form::label('trade_license_validity_date', __('messages.validity_date')) !!}
                                 {!! Form::date('trade_license_validity_date', null, ['class' => 'form-control date']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('trade_license_attachment', 'সংযুক্তি') !!}
+                                {!! Form::label('trade_license_attachment', __('messages.attachment')) !!}
                                 {!! Form::file('trade_license_attachment', ['class' => 'form-control']) !!}
                             </div>
                         </div>
@@ -269,25 +269,25 @@
 
                     <!-- Nominee Info -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">নমিনির তথ্য</legend>
+                        <legend class="w-auto">{{ __('messages.nominee_information') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
-                                {!! Form::label('nominee_name', 'নাম') !!}
+                                {!! Form::label('nominee_name', __('messages.name')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('nominee_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('nominee_relation', 'সম্পর্ক') !!}
+                                {!! Form::label('nominee_relation', __('messages.relation')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('nominee_relation', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('nominee_nid', 'এনআইডি') !!}
+                                {!! Form::label('nominee_nid', __('messages.nid')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('nominee_nid', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('nominee_photo', 'ছবি') !!}
+                                {!! Form::label('nominee_photo', __('messages.photo')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::file('nominee_photo', ['class' => 'form-control', 'required']) !!}
                             </div>
@@ -296,23 +296,23 @@
 
                     <!-- Business Agreements -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">ব্যবসায়িক চুক্তি</legend>
+                        <legend class="w-auto">{{ __('messages.business_agreements') }}</legend>
                         <div class="row">
                             @foreach (['partnership', 'ltd_company', 'somobay', 'other'] as $type)
                                 <div class="col-md-12" style="padding: 15px;">
                                     {!! Form::label("{$type}_agreement", [
-                                        'partnership' => '(ক) যৌথ মালিকানাধীন ফার্ম হলে রেজিস্টার্ড পার্টনারশীপ ডীড এর সত্যায়িত ফটোকপি সংযুক্ত করতে হবে।',
-                                        'ltd_company' => '(খ) লিমিটেড কোম্পানি হলে সার্টিফিকেট অব ইনকর্পোরেশন, মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন এবং কোম্পানীর রেজুলেশন সংযুক্ত করতে হবে।',
-                                        'somobay' => '(গ) সমবায় সমিতি হলে মেমোরেন্ডাম ও আর্টিকেলস অব এসোসিয়েশন, সমবায় সমিতি অধিদপ্তরের সার্টিফিকেট এবং সমিতির রেজুলেশন সংযুক্ত করতে হবে।',
-                                        'other' => '(ঘ) অন্যান্য'
+                                        'partnership' => __('messages.partnership_deed_copy'),
+                                        'ltd_company' => __('messages.limited_company_info'),
+                                        'somobay' => __('messages.cooperative_society_info'),
+                                        'other' => __('messages.others')
                                     ][$type]) !!}
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>নাম</th>
-                                                <th>সংযুক্তি</th>
+                                                <th>{{ __('messages.name') }}</th>
+                                                <th>{{ __('messages.attachment') }}</th>
                                                 <td>
-                                                    <span href="#" class="btn btn-success add-row" data-type="{{ $type }}">নতুন করুন</span>
+                                                    <span href="#" class="btn btn-success add-row" data-type="{{ $type }}">{{ __('messages.add_new') }}</span>
                                                 </td>
                                             </tr>
                                         </thead>
@@ -325,7 +325,7 @@
                                                     {!! Form::file("{$type}_attachment[]", ['class' => 'form-control']) !!}
                                                 </td>
                                                 <td>
-                                                    <span class="btn btn-danger remove-row">মুছে ফেলুন</span>
+                                                    <span class="btn btn-danger remove-row">{{ __('messages.delete') }}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -342,9 +342,9 @@
             const tableBody = this.closest('table').querySelector('tbody');
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td><input type="text" name="${type}_name" class="form-control"></td>
-                <td><input type="file" name="${type}_attachment" class="form-control"></td>
-                <td><span class="btn btn-danger remove-row">মুছে ফেলুন</span></td>
+                <td><input type="text" name="${type}_name[]" class="form-control"></td>
+                <td><input type="file" name="${type}_attachment[]" class="form-control"></td>
+                <td><span class="btn btn-danger remove-row">{{ __('messages.delete') }}</span></td>
             `;
             tableBody.appendChild(newRow);
         });
@@ -359,9 +359,9 @@
 
                     <!-- Submit Buttons -->
                     <div class="col-md-12 text-end mt-3" style="text-align-last: right;">
-                        <a href="{{ route('login') }}" class="btn btn-danger">বাতিল</a>&nbsp;
-                        <button type="reset" class="btn btn-secondary">রিসেট</button>&nbsp;
-                        <button type="submit" class="btn btn-primary">জমা দিন</button>
+                        <a href="{{ route('login') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>&nbsp;
+                        <button type="reset" class="btn btn-secondary">{{ __('messages.reset') }}</button>&nbsp;
+                        <button type="submit" class="btn btn-primary">{{ __('messages.submit') }}</button>
                     </div>
 
                 </div>
@@ -369,8 +369,8 @@
         </form>
 
         <div class="login-footer">
-            <span>কপিরাইট © ২০২৫ <strong>বাংলাদেশ চলচ্চিত্র উন্নয়ন করপোরেশন - বিএফডিসি</strong></span>
-            <span>উন্নয়নে: <strong><a href="https://mysoftheaven.com">Mysoftheaven (BD) Ltd.</a></strong></span>
+            <span>{{ __('messages.copyright_bfdc') }}</span>
+            <span>{{ __('messages.developed_by') }}: <strong><a href="https://mysoftheaven.com">Mysoftheaven (BD) Ltd.</a></strong></span>
         </div>
     </div>
 </body>

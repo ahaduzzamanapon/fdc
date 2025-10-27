@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-প্রযোজক @parent
+প্রযোজক {{ __('messages.producer') }} @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Producers</h1>
+        <h1>{{ __('messages.producers') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -23,9 +23,9 @@
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">প্রযোজক</h5>
+            <h5 class="card-title d-inline">{{ __('messages.producer') }}</h5>
             <span class="float-right">
-                {{-- <a class="btn btn-primary pull-right" href="{{ route('producers.create') }}">নতুন যোগ করুন</a> --}}
+                {{--                 <a class="btn btn-primary pull-right" href="{{ route('producers.create') }}">{{ __('messages.add_new') }}</a> --}}
             </span>
         </section>
         <div class="card-body table-responsive" >

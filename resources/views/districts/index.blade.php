@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-Districts @parent
+Districts {{ __('messages.districts') }} @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div aria-label="breadcrumb" class="card-breadcrumb">
-        <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">Dashboard</a> > Districts </h5>
+        <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">{{ __('messages.dashboard') }}</a> > {{ __('messages.districts') }} </h5>
     </div>
     <div class="separator-breadcrumb border-top"></div>
 </section>
@@ -24,9 +24,9 @@ Districts @parent
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">Districts</h5>
+            <h5 class="card-title d-inline">{{ __('messages.districts') }}</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('districts.create') }}">নতুন যোগ করুন</a>
+                <a class="btn btn-primary pull-right" href="{{ route('districts.create') }}">{{ __('messages.add_new') }}</a>
             </span>
         </section>
         <div class="card-body table-responsive" >

@@ -1,7 +1,7 @@
 @extends('layouts.ager.default')
 {{-- Page title --}}
 @section('title')
-Crud Builder @parent
+Crud Builder {{ __('messages.crud_builder') }} @parent
 @stop
 {{-- page level styles --}}
 @section('header_styles')
@@ -42,7 +42,7 @@ Crud Builder @parent
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Crud Generator</h1>
+        <h1>{{ __('messages.crud_generator') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -53,7 +53,7 @@ Crud Builder @parent
             <div id="info" style="display: none"></div>
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title d-inline">Crud Generator</h5>
+                    <h5 class="card-title d-inline">{{ __('messages.crud_generator') }}</h5>
                     <span class="float-right">
                         <i class="fa fa-chevron-up clickable"></i>
                         <i class="fa fa-times removepanel clickable"></i>
@@ -65,21 +65,21 @@ Crud Builder @parent
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-4">
-                                <label for="txtModelName">Model Name<span class="required">*</span></label>
-                                <input type="text" class="form-control" required id="txtModelName" placeholder="Enter name" pattern="[a-zA-Z0-9]+">
+                                <label for="txtModelName">{{ __('messages.model_name') }}<span class="required">*</span></label>
+                                <input type="text" class="form-control" required id="txtModelName" placeholder="{{ __('messages.enter_name') }}" pattern="[a-zA-Z0-9]+">
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="drdCommandType">Command Type</label>
+                                <label for="drdCommandType">{{ __('messages.command_type') }}</label>
                                 <select id="drdCommandType" class="form-control" style="width: 100%">
-                                    <option value="infyom:api_scaffold">API Scaffold Generator</option>
-                                    <option value="infyom:api">API Generator</option>
-                                    <option value="infyom:scaffold">Scaffold Generator</option>
+                                    <option value="infyom:api_scaffold">{{ __('messages.api_scaffold_generator') }}</option>
+                                    <option value="infyom:api">{{ __('messages.api_generator') }}</option>
+                                    <option value="infyom:scaffold">{{ __('messages.scaffold_generator') }}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="txtCustomTblName">Custom Table Name</label>
+                                <label for="txtCustomTblName">{{ __('messages.custom_table_name') }}</label>
                                 <input type="text" class="form-control" id="txtCustomTblName"
-                                    placeholder="Enter table name">
+                                    placeholder="{{ __('messages.enter_table_name') }}">
                                 <small class="text-danger"></small>
 
 
@@ -87,64 +87,62 @@ Crud Builder @parent
                         </div>
                         <div class="row">
                             <div class="form-group col-md-8 col-sm-12">
-                                <label for="txtModelName">Options</label>
+                                <label for="txtModelName">{{ __('messages.options') }}</label>
 
                                 <div class="form-inline form-group" style="border-color: transparent">
                                     <div class="checkbox chk-align">
                                         <label>
                                             <input type="checkbox" class="flat-red" id="chkDelete">
-                                            <span class="chk-label-margin">Soft Delete </span>
+                                            <span class="chk-label-margin">{{ __('messages.soft_delete') }} </span>
                                         </label>
                                     </div>
                                     <div class="checkbox chk-align">
                                         <label>
                                             <input type="checkbox" class="flat-red" id="chkSave">
-                                            <span class="chk-label-margin">Save Schema</span>
+                                            <span class="chk-label-margin">{{ __('messages.save_schema') }}</span>
                                         </label>
                                     </div>
                                     <div class="checkbox chk-align" id="chTest">
                                         <label>
                                             <input type="checkbox" class="flat-red" id="chkTestCases">
-                                            <span class="chk-label-margin">Test Cases</span>
+                                            <span class="chk-label-margin">{{ __('messages.test_cases') }}</span>
                                         </label>
                                     </div>
                                     <div class="checkbox chk-align" id="chDataTable">
                                         <label>
                                             <input type="checkbox" class="flat-red" id="chkDataTable">
-                                            <span class="chk-label-margin">Datatables</span>
+                                            <span class="chk-label-margin">{{ __('messages.datatables') }}</span>
                                         </label>
                                     </div>
                                     <div class="checkbox chk-align" id="chMigration">
                                         <label>
                                             <input type="checkbox" class="flat-red" id="chkMigration" checked>
-                                            <span class="chk-label-margin">Migration</span>
+                                            <span class="chk-label-margin">{{ __('messages.migration') }}</span>
                                         </label>
                                     </div>
                                     <div class="checkbox chk-align" id="chForceMigrate">
                                         <label>
                                             <input type="checkbox" class="flat-red" id="chkForceMigrate" checked>
-                                            <span class="chk-label-margin">Migrate</span>
+                                            <span class="chk-label-margin">{{ __('messages.migrate') }}</span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label for="txtPaginate">Paginate</label>
+                                <label for="txtPaginate">{{ __('messages.paginate') }}</label>
                                 <input type="number" class="form-control" value="10" id="txtPaginate" placeholder="">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-md-12" style="margin-top: 7px">
-                                <h5>Fields</h5>
+                                <h5>{{ __('messages.fields') }}</h5>
                                 <div class="alert alert-success alert-dismissible" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    The Primary key <code>id</code> and timestamps <code>created_at</code> and
-                                    <code>updated_at</code>
-                                    will be created automatically!
+                                    {{ __('messages.primary_key_info') }}
                                 </div>
                             </div>
                         </div>
@@ -154,10 +152,10 @@ Crud Builder @parent
                                 <table class="table table-striped table-bordered" id="fieldsTable">
                                     <thead class="no-border">
                                         <tr>
-                                            <th>Field Name</th>
-                                            <th>DB Type</th>
-                                            <th>Validations</th>
-                                            <th>Html Type</th>
+                                            <th>{{ __('messages.field_name') }}</th>
+                                            <th>{{ __('messages.db_type') }}</th>
+                                            <th>{{ __('messages.validations') }}</th>
+                                            <th>{{ __('messages.html_type') }}</th>
                                             <th>Options</th>
                                             <th></th>
                                         </tr>
@@ -172,8 +170,7 @@ Crud Builder @parent
                         <div class="row">
                             <div class="form-inline col-md-12" style="padding-top: 10px">
                                 <div class="form-group chk-align" style="border-color: transparent;">
-                                    <button type="button" class="btn btn-success btn-flat btn-green" id="btnAdd"> Add
-                                        Field
+                                    <button type="button" class="btn btn-success btn-flat btn-green" id="btnAdd"> {{ __('messages.add_field') }}
                                     </button>
                                 </div>
                             </div>
@@ -183,10 +180,10 @@ Crud Builder @parent
                                 <table class="table table-striped table-bordered" id="relationTable">
                                     <thead class="no-border">
                                         <tr>
-                                            <th>Relation Type</th>
-                                            <th>Foreign Model<span class="required">*</span></th>
-                                            <th>Foreign Key</th>
-                                            <th>Local Key</th>
+                                            <th>{{ __('messages.relation_type') }}</th>
+                                            <th>{{ __('messages.foreign_model') }}<span class="required">*</span></th>
+                                            <th>{{ __('messages.foreign_key') }}</th>
+                                            <th>{{ __('messages.local_key') }}</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -199,8 +196,7 @@ Crud Builder @parent
                                 <div class="form-group" style="border-color: transparent;">
                                     <button type="button" class="btn btn-success btn-flat btn-green"
                                         id="btnRelationShip">
-                                        Add
-                                        RelationShip
+                                        {{ __('messages.add_relationship') }}
                                     </button>
                                 </div>
                             </div>
@@ -210,12 +206,12 @@ Crud Builder @parent
                             <div class="form-inline col-md-12" style="padding:15px 15px;text-align: right">
                                 <div class="form-group" style="border-color: transparent;padding-left: 10px">
                                     <button type="submit" class="btn btn-flat btn-primary btn-blue"
-                                        id="btnGenerate">Generate
+                                        id="btnGenerate">{{ __('messages.generate') }}
                                     </button>
                                 </div>
                                 <div class="form-group" style="border-color: transparent;padding-left: 10px">
                                     <button type="button" class="btn btn-default btn-flat" id="btnReset"
-                                        data-toggle="modal" data-target="#confirm-delete"> Reset
+                                        data-toggle="modal" data-target="#confirm-delete"> {{ __('messages.reset') }}
                                     </button>
                                 </div>
                             </div>
@@ -230,21 +226,20 @@ Crud Builder @parent
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal"
                                             aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">Confirm Reset</h4>
+                                        <h4 class="modal-title" id="myModalLabel">{{ __('messages.confirm_reset') }}</h4>
                                     </div>
 
                                     <div class="modal-body">
-                                        <p style="font-size: 16px">This will reset all of your fields. Do you want to
-                                            proceed?</p>
+                                        <p style="font-size: 16px">{{ __('messages.reset_fields_confirmation') }}</p>
 
                                         <p class="debug-url"></p>
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">No
+                                        <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">{{ __('messages.no') }}
                                         </button>
                                         <a id="btnModelReset" class="btn btn-flat btn-danger btn-ok"
-                                            data-dismiss="modal">Yes</a>
+                                            data-dismiss="modal">{{ __('messages.yes') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -264,7 +259,7 @@ Crud Builder @parent
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-danger text-white">
-                    <h5 class="card-title d-inline">Rollback</h5>
+                    <h5 class="card-title d-inline">{{ __('messages.rollback') }}</h5>
                     <span class="float-right">
                         <i class="fa fa-chevron-up clickable"></i>
                         <i class="fa fa-times removepanel clickable"></i>
@@ -275,26 +270,26 @@ Crud Builder @parent
                         <input type="hidden" name="_token" id="rbToken" value="{!! csrf_token() !!}" />
 
                         <div class="form-group col-md-4">
-                            <label for="txtRBModelName">Model Name<span class="required">*</span></label>
+                            <label for="txtRBModelName">{{ __('messages.model_name') }}<span class="required">*</span></label>
                             <input type="text" class="form-control" required id="txtRBModelName"
-                                placeholder="Enter name">
+                                placeholder="{{ __('messages.enter_name') }}">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="drdRBCommandType">Command Type</label>
+                            <label for="drdRBCommandType">{{ __('messages.command_type') }}</label>
                             <select id="drdRBCommandType" class="form-control" style="width: 100%">
-                                <option value="api_scaffold">API Scaffold Generator</option>
-                                <option value="api">API Generator</option>
-                                <option value="scaffold">Scaffold Generator</option>
+                                <option value="api_scaffold">{{ __('messages.api_scaffold_generator') }}</option>
+                                <option value="api">{{ __('messages.api_generator') }}</option>
+                                <option value="scaffold">{{ __('messages.scaffold_generator') }}</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="txtRBPrefix">Prefix</label>
-                            <input type="text" class="form-control" id="txtRBPrefix" placeholder="Enter prefix">
+                            <label for="txtRBPrefix">{{ __('messages.prefix') }}</label>
+                            <input type="text" class="form-control" id="txtRBPrefix" placeholder="{{ __('messages.enter_prefix') }}">
                         </div>
                         <div class="form-inline col-md-12" style="padding:15px 15px;text-align: right">
                             <div class="form-group" style="border-color: transparent;padding-left: 10px">
                                 <button type="submit" class="btn btn-flat btn-primary btn-blue"
-                                    id="btnRollback">Rollback
+                                    id="btnRollback">{{ __('messages.rollback') }}
                                 </button>
                             </div>
                         </div>
@@ -312,7 +307,7 @@ Crud Builder @parent
             <div id="schemaInfo" style="display: none"></div>
             <div class="card">
                 <div class="card-header bg-success text-white">
-                    <h5 class="card-title d-inline">Generate CRUD From Schema</h5>
+                    <h5 class="card-title d-inline">{{ __('messages.generate_crud_from_schema') }}</h5>
                     <span class="float-right">
                         <i class="fa fa-chevron-up clickable"></i>
                         <i class="fa fa-times removepanel clickable"></i>
@@ -322,26 +317,26 @@ Crud Builder @parent
                     <form method="post" id="schemaForm" enctype="multipart/form-data">
                         <input type="hidden" name="_token" id="smToken" value="{!! csrf_token() !!}" />
                         <div class="form-group col-md-4">
-                            <label for="txtSmModelName">Model Name<span class="required">*</span></label>
+                            <label for="txtSmModelName">{{ __('messages.model_name') }}<span class="required">*</span></label>
                             <input type="text" name="modelName" class="form-control" id="txtSmModelName"
-                                placeholder="Enter Model Name">
+                                placeholder="{{ __('messages.enter_name') }}">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="schemaFile">Schema File<span class="required">*</span></label>
+                            <label for="schemaFile">{{ __('messages.schema_file') }}<span class="required">*</span></label>
                             <input type="file" name="schemaFile" class="form-control" required id="schemaFile">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="drdSmCommandType">Command Type</label>
+                            <label for="drdSmCommandType">{{ __('messages.command_type') }}</label>
                             <select name="commandType" id="drdSmCommandType" class="form-control" style="width: 100%">
-                                <option value="infyom:api_scaffold">API Scaffold Generator</option>
-                                <option value="infyom:api">API Generator</option>
-                                <option value="infyom:scaffold">Scaffold Generator</option>
+                                <option value="infyom:api_scaffold">{{ __('messages.api_scaffold_generator') }}</option>
+                                <option value="infyom:api">{{ __('messages.api_generator') }}</option>
+                                <option value="infyom:scaffold">{{ __('messages.scaffold_generator') }}</option>
                             </select>
                         </div>
                         <div class="form-inline col-md-12" style="padding:15px 15px;text-align: right">
                             <div class="form-group" style="border-color: transparent;padding-left: 10px">
                                 <button type="submit" class="btn btn-flat btn-primary btn-blue"
-                                    id="btnSmGenerate">Generate
+                                    id="btnSmGenerate">{{ __('messages.generate') }}
                                 </button>
                             </div>
                         </div>
@@ -385,7 +380,8 @@ Crud Builder @parent
                 {
                     return document.getElementById('txtCustomTblName').nextElementSibling.innerHTML = '';
                 }
-                return document.getElementById('txtCustomTblName').nextElementSibling.innerHTML = 'a table with that name already exists!';
+                                }
+                return document.getElementById('txtCustomTblName').nextElementSibling.innerHTML = '{{ __('messages.table_name_exists') }}';
             }
         });
     }
@@ -434,7 +430,7 @@ Crud Builder @parent
         {
             e.target.classList.add('is-invalid');
             setButtonStatus(false);
-            return e.target.nextElementSibling.nextElementSibling.innerHTML = `<strong>${e.target.value}</strong> will be created automatically`;
+            return e.target.nextElementSibling.nextElementSibling.innerHTML = `<strong>${e.target.value}</strong> {{ __('messages.field_created_automatically') }}`;
         }
         let fields = [];
         nodeList.forEach(node => fields.push( node.value));
@@ -442,7 +438,7 @@ Crud Builder @parent
         if (hasDuplicates(fields)) {
             e.target.classList.add('is-invalid');
             setButtonStatus(false);
-            e.target.nextElementSibling.nextElementSibling.innerHTML = "Another field with that name already exists";
+            e.target.nextElementSibling.nextElementSibling.innerHTML = "{{ __('messages.duplicate_field_name') }}";
 
         }
         else {
@@ -654,7 +650,7 @@ Crud Builder @parent
                         }
 
                         $("#info").html("");
-                        $("#info").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Fail! </strong>' + errorMessage + '</div>');
+                        $("#info").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>{{ __('messages.fail') }} </strong>' + errorMessage + '</div>');
                         $("#info").show();
                         var $container = $("html,body");
                         var $scrollTo = $('#info');
@@ -723,7 +719,7 @@ Crud Builder @parent
                 var ext = $(this).val().split('.').pop().toLowerCase();
                 if (ext !== 'json') {
                     $("#schemaInfo").html("");
-                    $("#schemaInfo").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Schema file must be json</strong></div>');
+                    $("#schemaInfo").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>{{ __('messages.schema_file_must_be_json') }}</strong></div>');
                     $("#schemaInfo").show();
                     $(this).replaceWith($(this).val('').clone(true));
                     setTimeout(function () {

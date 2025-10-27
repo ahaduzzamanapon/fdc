@@ -2,17 +2,17 @@
     $(document).ready(function() {
         var table = $('.table_data').DataTable({
             "language": {
-                "lengthMenu": "দেখুন _MENU_ ডাটা",
-                "zeroRecords": "কোনো ডাটা পাওয়া যায়নি",
-                "info": " _PAGE_ এর মধ্যে _PAGES_ পেজ",
-                "infoEmpty": "কোনো ডাটা পাওয়া যায়নি",
+                "lengthMenu": "{{ __('messages.show_menu_data') }}",
+                "zeroRecords": "{{ __('messages.no_data_found') }}",
+                "info": "{{ __('messages.page_of_pages') }}",
+                "infoEmpty": "{{ __('messages.no_data_found') }}",
                 "infoFiltered": "( _MAX_   )",
-                "search": "অনুসন্ধান",
+                "search": "{{ __('messages.search') }}",
                 "paginate": {
-                    "first": "প্রথম",
-                    "last": "শেষ",
-                    "next": "পরবর্তী",
-                    "previous": "পূর্ববর্তী"
+                    "first": "{{ __('messages.first') }}",
+                    "last": "{{ __('messages.last') }}",
+                    "next": "{{ __('messages.next') }}",
+                    "previous": "{{ __('messages.previous') }}"
                 }
             }
         });

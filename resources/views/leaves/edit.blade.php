@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-Leave @parent
+Leave {{ __('messages.leave') }} @parent
 @stop
 
 @section('content')
    <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Edit') }} Leave</h1>
+        <h1>{{ __('messages.edit') }} {{ __('messages.leave') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>

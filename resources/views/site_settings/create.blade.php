@@ -2,13 +2,13 @@
 
 {{-- Page title --}}
 @section('title')
-Site Settings @parent
+Site Settings {{ __('messages.site_settings') }} @parent
 @stop
 
 @section('content')
     <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('Create New') }} Site Settings</h1>
+        <h1>{{ __('messages.create_new') }} {{ __('messages.site_settings') }}</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
     </section>
