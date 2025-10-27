@@ -16,6 +16,7 @@ class CreateLeavesTable extends Migration
         Schema::create('leaves', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id');
+            $table->integer('dpt_id');
             $table->date('from_date');
             $table->date('to_date');
             $table->integer('total_day');
@@ -24,6 +25,7 @@ class CreateLeavesTable extends Migration
             $table->integer('approved_total_day');
             $table->text('remark');
             $table->text('status');
+            $table->integer('dpt_head_id');
             $table->integer('approver_id');
             $table->text('approver_remark');
             $table->timestamps();

@@ -25,6 +25,7 @@ class Leave extends Model
     public $table = 'leaves';
     public $fillable = [
         'employee_id',
+        'dpt_id',
         'from_date',
         'to_date',
         'total_day',
@@ -34,6 +35,7 @@ class Leave extends Model
         'remark',
         'status',
         'leave_type',
+        'dpt_head_id',
         'approver_id',
         'approver_remark'
     ];
@@ -54,7 +56,7 @@ class Leave extends Model
         'approved_total_day' => 'integer',
         'remark' => 'string',
         'status' => 'string',
-        'leave_type' => 'integer',
+        'leave_type' => 'string',
         'approver_id' => 'integer',
         'approver_remark' => 'string'
     ];
