@@ -125,15 +125,6 @@
                         </a>
                     </li>
                 @endif
-                @if (can('leave_apporved_rejected_list'))
-                    <li class="nav-item">
-                        <a class="nav-link {!! Request::is('leave-apporved-rejected-list') ? 'active' : '' !!}" href="{{ route('leaves.app.reject.list') }}">
-                            <i class="icon im im-icon-Settings-Window"></i>
-                            <i class="sidenav-mini-icon"> ছু আ তা</i>
-                            <span class="item-name">ছুটি অনুমোদন/বাতিল</span>
-                        </a>
-                    </li>
-                @endif
             </ul>
         </li>
     @endif

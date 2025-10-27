@@ -6,12 +6,9 @@ use App\Http\Requests\CreateLeaveRequest;
 use App\Http\Requests\UpdateLeaveRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Leave;
-use App\Models\LeaveType;
 use Illuminate\Http\Request;
 use Flash;
-use Auth;
 use Response;
-use Carbon\Carbon;
 
 class LeaveController extends AppBaseController
 {
@@ -25,23 +22,16 @@ class LeaveController extends AppBaseController
     public function index(Request $request)
     {
         /** @var Leave $leaves */
-
         $leaves = Leave::select('leaves.*', 'users.name_bn as user_name')
             ->join('users', 'leaves.employee_id', '=', 'users.id')
             ->get();
-        $data = [
-            'leaves'=> $leaves,
-            'total_leaves'=>LeaveType::all(),
-            'sl_leaves'=>Leave::selectRaw('sum(total_day) as total_days')->where('leave_type', 1)->where('status',3)->where('employee_id',Auth::user()->id)->get(),
-            'cl_leaves'=>Leave::selectRaw('sum(total_day) as total_days')->where('leave_type', 2)->where('status',3)->where('employee_id',Auth::user()->id)->get(),
-        ];
-        // dd($data['sl_leaves'][0]->total_days);
-        return view('leaves.index',$data);
+        return view('leaves.index')
+            ->with('leaves', $leaves);
     }
     public function applyLeaveList(Request $request)
     {
 
-        $leaves = Leave::select('leaves.*','leaves.id as leave_id', 'users.*')->join('users', 'leaves.employee_id', '=', 'users.id')->get();
+        $leaves = Leave::select('leaves.*', 'users.*')->join('users', 'leaves.employee_id', '=', 'users.id')->get();
         return view('leaves.leave_apply_list')->with('leaves', $leaves);
     }
 
@@ -64,45 +54,22 @@ class LeaveController extends AppBaseController
      */
     public function store(CreateLeaveRequest $request)
     {
+        // dd($request->all());
         $input = $request->all();
-
-        // default to current user if none passed
-        if (empty($input['employee_id'])) {
-            $input['employee_id'] = auth()->id();
+        if(!isset($input['employee_id']) || empty($input['employee_id'])) {
+            $input['employee_id'] = auth()->user()->id;
         }
-
-        // parse dates through Carbon so you’re guaranteed proper format
-        $from = Carbon::createFromFormat('d-m-Y', $input['from_date'])->startOfDay();
-        $to   = Carbon::createFromFormat('d-m-Y', $input['to_date'])->endOfDay();
-
-
-        // 1) does any existing leave for this employee overlap?
-        $overlap = Leave::where('employee_id', $input['employee_id'])
-            ->where(function($q) use ($from, $to) {
-                $q->whereBetween('from_date', [$from, $to])
-                  ->orWhereBetween('to_date',   [$from, $to])
-                  ->orWhere(function($q2) use ($from, $to) {
-                    $q2->where('from_date', '<=', $from)
-                    ->where('to_date',   '>=', $to);
-                  });
-            })->exists();
-
-        if ($overlap) {
-            Flash::error('দুঃখিত, এই সময়ের মধ্যে ইতিমধ্যে ছুটি রেজিস্ট্রেশন করা আছে।');
-            return redirect()->back();
-        }
-
-        // 2) if no overlap, fill in your approved_* fields and create
-        $input['approved_from_date'] = $from->toDateString();
-        $input['approved_to_date']   = $to->toDateString();
+        $input['approved_from_date'] = $input['from_date'];
+        $input['approved_to_date']   = $input['to_date'];
         $input['approved_total_day'] = $input['total_day'];
-        $input['leave_type']         = $input['leave_type'];
         $input['approver_id']        = null;
 
-        Leave::create($input);
+        /** @var Leave $leave */
+        $leave = Leave::create($input);
 
         Flash::success('ছুটি সফলভাবে সংরক্ষিত হয়েছে');
-        return redirect()->route('leaves.index');
+
+        return redirect(route('leaves.index'));
     }
 
     /**
@@ -168,7 +135,6 @@ class LeaveController extends AppBaseController
         $input['approved_from_date'] = $input['from_date'];
         $input['approved_to_date'] = $input['to_date'];
         $input['approved_total_day'] = $input['total_day'];
-        $input['leave_type']         = $input['leave_type'];
 
         $leave->fill($input);
         $leave->save();
@@ -203,7 +169,6 @@ class LeaveController extends AppBaseController
     public function forwardToDeptHead($id)
     {
         $leave = Leave::find($id);
-        // dd($leave);
         if (!$leave) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect()->back();
@@ -218,9 +183,7 @@ class LeaveController extends AppBaseController
 
     public function forwardToMd($id)
     {
-        // dd($id);
         $leave = Leave::find($id);
-
         if (!$leave) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect()->back();

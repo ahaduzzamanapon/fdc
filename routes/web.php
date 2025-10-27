@@ -97,14 +97,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('profile', ProfileController::class);
 
-    // leave action
+    // leave action Dept Head / MD
     Route::get('leave-apply-list', 'LeaveController@applyLeaveList')->name('leaves.apply.leave.list');
+    Route::get('/forward-to-dept-head/{id}', 'LeaveController@forwardToDeptHead')->name('forward.to.dept.head');
     Route::get('/forward-to-md/{id}', 'LeaveController@forwardToMd')->name('forward.to.md');
+    Route::get('/forward-to-director-finance/{id}', 'LeaveController@forwardToDirectorFinance')->name('forward.to.director.finance');
     Route::get('/leave-approved/{id}', 'LeaveController@leaveApproved')->name('leaves.approved');
     Route::get('/leave-rejected/{id}', 'LeaveController@leaveRejected')->name('leaves.rejected');
-    Route::get('leave-apporved-rejected-list', 'LeaveController@leaveApprovedRejectedList')->name('leaves.app.reject.list');
-    Route::post('/get-employee-by-dept', 'LeaveController@getEmpByDept')->name('leaves.get_emp_by_dept');
-    Route::post('/forward-to-dept-emp', 'LeaveController@forwardToDeptEmp')->name('leaves.forward.to.dept.emp');
     // end leave action .....
 
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
@@ -119,7 +118,12 @@ Route::get('{name?}', 'JoshController@showView');
 
 
 Route::post('/producers_register', [ProducerController::class, 'producers_register'])->name('producers_register');
+
+
+
 Route::post('/producers_login', [ProducerController::class, 'producers_login'])->name('producers_login');
+
+
 Route::group(["middleware" => []], function () {
     Route::prefix('producer')->controller(ProducerController::class)
         ->group(function () {

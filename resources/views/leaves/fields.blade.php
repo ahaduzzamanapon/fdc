@@ -20,7 +20,7 @@
 @if(Auth::user()->user_role == 1)
 <div class=" col-md-3">
     <div class="form-group">
-        {!! Form::label('employee_id', 'কর্মচারী', ['class' => 'control-label']) !!}
+        {!! Form::label('employee_id', __('messages.employee'), ['class' => 'control-label']) !!}
         {!! Form::select('employee_id', $employees, old('employee_id'), ['class' => 'form-control', 'autocomplete' => 'off', 'required']) !!}
         @error('employee_id')
             <span class="text-danger">{{ $message }}</span>
@@ -34,21 +34,21 @@
         <div class="col-md-3 d-flex align-items-center justify-content-between" style="margin-left: -15px">
             <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
                 <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
-                    <span>মোট ছুটি: {{$all_leaves->day}}</span>
+                    <span>{{ __('messages.total_leave') }} {{ $all_leaves->day }}</span>
                 </div>
             </div>
         </div>
         <div class="col-md-6 d-flex align-items-center justify-content-between">
             <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
                 <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
-                    <span>মোট ছুটি নেওয়া হয়েছে: {{ $leave_data['leave_taken'] }}</span>
+                    <span>{{ __('messages.total_leave_taken') }} {{ $leave_data['leave_taken'] }}</span>
                 </div>
             </div>
         </div>
         <div class="col-md-3 d-flex align-items-center justify-content-between">
             <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
                 <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
-                    <span>অবশিষ্ট ছুটি: {{( $all_leaves->day - $leave_data['leave_taken']) }}</span>
+                    <span>{{ __('messages.remaining_leave') }} {{ ( $all_leaves->day - $leave_data['leave_taken']) }}</span>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
 <!-- শুরুর তারিখ -->
 <div class="col-md-3">
     <div class="form-group">
-        {!! Form::label('from_date', 'শুরুর তারিখ', ['class' => 'control-label']) !!}
+        {!! Form::label('from_date', __('messages.start_date'), ['class' => 'control-label']) !!}
         {!! Form::date('from_date', isset($leave->from_date) ? date('Y-m-d', strtotime($leave->from_date)) : old('from_date'), ['class' => 'form-control date', 'autocomplete' => 'off', 'id' => 'from_date']) !!}
         @error('from_date')
             <span class="text-danger">{{ $message }}</span>
@@ -71,7 +71,7 @@
 <!-- শেষ তারিখ -->
 <div class="col-md-3">
     <div class="form-group">
-        {!! Form::label('to_date', 'শেষ তারিখ', ['class' => 'control-label']) !!}
+        {!! Form::label('to_date', __('messages.end_date'), ['class' => 'control-label']) !!}
         {!! Form::date('to_date', isset($leave->to_date) ? date('Y-m-d', strtotime($leave->to_date)) : old('to_date'), ['class' => 'form-control date', 'autocomplete' => 'off', 'id' => 'to_date']) !!}
         @error('to_date')
             <span class="text-danger">{{ $message }}</span>
@@ -82,7 +82,7 @@
 <!-- মোট দিন -->
 <div class="col-md-3">
     <div class="form-group">
-        {!! Form::label('total_day', 'মোট দিন', ['class' => 'control-label']) !!}
+        {!! Form::label('total_day', __('messages.total_days'), ['class' => 'control-label']) !!}
         {!! Form::text('total_day', old('total_day'), ['class' => 'form-control', 'autocomplete' => 'off', 'readonly' => true, 'id' => 'total_day']) !!}
         @error('total_day')
             <span class="text-danger">{{ $message }}</span>
@@ -93,8 +93,8 @@
 <!-- ছুটির ধরণ -->
 <div class="col-md-3">
     <div class="form-group">
-        {!! Form::label('leave_type', 'ছুটির ধরণ', ['class' => 'control-label']) !!}
-        {!! Form::select('leave_type', ['cl' => 'ক্যাসুয়াল ছুটি', 'sl' => 'সিক লিভ'], old('leave_type'), ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'leave_type', 'placeholder' => 'ছুটির ধরণ নির্বাচন করুন']) !!}
+        {!! Form::label('leave_type', __('messages.leave_type_label'), ['class' => 'control-label']) !!}
+        {!! Form::select('leave_type', [__('messages.casual_leave') => __('messages.casual_leave'), __('messages.sick_leave') => __('messages.sick_leave')], old('leave_type'), ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'leave_type', 'placeholder' => __('messages.select_leave_type')]) !!}
         @error('leave_type')
             <span class="text-danger">{{ $message }}</span>
         @enderror
@@ -104,7 +104,7 @@
 <!-- মন্তব্য -->
 <div class="col-md-12">
     <div class="form-group">
-        {!! Form::label('remark', 'মন্তব্য', ['class' => 'control-label']) !!}
+        {!! Form::label('remark', __('messages.remark'), ['class' => 'control-label']) !!}
         {!! Form::textarea('remark', old('remark'), ['class' => 'form-control', 'rows' => 5]) !!}
         @error('remark')
             <span class="text-danger">{{ $message }}</span>
@@ -118,11 +118,11 @@
     <a href="{{ route('leaves.approved', $leave->id) }}" class="btn btn-success">অনুমোদন করুন</a>
     @endif --}}
     @if(isset($leave) && $leave->employee_id != auth()->user()->id)
-        {!! Form::submit('সংরক্ষন করুন', ['class' => 'btn btn-primary']) !!}
+        {!! Form::submit(__('messages.save_button'), ['class' => 'btn btn-primary']) !!}
     @else
-        {!! Form::submit('আবেদন করুন', ['class' => 'btn btn-primary']) !!}
+        {!! Form::submit(__('messages.apply_button'), ['class' => 'btn btn-primary']) !!}
     @endif
-    <a href="{{ route('leaves.index') }}" class="btn btn-danger">বাতিল করুন</a>
+    <a href="{{ route('leaves.index') }}" class="btn btn-danger">{{ __('messages.cancel_button') }}</a>
 </div>
 
 @section('scripts')
