@@ -58,7 +58,7 @@ Leaves @parent
                                     @elseif($leave->status == 2)
                                         <span class="badge badge-warning"  style="font-size: 12px">{{ 'ডাইরেক্টর অনুমোদিত' }}</span>
                                     @elseif($leave->status == 3)
-                                        <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদন' }}</span>
+                                        <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদিত' }}</span>
                                     @elseif($leave->status == 4)
                                         <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
                                     @endif

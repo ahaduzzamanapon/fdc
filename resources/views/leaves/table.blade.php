@@ -33,7 +33,7 @@
                             @elseif($leave->status == 2)
                                 <span class="badge badge-success"  style="font-size: 12px">{{ 'প্রেরণ' }}</span>
                             @elseif($leave->status == 3)
-                                <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদন' }}</span>
+                                <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদিত' }}</span>
                             @else
                                 <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
                             @endif
@@ -74,7 +74,7 @@
                             @elseif($leave->status == 2)
                                 <span class="badge badge-success"  style="font-size: 12px">{{ 'প্রেরণ প্রেরণ' }}</span>
                             @elseif($leave->status == 3)
-                                <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদন' }}</span>
+                                <span class="badge badge-success"  style="font-size: 12px">{{ 'অনুমোদিত' }}</span>
                             @else
                                 <span class="badge badge-danger"  style="font-size: 12px">{{ 'বাতিল' }}</span>
                             @endif
