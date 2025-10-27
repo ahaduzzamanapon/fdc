@@ -18,19 +18,12 @@ use Illuminate\Support\Facades\DB;
 
 class LeaveController extends AppBaseController
 {
-    /**
-     * Display a listing of the Leave.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function index(Request $request)
     {
-        /** @var Leave $leaves */
 
         $leaves = Leave::select('leaves.*', 'users.name_bn as user_name')
             ->join('users', 'leaves.employee_id', '=', 'users.id')
+            ->where('users.id', Auth::user()->id)
             ->get();
         $data = [
             'leaves'=> $leaves,
@@ -43,94 +36,126 @@ class LeaveController extends AppBaseController
     }
     public function applyLeaveList(Request $request)
     {
-
-        $leaves = Leave::select('leaves.*','leaves.id as leave_id', 'users.*')->join('users', 'leaves.employee_id', '=', 'users.id')->get();
+        $userId = Auth::user()->id;
+        if(Auth::user()->user_role != 5){
+            $leaves = Leave::select( 'leave_user_transfers.*', 'leaves.*','leaves.id as leave_id', 'users.department','users.name_bn')
+            ->join('leave_user_transfers', 'leave_user_transfers.leave_id', '=', 'leaves.id')
+            ->join('users', 'leaves.employee_id', '=', 'users.id')
+            ->where('leave_user_transfers.user_id', $userId)->get();
+        }else{
+            $leaves = Leave::select( 'leaves.*','leaves.id as leave_id', 'users.department','users.name_bn')
+            ->join('users', 'leaves.employee_id', '=', 'users.id')
+            ->where('leaves.dpt_head_id', '!=', '')
+            ->where('leaves.status', 2)->get();
+        }
+    //   dd($leaves);
         return view('leaves.leave_apply_list')->with('leaves', $leaves);
     }
+    public function leaveApprovedRejectedList(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $leaves = Leave::select('leaves.*','leaves.id as leave_id', 'users.department','users.name_bn')
+        ->join('users', 'leaves.employee_id', '=', 'users.id')
+        ->where('leaves.dpt_head_id', $userId)->get();
 
-    /**
-     * Show the form for creating a new Leave.
-     *
-     * @return Response
-     */
+        $leave_md = Leave::select('leaves.*','leaves.id as leave_id', 'users.department','users.name_bn', 'userss.name_bn as user_name')
+        ->join('users', 'leaves.employee_id', '=', 'users.id')
+        ->join('users as userss', 'leaves.dpt_head_id', '=', 'userss.id')
+        ->get();
+
+        // dd($leave_md);
+        return view('leaves.leave_approved_rejected_list',['leaves'=> $leaves, 'leave_md' => $leave_md]);
+    }
+
+    public function getEmpByDept(Request $request)
+    {
+        $get_leave = Leave::find($request->id);
+
+        if (!$get_leave) {
+            Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
+            return redirect()->back();
+        }else{
+            $get_emp_by_dept = User::select('users.*')
+                                ->join('roles', 'users.user_role', '=', 'roles.id')
+                                ->where('users.department', $get_leave->dpt_id)
+                                ->where('users.id', '!=', $get_leave->employee_id)
+                                ->whereNotIn('key',['super_admin','admin','md'])
+                                ->get()
+                                ->all();
+        }
+        $data   = [
+            'get_emp_by_dept' => $get_emp_by_dept,
+            'leave_id' => $get_leave->id,
+        ];
+        return $data;
+    }
+
+
     public function create()
     {
         return view('leaves.create');
     }
 
-    /**
-     * Store a newly created Leave in storage.
-     *
-     * @param CreateLeaveRequest $request
-     *
-     * @return Response
-     */
+
     public function store(CreateLeaveRequest $request)
     {
+     // Validate input
+        $validated = $request->validate([
+            'from_date'   => 'required',
+            'to_date'     => 'required',
+            'leave_type'  => 'required',
+        ]);
+
         $input = $request->all();
 
-        // default to current user if none passed
+        // Default to current user if none passed
         if (empty($input['employee_id'])) {
             $input['employee_id'] = auth()->id();
             $input['dpt_id'] = auth()->user()->department;
         }
 
-        // parse dates through Carbon so you’re guaranteed proper format
+        // Parse dates using Carbon
         $from = Carbon::createFromFormat('d-m-Y', $input['from_date'])->startOfDay();
         $to   = Carbon::createFromFormat('d-m-Y', $input['to_date'])->endOfDay();
 
-
-        // 1) does any existing leave for this employee overlap?
+        // Check for overlapping leave
         $overlap = Leave::where('employee_id', $input['employee_id'])
             ->where(function($q) use ($from, $to) {
                 $q->whereBetween('from_date', [$from, $to])
-                  ->orWhereBetween('to_date',   [$from, $to])
-                  ->orWhere(function($q2) use ($from, $to) {
+                ->orWhereBetween('to_date', [$from, $to])
+                ->orWhere(function($q2) use ($from, $to) {
                     $q2->where('from_date', '<=', $from)
-                    ->where('to_date',   '>=', $to);
-                  });
+                        ->where('to_date',   '>=', $to);
+                });
             })->exists();
 
         if ($overlap) {
             Flash::error('দুঃখিত, এই সময়ের মধ্যে ইতিমধ্যে ছুটি রেজিস্ট্রেশন করা আছে।');
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
 
-        // 2) if no overlap, fill in your approved_* fields and create
-        $input['approved_from_date'] = $from->toDateString();
-        $input['approved_to_date']   = $to->toDateString();
-        $input['approved_total_day'] = $input['total_day'];
-        $input['leave_type']         = $input['leave_type'];
-        $input['approver_id']        = null;
-
-        $leave = Leave::create($input);
-        Flash::success('ছুটি সফলভাবে সংরক্ষিত হয়েছে');
-        return redirect()->route('leaves.index');
-
+        // Begin transaction
         DB::beginTransaction();
         try {
-            if (!empty($leave)) {
-                $data = array(
-                    'leave_id' => $leave->id,
-                    'user_id' => $leave->employee_id
-                );
-                LeaveUserTransfer::create($data);
-            }
+            // Fill approved fields
+            $input['approved_from_date'] = $from->toDateString();
+            $input['approved_to_date']   = $to->toDateString();
+            $input['approved_total_day'] = $input['total_day'];
+            $input['approver_id']        = null;
+
+            // Create leave
+            $leave = Leave::create($input);
             DB::commit();
+            Flash::success('ছুটি সফলভাবে সংরক্ষিত হয়েছে');
+            return redirect()->route('leaves.index');
         } catch (\Exception $e) {
             DB::rollback();
-            Flash::error('Failed to Insert: ' . $e->getMessage());
-            return back()->with('error', 'Failed to Insert: ' . $e->getMessage());
+            Flash::error('সিস্টেমে একটি সমস্যা হয়েছে: ' . $e->getMessage());
+            return redirect()->back()->withInput();
         }
     }
 
-    /**
-     * Display the specified Leave.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
+
     public function show($id)
     {
         /** @var Leave $leave */
@@ -145,35 +170,48 @@ class LeaveController extends AppBaseController
         return view('leaves.show')->with('leave', $leave);
     }
 
-    /**
-     * Show the form for editing the specified Leave.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
+
     public function edit($id)
     {
         /** @var Leave $leave */
         $leave = Leave::find($id);
+
+        // dd(($leave));
 
         if (empty($leave)) {
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
 
             return redirect(route('leaves.index'));
         }
+        $leave->to_date = date('Y-m-d', strtotime($leave->to_date));
+        $leave->from_date = date('Y-m-d', strtotime($leave->from_date));
+        $all_leaves = LeaveType::select('type', 'day')->where('type', $leave->leave_type)->where('status', 'Active')->first();
 
-        return view('leaves.edit')->with('leave', $leave);
+        $take_leaves = DB::table('leaves')
+            ->select('leave_type', DB::raw('SUM(total_day) as total_days'))
+            ->where('employee_id', $leave->employee_id)
+            ->groupBy('leave_type')
+            ->get();
+        $leave_taken = null;
+        $type = null;
+
+        foreach ($take_leaves as $take_leave) {
+            if ($take_leave->leave_type == $leave->leave_type) {
+                $type = $take_leave->leave_type;
+                $leave_taken = $take_leave->total_days;
+                break;
+            }
+        }
+
+        $data = [
+            'leave_taken' => $leave_taken,
+            'type' => $type
+        ];
+        // dd($all_leaves->day);
+        return view('leaves.edit',['leave' =>$leave, 'all_leaves'=>$all_leaves, 'leave_data'=>$data]);
     }
 
-    /**
-     * Update the specified Leave in storage.
-     *
-     * @param int $id
-     * @param UpdateLeaveRequest $request
-     *
-     * @return Response
-     */
+
     public function update($id, UpdateLeaveRequest $request)
     {
         /** @var Leave $leave */
@@ -185,27 +223,20 @@ class LeaveController extends AppBaseController
             return redirect(route('leaves.index'));
         }
         $input['approved_from_date'] = $input['from_date'];
-        $input['approved_to_date'] = $input['to_date'];
+        $input['approved_to_date']   = $input['to_date'];
         $input['approved_total_day'] = $input['total_day'];
         $input['leave_type']         = $input['leave_type'];
+        $input['dpt_head_id']        = Auth::user()->id == $leave->employee_id ? null : Auth::user()->id;
 
         $leave->fill($input);
         $leave->save();
 
         Flash::success('ছুটি সফলভাবে আপডেট হয়েছে');
 
-        return redirect(route('leaves.index'));
+        return redirect()->route('leaves.index');
     }
 
-    /**
-     * Remove the specified Leave from storage.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
+
     public function destroy($id)
     {
         /** @var Leave $leave */
@@ -216,28 +247,38 @@ class LeaveController extends AppBaseController
         }
         $leave->delete();
         Flash::success('ছুটি সফলভাবে ডিলিট হয়েছে');
-        if(in_aarray(Auth::user()->user_role,[5,6,7,8,9,10])){
-            return redirect(route('leaves.apply.leave.list'));
-        }else{
-            return redirect(route('leaves.index'));
-        }
-
+        return redirect()->back();
+        // }
     }
 
-    public function forwardToDeptHead($id)
+    public function forwardToDeptEmp(Request  $request)
     {
-        $leave = Leave::find($id);
-        // dd($leave);
-        if (!$leave) {
-            Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
-            return redirect()->back();
-        }else{
-            $leave->status = 1;
-            $leave->save();
+
+        // dd($request->all());
+        $empArray = explode(',', $request->emp_ids);
+
+        foreach ($empArray as $userId) {
+            $leaveUserTransfer = new LeaveUserTransfer();
+            $leaveUserTransfer->leave_id = $request->leave_id;
+            $leaveUserTransfer->user_id = $userId;
+            $leaveUserTransfer->save();
         }
-        Flash::success('ছুটি সফলভাবে বিভাগীয় প্রধানের কাছে প্রেরণ করা হয়েছে');
-        return redirect()->route('leaves.index');
+        if($leaveUserTransfer) {
+            $leave = Leave::find($request->leave_id);
+            if (!$leave) {
+                Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
+                return redirect()->back();
+            }else{
+                $leave->status = 1;
+                $leave->save();
+            }
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'কর্মচারীদের সফলভাবে প্রেরণ করা হয়েছে।'
+        ]);
     }
+
 
     public function forwardToMd($id)
     {
@@ -249,24 +290,13 @@ class LeaveController extends AppBaseController
             return redirect()->back();
         }else{
             $leave->status = 2;
+            $leave->dpt_head_id = Auth::user()->id;
             $leave->save();
         }
         Flash::success('ছুটি সফলভাবে MD\'র কাছে প্রেরণ করা হয়েছে');
         return redirect()->route('leaves.apply.leave.list');
     }
-    public function forwardToDirectorFinance($id)
-    {
-        $leave = Leave::find($id);
-        if (!$leave) {
-            Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
-            return redirect()->back();
-        }else{
-            $leave->status = 2 ;
-            $leave->save();
-        }
-        Flash::success('ছুটি সফলভাবে ফিন্যান্স ডিরেক্টরের কাছে প্রেরণ করা হয়েছে');
-        return redirect()->route('leaves.apply.leave.list');
-    }
+
 
 
     public function leaveApproved($id)
@@ -277,10 +307,14 @@ class LeaveController extends AppBaseController
             return redirect()->back();
         }else{
             $leave->status = 3;
+            $leave->dpt_head_id = Auth::user()->id;
             $leave->save();
+            if ($leave && $leave->id) {
+                LeaveUserTransfer::where('leave_id', $leave->id)->delete();
+            }
         }
         Flash::success('ছুটি সফলভাবে অনুমোদন করা হয়েছে');
-        return redirect()->route('leaves.apply.leave.list');
+        return redirect()->back();
     }
     public function leaveRejected($id)
     {
@@ -290,9 +324,14 @@ class LeaveController extends AppBaseController
             return redirect()->back();
         }else{
             $leave->status = 4;
+            $leave->dpt_head_id = Auth::user()->id;
             $leave->save();
+
+            if ($leave && $leave->id) {
+                LeaveUserTransfer::where('leave_id', $leave->id)->delete();
+            }
         }
         Flash::success('ছুটি সফলভাবে বাতিল করা হয়েছে');
-        return redirect()->route('leaves.apply.leave.list');
+       return redirect()->back();
     }
 }
