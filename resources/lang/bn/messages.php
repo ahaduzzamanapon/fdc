@@ -454,7 +454,7 @@ return [
     'terms' => 'শর্তাবলী',
     'support' => 'সহায়তা',
     'crud_builder' => 'ক্রুড বিল্ডার',
-    'crud_generator' => 'ক্রুড জেনারেটর',
+  
     'model_name' => 'মডেলের নাম',
     'enter_name' => 'নাম লিখুন',
     'command_type' => 'কমান্ডের ধরন',

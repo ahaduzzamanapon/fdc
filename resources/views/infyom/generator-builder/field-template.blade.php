@@ -6,24 +6,24 @@
 </td>
 <td style="vertical-align: middle">
     <select class="form-control txtdbType" style="width: 100%">
-        <option value="integer">{{ __('messages.integer') }}</option>
-        <option value="smallInteger">{{ __('messages.small_integer') }}</option>
-        <option value="longText">{{ __('messages.long_text') }}</option>
-        <option value="bigInteger">{{ __('messages.big_integer') }}</option>
-        <option value="double">{{ __('messages.double') }}</option>
-        <option value="float">{{ __('messages.float') }}</option>
-        <option value="decimal">{{ __('messages.decimal') }}</option>
-        <option value="boolean">{{ __('messages.boolean') }}</option>
-        <option value="string" selected>{{ __('messages.string') }}</option>
-        <option value="char">{{ __('messages.char') }}</option>
-        <option value="text">{{ __('messages.text') }}</option>
-        <option value="mediumText">{{ __('messages.medium_text') }}</option>
-        <option value="longText">{{ __('messages.long_text') }}</option>
-        <option value="enum">{{ __('messages.enum') }}</option>
-        <option value="binary">{{ __('messages.binary') }}</option>
-        <option value="dateTime">{{ __('messages.date_time') }}</option>
-        <option value="date">{{ __('messages.date') }}</option>
-        <option value="timestamp">{{ __('messages.timestamp') }}</option>
+        <option value="integer">Integer</option>
+        <option value="smallInteger">SmallInteger</option>
+        <option value="longText">LongText</option>
+        <option value="bigInteger">BigInteger</option>
+        <option value="double">Double</option>
+        <option value="float">Float</option>
+        <option value="decimal">Decimal</option>
+        <option value="boolean">Boolean</option>
+        <option value="string" selected>String</option>
+        <option value="char">Char</option>
+        <option value="text">Text</option>
+        <option value="mediumText">MediumText</option>
+        <option value="longText">LongText</option>
+        <option value="enum">Enum</option>
+        <option value="binary">Binary</option>
+        <option value="dateTime">DateTime</option>
+        <option value="date">Date</option>
+        <option value="timestamp">Timestamp</option>
     </select>
 
     <input type="text" class="form-control dbValue txtDbValue" style="display: none" placeholder="" />
@@ -33,17 +33,17 @@
 </td>
 <td style="vertical-align: middle">
     <select class="form-control drdHtmlType" style="width: 100%">
-        <option value="text">{{ __('messages.text') }}</option>
-        <option value="email">{{ __('messages.email_type') }}</option>
-        <option value="number">{{ __('messages.number_type') }}</option>
-        <option value="date">{{ __('messages.date') }}</option>
-        <option value="file">{{ __('messages.file_type') }}</option>
-        <option value="password">{{ __('messages.password_type') }}</option>
-        <option value="select">{{ __('messages.select_type') }}</option>
-        <option value="radio">{{ __('messages.radio_type') }}</option>
-        <option value="checkbox">{{ __('messages.checkbox_type') }}</option>
-        <option value="textarea">{{ __('messages.textarea_type') }}</option>
-        <option value="toggle-switch">{{ __('messages.toggle_type') }}</option>
+        <option value="text">Text</option>
+        <option value="email">Email</option>
+        <option value="number">Number</option>
+        <option value="date">Date</option>
+        <option value="file">File</option>
+        <option value="password">Password</option>
+        <option value="select">Select</option>
+        <option value="radio">Radio</option>
+        <option value="checkbox">Checkbox</option>
+        <option value="textarea">TextArea</option>
+        <option value="toggle-switch">Toggle</option>
     </select>
     <input type="text" class="form-control htmlValue txtHtmlValue" style="display: none" placeholder="" />
 </td>
@@ -51,45 +51,45 @@
     <div class="checkbox">
         <label>
             <input type="checkbox" class="flat-red chkPrimary" />
-            Primary {{ __('messages.primary') }}
+            Primary
         </label>
     </div>
 
     <div class="checkbox">
         <label>
             <input type="checkbox" class="flat-red chkForeign" />
-            Is Foreign {{ __('messages.is_foreign') }}
+            Is Foreign
         </label>
     </div>
 
     <div class="checkbox">
         <label>
             <input type="checkbox" class="flat-red chkSearchable" checked />
-            Searchable {{ __('messages.searchable') }}
+            Searchable
         </label>
     </div>
 
     <div class="checkbox">
         <label>
             <input type="checkbox" class="flat-red chkFillable" checked />
-            Fillable {{ __('messages.fillable') }}
+            Fillable
         </label>
     </div>
 
     <div class="checkbox">
         <label>
             <input type="checkbox" class="flat-red chkInForm" checked />
-            In Form {{ __('messages.in_form') }}
+            In Form
         </label>
     </div>
 
     <div class="checkbox">
         <label>
             <input type="checkbox" class="flat-red chkInIndex" checked />
-            In Index {{ __('messages.in_index') }}
+            In Index
         </label>
     </div>
 </td>
 <td style="text-align: center;vertical-align: middle">
-    <i onclick="removeItem(this)" class="{{ __('messages.remove') }} far fa-trash-alt text-danger btn"></i>
+    <i onclick="removeItem(this)" class="remove far fa-trash-alt text-danger btn"></i>
 </td>

@@ -25,17 +25,17 @@ html {
 body {
    -webkit-font-smoothing: antialiased;
   transition: all .25s ease-out;
-  background-color: #eae2fb;
+  background-color: #fafbfe;
   overflow-x: hidden;
 }
 
 /******  2.HEADER STYLES   ******/
 body > .header .navbar {
-    margin-bottom: 0;
-    background-color: #f2f3f7;
-    box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
-    border-width: 0;
-    z-index: 9;
+  margin-bottom: 0;
+  background-color: #fff;
+  box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+  border-width: 0;
+  z-index: 999999999;
 }
 .navbar-expand-lg .navbar-nav .nav-link {
   padding: 13px 15px 14px 15px;
@@ -62,48 +62,27 @@ body > .header .navbar {
 /*side bar nav */
 .left-aside .sidebar {
   display: block;
-  width: 250px;
-  /* margin-left: -175px; */
-  margin-left: 11px;
+  width: 258px;
+  margin-left: -175px;
   transition: margin-left 0.3s linear;
 }
-.card-body{
-  width: 100%;
-}
-@media (min-width: 768px) {
-  .left-aside .sidebar {
-    width: 290px;
-  }
-  .card-body{
-    width: 75vw;
-  }
-}
-
-
-
-
-
-
-
-
-/* .left-aside .sidebar:hover
+.left-aside .sidebar:hover
 {
   margin-left: 0;
   transition: margin-left 0.3s linear;
-} */
+}
 
 .content {
   display: block;
   width: 100%;
-  padding: 0 5px;
+  padding: 0 25px;
 }
 
 /****** 3.LEFT SIDEBAR ******/
 .left-aside {
   width: 240px;
-  /* background: #f1f3fa;
-  border-right: 5px solid #EEE;  */
-}
+  background: #f1f3fa;
+  border-right: 5px solid #EEE; }
 
 .content-header h1 {
   color: #6c757d;
@@ -117,7 +96,7 @@ body > .header .navbar {
 #menu li.active > a {
   padding: 11px 20px 11px 17px;
   color: #3819e7;
-  border-left: 9px solid #3819e7;
+  border-left: 3px solid #3819e7;
   transition: none; }
 
 #menu li > a:hover {
@@ -147,7 +126,9 @@ body > .header .navbar {
   }
 
 #menu .navigation {
-  padding: 0 0 15px 0; }
+  padding: 0 0 15px 0;
+}
+
 
 #menu .navigation a {
   text-align: left;
@@ -174,7 +155,8 @@ body > .header .navbar {
   width: 100%;
 }
 .right-aside > .content-header {
-  height: 40px;
+  margin: 24px -10px 24px -10px;
+  height: 65px;
 }
 .left-aside {
   position: relative;
