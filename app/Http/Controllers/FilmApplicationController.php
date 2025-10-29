@@ -6,6 +6,10 @@ use App\Http\Requests\CreateFilmApplicationRequest;
 use App\Http\Requests\UpdateFilmApplicationRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\FilmApplication;
+use App\Models\ApprovalFlowMaster;
+use App\Models\ApprovalFlowSteps;
+use App\Models\ApprovalRequests;
+use App\Models\ApprovalLogs;
 use App\Models\Package;
 use App\Models\FilmPackage;
 use Illuminate\Http\Request;
@@ -58,16 +62,58 @@ class FilmApplicationController extends AppBaseController
     public function store(CreateFilmApplicationRequest $request)
     {
         $input = $request->all();
-        $input['producer_id'] = Auth::guard('producer')->user()->id;
-        // dd($input);
+        $producer = Auth::guard('producer')->user();
+        $role_id = $producer->group_id;
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Film Application%')->first();
+        $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+        $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
 
         /** @var FilmApplication $filmApplication */
-        $filmApplication = FilmApplication::create($input);
-        dd($filmApplication->id);
 
-        Flash::success('Film Application saved successfully.');
+        try {
+            \DB::beginTransaction();
+            $input['producer_id'] = $producer->id;
+            $input['desk_id'] = $step->to_role_id;
+            $input['status'] = 'on process';
+            $filmApplication = FilmApplication::create($input);
+            $data = array(
+                'flow_id' => $flow->id,
+                'request_type' => $flow->name,
+                'application_id' => $filmApplication->id,
+                'prev_role_id' => $role_id,
+                'current_role_id' => $step->to_role_id,
+                'next_role_id' => $next->to_role_id,
+                'status' => 'on process',
+                'created_by' => $producer->id,
+                'updated_by' => $producer->id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert = ApprovalRequests::create($data);
 
-        return redirect(route('filmApplications.index'));
+            $data1 = array(
+                'request_id' => $insert->id,
+                'request_type' => $flow->name,
+                'flow_id' => $flow->id,
+                'action_by' => $producer->id,
+                'action_role_id' => $role_id,
+                'next_role_id' => $step->to_role_id,
+                'status' => 'forward',
+                'remarks' => 'New Application',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert1 = ApprovalLogs::create($data1);
+
+            \DB::commit();
+
+            Flash::success('Film Application saved successfully.');
+            return redirect(route('filmApplications.index'));
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error($e->getMessage());
+            return redirect(route('filmApplications.index'));
+        }
     }
 
     /**

@@ -28,6 +28,7 @@ class ApprovalRequests extends Model
     public $fillable = [
         'flow_id',
         'request_type',
+        'application_id',
         'prev_role_id',
         'current_role_id',
         'next_role_id',
@@ -46,6 +47,7 @@ class ApprovalRequests extends Model
         'id' => 'integer',
         'flow_id' => 'integer',
         'request_type' => 'string',
+        'application_id' => 'integer',
         'prev_role_id' => 'integer',
         'current_role_id' => 'integer',
         'next_role_id' => 'integer',
