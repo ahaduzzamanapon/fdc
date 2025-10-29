@@ -1,8 +1,3 @@
-<tr>
-    <th scopre="row">{!! Form::label('id', 'Id:') !!}</th>
-    <td>{{ $approvalFlowMaster->id }}</td>
-</tr>
-
 
 <tr>
     <th scopre="row">{!! Form::label('name', 'Name:') !!}</th>

@@ -16,7 +16,7 @@ class RoleAndPermission extends Model
 {
 
     public $table = 'roles';
-    
+
 
 
 
@@ -46,5 +46,15 @@ class RoleAndPermission extends Model
         'key' => 'required'
     ];
 
-    
+    public function fromSteps()
+    {
+        return $this->hasMany(ApprovalFlowStep::class, 'from_role_id');
+    }
+
+    public function toSteps()
+    {
+        return $this->hasMany(ApprovalFlowStep::class, 'to_role_id');
+    }
+
+
 }

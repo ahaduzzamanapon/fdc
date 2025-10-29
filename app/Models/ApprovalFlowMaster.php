@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 
+
 /**
  * Class ApprovalFlowMaster
  * @package App\Models
@@ -17,7 +18,7 @@ class ApprovalFlowMaster extends Model
 {
 
     public $table = 'approval_flow_master';
-    
+
 
 
 
@@ -48,5 +49,10 @@ class ApprovalFlowMaster extends Model
         'name' => 'required'
     ];
 
-    
+    public function steps()
+    {
+        return $this->hasMany(ApprovalFlowStep::class, 'flow_id');
+    }
+
+
 }

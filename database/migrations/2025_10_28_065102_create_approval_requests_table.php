@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateApprovalFlowMasterTable extends Migration
+class CreateApprovalRequestsTable extends Migration
 {
 
     /**
@@ -13,11 +13,15 @@ class CreateApprovalFlowMasterTable extends Migration
      */
     public function up()
     {
-        Schema::create('approval_flow_master', function (Blueprint $table) {
+        Schema::create('approval_requests', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->integer('flow_id');
+            $table->string('request_type');
+            $table->integer('current_role_id');
+            $table->integer('next_role_id');
             $table->string('status');
-            $table->text('description');
+            $table->text('request_data');
+            $table->integer('created_by');
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ class CreateApprovalFlowMasterTable extends Migration
      */
     public function down()
     {
-        Schema::drop('approval_flow_master');
+        Schema::drop('approval_requests');
     }
 }

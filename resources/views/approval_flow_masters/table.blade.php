@@ -2,19 +2,19 @@
     <table class="table" id="approvalFlowMasters-table">
         <thead>
             <tr>
-                <th>Id</th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Description</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+                <th>Sl</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Updated At</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
         @foreach($approvalFlowMasters as $key => $approvalFlowMaster)
             <tr>
-                <td>{{ $approvalFlowMaster->id }}</td>
+                <td>{{ $key + 1 }}</td>
             <td>{{ $approvalFlowMaster->name }}</td>
             <td>{{ $approvalFlowMaster->status }}</td>
             <td>{{ $approvalFlowMaster->description }}</td>

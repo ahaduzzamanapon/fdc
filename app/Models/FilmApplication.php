@@ -58,15 +58,17 @@ class FilmApplication extends Model
 {
 
     public $table = 'filmapplications';
-    
+
 
 
 
     public $fillable = [
         'producer_id',
-        'desk',
+        'desk_id',
+        'status',
         'state',
         'balance',
+        'category',
         'film_title',
         'applicant_name',
         'father_name',
@@ -115,6 +117,7 @@ class FilmApplication extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'category' => 'string',
         'film_title' => 'string',
         'applicant_nam' => 'string',
         'father_nam' => 'string',
@@ -167,8 +170,8 @@ class FilmApplication extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

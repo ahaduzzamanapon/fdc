@@ -38,62 +38,6 @@ class FilmApplicationController extends AppBaseController
 
         return view('film_applications.index')->with('filmApplications', $filmApplications);
     }
-    public function forward_table(Request $request)
-    {
-        $my_all_permissions=my_all_permissions();
-        $filmApplications = FilmApplication::latest()
-        ->where('state', 'forward')
-        ->whereIn('desk', $my_all_permissions)
-        ->get();
-        return view('film_applications.index')
-            ->with('filmApplications', $filmApplications);
-    }
-    public function backward_table(Request $request)
-    {
-        $my_all_permissions=my_all_permissions();
-        $filmApplications = FilmApplication::latest()
-            ->where('state', 'back')
-            ->whereIn('desk', $my_all_permissions)
-            ->where('desk', '!=', 'All Desks Completed')
-            ->get();
-        return view('film_applications.index')
-            ->with('filmApplications', $filmApplications);
-    }
-
-
-     public function forward(FilmApplication $filmApplication, $desk)
-    {
-        if ($desk == 'assistant_production') {
-            $filmApplication->update(['desk' => $desk, 'state' => 'back']);
-        }else {
-            $filmApplication->update(['desk' => $desk]);
-        }
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
-    }
-
-    public function back(FilmApplication $filmApplication, $desk)
-    {
-        // Ensure the current desk and state match before backing
-        $filmApplication->update(['desk' => $desk]);
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
-    }
-
-    public function finalForwardToMD(FilmApplication $filmApplication, $desk)
-    {
-        $filmApplication->update(['desk' => 'All Desks Completed Waiting for MD Approval']); // Final desk, MD
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
-    }
-    public function approve_md(FilmApplication $filmApplication, $desk)
-    {
-        $filmApplication->update(['desk' => 'MD Approved']); // Final desk, MD
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
-    }
-
-
-
-
-
-
     /**
      * Show the form for creating a new FilmApplication.
      *
@@ -115,9 +59,11 @@ class FilmApplicationController extends AppBaseController
     {
         $input = $request->all();
         $input['producer_id'] = Auth::guard('producer')->user()->id;
+        // dd($input);
 
         /** @var FilmApplication $filmApplication */
         $filmApplication = FilmApplication::create($input);
+        dd($filmApplication->id);
 
         Flash::success('Film Application saved successfully.');
 
@@ -192,6 +138,71 @@ class FilmApplicationController extends AppBaseController
 
         return redirect(route('filmApplications.index'));
     }
+
+
+
+
+
+
+
+
+
+    public function forward_table(Request $request)
+    {
+        $my_all_permissions=my_all_permissions();
+        $filmApplications = FilmApplication::latest()
+        ->where('state', 'forward')
+        ->whereIn('desk', $my_all_permissions)
+        ->get();
+        return view('film_applications.index')
+            ->with('filmApplications', $filmApplications);
+    }
+    public function backward_table(Request $request)
+    {
+        $my_all_permissions=my_all_permissions();
+        $filmApplications = FilmApplication::latest()
+            ->where('state', 'back')
+            ->whereIn('desk', $my_all_permissions)
+            ->where('desk', '!=', 'All Desks Completed')
+            ->get();
+        return view('film_applications.index')
+            ->with('filmApplications', $filmApplications);
+    }
+
+
+     public function forward(FilmApplication $filmApplication, $desk)
+    {
+        if ($desk == 'assistant_production') {
+            $filmApplication->update(['desk' => $desk, 'state' => 'back']);
+        }else {
+            $filmApplication->update(['desk' => $desk]);
+        }
+        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
+    }
+
+    public function back(FilmApplication $filmApplication, $desk)
+    {
+        // Ensure the current desk and state match before backing
+        $filmApplication->update(['desk' => $desk]);
+        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
+    }
+
+    public function finalForwardToMD(FilmApplication $filmApplication, $desk)
+    {
+        $filmApplication->update(['desk' => 'All Desks Completed Waiting for MD Approval']); // Final desk, MD
+        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
+    }
+    public function approve_md(FilmApplication $filmApplication, $desk)
+    {
+        $filmApplication->update(['desk' => 'MD Approved']); // Final desk, MD
+        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
+    }
+
+
+
+
+
+
 
     /**
      * Remove the specified FilmApplication from storage.

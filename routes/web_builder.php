@@ -29,3 +29,9 @@ Route::resource('packages', 'PackageController');
 Route::resource('shifts', 'ShiftController');
 
 Route::resource('approvalFlowMasters', 'ApprovalFlowMasterController');
+
+Route::resource('approvalFlowSteps', 'ApprovalFlowStepsController');
+
+Route::resource('approvalRequests', 'ApprovalRequestsController');
+
+Route::resource('approvalLogs', 'ApprovalLogsController');

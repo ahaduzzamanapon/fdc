@@ -2,14 +2,14 @@
 
 {{-- Page title --}}
 @section('title')
-Approval Flow Masters @parent
+Approval Requests @parent
 @stop
 
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
     {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>Approval Flow Master</h1>
+        <h1>Approval Requests</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>--}}
 </section>
@@ -22,13 +22,13 @@ Approval Flow Masters @parent
     <div class="clearfix"></div>
     <div class="card">
         <div class="table-responsive">
-            <table class="table table-default">
-                @include('approval_flow_masters.show_fields')
+        <table class="table table-default">
+            @include('approval_requests.show_fields')
+
             </table>
         </div>
-        <div class="card-footer">
-            <a href="{{ route('approvalFlowMasters.index') }}" class="btn btn-primary">Back</a>
-        </div>
     </div>
+    <a href="{{ route('approvalRequests.index') }}"
+                class="btn btn-primary">Back</a>
 </div>
 @endsection

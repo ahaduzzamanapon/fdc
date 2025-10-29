@@ -281,6 +281,7 @@
                         </a>
                     </li>
                 @endif
+
                 @if (can('districts'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('districts*') ? 'active' : '' !!}" href="{{ route('districts.index') }}">
@@ -309,6 +310,23 @@
                         </a>
                     </li>
                 @endif
+                
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}" href="{{ route('approvalFlowMasters.index') }}">
+                        <i class="icon im im-icon-Structure"></i>
+                        <i class="sidenav-mini-icon"> প্র </i>
+                        <span class="item-name">অনুমোদন প্রবাহ</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('approvalFlowSteps*') ? 'active' : '' !!}" href="{{ route('approvalFlowSteps.index') }}">
+                        <i class="icon im im-icon-Structure"></i>
+                        <i class="sidenav-mini-icon"> ধা </i>
+                        <span class="item-name">অনুমোদন প্রবাহের ধাপ</span>
+                    </a>
+                </li>
+
             </ul>
         </li>
     @endif
