@@ -32,11 +32,8 @@ class FilmApplicationController extends AppBaseController
         if (!Auth::guard('producer')->check()) {
             $filmApplications = FilmApplication::latest();
         } else {
-            $filmApplications = FilmApplication::latest()
-                ->where('producer_id', Auth::guard('producer')->user()->id);
+            $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-
-
 
         $filmApplications = $filmApplications->get();
 
@@ -185,24 +182,70 @@ class FilmApplicationController extends AppBaseController
         return redirect(route('filmApplications.index'));
     }
 
-
-
-
-
-
-
-
-
     public function forward_table(Request $request)
     {
-        $my_all_permissions=my_all_permissions();
-        $filmApplications = FilmApplication::latest()
-        ->where('state', 'forward')
-        ->whereIn('desk', $my_all_permissions)
-        ->get();
-        return view('film_applications.index')
-            ->with('filmApplications', $filmApplications);
+        $user = Auth::user()->user_role;
+        $films = FilmApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
+        return view('film_applications.index')->with('filmApplications', $films);
     }
+    public function forward(FilmApplication $filmApplication, $desk)
+    {
+        $app_id = $filmApplication->id;
+        $role_id = $filmApplication->desk_id;
+        $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Film Application')->where('current_role_id', $role_id)->first();
+        $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
+
+        return view('film_applications.forward', [
+            'film' => $filmApplication,
+            'auth_user' => $auth_user,
+            'logs' => $logs,
+        ]);
+    }
+    public function update_status(Request $request)
+    {
+        $film = FilmApplication::find($request->film_id);
+        $steps = ApprovalRequests::find($request->request_id);
+        if ($request->status == 'backward') {
+            $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = $prev->from_role_id;
+            $current_role_id = $steps->prev_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = 'backward';
+            $status = "on process";
+        } else if ($request->status == 'forward') {
+            $next = ApprovalFlowSteps::where('from_role_id', $steps->current_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->next_role_id;
+            $next_role_id = $next->to_role_id;
+            $fstatus = 'forward';
+            $status = "on process";
+        } else {
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->current_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = $request->status;
+            $status = $request->status;
+        }
+
+        // $filmApplication->fill($request->all());
+        // $filmApplication->save();
+
+        Flash::success('Film Application updated successfully.');
+
+        return redirect(route('filmApplications.index'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public function backward_table(Request $request)
     {
         $my_all_permissions=my_all_permissions();
@@ -214,18 +257,6 @@ class FilmApplicationController extends AppBaseController
         return view('film_applications.index')
             ->with('filmApplications', $filmApplications);
     }
-
-
-     public function forward(FilmApplication $filmApplication, $desk)
-    {
-        if ($desk == 'assistant_production') {
-            $filmApplication->update(['desk' => $desk, 'state' => 'back']);
-        }else {
-            $filmApplication->update(['desk' => $desk]);
-        }
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
-    }
-
     public function back(FilmApplication $filmApplication, $desk)
     {
         // Ensure the current desk and state match before backing

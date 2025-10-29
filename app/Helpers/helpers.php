@@ -88,6 +88,22 @@ if (!function_exists('who')) {
         }
     }
 }
+
+if (!function_exists('get_role')) {
+    function get_role($id)
+    {
+        return $roll=\App\Models\RoleAndPermission::where('id', $id)->first();
+    }
+}
+
+if (!function_exists('get_user')) {
+    function get_user($id)
+    {
+        return $roll=\App\Models\User::where('id', $id)->first();
+    }
+}
+
+
 if (!function_exists('get_notification')) {
 
     function get_notification()

@@ -44,6 +44,10 @@ Route::get('/', function () {
 Route::resource('filmApplications', 'FilmApplicationController');
 Route::prefix('film-applications')->name('filmApplications.')->group(function () {
     Route::get('{filmApplication}/forward/{desk}', [FilmApplicationController::class, 'forward'])->name('forward');
+    Route::post('change_status', [FilmApplicationController::class, 'update_status'])->name('st.status');
+
+
+
     Route::get('{filmApplication}/back/{desk}', [FilmApplicationController::class, 'back'])->name('back');
     Route::get('{filmApplication}/final-forward/{desk}', [FilmApplicationController::class, 'finalForwardToMD'])->name('final_forward_to_md');
     Route::get('{filmApplication}/approve_md/{desk}', [FilmApplicationController::class, 'approve_md'])->name('approve_md');
@@ -51,6 +55,7 @@ Route::prefix('film-applications')->name('filmApplications.')->group(function ()
     Route::get('{filmApplication}/payment_data', [FilmApplicationController::class, 'payment_data'])->name('payment_data');
     Route::get('single_payment_receipt/{filmPackage}', [FilmApplicationController::class, 'single_payment_receipt'])->name('single_payment_receipt');
 });
+
 Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');
 Route::get('filmApplications_backward_table', [FilmApplicationController::class, 'backward_table'])->name('filmApplications.backward.table');
 
@@ -136,10 +141,10 @@ Route::group(["middleware" => []], function () {
         Route::get('/get_booking_date_by_shift', 'get_booking_date_by_shift')->name('producer.get_booking_date_by_shift');
         Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
         Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
-        
+
         Route::get('/producer_booking_details/{id}', 'show_booking_details')->name('producer.booking_details');
         Route::get('/approve_booking/{id}', 'approve_booking')->name('producer.approve_booking');
-        
+
     });
 });
 
