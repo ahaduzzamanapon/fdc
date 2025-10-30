@@ -12,6 +12,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\FilmApplicationController;
+use App\Http\Controllers\DramaApplicationController;
+use App\Http\Controllers\DocufilmApplicationController;
 use App\Http\Controllers\PaymentController;
 
 
@@ -40,6 +42,21 @@ Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])-
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('docufilmApplications', 'DocufilmApplicationController');
+Route::prefix('docufilm-application')->name('docufilmApplications.')->group(function () {
+    Route::get('{docufilmApplication}/forward/{desk}', [DocufilmApplicationController::class, 'forward'])->name('forward');
+    Route::post('change_status', [DocufilmApplicationController::class, 'update_status'])->name('st.status');
+});
+Route::get('docufilmApplications_forward_table', [DocufilmApplicationController::class, 'forward_table'])->name('docufilmApplications.forward.table');
+
+Route::resource('dramaApplications', 'DramaApplicationController');
+Route::prefix('drama-application')->name('dramaApplications.')->group(function () {
+    Route::get('{dramaApplication}/forward/{desk}', [DramaApplicationController::class, 'forward'])->name('forward');
+    Route::post('change_status', [DramaApplicationController::class, 'update_status'])->name('st.status');
+});
+Route::get('dramaApplications_forward_table', [DramaApplicationController::class, 'forward_table'])->name('dramaApplications.forward.table');
+
 
 Route::resource('filmApplications', 'FilmApplicationController');
 Route::prefix('film-applications')->name('filmApplications.')->group(function () {

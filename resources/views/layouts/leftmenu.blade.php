@@ -14,11 +14,32 @@
             <span class="item-name">{{ __('messages.booking') }}</span>
         </a>
     </li>
+    {{-- Film Application --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('filmApplications.index') }}">
             <i class="icon im im-icon-Home"></i>
             <span class="item-name">{{ __('messages.film_application') }}</span>
+        </a>
+    </li>
+
+    {{-- নাটক অ্যাপ্লিকেশন --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('dramaApplications*') ? 'active' : '' !!}"
+            href="{{ route('dramaApplications.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> তা </i>
+            <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
+        </a>
+    </li>
+
+    {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('docufilmApplications*') ? 'active' : '' !!}"
+            href="{{ route('docufilmApplications.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> তা </i>
+            <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
         </a>
     </li>
 @else
@@ -39,6 +60,8 @@
         </a>
     </li>
     @endif
+
+    {{-- Film Application --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
             <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
@@ -76,6 +99,39 @@
                     </a>
                 </li> --}}
 
+            </ul>
+        </li>
+    @endif
+
+    {{-- Drama Application --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('dramaApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#dramaApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('dramaApplications*') ? 'show' : '' !!}" id="dramaApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('dramaApplications') ? 'active' : '' !!}"
+                            href="{{ route('dramaApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('dramaApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('dramaApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
             </ul>
         </li>
     @endif
