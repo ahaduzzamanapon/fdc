@@ -1,3 +1,4 @@
+{{-- Producer --}}
 @if (Auth::guard('producer')->check())
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
@@ -48,14 +49,16 @@
             </a>
             <ul class="sub-nav collapse {!! Request::is('filmApplications*') ? 'show' : '' !!}" id="filmApplications"
                 data-bs-parent="#sidebar-menu">
-                <li class="nav-item">
-                    <a class="nav-link {!! Request::is('filmApplications') ? 'active' : '' !!}"
-                        href="{{ route('filmApplications.index') }}">
-                        <i class="icon im im-icon-Settings-Window"></i>
-                        <i class="sidenav-mini-icon"> তা </i>
-                        <span class="item-name">{{ __('messages.list') }}</span>
-                    </a>
-                </li>
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('filmApplications') ? 'active' : '' !!}"
+                            href="{{ route('filmApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('filmApplications_forward_table*') ? 'active' : '' !!}"
                         href="{{ route('filmApplications.forward.table') }}">
@@ -64,14 +67,14 @@
                         <span class="item-name">{{ __('messages.pending_list') }}</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link {!! Request::is('filmApplications_backward_table*') ? 'active' : '' !!}"
                         href="{{ route('filmApplications.backward.table') }}">
                         <i class="icon im im-icon-Settings-Window"></i>
                         <i class="sidenav-mini-icon"> রি </i>
                         <span class="item-name">{{ __('messages.review_list') }}</span>
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
         </li>
@@ -96,7 +99,8 @@
             </a>
         </li>
     @endif
-    {{-- Users Management --}}
+
+    {{-- Leaves --}}
     @if (can('hr'))
         <li class="nav-item">
             <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
@@ -155,6 +159,14 @@
                             <i class="icon im im-icon-Security-Settings"></i>
                             <i class="sidenav-mini-icon"> রো </i>
                             <span class="item-name">{{ __('messages.role_management') }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('permissions*') ? 'active' : '' !!}"
+                            href="{{ route('permissions.index') }}">
+                            <i class="icon im im-icon-Security-Settings"></i>
+                            <i class="sidenav-mini-icon"> অ </i>
+                            <span class="item-name">অনুমতিসমূহ</span>
                         </a>
                     </li>
                 @endif
@@ -310,7 +322,7 @@
                         </a>
                     </li>
                 @endif
-                
+
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}" href="{{ route('approvalFlowMasters.index') }}">
                         <i class="icon im im-icon-Structure"></i>

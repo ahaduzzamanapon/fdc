@@ -207,16 +207,16 @@ class FilmApplicationController extends AppBaseController
         $steps = ApprovalRequests::find($request->request_id);
         if ($request->status == 'backward') {
             $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
-            $prev_role_id = $prev->from_role_id;
+            $prev_role_id = !empty($prev->from_role_id) ? $prev->from_role_id : $steps->current_role_id;
             $current_role_id = $steps->prev_role_id;
             $next_role_id = $steps->current_role_id;
             $fstatus = 'backward';
             $status = "on process";
         } else if ($request->status == 'forward') {
-            $next = ApprovalFlowSteps::where('from_role_id', $steps->current_role_id)->where('flow_id', $steps->flow_id)->first();
+            $next = ApprovalFlowSteps::where('from_role_id', $steps->next_role_id)->where('flow_id', $steps->flow_id)->first();
             $prev_role_id = $steps->current_role_id;
             $current_role_id = $steps->next_role_id;
-            $next_role_id = $next->to_role_id;
+            $next_role_id = !empty($next->to_role_id) ? $next->to_role_id : $steps->current_role_id;
             $fstatus = 'forward';
             $status = "on process";
         } else {
@@ -227,12 +227,51 @@ class FilmApplicationController extends AppBaseController
             $status = $request->status;
         }
 
-        // $filmApplication->fill($request->all());
-        // $filmApplication->save();
+        // filmapplications
+        $data = array(
+            'desk_id' => $current_role_id,
+            'status' => $status,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
 
-        Flash::success('Film Application updated successfully.');
+        // approval_requests
+        $data1 = array(
+            'prev_role_id' => $prev_role_id,
+            'current_role_id' => $current_role_id,
+            'next_role_id' => $next_role_id,
+            'status' => $status,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        // approval_logs
+        $data2 = array(
+            'request_id' => $request->request_id,
+            'request_type' => $steps->request_type,
+            'flow_id' => $steps->flow_id,
+            'action_by' => Auth::user()->id,
+            'action_role_id' => Auth::user()->user_role,
+            'next_role_id' => $current_role_id,
+            'status' => $fstatus,
+            'remarks' => $request->log_remarks,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
 
-        return redirect(route('filmApplications.index'));
+        try {
+            \DB::beginTransaction();
+            FilmApplication::where('id', $request->film_id)->update($data);
+            ApprovalRequests::where('id', $request->request_id)->update($data1);
+            ApprovalLogs::create($data2);
+            \DB::commit();
+            Flash::success('Film Application updated successfully.');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error('Film Application update failed. Please try again later.');
+        }
+
+        return redirect(route('filmApplications.forward.table'));
     }
 
 
