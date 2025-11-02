@@ -84,7 +84,7 @@
     {{-- Film Application --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+            <a class="nav-link {!! Request::is('filmApplications*') || Request::is('film-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#filmApplications" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
                 <span class="item-name">{{ __('messages.film_application') }}</span>
@@ -126,7 +126,7 @@
     {{-- Drama Application --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('dramaApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+            <a class="nav-link {!! Request::is('dramaApplications*') || Request::is('drama-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#dramaApplications" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
                 <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
@@ -159,7 +159,7 @@
     {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('docufilmApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+            <a class="nav-link {!! Request::is('docufilmApplications*') || Request::is('docufilm-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#docufilmApplications" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
                 <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
@@ -192,7 +192,7 @@
     {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('realityApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+            <a class="nav-link {!! Request::is('realityApplications*') || Request::is('reality-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#realityApplications" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
                 <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
@@ -225,7 +225,7 @@
     {{-- পার্টি অ্যাপ্লিকেশন --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+            <a class="nav-link {!! Request::is('partyApplications*') || Request::is('party-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#partyApplications" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
                 <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>

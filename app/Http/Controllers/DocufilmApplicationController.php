@@ -291,15 +291,15 @@ class DocufilmApplicationController extends AppBaseController
         $filmApplication = DocufilmApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Film Application not found');
+            Flash::error('Docufilm Application not found');
 
-            return redirect(route('filmApplications.index'));
+            return redirect(route('docufilmApplications.index'));
         }
 
         $filmApplication->delete();
 
-        Flash::success('Film Application deleted successfully.');
+        Flash::success('Docufilm Application deleted successfully.');
 
-        return redirect(route('filmApplications.index'));
+        return redirect(route('docufilmApplications.index'));
     }
 }

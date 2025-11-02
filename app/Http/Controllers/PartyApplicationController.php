@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateFilmApplicationRequest;
 use App\Http\Requests\UpdateFilmApplicationRequest;
 use App\Http\Controllers\AppBaseController;
-use App\Models\RealityApplication;
+use App\Models\PartyApplication;
 use App\Models\ApprovalFlowMaster;
 use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
@@ -17,7 +17,7 @@ use Flash;
 use Response;
 use Auth;
 
-class RealityApplicationController extends AppBaseController
+class PartyApplicationController extends AppBaseController
 {
     /**
      * Display a listing of the FilmApplication.
@@ -30,23 +30,23 @@ class RealityApplicationController extends AppBaseController
     {
 
         if (!Auth::guard('producer')->check()) {
-            $filmApplications = RealityApplication::latest();
+            $filmApplications = PartyApplication::latest();
         } else {
-            $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+            $filmApplications = PartyApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
 
         $filmApplications = $filmApplications->get();
 
-        return view('reality_applications.index')->with('filmApplications', $filmApplications);
+        return view('party_applications.index')->with('filmApplications', $filmApplications);
     }
     /**
-     * Show the form for creating a new RealityApplication.
+     * Show the form for creating a new PartyApplication.
      *
      * @return Response
      */
     public function create()
     {
-        return view('reality_applications.create');
+        return view('party_applications.create');
     }
 
     /**
@@ -61,22 +61,22 @@ class RealityApplicationController extends AppBaseController
         $input = $request->all();
         $producer = Auth::guard('producer')->user();
         $role_id = $producer->group_id;
-        $flow = ApprovalFlowMaster::where('name', 'like', '%Reality Application%')->first();
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Party Application%')->first();
         $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
         $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
 
-        /** @var RealityApplication $RealityApplication */
+        /** @var PartyApplication $PartyApplication */
 
         try {
             \DB::beginTransaction();
             $input['producer_id'] = $producer->id;
             $input['desk_id'] = $step->to_role_id;
             $input['status'] = 'on process';
-            $realityApplication = RealityApplication::create($input);
+            $partyApplication = PartyApplication::create($input);
             $data = array(
                 'flow_id' => $flow->id,
                 'request_type' => $flow->name,
-                'application_id' => $realityApplication->id,
+                'application_id' => $partyApplication->id,
                 'prev_role_id' => $role_id,
                 'current_role_id' => $step->to_role_id,
                 'next_role_id' => $next->to_role_id,
@@ -104,12 +104,12 @@ class RealityApplicationController extends AppBaseController
 
             \DB::commit();
 
-            Flash::success('Reality Application saved successfully.');
-            return redirect(route('realityApplications.index'));
+            Flash::success('Party Application saved successfully.');
+            return redirect(route('partyApplications.index'));
         } catch (\Exception $e) {
             \DB::rollBack();
             Flash::error($e->getMessage());
-            return redirect(route('realityApplications.index'));
+            return redirect(route('partyApplications.index'));
         }
     }
 
@@ -122,16 +122,16 @@ class RealityApplicationController extends AppBaseController
      */
     public function show($id)
     {
-        /** @var RealityApplication $filmApplication */
-        $filmApplication = RealityApplication::find($id);
+        /** @var PartyApplication $filmApplication */
+        $filmApplication = PartyApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Reality Application not found');
+            Flash::error('Party Application not found');
 
-            return redirect(route('realityApplications.index'));
+            return redirect(route('partyApplications.index'));
         }
 
-        return view('reality_applications.show')->with('filmApplication', $filmApplication);
+        return view('party_applications.show')->with('filmApplication', $filmApplication);
     }
 
     /**
@@ -143,61 +143,61 @@ class RealityApplicationController extends AppBaseController
      */
     public function edit($id)
     {
-        /** @var RealityApplication $filmApplication */
-        $filmApplication = RealityApplication::find($id);
+        /** @var PartyApplication $filmApplication */
+        $filmApplication = PartyApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Reality Application not found');
+            Flash::error('Party Application not found');
 
-            return redirect(route('realityApplications.index'));
+            return redirect(route('partyApplications.index'));
         }
 
-        return view('reality_applications.edit')->with('filmApplication', $filmApplication);
+        return view('party_applications.edit')->with('filmApplication', $filmApplication);
     }
 
     /**
-     * Update the specified DramaApplication in storage.
+     * Update the specified PartyApplication in storage.
      *
      * @param int $id
-     * @param UpdateRealityApplicationRequest $request
+     * @param UpdatePartyApplicationRequest $request
      *
      * @return Response
      */
-    public function update($id, UpdateRealityApplicationRequest $request)
+    public function update($id, UpdatePartyApplicationRequest $request)
     {
-        /** @var RealityApplication $filmApplication */
-        $filmApplication = RealityApplication::find($id);
+        /** @var PartyApplication $filmApplication */
+        $filmApplication = PartyApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Reality Application not found');
+            Flash::error('Party Application not found');
 
-            return redirect(route('realityApplications.index'));
+            return redirect(route('partyApplications.index'));
         }
 
         $filmApplication->fill($request->all());
         $filmApplication->save();
 
-        Flash::success('Reality Application updated successfully.');
+        Flash::success('Party Application updated successfully.');
 
-        return redirect(route('realityApplications.index'));
+        return redirect(route('partyApplications.index'));
     }
 
     public function forward_table(Request $request)
     {
         $user = Auth::user()->user_role;
-        $films = RealityApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
-        return view('reality_applications.index')->with('filmApplications', $films);
+        $films = PartyApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
+        return view('party_applications.index')->with('filmApplications', $films);
     }
-    public function forward(RealityApplication $realityApplication, $desk)
+    public function forward(PartyApplication $partyApplication, $desk)
     {
-        $app_id = $realityApplication->id;
-        $role_id = $realityApplication->desk_id;
-        $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Reality Application')->where('current_role_id', $role_id)->first();
+        $app_id = $partyApplication->id;
+        $role_id = $partyApplication->desk_id;
+        $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Party Application')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
         // dd($logs);
 
-        return view('reality_applications.forward', [
-            'film' => $realityApplication,
+        return view('party_applications.forward', [
+            'film' => $partyApplication,
             'auth_user' => $auth_user,
             'logs' => $logs,
         ]);
@@ -206,7 +206,7 @@ class RealityApplicationController extends AppBaseController
 
     public function update_status(Request $request)
     {
-        $film = RealityApplication::find($request->film_id);
+        $film = PartyApplication::find($request->film_id);
         $steps = ApprovalRequests::find($request->request_id);
         if ($request->status == 'backward') {
             $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
@@ -230,21 +230,11 @@ class RealityApplicationController extends AppBaseController
             $status = $request->status;
         }
 
-        if (empty(Auth::user())) {
-            $users = Auth::guard('producer')->user();
-            $user_id = $users->id;
-            $user_role = $users->group_id;
-        } else {
-            $users = Auth::user();
-            $user_id = $users->id;
-            $user_role = $users->user_role;
-        }
-
         // filmapplications
         $data = array(
             'desk_id' => $current_role_id,
             'status' => $status,
-            'updated_by' => $user_id,
+            'updated_by' => Auth::user()->id,
             'updated_at' => date('Y-m-d H:i:s'),
         );
 
@@ -254,7 +244,7 @@ class RealityApplicationController extends AppBaseController
             'current_role_id' => $current_role_id,
             'next_role_id' => $next_role_id,
             'status' => $status,
-            'updated_by' => $user_id,
+            'updated_by' => Auth::user()->id,
             'updated_at' => date('Y-m-d H:i:s'),
         );
         // approval_logs
@@ -262,33 +252,29 @@ class RealityApplicationController extends AppBaseController
             'request_id' => $request->request_id,
             'request_type' => $steps->request_type,
             'flow_id' => $steps->flow_id,
-            'action_by' => $user_id,
-            'action_role_id' => $user_role,
+            'action_by' => Auth::user()->id,
+            'action_role_id' => Auth::user()->user_role,
             'next_role_id' => $current_role_id,
             'status' => $fstatus,
             'remarks' => $request->log_remarks,
             'created_at' => date('Y-m-d H:i:s'),
-            'updated_by' => $user_id,
+            'updated_by' => Auth::user()->id,
             'updated_at' => date('Y-m-d H:i:s'),
         );
 
         try {
             \DB::beginTransaction();
-            RealityApplication::where('id', $request->film_id)->update($data);
+            PartyApplication::where('id', $request->film_id)->update($data);
             ApprovalRequests::where('id', $request->request_id)->update($data1);
             ApprovalLogs::create($data2);
             \DB::commit();
-            Flash::success('Reality Application updated successfully.');
+            Flash::success('Party Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();
-            Flash::error('Reality Application update failed. Please try again later.');
+            Flash::error('Party Application update failed. Please try again later.');
         }
 
-        if (empty(Auth::user())) {
-            return redirect(route('realityApplications.index'));
-        } else {
-            return redirect(route('realityApplications.forward.table'));
-        }
+        return redirect(route('partyApplications.forward.table'));
     }
 
     /**
@@ -302,19 +288,19 @@ class RealityApplicationController extends AppBaseController
      */
     public function destroy($id)
     {
-        /** @var DramaApplication $filmApplication */
-        $filmApplication = RealityApplication::find($id);
+        /** @var PartyApplication $filmApplication */
+        $filmApplication = PartyApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Reality Application not found');
+            Flash::error('Party Application not found');
 
-            return redirect(route('realityApplications.index'));
+            return redirect(route('partyApplications.index'));
         }
 
         $filmApplication->delete();
 
-        Flash::success('Reality Application deleted successfully.');
+        Flash::success('Party Application deleted successfully.');
 
-        return redirect(route('realityApplications.index'));
+        return redirect(route('partyApplications.index'));
     }
 }

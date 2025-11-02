@@ -268,10 +268,10 @@ class DramaApplicationController extends AppBaseController
             ApprovalRequests::where('id', $request->request_id)->update($data1);
             ApprovalLogs::create($data2);
             \DB::commit();
-            Flash::success('Film Application updated successfully.');
+            Flash::success('Drama Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();
-            Flash::error('Film Application update failed. Please try again later.');
+            Flash::error('Drama Application update failed. Please try again later.');
         }
 
         return redirect(route('dramaApplications.forward.table'));
@@ -292,15 +292,15 @@ class DramaApplicationController extends AppBaseController
         $filmApplication = DramaApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Film Application not found');
+            Flash::error('Drama Application not found');
 
-            return redirect(route('filmApplications.index'));
+            return redirect(route('dramaApplications.index'));
         }
 
         $filmApplication->delete();
 
-        Flash::success('Film Application deleted successfully.');
+        Flash::success('Drama Application deleted successfully.');
 
-        return redirect(route('filmApplications.index'));
+        return redirect(route('dramaApplications.index'));
     }
 }
