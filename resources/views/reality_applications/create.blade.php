@@ -2,27 +2,23 @@
 
 {{-- Page title --}}
 @section('title')
-প্রামান্যচিত্র অ্যাপ্লিকেশন @parent
+রিয়েলিটি শো অ্যাপ্লিকেশন @parent
 @stop
 
 @section('content')
     <div class="content">
+        @include('adminlte-templates::common.errors')
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    @include('docufilm_applications.forward_details')
-                </div>
-
-                <div class="row">
+                    {!! Form::open(['route' => 'realityApplications.store','class' => 'form-horizontal col-md-12']) !!}
                     <div class="row">
-                        @include('docufilm_applications.forward_fields')
+                        @include('reality_applications.fields')
                     </div>
+
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
-
-
-

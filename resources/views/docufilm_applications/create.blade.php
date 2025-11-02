@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-নাটক অ্যাপ্লিকেশন @parent
+প্রামান্যচিত্র অ্যাপ্লিকেশন @parent
 @stop
 
 @section('content')
@@ -11,9 +11,9 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'dramaApplications.store','class' => 'form-horizontal col-md-12']) !!}
+                    {!! Form::open(['route' => 'docufilmApplications.store','class' => 'form-horizontal col-md-12']) !!}
                     <div class="row">
-                        @include('drama_applications.fields')
+                        @include('docufilm_applications.fields')
                     </div>
 
                     {!! Form::close() !!}

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateFilmApplicationRequest;
 use App\Http\Requests\UpdateFilmApplicationRequest;
 use App\Http\Controllers\AppBaseController;
-use App\Models\DocufilmApplication;
+use App\Models\RealityApplication;
 use App\Models\ApprovalFlowMaster;
 use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
@@ -17,7 +17,7 @@ use Flash;
 use Response;
 use Auth;
 
-class DocufilmApplicationController extends AppBaseController
+class RealityApplicationController extends AppBaseController
 {
     /**
      * Display a listing of the FilmApplication.
@@ -30,23 +30,23 @@ class DocufilmApplicationController extends AppBaseController
     {
 
         if (!Auth::guard('producer')->check()) {
-            $filmApplications = DocufilmApplication::latest();
+            $filmApplications = RealityApplication::latest();
         } else {
-            $filmApplications = DocufilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+            $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
 
         $filmApplications = $filmApplications->get();
 
-        return view('docufilm_applications.index')->with('filmApplications', $filmApplications);
+        return view('reality_applications.index')->with('filmApplications', $filmApplications);
     }
     /**
-     * Show the form for creating a new DocufilmApplication.
+     * Show the form for creating a new RealityApplication.
      *
      * @return Response
      */
     public function create()
     {
-        return view('docufilm_applications.create');
+        return view('reality_applications.create');
     }
 
     /**
@@ -61,22 +61,22 @@ class DocufilmApplicationController extends AppBaseController
         $input = $request->all();
         $producer = Auth::guard('producer')->user();
         $role_id = $producer->group_id;
-        $flow = ApprovalFlowMaster::where('name', 'like', '%Documentary Film%')->first();
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Reality Application%')->first();
         $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
         $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
-        // dd($flow);
-        /** @var DocufilmApplication $DocufilmApplication */
+
+        /** @var RealityApplication $RealityApplication */
 
         try {
             \DB::beginTransaction();
             $input['producer_id'] = $producer->id;
             $input['desk_id'] = $step->to_role_id;
             $input['status'] = 'on process';
-            $DocufilmApplication = DocufilmApplication::create($input);
+            $realityApplication = RealityApplication::create($input);
             $data = array(
                 'flow_id' => $flow->id,
                 'request_type' => $flow->name,
-                'application_id' => $DocufilmApplication->id,
+                'application_id' => $realityApplication->id,
                 'prev_role_id' => $role_id,
                 'current_role_id' => $step->to_role_id,
                 'next_role_id' => $next->to_role_id,
@@ -104,12 +104,12 @@ class DocufilmApplicationController extends AppBaseController
 
             \DB::commit();
 
-            Flash::success('Documentary Film saved successfully.');
-            return redirect(route('docufilmApplications.index'));
+            Flash::success('Reality Application saved successfully.');
+            return redirect(route('realityApplications.index'));
         } catch (\Exception $e) {
             \DB::rollBack();
             Flash::error($e->getMessage());
-            return redirect(route('docufilmApplications.index'));
+            return redirect(route('realityApplications.index'));
         }
     }
 
@@ -122,20 +122,20 @@ class DocufilmApplicationController extends AppBaseController
      */
     public function show($id)
     {
-        /** @var DocufilmApplication $filmApplication */
-        $filmApplication = DocufilmApplication::find($id);
+        /** @var RealityApplication $filmApplication */
+        $filmApplication = RealityApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Film Application not found');
+            Flash::error('Reality Application not found');
 
-            return redirect(route('filmApplications.index'));
+            return redirect(route('realityApplications.index'));
         }
 
-        return view('docufilm_applications.show')->with('filmApplication', $filmApplication);
+        return view('reality_applications.show')->with('filmApplication', $filmApplication);
     }
 
     /**
-     * Show the form for editing the specified DocufilmApplication.
+     * Show the form for editing the specified DramaApplication.
      *
      * @param int $id
      *
@@ -143,60 +143,61 @@ class DocufilmApplicationController extends AppBaseController
      */
     public function edit($id)
     {
-        /** @var DocufilmApplication $filmApplication */
-        $filmApplication = DocufilmApplication::find($id);
+        /** @var RealityApplication $filmApplication */
+        $filmApplication = RealityApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Film Application not found');
+            Flash::error('Reality Application not found');
 
-            return redirect(route('filmApplications.index'));
+            return redirect(route('realityApplications.index'));
         }
 
-        return view('docufilm_applications.edit')->with('filmApplication', $filmApplication);
+        return view('reality_applications.edit')->with('filmApplication', $filmApplication);
     }
 
     /**
-     * Update the specified DocufilmApplication in storage.
+     * Update the specified DramaApplication in storage.
      *
      * @param int $id
-     * @param UpdateDocufilmApplicationRequest $request
+     * @param UpdateRealityApplicationRequest $request
      *
      * @return Response
      */
-    public function update($id, UpdateDocufilmApplicationRequest $request)
+    public function update($id, UpdateRealityApplicationRequest $request)
     {
-        /** @var DocufilmApplication $filmApplication */
-        $filmApplication = DocufilmApplication::find($id);
+        /** @var RealityApplication $filmApplication */
+        $filmApplication = RealityApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Film Application not found');
+            Flash::error('Reality Application not found');
 
-            return redirect(route('filmApplications.index'));
+            return redirect(route('realityApplications.index'));
         }
 
         $filmApplication->fill($request->all());
         $filmApplication->save();
 
-        Flash::success('Film Application updated successfully.');
+        Flash::success('Reality Application updated successfully.');
 
-        return redirect(route('filmApplications.index'));
+        return redirect(route('realityApplications.index'));
     }
 
     public function forward_table(Request $request)
     {
         $user = Auth::user()->user_role;
-        $films = DocufilmApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
-        return view('docufilm_applications.index')->with('filmApplications', $films);
+        $films = RealityApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
+        return view('reality_applications.index')->with('filmApplications', $films);
     }
-    public function forward(DocufilmApplication $docufilmApplication, $desk)
+    public function forward(RealityApplication $realityApplication, $desk)
     {
-        $app_id = $docufilmApplication->id;
-        $role_id = $docufilmApplication->desk_id;
-        $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Documentary Film')->where('current_role_id', $role_id)->first();
+        $app_id = $realityApplication->id;
+        $role_id = $realityApplication->desk_id;
+        $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Drama Application')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
+        // dd($logs);
 
-        return view('docufilm_applications.forward', [
-            'film' => $docufilmApplication,
+        return view('reality_applications.forward', [
+            'film' => $realityApplication,
             'auth_user' => $auth_user,
             'logs' => $logs,
         ]);
@@ -205,7 +206,7 @@ class DocufilmApplicationController extends AppBaseController
 
     public function update_status(Request $request)
     {
-        $film = DocufilmApplication::find($request->film_id);
+        $film = RealityApplication::find($request->film_id);
         $steps = ApprovalRequests::find($request->request_id);
         if ($request->status == 'backward') {
             $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
@@ -263,17 +264,17 @@ class DocufilmApplicationController extends AppBaseController
 
         try {
             \DB::beginTransaction();
-            DocufilmApplication::where('id', $request->film_id)->update($data);
+            RealityApplication::where('id', $request->film_id)->update($data);
             ApprovalRequests::where('id', $request->request_id)->update($data1);
             ApprovalLogs::create($data2);
             \DB::commit();
-            Flash::success('Documentary Application updated successfully.');
+            Flash::success('Reality Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();
-            Flash::error('Documentary Application update failed. Please try again later.');
+            Flash::error('Reality Application update failed. Please try again later.');
         }
 
-        return redirect(route('docufilmApplications.forward.table'));
+        return redirect(route('realityApplications.forward.table'));
     }
 
     /**
@@ -287,19 +288,19 @@ class DocufilmApplicationController extends AppBaseController
      */
     public function destroy($id)
     {
-        /** @var DocufilmApplication $filmApplication */
-        $filmApplication = DocufilmApplication::find($id);
+        /** @var DramaApplication $filmApplication */
+        $filmApplication = DramaApplication::find($id);
 
         if (empty($filmApplication)) {
-            Flash::error('Film Application not found');
+            Flash::error('Reality Application not found');
 
-            return redirect(route('filmApplications.index'));
+            return redirect(route('realityApplications.index'));
         }
 
         $filmApplication->delete();
 
-        Flash::success('Film Application deleted successfully.');
+        Flash::success('Reality Application deleted successfully.');
 
-        return redirect(route('filmApplications.index'));
+        return redirect(route('realityApplications.index'));
     }
 }

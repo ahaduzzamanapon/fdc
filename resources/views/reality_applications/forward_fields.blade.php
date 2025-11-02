@@ -1,4 +1,4 @@
-{!! Form::open(['route' => 'docufilmApplications.st.status','class' => 'form-horizontal col-md-12']) !!}
+{!! Form::open(['route' => 'realityApplications.st.status','class' => 'form-horizontal col-md-12']) !!}
     <!-- Section: Form -->
     <fieldset class="border p-3 mb-4">
         <legend class="float-none w-auto px-2">তথ্য হাল নাগাদ করুন</legend>
@@ -23,6 +23,6 @@
     <!-- Submit Field -->
     <div class="form-group col-sm-12" style="text-align-last: right;">
         {!! Form::submit(__('messages.save'), ['class' => 'btn btn-primary']) !!}
-        <a href="{{ route('docufilmApplications.forward.table') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>
+        <a href="{{ route('realityApplications.forward.table') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>
     </div>
 {!! Form::close() !!}

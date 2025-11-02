@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-প্রামান্যচিত্র অ্যাপ্লিকেশন @parent
+রিয়েলিটি শো অ্যাপ্লিকেশন @parent
 @stop
 
 @section('content')
@@ -19,7 +19,7 @@
         <div class="card-header text-white" style="background-color: #8dc542;">
             <h4 class="card-title d-inline mb-0">{{ __('messages.payment_list') }}</h4>
             <span class="float-right">
-                <a class="btn text-white" style="background-color: #8dc542; border-color: #8dc542;" href="{{ route('docufilmApplications.index') }}">Back to {{ __('messages.film_applications') }}</a>
+                <a class="btn text-white" style="background-color: #8dc542; border-color: #8dc542;" href="{{ route('realityApplications.index') }}">Back to {{ __('messages.film_applications') }}</a>
             </span>
         </div>
         <div class="card-body">

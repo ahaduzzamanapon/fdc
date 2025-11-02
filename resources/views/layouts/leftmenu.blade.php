@@ -42,6 +42,26 @@
             <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
         </a>
     </li>
+
+    {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('realityApplications*') ? 'active' : '' !!}"
+            href="{{ route('realityApplications.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> তা </i>
+            <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
+        </a>
+    </li>
+
+    {{-- পার্টি অ্যাপ্লিকেশন --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+            href="{{ route('partyApplications.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> পা </i>
+            <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+        </a>
+    </li>
 @else
 
     {{-- Dashboard --}}
@@ -127,6 +147,105 @@
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('dramaApplications_forward_table*') ? 'active' : '' !!}"
                         href="{{ route('dramaApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
+    {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('docufilmApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#docufilmApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('docufilmApplications*') ? 'show' : '' !!}" id="docufilmApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('docufilmApplications') ? 'active' : '' !!}"
+                            href="{{ route('docufilmApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('docufilmApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('docufilmApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
+    {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('realityApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#realityApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('realityApplications*') ? 'show' : '' !!}" id="realityApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('realityApplications') ? 'active' : '' !!}"
+                            href="{{ route('realityApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('realityApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('realityApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
+    {{-- পার্টি অ্যাপ্লিকেশন --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#partyApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('partyApplications*') ? 'show' : '' !!}" id="partyApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('partyApplications') ? 'active' : '' !!}"
+                            href="{{ route('partyApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('partyApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('partyApplications.forward.table') }}">
                         <i class="icon im im-icon-Settings-Window"></i>
                         <i class="sidenav-mini-icon"> অ </i>
                         <span class="item-name">{{ __('messages.pending_list') }}</span>
