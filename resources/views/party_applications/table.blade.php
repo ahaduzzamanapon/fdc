@@ -3,21 +3,25 @@
         <thead>
             <tr>
                 <th>SL</th>
-                <th>Film Title</th>
-                <th>Applicant Name</th>
                 <th>Organization Name</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Bank Name</th>
+                <th>Bank Account Number</th>
                 <th>Status</th>
                 <th>Desk</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-        @foreach($filmApplications as $key => $film)
+            @foreach($filmApplications as $key => $film)
             <tr>
                 <td>{{ $key+1 }}</td>
-                <td>{{ $film->film_title }}</td>
-                <td>{{ $film->applicant_name }}</td>
                 <td>{{ $film->organization_name }}</td>
+                <td>{{ $film->phone_number }}</td>
+                <td>{{ $film->address }}</td>
+                <td>{{ $film->bank_name }}</td>
+                <td>{{ $film->bank_account_number }}</td>
                 <td>{{ $film->status }}</td>
                 <td>{{ Str::ucfirst(get_role($film->desk_id)->name)}}</td>
                 <td>

@@ -1,15 +1,15 @@
-<!-- Section: নাটক সংক্রান্ত তথ্য -->
+<!-- Section: পার্টি অ্যাপ্লিকেশন তথ্য -->
 <fieldset class="border p-3 mb-4">
-    <legend class="float-none w-auto px-2">{{ __('messages.film_related_information') }}</legend>
+    <legend class="float-none w-auto px-2">{{  'পার্টি অ্যাপ্লিকেশন তথ্য' }}</legend>
     <div class="row">
         <div class="table-responsive">
             <table class="table table-default">
                 <tr>
-                    <th scopre="row">{!! Form::label('film_title', 'Film Title:') !!}</th>
-                    <td>{{ $film->film_title }}</td>
+                    <th scopre="row">{!! Form::label('film_title', 'Name:') !!}</th>
+                    <td>{{ $film->organization_name }}</td>
 
-                    <th scopre="row">{!! Form::label('applicant_nam', 'Applicant Nam:') !!}</th>
-                    <td>{{ $film->applicant_nam }}</td>
+                    <th scopre="row">{!! Form::label('applicant_nam', 'Address') !!}</th>
+                    <td>{{ $film->address }}</td>
                 </tr>
             </table>
         </div>

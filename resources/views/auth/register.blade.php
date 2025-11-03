@@ -156,7 +156,7 @@
             <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
         <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px;cursor: pointer;">
-            <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ __('messages.producer_registration_form') }}</span>
+            <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'নাগরিক রেজিস্ট্রেশন' }}</span>
         </div>
 
         <form action="{{ route('producers_register') }}" method="POST" enctype="multipart/form-data">
@@ -166,17 +166,17 @@
 
                     <!-- Organization Info -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">{{ __('messages.organization_information') }}</legend>
+                        <legend class="w-auto">{{  'নাগরিক তথ্য' }}</legend>
                         <div class="row">
                             <div class="col-md-3">
-                                {!! Form::label('organization_name', __('messages.organization_name')) !!}
+                                {!! Form::label('organization_name', 'নাম') !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('organization_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 {!! Form::label('address', __('messages.address')) !!}
                                  <span class="text-danger">*</span>
-                                {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!} 
+                                {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('phone_number', __('messages.phone_number')) !!}
@@ -191,13 +191,13 @@
                             <div class="col-md-2">
                                 {!! Form::label('password', __('messages.password_label')) !!}
                                 <span class="text-danger">*</span>
-                                {!! Form::text('password', null, ['required','style="border: 1px solid #8dc641;border-radius: 4px;padding: 4px;"']) !!}
+                                {!! Form::text('password', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
                     </fieldset>
 
                     <!-- Bank Details -->
-                    <fieldset class="border p-2 mb-3 col-md-12">
+                    {{-- <fieldset class="border p-2 mb-3 col-md-12">
                         <legend class="w-auto">{{ __('messages.bank_related_information') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
@@ -221,10 +221,10 @@
                                 {!! Form::file('bank_attachment', ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
-                    </fieldset>
+                    </fieldset> --}}
 
                     <!-- Tax Info -->
-                    <fieldset class="border p-2 mb-3 col-md-12">
+                    {{-- <fieldset class="border p-2 mb-3 col-md-12">
                         <legend class="w-auto">{{ __('messages.tax_related_information') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
@@ -246,10 +246,10 @@
                                 {!! Form::file('vat_attachment', ['class' => 'form-control']) !!}
                             </div>
                         </div>
-                    </fieldset>
+                    </fieldset> --}}
 
                     <!-- Trade License -->
-                    <fieldset class="border p-2 mb-3 col-md-12">
+                    {{-- <fieldset class="border p-2 mb-3 col-md-12">
                         <legend class="w-auto">{{ __('messages.trade_license') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
@@ -265,10 +265,10 @@
                                 {!! Form::file('trade_license_attachment', ['class' => 'form-control']) !!}
                             </div>
                         </div>
-                    </fieldset>
+                    </fieldset> --}}
 
                     <!-- Nominee Info -->
-                    <fieldset class="border p-2 mb-3 col-md-12">
+                    {{-- <fieldset class="border p-2 mb-3 col-md-12">
                         <legend class="w-auto">{{ __('messages.nominee_information') }}</legend>
                         <div class="row">
                             <div class="col-md-3">
@@ -292,10 +292,10 @@
                                 {!! Form::file('nominee_photo', ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
-                    </fieldset>
+                    </fieldset> --}}
 
                     <!-- Business Agreements -->
-                    <fieldset class="border p-2 mb-3 col-md-12">
+                    {{-- <fieldset class="border p-2 mb-3 col-md-12">
                         <legend class="w-auto">{{ __('messages.business_agreements') }}</legend>
                         <div class="row">
                             @foreach (['partnership', 'ltd_company', 'somobay', 'other'] as $type)
@@ -333,29 +333,29 @@
                                 </div>
                             @endforeach
                         </div>
-                    </fieldset>
+                    </fieldset> --}}
 
-<script>
-    document.querySelectorAll('.add-row').forEach(button => {
-        button.addEventListener('click', function() {
-            const type = this.getAttribute('data-type');
-            const tableBody = this.closest('table').querySelector('tbody');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><input type="text" name="${type}_name[]" class="form-control"></td>
-                <td><input type="file" name="${type}_attachment[]" class="form-control"></td>
-                <td><span class="btn btn-danger remove-row">{{ __('messages.delete') }}</span></td>
-            `;
-            tableBody.appendChild(newRow);
-        });
-    });
+                    <script>
+                        document.querySelectorAll('.add-row').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const type = this.getAttribute('data-type');
+                                const tableBody = this.closest('table').querySelector('tbody');
+                                const newRow = document.createElement('tr');
+                                newRow.innerHTML = `
+                                    <td><input type="text" name="${type}_name[]" class="form-control"></td>
+                                    <td><input type="file" name="${type}_attachment[]" class="form-control"></td>
+                                    <td><span class="btn btn-danger remove-row">{{ __('messages.delete') }}</span></td>
+                                `;
+                                tableBody.appendChild(newRow);
+                            });
+                        });
 
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('remove-row')) {
-            event.target.closest('tr').remove();
-        }
-    });
-</script>
+                        document.addEventListener('click', function(event) {
+                            if (event.target.classList.contains('remove-row')) {
+                                event.target.closest('tr').remove();
+                            }
+                        });
+                    </script>
 
                     <!-- Submit Buttons -->
                     <div class="col-md-12 text-end mt-3" style="text-align-last: right;">

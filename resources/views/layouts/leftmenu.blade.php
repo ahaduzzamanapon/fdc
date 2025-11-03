@@ -54,14 +54,19 @@
     </li>
 
     {{-- পার্টি অ্যাপ্লিকেশন --}}
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
-            href="{{ route('partyApplications.index') }}">
-            <i class="icon im im-icon-Settings-Window"></i>
-            <i class="sidenav-mini-icon"> পা </i>
-            <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
-        </a>
-    </li>
+    @php
+        $type = Auth::guard('producer')->user();
+    @endphp
+    @if ($type->types == 'citizen' && $type->status == 'Inactive')
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                href="{{ route('partyApplications.create') }}">
+                <i class="icon im im-icon-Settings-Window"></i>
+                <i class="sidenav-mini-icon"> পা </i>
+                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+            </a>
+        </li>
+    @endif
 @else
 
     {{-- Dashboard --}}

@@ -59,6 +59,73 @@ class PartyApplicationController extends AppBaseController
     public function store(Request $request)
     {
         $input = $request->all();
+
+        $input['trade_license_validity_date'] = date('Y-m-d', strtotime($input['trade_license_validity_date']));
+
+        // Handle single file uploads
+        $input_file = [
+            'bank_attachment',
+            'tin_attachment',
+            'vat_attachment',
+            'trade_license_attachment',
+            'nominee_photo',
+        ];
+
+        foreach ($input_file as $file_name) {
+            if ($request->hasFile($file_name)) {
+                $file = $request->file($file_name);
+                $folder = 'producers_file/' . $file_name;
+                $customName = 'producers_file-' . $file_name . '-' . time();
+                $input[$file_name] = uploadFile($file, $folder, $customName);
+            } else {
+                unset($input[$file_name]);
+            }
+        }
+
+        // Handle multiple file-name pairs as JSON and store in a single string column
+        $multi_file_fields = [
+            'partnership' => 'partnership_attachment',
+            'ltd_company' => 'ltd_company_attachment',
+            'somobay' => 'somobay_attachment',
+            'other' => 'other_attachment',
+        ];
+
+        foreach ($multi_file_fields as $field => $fileField) {
+            $nameInput = $request->input($field . '_name', []);
+            $fileInput = $request->file($fileField, []);
+            $combinedData = [];
+
+            foreach ($nameInput as $index => $name) {
+                if (!empty($name) && isset($fileInput[$index])) {
+                    $file = $fileInput[$index];
+                    $folder = 'producers_file/' . $fileField;
+                    $customName = $field . '-' . $index . '-' . time();
+                    $filePath = uploadFile($file, $folder, $customName);
+                    $combinedData[] = [
+                        'name' => $name,
+                        'file' => $filePath,
+                    ];
+                }
+            }
+
+            // Save as JSON string into corresponding single column
+            $columnName = $field . '_agreement'; // e.g. partnership_agreement
+            $input[$columnName] = json_encode($combinedData); // Store as JSON string
+        }
+        $input['other_attachment'] = $input['other_agreement'];
+        unset(
+            $input['partnership_name'],
+            $input['ltd_company_name'],
+            $input['somobay_name'],
+            $input['other_name'],
+            $input['partnership_attachment'],
+            $input['ltd_company_attachment'],
+            $input['somobay_attachment'],
+            $input['other_agreement'],
+            $input['_token'],
+        );
+
+        // Save producer
         $producer = Auth::guard('producer')->user();
         $role_id = $producer->group_id;
         $flow = ApprovalFlowMaster::where('name', 'like', '%Party Application%')->first();
@@ -69,14 +136,13 @@ class PartyApplicationController extends AppBaseController
 
         try {
             \DB::beginTransaction();
-            $input['producer_id'] = $producer->id;
             $input['desk_id'] = $step->to_role_id;
             $input['status'] = 'on process';
-            $partyApplication = PartyApplication::create($input);
+            $partyApplication = PartyApplication::where('id', $producer->id)->update($input);
             $data = array(
                 'flow_id' => $flow->id,
                 'request_type' => $flow->name,
-                'application_id' => $partyApplication->id,
+                'application_id' => $producer->id,
                 'prev_role_id' => $role_id,
                 'current_role_id' => $step->to_role_id,
                 'next_role_id' => $next->to_role_id,
@@ -105,7 +171,7 @@ class PartyApplicationController extends AppBaseController
             \DB::commit();
 
             Flash::success('Party Application saved successfully.');
-            return redirect(route('partyApplications.index'));
+            return redirect(route('producer.dashboard'));
         } catch (\Exception $e) {
             \DB::rollBack();
             Flash::error($e->getMessage());
@@ -229,10 +295,16 @@ class PartyApplicationController extends AppBaseController
             $fstatus = $request->status;
             $status = $request->status;
         }
+        if ($request->status == 'approved') {
+            $types = 'party';
+        } else {
+            $types = 'citizen';
+        }
 
         // filmapplications
         $data = array(
             'desk_id' => $current_role_id,
+            'types' => $types,
             'status' => $status,
             'updated_by' => Auth::user()->id,
             'updated_at' => date('Y-m-d H:i:s'),

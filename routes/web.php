@@ -156,8 +156,6 @@ Route::get('{name?}', 'JoshController@showView');
 
 
 
-
-
 Route::post('/producers_register', [ProducerController::class, 'producers_register'])->name('producers_register');
 
 
