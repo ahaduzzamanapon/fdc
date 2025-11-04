@@ -341,7 +341,7 @@ class ProducerController extends AppBaseController
     }
     public function booking()
     {
-       
+
         if (!Auth::guard('producer')->check()) {
           $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
             ->select('bookings.*', 'producers.organization_name as producer_name')
@@ -353,7 +353,7 @@ class ProducerController extends AppBaseController
             ->get();
         }
 
-        
+
 
         return view('producers.mainView.booking', compact('booking_requests'));
     }
@@ -372,7 +372,7 @@ class ProducerController extends AppBaseController
         $items = Item::where('cat_id', $cat_id)->get();
         return response()->json($items);
     }
-  
+
     public function get_shift_by_item(Request $request)
     {
 
@@ -427,7 +427,7 @@ class ProducerController extends AppBaseController
 
     public function producer_booking_request(Request $request)
     {
-       
+
         DB::beginTransaction();
 
         try {
@@ -462,7 +462,7 @@ class ProducerController extends AppBaseController
                     'catagori' => $category_ids[$i],
                     'item_id' => $item_id,
                     'shift_id' => $shift_ids[$i],
-                    'amount' => 1, 
+                    'amount' => 1,
                     'start_date' => $start_dates[$i],
                     'end_date' => $end_dates[$i],
                     'total_day' => $total_day,
@@ -482,7 +482,7 @@ class ProducerController extends AppBaseController
 
     public function approve_booking($id)
     {
-       
+
         $booking = Booking::find($id);
 
         if (empty($booking)) {
@@ -499,7 +499,7 @@ class ProducerController extends AppBaseController
 
     public function show_booking_details($id)
     {
-        
+
 
         $booking = Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($id);
 

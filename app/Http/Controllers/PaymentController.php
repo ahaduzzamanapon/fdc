@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FilmPackage;
 use App\Models\FilmApplication;
+use App\Models\ProducerBalance;
+use App\Models\ProducerPaymentDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Flash;
@@ -125,17 +127,36 @@ class PaymentController extends Controller
         $film_package->status = 'paid';
         $film_package->save();
 
+        $user_id = $film_package->created_by;
+        if ($user_id == Auth::guard('producer')->user()->id) {
+            $producer_balance = ProducerBalance::where('producer_id', $user_id)->first();
+            if (empty($producer_balance)) {
+                $producer_balance = new ProducerBalance;
+                $producer_balance->producer_id = $user_id;
+                $producer_balance->total_in = $film_package->amount;
+                $producer_balance->current_balance = $film_package->amount;
+                $producer_balance->created_at = date('Y-m-d H:i:s');
+                $producer_balance->updated_at = date('Y-m-d H:i:s');
+                // dd($producer_balance);
+                $producer_balance->save();
+            } else {
+                $producer_balance->current_balance = $producer_balance->current_balance + $film_package->amount;
+                $producer_balance->total_in = $producer_balance->total_in + $film_package->amount;
+                $producer_balance->updated_at = date('Y-m-d H:i:s');
+                $producer_balance->save();
+            }
 
-        $film_id = $film_package->film_id;
-        $film = FilmApplication::find($film_id);
-        $film->balance = $film->balance + $film_package->amount;
-        $film->save();
-
-
-
+            $balance_details = new ProducerPaymentDetails;
+            $balance_details->producer_id = $user_id;
+            $balance_details->amount = $film_package->amount;
+            $balance_details->type = 'in';
+            $balance_details->created_at = date('Y-m-d H:i:s');
+            $balance_details->created_by = Auth::guard('producer')->user()->id;
+            $balance_details->save();
+        }
 
         Flash::success('Payment successful');
-        return redirect()->route('filmApplications.index');
+        return redirect()->route('makePayments.index');
 
     }
 

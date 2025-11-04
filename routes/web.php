@@ -17,6 +17,7 @@ use App\Http\Controllers\DocufilmApplicationController;
 use App\Http\Controllers\RealityApplicationController;
 use App\Http\Controllers\PartyApplicationController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MakePaymentController;
 
 
 include 'demo.php';
@@ -45,6 +46,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// payments
+Route::resource('makePayments', 'MakePaymentController');
+Route::prefix('make-payment')->name('makePayments.')->group(function () {
+    Route::get('{makePayment}/forward/{desk}', [MakePaymentController::class, 'forward'])->name('forward');
+    Route::post('change_status', [MakePaymentController::class, 'update_status'])->name('st.status');
+    Route::get('make_payment/{package_id}', [MakePaymentController::class, 'make_payment'])->name('make_payment');
+});
+Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
+
+// party applications
 Route::resource('partyApplications', 'PartyApplicationController');
 Route::prefix('party-application')->name('partyApplications.')->group(function () {
     Route::get('{partyApplication}/forward/{desk}', [PartyApplicationController::class, 'forward'])->name('forward');
@@ -52,7 +63,7 @@ Route::prefix('party-application')->name('partyApplications.')->group(function (
 });
 Route::get('partyApplications_forward_table', [PartyApplicationController::class, 'forward_table'])->name('partyApplications.forward.table');
 
-
+// reality applications
 Route::resource('realityApplications', 'RealityApplicationController');
 Route::prefix('reality-application')->name('realityApplications.')->group(function () {
     Route::get('{realityApplication}/forward/{desk}', [RealityApplicationController::class, 'forward'])->name('forward');
@@ -60,7 +71,7 @@ Route::prefix('reality-application')->name('realityApplications.')->group(functi
 });
 Route::get('realityApplications_forward_table', [RealityApplicationController::class, 'forward_table'])->name('realityApplications.forward.table');
 
-
+// docufilm applications
 Route::resource('docufilmApplications', 'DocufilmApplicationController');
 Route::prefix('docufilm-application')->name('docufilmApplications.')->group(function () {
     Route::get('{docufilmApplication}/forward/{desk}', [DocufilmApplicationController::class, 'forward'])->name('forward');
@@ -68,7 +79,7 @@ Route::prefix('docufilm-application')->name('docufilmApplications.')->group(func
 });
 Route::get('docufilmApplications_forward_table', [DocufilmApplicationController::class, 'forward_table'])->name('docufilmApplications.forward.table');
 
-
+// drama applications
 Route::resource('dramaApplications', 'DramaApplicationController');
 Route::prefix('drama-application')->name('dramaApplications.')->group(function () {
     Route::get('{dramaApplication}/forward/{desk}', [DramaApplicationController::class, 'forward'])->name('forward');
@@ -76,7 +87,7 @@ Route::prefix('drama-application')->name('dramaApplications.')->group(function (
 });
 Route::get('dramaApplications_forward_table', [DramaApplicationController::class, 'forward_table'])->name('dramaApplications.forward.table');
 
-
+// film applications
 Route::resource('filmApplications', 'FilmApplicationController');
 Route::prefix('film-applications')->name('filmApplications.')->group(function () {
     Route::get('{filmApplication}/forward/{desk}', [FilmApplicationController::class, 'forward'])->name('forward');

@@ -27,13 +27,23 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <label for="film_id" class="form-label">{{ __('messages.select_film') }}</label>
+                        <label for="film_type" class="form-label">{{ 'টাইপ নির্বাচন' }}</label>
+                        <select id="film_type" class="form-select">
+                            <option value="">{{ 'টাইপ নির্বাচন করুন' }}</option>
+                            <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
+                            <option value="drama">নাটক অ্যাপ্লিকেশন</option>
+                            <option value="docufilm">প্রামান্যচিত্র অ্যাপ্লিকেশন</option>
+                            <option value="realityshow">রিয়েলিটি শো অ্যাপ্লিকেশন</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="film_id" class="form-label">{{ 'অ্যাপ্লিকেশন নির্বাচন' }}</label>
                         <select id="film_id" class="form-select">
-                            <option value="">{{ __('messages.select_film_placeholder') }}</option>
-                            @foreach (\App\Models\FilmApplication::where('producer_id', Auth::guard('producer')->user()->id)->where('desk', 'MD Approved')->get() as $FilmApplication)
+                            <option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>
+                            {{-- @foreach (\App\Models\FilmApplication::where('producer_id', Auth::guard('producer')->user()->id)->where('desk', 'MD Approved')->get() as $FilmApplication)
                                 <option data-balance="{{ $FilmApplication->balance }}" value="{{ $FilmApplication->id }}">
                                     {{ $FilmApplication->film_title }}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -343,13 +353,13 @@
                     total_price = $('#total_price_input_total').val();
 
 
-                    
+
                     if (total_price < film_balance) {
                         alert("{{ __('messages.no_film_balance') }}");
                         return false;
                     }
-                    
-                    
+
+
                     Swal.fire({
                     title: "Are you sure?",
                     icon: "warning",
