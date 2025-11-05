@@ -10,6 +10,10 @@ use App\Models\Producer;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\FilmApplication as Film;
+use App\Models\RealityApplication;
+use App\Models\DocufilmApplication;
+use App\Models\DramaApplication;
+use App\Models\ProducerBalance;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -365,6 +369,32 @@ class ProducerController extends AppBaseController
         }
         return view('producers.mainView.create_page');
     }
+
+    public function get_application(Request $request)
+    {
+        $user = Auth::guard('producer')->user();
+        if ($request->filmId == 'drama') {
+            $items = DramaApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
+        } elseif ($request->filmId == 'realityshow') {
+            $items = RealityApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
+        } elseif ($request->filmId == 'docufilm') {
+            $items = DocufilmApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
+        } else {
+            $items = Film::where('producer_id', $user->id)->where('status', 'approved')->get();
+        }
+
+        return response()->json($items);
+    }
+
+    public function get_applicant_balance(Request $request)
+    {
+
+        $user_id = Auth::guard('producer')->user()->id;
+        $items = ProducerBalance::where('producer_id', $user_id)->first();
+        $balance = !empty($items->current_balance) ? $items->current_balance : 0;
+        return response()->json($balance);
+    }
+
     public function get_items_by_category(Request $request)
     {
 

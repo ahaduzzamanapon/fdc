@@ -181,6 +181,8 @@ Route::group(["middleware" => []], function () {
         Route::get('/booking', 'booking')->name('producer.booking');
         Route::get('/create_page', 'create_page')->name('producer.create_page');
         Route::post('/book_store', 'book_store')->name('producer.book_store');
+        Route::get('/get_application', 'get_application')->name('producer.get_application');
+        Route::get('/get_applicant_balance', 'get_applicant_balance')->name('producer.get_applicant_balance');
         Route::get('/get_items_by_category', 'get_items_by_category')->name('producer.get_items_by_category');
         Route::get('/get_shift_by_item', 'get_shift_by_item')->name('producer.get_shift_by_item');
         Route::get('/get_booking_date_by_shift', 'get_booking_date_by_shift')->name('producer.get_booking_date_by_shift');
