@@ -124,6 +124,7 @@ class PaymentController extends Controller
         if (!$film_package) {
             return response()->json(['error' => 'Transaction not found'], 404);
         }
+        $film_package->updated_by = Auth::guard('producer')->user()->id;
         $film_package->status = 'paid';
         $film_package->save();
 

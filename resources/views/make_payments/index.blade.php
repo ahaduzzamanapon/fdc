@@ -16,7 +16,7 @@
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">নাটক অ্যাপ্লিকেশন</h5>
+            <h5 class="card-title d-inline">পেমেন্ট তালিকা </h5>
             <span class="float-right">
                 <a class="btn btn-primary pull-right" onclick="makePaymentModal()" >{{ __('messages.add_new') }}</a>
             </span>
@@ -45,7 +45,7 @@
                             <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
                             <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
                             <td>
-                                <a href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ __('messages.view_receipt') }}</a>
+                                <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
                             </td>
                         </tr>
                         @empty

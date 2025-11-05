@@ -57,14 +57,26 @@
     @php
         $type = Auth::guard('producer')->user();
     @endphp
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
-            href="{{ route('partyApplications.create') }}">
-            <i class="icon im im-icon-Settings-Window"></i>
-            <i class="sidenav-mini-icon"> পা </i>
-            <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
-        </a>
-    </li>
+    @if ($type->desk_id == null && $type->status == 'Inactive')
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                href="{{ route('partyApplications.create') }}">
+                <i class="icon im im-icon-Settings-Window"></i>
+                <i class="sidenav-mini-icon"> পা </i>
+                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+            </a>
+        </li>
+    @else
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                href="{{ route('partyApplications.show', [$type->id]) }}">
+                <i class="icon im im-icon-Settings-Window"></i>
+                <i class="sidenav-mini-icon"> পা </i>
+                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+            </a>
+        </li>
+    @endif
+
 
     <li class="nav-item">
         <a class="nav-link {!! Request::is('makePayments*') ? 'active' : '' !!}"

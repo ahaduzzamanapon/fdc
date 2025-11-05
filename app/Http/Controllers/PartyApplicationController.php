@@ -32,7 +32,7 @@ class PartyApplicationController extends AppBaseController
         if (!Auth::guard('producer')->check()) {
             $filmApplications = PartyApplication::latest();
         } else {
-            $filmApplications = PartyApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+            $filmApplications = PartyApplication::latest()->where('id', Auth::guard('producer')->user()->id);
         }
 
         $filmApplications = $filmApplications->get();

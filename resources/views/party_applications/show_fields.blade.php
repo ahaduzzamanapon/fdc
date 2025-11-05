@@ -1,14 +1,34 @@
-<tr>
+{{-- <tr>
     <th scopre="row">{!! Form::label('id', 'Id:') !!}</th>
     <td>{{ $filmApplication->id }}</td>
 </tr>
+--}}
+
+<tr>
+    <th scopre="row">{!! Form::label('organization_name', 'Organization Name:') !!}</th>
+    <td>{{ $filmApplication->organization_name }}</td>
+</tr>
+
+<tr>
+    <th scopre="row">{!! Form::label('phone_number', 'Phone Number:') !!}</th>
+    <td>{{ $filmApplication->phone_number }}</td>
+</tr>
 
 
 <tr>
-    <th scopre="row">{!! Form::label('film_title', 'Film Title:') !!}</th>
-    <td>{{ $filmApplication->film_title }}</td>
+    <th scopre="row">{!! Form::label('email', 'Email:') !!}</th>
+    <td>{{ $filmApplication->email }}</td>
 </tr>
 
+<tr>
+    <th scopre="row">{!! Form::label('Status', 'Status') !!}</th>
+    <td>{{ $filmApplication->status }}</td>
+</tr>
+
+<tr>
+    <th scopre="row">{!! Form::label('Desk', 'Desk') !!}</th>
+    <td>{{ Str::ucfirst(get_role($filmApplication->desk_id)->name) }}</td>
+</tr>
 
 <tr>
     <th scopre="row">{!! Form::label('applicant_nam', 'Applicant Nam:') !!}</th>
@@ -43,24 +63,6 @@
 <tr>
     <th scopre="row">{!! Form::label('nid_number', 'Nid Number:') !!}</th>
     <td>{{ $filmApplication->nid_number }}</td>
-</tr>
-
-
-<tr>
-    <th scopre="row">{!! Form::label('phone_number', 'Phone Number:') !!}</th>
-    <td>{{ $filmApplication->phone_number }}</td>
-</tr>
-
-
-<tr>
-    <th scopre="row">{!! Form::label('email', 'Email:') !!}</th>
-    <td>{{ $filmApplication->email }}</td>
-</tr>
-
-
-<tr>
-    <th scopre="row">{!! Form::label('organization_name', 'Organization Name:') !!}</th>
-    <td>{{ $filmApplication->organization_name }}</td>
 </tr>
 
 
