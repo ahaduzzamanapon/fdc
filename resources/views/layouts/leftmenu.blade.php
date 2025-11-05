@@ -69,7 +69,7 @@
     @else
         <li class="nav-item">
             <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
-                href="{{ route('partyApplications.show', [$type->id]) }}">
+                href="{{ route('partyApplications.index') }}">
                 <i class="icon im im-icon-Settings-Window"></i>
                 <i class="sidenav-mini-icon"> পা </i>
                 <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>

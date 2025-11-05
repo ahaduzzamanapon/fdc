@@ -21,6 +21,6 @@
             </table>
         </div>
     </div>
-    <a href="{{ route('partyApplications.index') }}" class="btn btn-primary">{{ __('messages.back') }}</a>
+    <a href="{{ route('partyApplications.index') }}" class="btn btn-primary float-right mr-4">{{ __('messages.back') }}</a>
 </div>
 @endsection
