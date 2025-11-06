@@ -1,15 +1,16 @@
-<!-- Section: নাটক সংক্রান্ত তথ্য -->
+<!-- Section: পেমেন্ট সংক্রান্ত তথ্য -->
 <fieldset class="border p-3 mb-4">
-    <legend class="float-none w-auto px-2">{{ __('messages.film_related_information') }}</legend>
+    <legend class="float-none w-auto px-2">{{ 'পেমেন্ট সংক্রান্ত তথ্য' }}</legend>
     <div class="row">
         <div class="table-responsive">
             <table class="table table-default">
                 <tr>
-                    <th scopre="row">{!! Form::label('film_title', 'Film Title:') !!}</th>
-                    <td>{{ $film->film_title }}</td>
+                    <th scopre="row">{!! Form::label('Package_name', 'Package Name:') !!}</th>
+                    <td>{{ $film->name }}</td>
 
-                    <th scopre="row">{!! Form::label('applicant_nam', 'Applicant Nam:') !!}</th>
-                    <td>{{ $film->applicant_nam }}</td>
+                    <th scopre="row">{!! Form::label('amount', 'Amount:') !!}</th>
+                    <td>{{ $film->amount }}</td>
+
                 </tr>
             </table>
         </div>

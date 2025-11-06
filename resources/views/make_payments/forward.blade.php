@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-নাটক অ্যাপ্লিকেশন @parent
+পেমেন্ট অ্যাপ্লিকেশন @parent
 @stop
 
 @section('content')
@@ -10,12 +10,12 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    @include('drama_applications.forward_details')
+                    @include('make_payments.forward_details')
                 </div>
 
                 <div class="row">
                     <div class="row">
-                        @include('drama_applications.forward_fields')
+                        @include('make_payments.forward_fields')
                     </div>
                 </div>
             </div>

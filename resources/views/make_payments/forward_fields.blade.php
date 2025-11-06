@@ -1,4 +1,4 @@
-{!! Form::open(['route' => 'dramaApplications.st.status','class' => 'form-horizontal col-md-12']) !!}
+{!! Form::open(['route' => 'makePayments.st.status','class' => 'form-horizontal col-md-12']) !!}
     <!-- Section: Form -->
     <fieldset class="border p-3 mb-4">
         <legend class="float-none w-auto px-2">তথ্য হাল নাগাদ করুন</legend>
@@ -7,9 +7,9 @@
         <div class="row">
             <div class="col-12">
                 <label for="" class="form-label">অবস্থা পরিবর্তন করুন</label> <br>
-                <input type="radio" name="status" value="backward"> <span>চেক এবং ব্যাকওয়ার্ড</span>
                 <input type="radio" name="status" value="forward"> <span>চেক এবং ফরোয়ার্ড</span>
                 <input type="radio" name="status" value="approved"> <span>অনুমোদন</span>
+                <input type="radio" name="status" value="backward"> <span>চেক এবং ব্যাকওয়ার্ড</span>
                 <input type="radio" name="status" value="reject"> <span>প্রত্যাখ্যান</span>
             </div>
             <div class="col-12 mt-3">
