@@ -174,7 +174,7 @@
           </li>
           <li class="nav-item col-md-6" role="presentation">
             <button class="nav-link col-md-12" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button"
-              role="tab" aria-controls="register" aria-selected="false">{{ __('messages.producer') }}</button>
+              role="tab" aria-controls="register" aria-selected="false">{{ 'নাগরিক' }}</button>
           </li>
         </ul>
 

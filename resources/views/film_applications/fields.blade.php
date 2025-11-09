@@ -5,9 +5,9 @@
         <div class="mb-3 col-md-4">
             <label for="film_title" class="form-label">{{ __('messages.category_label') }}</label>
             <select class="form-select" id="category" name="category" re>
-                <option selected>ক্যাটাগরি নির্বাচন করুন</option>
-                <option value="cinema">ছিনেমা</option>
-                <option value="adds">বিজ্ঞাপন</option>
+                <option selected>{{ __('messages.select_category_film') }}</option>
+                <option value="cinema">সিনেমা </option>
+                <option value="adds">{{ __('messages.advertisement') }}</option>
 
             </select>
 
@@ -57,8 +57,8 @@
             </select>
         </div>
         <div class="mb-3 col-md-4">
-            <label for="film_duration" class="form-label">চলচ্চিত্রের সময়কাল (মাস)</label>
-            <input type="number" class="form-control" id="film_duration" name="film_duration" placeholder="মিনিটে সময়কাল লিখুন">
+            <label for="film_duration" class="form-label">{{ __('messages.film_duration') }}</label>
+            <input type="number" class="form-control" id="film_duration" name="film_duration" placeholder="{{ __('messages.enter_duration_in_minutes') }}">
         </div>
     </div>
 </fieldset>

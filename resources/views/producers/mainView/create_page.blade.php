@@ -16,37 +16,44 @@
         }
     </style>
 
-    <div class="content">
+    <div @class(['content'])>
         @include('flash::message')
 
-        <div class="card">
-            <div class="card-header">
-                <h4 class="mb-0">{{ __('messages.booking_form') }}</h4>
+        <div @class(['card'])>
+            <div @class(['card-header'])>
+                <h4 @class(['mb-0'])>{{ __('messages.booking_form') }}</h4>
             </div>
 
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="film_id" class="form-label">{{ __('messages.select_film') }}</label>
-                        <select id="film_id" class="form-select">
-                            <option value="">{{ __('messages.select_film_placeholder') }}</option>
-                            @foreach (\App\Models\FilmApplication::where('producer_id', Auth::guard('producer')->user()->id)->where('desk', 'MD Approved')->get() as $FilmApplication)
-                                <option data-balance="{{ $FilmApplication->balance }}" value="{{ $FilmApplication->id }}">
-                                    {{ $FilmApplication->film_title }}</option>
-                            @endforeach
+            <div @class(['card-body'])>
+                <div @class(['row'])>
+                    <div @class(['col-md-4'])>
+                        <label for="film_type" @class(['form-label'])>{{ 'টাইপ নির্বাচন' }}</label>
+                        <select id="film_type" @class(['form-select'])>
+                            <option value="">{{ 'টাইপ নির্বাচন করুন' }}</option>
+                            <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
+                            <option value="drama">নাটক অ্যাপ্লিকেশন</option>
+                            <option value="docufilm">প্রামান্যচিত্র অ্যাপ্লিকেশন</option>
+                            <option value="realityshow">রিয়েলিটি শো অ্যাপ্লিকেশন</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label for="film_balance" class="form-label">{{ __('messages.remaining_balance') }}</label>
-                        <input type="number" class="form-control" id="film_balance" readonly>
+                    <div @class(['col-md-4'])>
+                        <label for="film_id" @class(['form-label'])>{{ 'অ্যাপ্লিকেশন নির্বাচন' }}</label>
+                        <select id="film_id" @class(['form-select'])>
+                            <option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>
+                        </select>
+                    </div>
+
+                    <div @class(['col-md-3']) id="film_balance_div" style="display: none;">
+                        <label for="film_balance" @class(['form-label'])>{{ __('messages.remaining_balance') }}</label>
+                        <input type="number" @class(['form-control']) id="film_balance" readonly>
                     </div>
                 </div>
 
-                <div class="row g-3 mt-3">
+                <div @class(['row', 'g-3', 'mt-3'])>
                     <!-- Category Select -->
-                    <div class="col-md-4">
-                        <label for="category_id" class="form-label">{{ __('messages.select_category_label') }}</label>
-                        <select id="category_id" class="form-select">
+                    <div @class(['col-md-4'])>
+                        <label for="category_id" @class(['form-label'])>{{ __('messages.select_category_label') }}</label>
+                        <select id="category_id" @class(['form-select'])>
                             <option value="">{{ __('messages.select_category_placeholder') }}</option>
                             @foreach (\App\Models\ItemCategory::all() as $category)
                                 <option value="{{ $category->id }}">{{ $category->name_bn }}</option>
@@ -55,41 +62,41 @@
                     </div>
 
                     <!-- Item Select -->
-                    <div class="col-md-4">
-                        <label for="item_id" class="form-label">{{ __('messages.select_item') }}</label>
-                        <select id="item_id" class="form-select"></select>
+                    <div @class(['col-md-4'])>
+                        <label for="item_id" @class(['form-label'])>{{ __('messages.select_item') }}</label>
+                        <select id="item_id" @class(['form-select'])></select>
                     </div>
                     <!-- Item Select -->
-                    <div class="col-md-4">
-                        <label for="shift_id" class="form-label">{{ __('messages.select_shift') }}</label>
-                        <select id="shift_id" class="form-select"></select>
+                    <div @class(['col-md-4'])>
+                        <label for="shift_id" @class(['form-label'])>{{ __('messages.select_shift') }}</label>
+                        <select id="shift_id" @class(['form-select'])></select>
                     </div>
                 </div>
 
-                <div class="row g-3 mt-3" id="booking_date_div" style="display: none;">
+                <div @class(['row', 'g-3', 'mt-3']) id="booking_date_div" style="display: none;">
                     <!-- Start Date -->
-                    <div class="col-md-6">
-                        <label for="booking_start_date" class="form-label">{{ __('messages.start_date') }}</label>
-                        <input type="text" class="form-control" id="booking_start_date" placeholder="{{ __('messages.select_date') }}">
+                    <div @class(['col-md-6'])>
+                        <label for="booking_start_date" @class(['form-label'])>{{ __('messages.start_date') }}</label>
+                        <input type="text" @class(['form-control']) id="booking_start_date" placeholder="{{ __('messages.select_date') }}">
                     </div>
                     <!-- End Date -->
-                    <div class="col-md-6">
-                        <label for="booking_end_date" class="form-label">{{ __('messages.end_date') }}</label>
-                        <input type="text" class="form-control" id="booking_end_date" placeholder="{{ __('messages.select_date') }}">
+                    <div @class(['col-md-6'])>
+                        <label for="booking_end_date" @class(['form-label'])>{{ __('messages.end_date') }}</label>
+                        <input type="text" @class(['form-control']) id="booking_end_date" placeholder="{{ __('messages.select_date') }}">
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end mt-3" id="add_cart_div" style="display: none;">
-                    <button class="btn btn-primary" onclick="add_to_cart()">
+                <div @class(['d-flex', 'justify-content-end', 'mt-3']) id="add_cart_div" style="display: none;">
+                    <button @class(['btn', 'btn-primary']) onclick="add_to_cart()">
                         {{ __('messages.add_to_booking_list') }}
                     </button>
                 </div>
 
-                <!-- Booking Cart Table -->
+                 <!-- Booking Cart Table -->
                 <form action="{{ route('producer.producer_booking_request') }}" method="POST" id="booking_request_form">
                     @csrf
-                    <div class="table-responsive mt-4">
-                        <table class="table table-bordered">
+                    <div @class(['table-responsive', 'mt-4'])>
+                        <table @class(['table', 'table-bordered'])>
                             <thead>
                                 <tr>
                                     <th>{{ __('messages.serial') }}</th>
@@ -103,8 +110,8 @@
                             <tbody id="booking_request_table"></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" class="text-end">{{ __('messages.total_price_label') }}</td>
-                                    <td><input type="number" readonly class="form-control" name="total_price_input_total"
+                                    <td colspan="4" @class(['text-end'])>{{ __('messages.total_price_label') }}</td>
+                                    <td><input type="number" readonly @class(['form-control']) name="total_price_input_total"
                                             id="total_price_input_total" value="0"></td>
                                 </tr>
                             </tfoot>
@@ -112,10 +119,9 @@
                     </div>
 
                     <!-- Total Price -->
-                    <div class="row mt-3">
-
-                        <div class="col-md-8 text-end mt-4">
-                            <button type="button" class="btn btn-success" onclick="submit_booking_request()">{{ __('messages.final_booking') }}</button>
+                    <div @class(['row', 'mt-3'])>
+                        <div @class(['col-md-8', 'text-end', 'mt-4'])>
+                            <button type="button" @class(['btn', 'btn-success']) onclick="submit_booking_request()">{{ __('messages.final_booking') }}</button>
                         </div>
                     </div>
                 </form>
@@ -125,12 +131,49 @@
     @section('scripts')
         <script>
             $(document).ready(function () {
-                $('#film_id').on('change', function () {
-                    var filmId = $(this).val();
-                    var balance = $('#film_id option[value="' + filmId + '"]').data('balance');
-                    $('#film_balance').val(balance);
+                $('#film_type').on('change', function () {
+                    const filmId = $(this).val();
+                    $('#film_balance_div').toggle(filmId === 'film');
+                    if (!filmId) return;
+                    $('#film_id').empty();
+                    // application list show
+                    $.ajax({
+                        url: "{{ route('producer.get_application') }}",
+                        type: "GET",
+                        data: { filmId },
+                        success: function (data) {
+                            $('#film_id').append('<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
+                            $.each(data, function (i, item) {
+                                $('#film_id').append(`<option value="${item.id}">${item.film_title}</option>`);
+                            });
+                        }
+                    });
+
+                    // applicant balance show
+                    if (filmId === 'film') {
+                        $.ajax({
+                            url: "{{ route('producer.get_applicant_balance') }}",
+                            type: "GET",
+                            data: { filmId },
+                            success: function (data) {
+                                $('#film_balance').val(data);
+                            }
+                        });
+                    } else {
+                        $('#film_balance').val('');
+                    }
                 });
             });
+        </script>
+
+        <script>
+            // $(document).ready(function () {
+            //     $('#film_id').on('change', function () {
+            //         var filmId = $(this).val();
+            //         var balance = $('#film_id option[value="' + filmId + '"]').data('balance');
+            //         $('#film_balance').val(balance);
+            //     });
+            // });
         </script>
         <script>
             $(document).ready(function () {
@@ -140,8 +183,6 @@
                 $('#category_id').on('change', function () {
                     $('#item_id').empty();
                     const category_id = $(this).val();
-                    console.log(category_id);
-
                     if (!category_id) return;
 
                     $.ajax({
@@ -308,7 +349,7 @@
                                             <td>${data.booking_start_date} <br> থেকে <br> ${data.booking_end_date}</td>
                                             <td>${data.total_price}</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="remove_from_cart(${last_cart})">X</button>
+                                                <button type="button" @class(['btn', 'btn-danger', 'btn-sm']) onclick="remove_from_cart(${last_cart})">X</button>
                                             </td>
                                         </tr>`;
                             $('#booking_request_table').append(row);
@@ -339,30 +380,31 @@
                         return false;
                     }
 
-                    film_balance = $('#film_balance').val();
-                    total_price = $('#total_price_input_total').val();
+                    film_balance = parseFloat($('#film_balance').val());
+                    total_price = parseFloat($('#total_price_input_total').val());
 
+                    // console.log(total_price +'==='+ film_balance);
 
-                    
-                    if (total_price < film_balance) {
+                    if (total_price > film_balance) {
                         alert("{{ __('messages.no_film_balance') }}");
                         return false;
                     }
-                    
-                    
+
+
                     Swal.fire({
-                    title: "Are you sure?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes"
+                        title: "Are you sure?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes"
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#booking_request_form').submit();
                         }
                     });
                 }
+
             });
         </script>
     @endsection

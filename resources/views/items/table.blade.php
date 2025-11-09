@@ -42,7 +42,7 @@
                             <i class="im im-icon-Eye" title="View"></i>
                         </a>
                         <a href="{{ route('items.edit', [$item->id]) }}" class='btn btn-outline-primary btn-xs'>
-                            <i class="im im-icon-Pen" title="{{ __('messages.edit') }}"></i>
+                            <i class="im im-icon-Pen" title="Edit"></i>
                         </a>
                         {!! Form::button('<i class="im im-icon-Remove" title="Delete"></i>', [
                             'type' => 'button',

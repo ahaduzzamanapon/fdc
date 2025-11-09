@@ -10,18 +10,18 @@ $(document).ready(function () {
     var ps = new PerfectScrollbar('#demo');
     $("#demo .navbar-brand h1").replaceWith('<h1 class="navbrand">J</h1>');
 
-    // $(".left-aside").hover(function () {
-    //         $("#demo .navbar-brand").css({'margin-left': '0', 'transition': 'margin-left 0.3s linear'});
-    //         $("#demo .navbar-brand h1").replaceWith('<h1 class="text-center">JOSH</h1>');
+    $(".left-aside").hover(function () {
+            $("#demo .navbar-brand").css({'margin-left': '0', 'transition': 'margin-left 0.3s linear'});
+            $("#demo .navbar-brand h1").replaceWith('<h1 class="text-center">JOSH</h1>');
 
-    //     },
-    //     function () {
-    //         $("#demo .navbar-brand").css({
-    //             'margin-left': '-175px',
-    //             'transition': 'margin-left 0.3s linear'
-    //         });
-    //         $("#demo .navbar-brand h1").replaceWith('<h1 class="navbrand">J</h1>');
-    //     });
+        },
+        function () {
+            $("#demo .navbar-brand").css({
+                'margin-left': '-175px',
+                'transition': 'margin-left 0.3s linear'
+            });
+            $("#demo .navbar-brand h1").replaceWith('<h1 class="navbrand">J</h1>');
+        });
 
     var arr;
     $('.color1').click(function () {

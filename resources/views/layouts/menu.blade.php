@@ -75,3 +75,31 @@
     </a>
 </li>
 
+<li class="{!! (Request::is('approvalFlowMasters*') ? 'active' : '' ) !!}">
+    <a href="{{ route('approvalFlowMasters.index') }}">
+        <span class="mm-text ">Approval Flow Masters</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
+<li class="{!! (Request::is('approvalFlowSteps*') ? 'active' : '' ) !!}">
+    <a href="{{ route('approvalFlowSteps.index') }}">
+        <span class="mm-text ">Approval Flow Steps</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
+<li class="{!! (Request::is('approvalRequests*') ? 'active' : '' ) !!}">
+    <a href="{{ route('approvalRequests.index') }}">
+        <span class="mm-text ">Approval Requests</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+
+<li class="{!! (Request::is('approvalLogs*') ? 'active' : '' ) !!}">
+    <a href="{{ route('approvalLogs.index') }}">
+        <span class="mm-text ">Approval Logs</span>
+        <span class="menu-icon"><i class="im im-icon-Structure"></i></span>
+    </a>
+</li>
+

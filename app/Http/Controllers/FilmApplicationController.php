@@ -6,6 +6,10 @@ use App\Http\Requests\CreateFilmApplicationRequest;
 use App\Http\Requests\UpdateFilmApplicationRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\FilmApplication;
+use App\Models\ApprovalFlowMaster;
+use App\Models\ApprovalFlowSteps;
+use App\Models\ApprovalRequests;
+use App\Models\ApprovalLogs;
 use App\Models\Package;
 use App\Models\FilmPackage;
 use Illuminate\Http\Request;
@@ -28,72 +32,13 @@ class FilmApplicationController extends AppBaseController
         if (!Auth::guard('producer')->check()) {
             $filmApplications = FilmApplication::latest();
         } else {
-            $filmApplications = FilmApplication::latest()
-                ->where('producer_id', Auth::guard('producer')->user()->id);
+            $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-
-
 
         $filmApplications = $filmApplications->get();
 
         return view('film_applications.index')->with('filmApplications', $filmApplications);
     }
-    public function forward_table(Request $request)
-    {
-        $my_all_permissions=my_all_permissions();
-        $filmApplications = FilmApplication::latest()
-        ->where('state', 'forward')
-        ->whereIn('desk', $my_all_permissions)
-        ->get();
-        return view('film_applications.index')
-            ->with('filmApplications', $filmApplications);
-    }
-    public function backward_table(Request $request)
-    {
-        $my_all_permissions=my_all_permissions();
-        $filmApplications = FilmApplication::latest()
-            ->where('state', 'back')
-            ->whereIn('desk', $my_all_permissions)
-            ->where('desk', '!=', 'All Desks Completed')
-            ->get();
-        return view('film_applications.index')
-            ->with('filmApplications', $filmApplications);
-    }
-
-
-     public function forward(FilmApplication $filmApplication, $desk)
-    {
-        if ($desk == 'assistant_production') {
-            $filmApplication->update(['desk' => $desk, 'state' => 'back']);
-        }else {
-            $filmApplication->update(['desk' => $desk]);
-        }
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
-    }
-
-    public function back(FilmApplication $filmApplication, $desk)
-    {
-        // Ensure the current desk and state match before backing
-        $filmApplication->update(['desk' => $desk]);
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
-    }
-
-    public function finalForwardToMD(FilmApplication $filmApplication, $desk)
-    {
-        $filmApplication->update(['desk' => 'All Desks Completed Waiting for MD Approval']); // Final desk, MD
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
-    }
-    public function approve_md(FilmApplication $filmApplication, $desk)
-    {
-        $filmApplication->update(['desk' => 'MD Approved']); // Final desk, MD
-        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
-    }
-
-
-
-
-
-
     /**
      * Show the form for creating a new FilmApplication.
      *
@@ -114,14 +59,58 @@ class FilmApplicationController extends AppBaseController
     public function store(CreateFilmApplicationRequest $request)
     {
         $input = $request->all();
-        $input['producer_id'] = Auth::guard('producer')->user()->id;
+        $producer = Auth::guard('producer')->user();
+        $role_id = $producer->group_id;
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Film Application%')->first();
+        $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+        $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
 
         /** @var FilmApplication $filmApplication */
-        $filmApplication = FilmApplication::create($input);
 
-        Flash::success('Film Application saved successfully.');
+        try {
+            \DB::beginTransaction();
+            $input['producer_id'] = $producer->id;
+            $input['desk_id'] = $step->to_role_id;
+            $input['status'] = 'on process';
+            $filmApplication = FilmApplication::create($input);
+            $data = array(
+                'flow_id' => $flow->id,
+                'request_type' => $flow->name,
+                'application_id' => $filmApplication->id,
+                'prev_role_id' => $role_id,
+                'current_role_id' => $step->to_role_id,
+                'next_role_id' => $next->to_role_id,
+                'status' => 'on process',
+                'created_by' => $producer->id,
+                'updated_by' => $producer->id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert = ApprovalRequests::create($data);
 
-        return redirect(route('filmApplications.index'));
+            $data1 = array(
+                'request_id' => $insert->id,
+                'request_type' => $flow->name,
+                'flow_id' => $flow->id,
+                'action_by' => $producer->id,
+                'action_role_id' => $role_id,
+                'next_role_id' => $step->to_role_id,
+                'status' => 'forward',
+                'remarks' => 'New Application',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert1 = ApprovalLogs::create($data1);
+
+            \DB::commit();
+
+            Flash::success('Film Application saved successfully.');
+            return redirect(route('filmApplications.index'));
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error($e->getMessage());
+            return redirect(route('filmApplications.index'));
+        }
     }
 
     /**
@@ -192,6 +181,144 @@ class FilmApplicationController extends AppBaseController
 
         return redirect(route('filmApplications.index'));
     }
+
+    public function forward_table(Request $request)
+    {
+        $user = Auth::user()->user_role;
+        $films = FilmApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
+        return view('film_applications.index')->with('filmApplications', $films);
+    }
+    public function forward(FilmApplication $filmApplication, $desk)
+    {
+        $app_id = $filmApplication->id;
+        $role_id = $filmApplication->desk_id;
+        $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Film Application')->where('current_role_id', $role_id)->first();
+        $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
+
+        return view('film_applications.forward', [
+            'film' => $filmApplication,
+            'auth_user' => $auth_user,
+            'logs' => $logs,
+        ]);
+    }
+    public function update_status(Request $request)
+    {
+        $film = FilmApplication::find($request->film_id);
+        $steps = ApprovalRequests::find($request->request_id);
+        if ($request->status == 'backward') {
+            $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = !empty($prev->from_role_id) ? $prev->from_role_id : $steps->current_role_id;
+            $current_role_id = $steps->prev_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = 'backward';
+            $status = "on process";
+        } else if ($request->status == 'forward') {
+            $next = ApprovalFlowSteps::where('from_role_id', $steps->next_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->next_role_id;
+            $next_role_id = !empty($next->to_role_id) ? $next->to_role_id : $steps->current_role_id;
+            $fstatus = 'forward';
+            $status = "on process";
+        } else {
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->current_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = $request->status;
+            $status = $request->status;
+        }
+
+        // filmapplications
+        $data = array(
+            'desk_id' => $current_role_id,
+            'status' => $status,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        // approval_requests
+        $data1 = array(
+            'prev_role_id' => $prev_role_id,
+            'current_role_id' => $current_role_id,
+            'next_role_id' => $next_role_id,
+            'status' => $status,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        // approval_logs
+        $data2 = array(
+            'request_id' => $request->request_id,
+            'request_type' => $steps->request_type,
+            'flow_id' => $steps->flow_id,
+            'action_by' => Auth::user()->id,
+            'action_role_id' => Auth::user()->user_role,
+            'next_role_id' => $current_role_id,
+            'status' => $fstatus,
+            'remarks' => $request->log_remarks,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        try {
+            \DB::beginTransaction();
+            FilmApplication::where('id', $request->film_id)->update($data);
+            ApprovalRequests::where('id', $request->request_id)->update($data1);
+            ApprovalLogs::create($data2);
+            \DB::commit();
+            Flash::success('Film Application updated successfully.');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error('Film Application update failed. Please try again later.');
+        }
+
+        return redirect(route('filmApplications.forward.table'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    public function backward_table(Request $request)
+    {
+        $my_all_permissions=my_all_permissions();
+        $filmApplications = FilmApplication::latest()
+            ->where('state', 'back')
+            ->whereIn('desk', $my_all_permissions)
+            ->where('desk', '!=', 'All Desks Completed')
+            ->get();
+        return view('film_applications.index')
+            ->with('filmApplications', $filmApplications);
+    }
+    public function back(FilmApplication $filmApplication, $desk)
+    {
+        // Ensure the current desk and state match before backing
+        $filmApplication->update(['desk' => $desk]);
+        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded successfully!');
+    }
+
+    public function finalForwardToMD(FilmApplication $filmApplication, $desk)
+    {
+        $filmApplication->update(['desk' => 'All Desks Completed Waiting for MD Approval']); // Final desk, MD
+        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
+    }
+    public function approve_md(FilmApplication $filmApplication, $desk)
+    {
+        $filmApplication->update(['desk' => 'MD Approved']); // Final desk, MD
+        return redirect()->route('filmApplications.index')->with('success', 'Film application forwarded to MD!');
+    }
+
+
+
+
+
+
 
     /**
      * Remove the specified FilmApplication from storage.

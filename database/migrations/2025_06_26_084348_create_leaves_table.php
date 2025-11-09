@@ -25,6 +25,7 @@ class CreateLeavesTable extends Migration
             $table->integer('approved_total_day');
             $table->text('remark');
             $table->text('status');
+            $table->string('leave_type');
             $table->integer('dpt_head_id');
             $table->integer('approver_id');
             $table->text('approver_remark');

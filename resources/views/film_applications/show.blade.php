@@ -22,13 +22,11 @@
     <div class="clearfix"></div>
     <div class="card">
         <div class="table-responsive">
-        <table class="table table-default">
-            @include('film_applications.show_fields')
-
+            <table class="table table-default">
+                @include('film_applications.show_fields')
             </table>
         </div>
     </div>
-    <a href="{{ route('filmApplications.index') }}"
-                class="btn btn-primary">{{ __('messages.back') }}</a>
+    <a href="{{ route('filmApplications.index') }}" class="btn btn-primary">{{ __('messages.back') }}</a>
 </div>
 @endsection

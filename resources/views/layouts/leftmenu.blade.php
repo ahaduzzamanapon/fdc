@@ -1,3 +1,4 @@
+{{-- Producer --}}
 @if (Auth::guard('producer')->check())
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
@@ -13,11 +14,76 @@
             <span class="item-name">{{ __('messages.booking') }}</span>
         </a>
     </li>
+    {{-- Film Application --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('filmApplications.index') }}">
             <i class="icon im im-icon-Home"></i>
             <span class="item-name">{{ __('messages.film_application') }}</span>
+        </a>
+    </li>
+
+    {{-- নাটক অ্যাপ্লিকেশন --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('dramaApplications*') ? 'active' : '' !!}"
+            href="{{ route('dramaApplications.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> তা </i>
+            <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
+        </a>
+    </li>
+
+    {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('docufilmApplications*') ? 'active' : '' !!}"
+            href="{{ route('docufilmApplications.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> তা </i>
+            <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
+        </a>
+    </li>
+
+    {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('realityApplications*') ? 'active' : '' !!}"
+            href="{{ route('realityApplications.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> তা </i>
+            <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
+        </a>
+    </li>
+
+    {{-- পার্টি অ্যাপ্লিকেশন --}}
+    @php
+        $type = Auth::guard('producer')->user();
+    @endphp
+    @if ($type->desk_id == null && $type->status == 'Inactive')
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                href="{{ route('partyApplications.create') }}">
+                <i class="icon im im-icon-Settings-Window"></i>
+                <i class="sidenav-mini-icon"> পা </i>
+                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+            </a>
+        </li>
+    @else
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                href="{{ route('partyApplications.index') }}">
+                <i class="icon im im-icon-Settings-Window"></i>
+                <i class="sidenav-mini-icon"> পা </i>
+                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+            </a>
+        </li>
+    @endif
+
+
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('makePayments*') ? 'active' : '' !!}"
+            href="{{ route('makePayments.index') }}">
+            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="sidenav-mini-icon"> পা </i>
+            <span class="item-name">পেমেন্ট তালিকা</span>
         </a>
     </li>
 @else
@@ -38,9 +104,11 @@
         </a>
     </li>
     @endif
+
+    {{-- Film Application --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+            <a class="nav-link {!! Request::is('filmApplications*') || Request::is('film-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#filmApplications" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
                 <span class="item-name">{{ __('messages.film_application') }}</span>
@@ -48,14 +116,16 @@
             </a>
             <ul class="sub-nav collapse {!! Request::is('filmApplications*') ? 'show' : '' !!}" id="filmApplications"
                 data-bs-parent="#sidebar-menu">
-                <li class="nav-item">
-                    <a class="nav-link {!! Request::is('filmApplications') ? 'active' : '' !!}"
-                        href="{{ route('filmApplications.index') }}">
-                        <i class="icon im im-icon-Settings-Window"></i>
-                        <i class="sidenav-mini-icon"> তা </i>
-                        <span class="item-name">{{ __('messages.list') }}</span>
-                    </a>
-                </li>
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('filmApplications') ? 'active' : '' !!}"
+                            href="{{ route('filmApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('filmApplications_forward_table*') ? 'active' : '' !!}"
                         href="{{ route('filmApplications.forward.table') }}">
@@ -64,15 +134,147 @@
                         <span class="item-name">{{ __('messages.pending_list') }}</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link {!! Request::is('filmApplications_backward_table*') ? 'active' : '' !!}"
                         href="{{ route('filmApplications.backward.table') }}">
                         <i class="icon im im-icon-Settings-Window"></i>
                         <i class="sidenav-mini-icon"> রি </i>
                         <span class="item-name">{{ __('messages.review_list') }}</span>
                     </a>
-                </li>
+                </li> --}}
 
+            </ul>
+        </li>
+    @endif
+
+    {{-- Drama Application --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('dramaApplications*') || Request::is('drama-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#dramaApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('dramaApplications*') ? 'show' : '' !!}" id="dramaApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('dramaApplications') ? 'active' : '' !!}"
+                            href="{{ route('dramaApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('dramaApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('dramaApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
+    {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('docufilmApplications*') || Request::is('docufilm-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#docufilmApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('docufilmApplications*') ? 'show' : '' !!}" id="docufilmApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('docufilmApplications') ? 'active' : '' !!}"
+                            href="{{ route('docufilmApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('docufilmApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('docufilmApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
+    {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('realityApplications*') || Request::is('reality-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#realityApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('realityApplications*') ? 'show' : '' !!}" id="realityApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('realityApplications') ? 'active' : '' !!}"
+                            href="{{ route('realityApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('realityApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('realityApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
+    {{-- পার্টি অ্যাপ্লিকেশন --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('partyApplications*') || Request::is('party-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"
+                href="#partyApplications" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i>
+                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('partyApplications*') ? 'show' : '' !!}" id="partyApplications"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('partyApplications') ? 'active' : '' !!}"
+                            href="{{ route('partyApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('partyApplications_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('partyApplications.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
             </ul>
         </li>
     @endif
@@ -96,7 +298,8 @@
             </a>
         </li>
     @endif
-    {{-- Users Management --}}
+
+    {{-- Leaves --}}
     @if (can('hr'))
         <li class="nav-item">
             <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
@@ -122,15 +325,6 @@
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> ছু আ তা</i>
                             <span class="item-name">{{ __('messages.leave_application_list') }}</span>
-                        </a>
-                    </li>
-                @endif
-                @if (can('leave_apporved_rejected_list'))
-                    <li class="nav-item">
-                        <a class="nav-link {!! Request::is('leave-apporved-rejected-list') ? 'active' : '' !!}" href="{{ route('leaves.app.reject.list') }}">
-                            <i class="icon im im-icon-Settings-Window"></i>
-                            <i class="sidenav-mini-icon"> ছু আ তা</i>
-                            <span class="item-name">ছুটি অনুমোদন/বাতিল</span>
                         </a>
                     </li>
                 @endif
@@ -164,6 +358,14 @@
                             <i class="icon im im-icon-Security-Settings"></i>
                             <i class="sidenav-mini-icon"> রো </i>
                             <span class="item-name">{{ __('messages.role_management') }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('permissions*') ? 'active' : '' !!}"
+                            href="{{ route('permissions.index') }}">
+                            <i class="icon im im-icon-Security-Settings"></i>
+                            <i class="sidenav-mini-icon"> অ </i>
+                            <span class="item-name">অনুমতিসমূহ</span>
                         </a>
                     </li>
                 @endif
@@ -290,6 +492,7 @@
                         </a>
                     </li>
                 @endif
+
                 @if (can('districts'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('districts*') ? 'active' : '' !!}" href="{{ route('districts.index') }}">
@@ -318,6 +521,23 @@
                         </a>
                     </li>
                 @endif
+
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}" href="{{ route('approvalFlowMasters.index') }}">
+                        <i class="icon im im-icon-Structure"></i>
+                        <i class="sidenav-mini-icon"> প্র </i>
+                        <span class="item-name">অনুমোদন প্রবাহ</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('approvalFlowSteps*') ? 'active' : '' !!}" href="{{ route('approvalFlowSteps.index') }}">
+                        <i class="icon im im-icon-Structure"></i>
+                        <i class="sidenav-mini-icon"> ধা </i>
+                        <span class="item-name">অনুমোদন প্রবাহের ধাপ</span>
+                    </a>
+                </li>
+
             </ul>
         </li>
     @endif
