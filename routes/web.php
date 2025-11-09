@@ -191,7 +191,9 @@ Route::group(["middleware" => []], function () {
 
         Route::get('/producer_booking_details/{id}', 'show_booking_details')->name('producer.booking_details');
         Route::get('/approve_booking/{id}', 'approve_booking')->name('producer.approve_booking');
-
+        Route::get('/booking_forward_table', 'forward_table')->name('producerBooking.forward.table');
+        Route::get('{booking}/forward/{desk}', 'forward')->name('producerBooking.forward');
+        Route::post('/change_status', 'update_status')->name('producerBooking.st.status');
     });
 });
 

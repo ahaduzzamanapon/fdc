@@ -7,6 +7,7 @@
             <span class="item-name">{{ __('messages.dashboard') }}</span>
         </a>
     </li>
+    {{-- Booking --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.booking') }}">
@@ -95,7 +96,8 @@
             <span class="item-name">{{ __('messages.dashboard') }}</span>
         </a>
     </li>
-    @if (can('booking_table'))
+
+    {{-- @if (can('booking_table'))
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.booking') }}">
@@ -103,6 +105,31 @@
             <span class="item-name">{{ __('messages.booking') }}</span>
         </a>
     </li>
+    @endif --}}
+
+    {{-- বুকিং --}}
+    @if (can('filmApplications_table'))   {{-- booking_table --}}
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('producer*') || Request::is('drama-application*') ? 'active' : '' !!}" data-bs-toggle="collapse"  href="#producerBooking" role="button" aria-expanded="false" aria-controls="hr"> <i class="icon im im-icon-Gear"></i> <span class="item-name"> বুকিং </span> <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('producer*') ? 'show' : '' !!}" id="producerBooking"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page" href="{{ route('producer.booking') }}"> <i class="icon im im-icon-Home"></i> <span class="item-name">{{ __('messages.booking') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('producer/booking_forward_table') ? 'active' : '' !!}"
+                        href="{{ route('producerBooking.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
     @endif
 
     {{-- Film Application --}}

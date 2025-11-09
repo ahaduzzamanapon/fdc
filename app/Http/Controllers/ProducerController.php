@@ -10,10 +10,14 @@ use App\Models\Producer;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\FilmApplication as Film;
+use App\Models\ProducerBalance;
 use App\Models\RealityApplication;
 use App\Models\DocufilmApplication;
 use App\Models\DramaApplication;
-use App\Models\ProducerBalance;
+use App\Models\ApprovalFlowMaster;
+use App\Models\ApprovalFlowSteps;
+use App\Models\ApprovalRequests;
+use App\Models\ApprovalLogs;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -41,8 +45,7 @@ class ProducerController extends AppBaseController
         /** @var Producer $producers */
         $producers = Producer::all();
 
-        return view('producers.index')
-            ->with('producers', $producers);
+        return view('producers.index')->with('producers', $producers);
     }
 
     /**
@@ -357,8 +360,6 @@ class ProducerController extends AppBaseController
             ->get();
         }
 
-
-
         return view('producers.mainView.booking', compact('booking_requests'));
     }
     public function create_page()
@@ -454,22 +455,29 @@ class ProducerController extends AppBaseController
         return response()->json($data);
     }
 
-
+    // Booking item insert by producer
     public function producer_booking_request(Request $request)
     {
+        // dd($request->all());
+        $producer = Auth::guard('producer')->user();
+        $role_id = $producer->group_id;
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Booking Flow%')->first();
+        $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+        $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
 
         DB::beginTransaction();
-
         try {
-
             // 1. Create Booking
             $booking = Booking::create([
                 'book_id' => 'BOOK-' . time() . '-' . Auth::guard('producer')->user()->id . '-' . rand(1000, 9999),
-                'status' => 'pending',
+                'status' => 'on process',
+                'desk_id' => $step->to_role_id,
                 'film_id' => $request->input('film_id'),
-                'producer_id' => Auth::guard('producer')->user()->id, // or pass producer_id from $request
+                'film_type' => $request->input('film_type'),
+                'producer_id' => $producer->id, // or pass producer_id from $request
                 'total_price' => $request->input('total_price_input_total'),
             ]);
+
             // 2. Loop through booking details
             $item_ids = $request->input('item_id');
             $shift_ids = $request->input('shift_id');
@@ -477,11 +485,6 @@ class ProducerController extends AppBaseController
             $start_dates = $request->input('booking_start_date');
             $end_dates = $request->input('booking_end_date');
             $total_prices = $request->input('total_price');
-
-            $film = Film::where('id', $request->input('film_id'))->first();
-            $film->balance = $film->balance - $request->input('total_price_input_total');
-            $film->save();
-
 
             foreach ($item_ids as $i => $item_id) {
                 $start = \Carbon\Carbon::parse($start_dates[$i]);
@@ -500,6 +503,35 @@ class ProducerController extends AppBaseController
                 ]);
             }
 
+            $data = array(
+                'flow_id' => $flow->id,
+                'request_type' => $flow->name,
+                'application_id' => $booking->id,
+                'prev_role_id' => $role_id,
+                'current_role_id' => $step->to_role_id,
+                'next_role_id' => $next->to_role_id,
+                'status' => 'on process',
+                'created_by' => $producer->id,
+                'updated_by' => $producer->id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert = ApprovalRequests::create($data);
+
+            $data1 = array(
+                'request_id' => $insert->id,
+                'request_type' => $flow->name,
+                'flow_id' => $flow->id,
+                'action_by' => $producer->id,
+                'action_role_id' => $role_id,
+                'next_role_id' => $step->to_role_id,
+                'status' => 'forward',
+                'remarks' => 'New Booking Created',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert1 = ApprovalLogs::create($data1);
+
             DB::commit();
             Flash::success('Booking created successfully!');
             return redirect(route('producer.booking'));
@@ -507,6 +539,117 @@ class ProducerController extends AppBaseController
             DB::rollBack();
             Flash::error('Failed to create booking: ' . $e->getMessage());
             return back()->with('error', 'Failed to create booking: ' . $e->getMessage());
+        }
+    }
+
+    public function forward_table(Request $request)
+    {
+        $user = Auth::user()->user_role;
+        $producers = Booking::latest()->where('bookings.status', 'on process')->where('bookings.desk_id', $user)->join('producers', 'producers.id', '=', 'bookings.producer_id')
+            ->select('bookings.*', 'producers.organization_name as producer_name')
+            ->get();
+        return view('producers.mainView.booking')->with('booking_requests', $producers);
+    }
+
+    public function forward(Booking $booking, $desk)
+    {
+        $app_id = $booking->id;
+        $role_id = $booking->desk_id;
+        $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Booking Flow')->where('current_role_id', $role_id)->first();
+        $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
+
+        return view('producers.mainView.forward', [
+            'booking' => $booking,
+            'auth_user' => $auth_user,
+            'logs' => $logs,
+        ]);
+    }
+
+    public function update_status(Request $request)
+    {
+
+        $booking = Booking::find($request->booking);
+        $steps = ApprovalRequests::find($request->request_id);
+        if ($request->status == 'backward') {
+            $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = !empty($prev->from_role_id) ? $prev->from_role_id : $steps->current_role_id;
+            $current_role_id = $steps->prev_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = 'backward';
+            $status = "on process";
+        } else if ($request->status == 'forward') {
+            $next = ApprovalFlowSteps::where('from_role_id', $steps->next_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->next_role_id;
+            $next_role_id = !empty($next->to_role_id) ? $next->to_role_id : $steps->current_role_id;
+            $fstatus = 'forward';
+            $status = "on process";
+        } else {
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->current_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = $request->status;
+            $status = $request->status;
+        }
+
+        if (empty(Auth::user())) {
+            $users = Auth::guard('producer')->user();
+            $user_id = $users->id;
+            $user_role = $users->group_id;
+        } else {
+            $users = Auth::user();
+            $user_id = $users->id;
+            $user_role = $users->user_role;
+        }
+
+        // filmapplications
+        $data = array(
+            'desk_id' => $current_role_id,
+            'status' => $status,
+            'updated_by' => $user_id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        // approval_requests
+        $data1 = array(
+            'prev_role_id' => $prev_role_id,
+            'current_role_id' => $current_role_id,
+            'next_role_id' => $next_role_id,
+            'status' => $status,
+            'updated_by' => $user_id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        // approval_logs
+        $data2 = array(
+            'request_id' => $request->request_id,
+            'request_type' => $steps->request_type,
+            'flow_id' => $steps->flow_id,
+            'action_by' => $user_id,
+            'action_role_id' => $user_role,
+            'next_role_id' => $current_role_id,
+            'status' => $fstatus,
+            'remarks' => $request->log_remarks,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_by' => $user_id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        try {
+            \DB::beginTransaction();
+            RealityApplication::where('id', $request->booking)->update($data);
+            ApprovalRequests::where('id', $request->request_id)->update($data1);
+            ApprovalLogs::create($data2);
+            \DB::commit();
+            Flash::success('Reality Application updated successfully.');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error('Reality Application update failed. Please try again later.');
+        }
+
+        if (empty(Auth::user())) {
+            return redirect(route('realityApplications.index'));
+        } else {
+            return redirect(route('realityApplications.forward.table'));
         }
     }
 
