@@ -1,7 +1,7 @@
 @extends('layouts.default')
 {{-- Page title --}}
 @section('title')
-    Dashboard {{ __('messages.dashboard') }} @parent
+    বুকিং {{ __('messages.dashboard') }} @parent
 @stop
 {{-- page level styles --}}
 @section('header_styles')
@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="row">
                 <h3 class="col-md-6 pull-left">
-                    Dashboard {{ __('messages.dashboard') }}
+                    বুকিং {{ __('messages.dashboard') }}
                 </h3>
             </div>
         </div>
@@ -159,7 +159,7 @@
                     </div>
                 </a>
             </div>
-         
+
         </div>
     </section>
 @stop

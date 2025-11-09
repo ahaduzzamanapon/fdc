@@ -4,7 +4,7 @@
         <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.dashboard') }}">
             <i class="icon im im-icon-Home"></i>
-            <span class="item-name">{{ __('messages.dashboard') }}</span>
+            <span class="item-name">{{ 'বুকিং ড্যাশবোর্ড' }}</span>
         </a>
     </li>
     {{-- Booking --}}
@@ -12,71 +12,86 @@
         <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.booking') }}">
             <i class="icon im im-icon-Home"></i>
-            <span class="item-name">{{ __('messages.booking') }}</span>
-        </a>
-    </li>
-    {{-- Film Application --}}
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" aria-current="page"
-            href="{{ route('filmApplications.index') }}">
-            <i class="icon im im-icon-Home"></i>
-            <span class="item-name">{{ __('messages.film_application') }}</span>
+            <span class="item-name">সেবা {{ __('messages.booking') }}</span>
         </a>
     </li>
 
-    {{-- নাটক অ্যাপ্লিকেশন --}}
+    {{-- সেবা সমূহ --}}
     <li class="nav-item">
-        <a class="nav-link {!! Request::is('dramaApplications*') ? 'active' : '' !!}"
-            href="{{ route('dramaApplications.index') }}">
-            <i class="icon im im-icon-Settings-Window"></i>
-            <i class="sidenav-mini-icon"> তা </i>
-            <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
+        <a class="nav-link {!! Request::is('filmApplications*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#services" role="button" aria-expanded="false" aria-controls="hr">
+            <i class="icon im im-icon-Gear"></i>
+            <span class="item-name"> সেবা সমূহ </span>
+            <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
+        <ul class="sub-nav collapse {!! Request::is('filmApplications*') ? 'show' : '' !!}" id="services"
+            data-bs-parent="#sidebar-menu">
+
+            {{-- Film Application --}}
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" aria-current="page"
+                    href="{{ route('filmApplications.index') }}">
+                    <i class="icon im im-icon-Home"></i>
+                    <span class="item-name">{{ __('messages.film_application') }}</span>
+                </a>
+            </li>
+
+            {{-- নাটক অ্যাপ্লিকেশন --}}
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('dramaApplications*') ? 'active' : '' !!}"
+                    href="{{ route('dramaApplications.index') }}">
+                    <i class="icon im im-icon-Settings-Window"></i>
+                    <i class="sidenav-mini-icon"> তা </i>
+                    <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
+                </a>
+            </li>
+
+            {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('docufilmApplications*') ? 'active' : '' !!}"
+                    href="{{ route('docufilmApplications.index') }}">
+                    <i class="icon im im-icon-Settings-Window"></i>
+                    <i class="sidenav-mini-icon"> তা </i>
+                    <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
+                </a>
+            </li>
+
+            {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('realityApplications*') ? 'active' : '' !!}"
+                    href="{{ route('realityApplications.index') }}">
+                    <i class="icon im im-icon-Settings-Window"></i>
+                    <i class="sidenav-mini-icon"> তা </i>
+                    <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
+                </a>
+            </li>
+
+            {{-- পার্টি অ্যাপ্লিকেশন --}}
+            @php
+                $type = Auth::guard('producer')->user();
+            @endphp
+            @if ($type->desk_id == null && $type->status == 'Inactive')
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                        href="{{ route('partyApplications.create') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> পা </i>
+                        <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+                    </a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                        href="{{ route('partyApplications.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> পা </i>
+                        <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+                    </a>
+                </li>
+            @endif
+
+        </ul>
     </li>
 
-    {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('docufilmApplications*') ? 'active' : '' !!}"
-            href="{{ route('docufilmApplications.index') }}">
-            <i class="icon im im-icon-Settings-Window"></i>
-            <i class="sidenav-mini-icon"> তা </i>
-            <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
-        </a>
-    </li>
-
-    {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('realityApplications*') ? 'active' : '' !!}"
-            href="{{ route('realityApplications.index') }}">
-            <i class="icon im im-icon-Settings-Window"></i>
-            <i class="sidenav-mini-icon"> তা </i>
-            <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
-        </a>
-    </li>
-
-    {{-- পার্টি অ্যাপ্লিকেশন --}}
-    @php
-        $type = Auth::guard('producer')->user();
-    @endphp
-    @if ($type->desk_id == null && $type->status == 'Inactive')
-        <li class="nav-item">
-            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
-                href="{{ route('partyApplications.create') }}">
-                <i class="icon im im-icon-Settings-Window"></i>
-                <i class="sidenav-mini-icon"> পা </i>
-                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
-            </a>
-        </li>
-    @else
-        <li class="nav-item">
-            <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
-                href="{{ route('partyApplications.index') }}">
-                <i class="icon im im-icon-Settings-Window"></i>
-                <i class="sidenav-mini-icon"> পা </i>
-                <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
-            </a>
-        </li>
-    @endif
 
     {{-- পেমেন্ট --}}
     <li class="nav-item">
