@@ -1,9 +1,4 @@
 <?php
-
-use App\Http\Controllers\LanguageController;
-
-Route::get('lang/{locale}', [LanguageController::class, 'switch']);
-
 use App\Models\Producer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
@@ -18,6 +13,12 @@ use App\Http\Controllers\RealityApplicationController;
 use App\Http\Controllers\PartyApplicationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MakePaymentController;
+use App\Http\Controllers\Reports;
+use App\Http\Controllers\LanguageController;
+
+Route::get('lang/{locale}', [LanguageController::class, 'switch']);
+
+
 
 
 include 'demo.php';
@@ -92,15 +93,21 @@ Route::resource('filmApplications', 'FilmApplicationController');
 Route::prefix('film-applications')->name('filmApplications.')->group(function () {
     Route::get('{filmApplication}/forward/{desk}', [FilmApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [FilmApplicationController::class, 'update_status'])->name('st.status');
-
-
-
     Route::get('{filmApplication}/back/{desk}', [FilmApplicationController::class, 'back'])->name('back');
     Route::get('{filmApplication}/final-forward/{desk}', [FilmApplicationController::class, 'finalForwardToMD'])->name('final_forward_to_md');
     Route::get('{filmApplication}/approve_md/{desk}', [FilmApplicationController::class, 'approve_md'])->name('approve_md');
     Route::get('{filmApplication}/make_payment/{package_id}', [FilmApplicationController::class, 'make_payment'])->name('make_payment');
     Route::get('{filmApplication}/payment_data', [FilmApplicationController::class, 'payment_data'])->name('payment_data');
     Route::get('single_payment_receipt/{filmPackage}', [FilmApplicationController::class, 'single_payment_receipt'])->name('single_payment_receipt');
+});
+
+
+// reports
+Route::prefix('reports')->name('reports.')->group(function () {
+    Route::get('film-reports', [Reports::class, 'film_report'])->name('filmReport');
+    Route::get('drama-reports', [Reports::class, 'drama_report'])->name('dramaReport');
+    Route::get('pramanno-reports', [Reports::class, 'pramanno_report'])->name('pramannoReport');
+    Route::get('reality-reports', [Reports::class, 'reality_report'])->name('realityReport');
 });
 
 Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');
