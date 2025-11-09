@@ -23,7 +23,7 @@
             <span class="item-name"> সেবা সমূহ </span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
-        <ul class="sub-nav collapse {!! Request::is('filmApplications*') ? 'show' : '' !!}" id="services"
+        <ul class="sub-nav collapse {!! Request::is('filmApplications*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'show' : '' !!}" id="services"
             data-bs-parent="#sidebar-menu">
 
             {{-- Film Application --}}
