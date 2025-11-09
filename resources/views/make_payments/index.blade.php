@@ -31,6 +31,7 @@
                             <th>{{ __('messages.amount') }}</th>
                             <th>{{ 'লেনদেন আইডি' }}</th>
                             <th>{{ 'অবস্থা' }}</th>
+                            <th>{{ '​পর্যালোচনা' }}</th>
                             <th>{{ 'তারিখ' }}</th>
                             <th>{{ 'কার্যক্রম' }}</th>
                         </tr>
@@ -43,9 +44,20 @@
                             <td>{{ $payment->amount ?? 'N/A' }}</td>
                             <td>{{ $payment->trn_id ?? 'N/A' }}</td>
                             <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
+                            <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->review_status ?? 'N/A' }}</span></td>
                             <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
                             <td>
-                                <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
+
+                                        @if ($payment->review_status == 'on process' && !Auth::guard('producer')->check())
+                                            <a href="{{ route('makePayments.forward', [$payment->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i>Check And Forward</a>
+                                        @endif
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                         @empty
@@ -68,7 +80,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="makePaymentModalTitle">{{ __('messages.select_package') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                    onclick="$('#makePayment').modal('hide')">
+                    onclick="$('#makePaymentCitizen').modal('hide')">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -107,7 +119,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="$('#makePayment').modal('hide')"
+                <button type="button" class="btn btn-secondary" onclick="$('#makePaymentCitizen').modal('hide')"
                     data-dismiss="modal">{{ __('messages.close') }}</button>
                 <button type="button" class="btn btn-primary" onclick="submitPayment()">{{ __('messages.save_changes') }}</button>
             </div>

@@ -77,7 +77,7 @@
         </li>
     @endif
 
-
+    {{-- পেমেন্ট --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('makePayments*') ? 'active' : '' !!}"
             href="{{ route('makePayments.index') }}">
@@ -279,6 +279,36 @@
         </li>
     @endif
 
+    {{-- পেমেন্ট --}}
+    @if (can('filmApplications_table'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#makePayments" role="button" aria-expanded="false" aria-controls="hr">
+                <i class="icon im im-icon-Gear"></i> <span class="item-name">পেমেন্ট</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('makePayments*') ? 'show' : '' !!}" id="makePayments"
+                data-bs-parent="#sidebar-menu">
+                @if (can('film_applications_index_list'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('makePayments') ? 'active' : '' !!}"
+                            href="{{ route('makePayments.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> তা </i>
+                            <span class="item-name">{{ __('messages.list') }}</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('makePayments_forward_table*') ? 'active' : '' !!}"
+                        href="{{ route('makePayments.forward.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> অ </i>
+                        <span class="item-name">{{ __('messages.pending_list') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
 
     @if (can('profile'))
         <li class="nav-item">
