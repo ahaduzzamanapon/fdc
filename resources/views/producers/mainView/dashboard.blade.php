@@ -11,7 +11,7 @@
     <section class="content-header">
         <div class="col-md-12">
             <div class="row">
-                <h3 class="col-md-6 pull-left">
+                <h3 class="col-md-6 pull-left" style="padding-top : 10px">
                     বুকিং {{ __('messages.dashboard') }}
                 </h3>
             </div>
@@ -144,6 +144,7 @@
 
     <section class="content">
         <div class="dashboard_cards_header">
+            {{-- booking count --}}
             <div class="dashboard_card">
                 <a class="indexLink" href="#" style="text-decoration: none!important;">
                     <div class="custom-card">
@@ -152,9 +153,227 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_students">
-                                <div class="" role="status">1</div>
+                                <div class="" role="status"> {{ en2bn(1) }} </div>
                             </h3>
                             <p>{{ __('messages.total_bookings') }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon green">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_completed_movies">
+                                <div class="" role="status">{{ en2bn(1) }}</div>
+                            </h3>
+                            <p>{{ 'অপেক্ষমান বুকিং' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon blue">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="movies_awaiting_approval">
+                                <div class="" role="status">{{ en2bn(1) }}</div>
+                            </h3>
+                            <p>{{ 'অনুমোদিত বুকিং' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {{-- film count --}}
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon red">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="commercials_awaiting_approval">
+                                <div class="" role="status">{{ 1 }}</div>
+                            </h3>
+                            <p>{{ 'মোট চলচ্চিত্র' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon aqua">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_producer_list">
+                                <div class="" role="status">{{ 1 }}</div>
+                            </h3>
+                            <p>{{ 'অপেক্ষমান চলচ্চিত্র' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon orange">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_approved_producer_pending_list">
+                                <div class="" role="status">{{ 1 }}</div>
+                            </h3>
+                            <p>{{ 'অনুমোদিত চলচ্চিত্র' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {{-- drama count --}}
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon teal">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_students">
+                                <div class="" role="status"> {{ en2bn(1) }} </div>
+                            </h3>
+                            <p>{{ 'মোট নাটক' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon green">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_completed_movies">
+                                <div class="" role="status">{{ en2bn(1) }}</div>
+                            </h3>
+                            <p>{{ 'অপেক্ষমান নাটক' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon blue">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="movies_awaiting_approval">
+                                <div class="" role="status">{{ en2bn(1) }}</div>
+                            </h3>
+                            <p>{{ 'অনুমোদিত নাটক' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {{-- docufilm count --}}
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon red">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="commercials_awaiting_approval">
+                                <div class="" role="status">{{ 1 }}</div>
+                            </h3>
+                            <p>{{ 'মোট প্রামান্যচিত্র' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon aqua">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_producer_list">
+                                <div class="" role="status">{{ 1 }}</div>
+                            </h3>
+                            <p>{{ 'অপেক্ষমান প্রামান্যচিত্র' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon orange">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_approved_producer_pending_list">
+                                <div class="" role="status">{{ 1 }}</div>
+                            </h3>
+                            <p>{{ 'অনুমোদিত প্রামান্যচিত্র' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {{-- reality show count --}}
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon teal">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_students">
+                                <div class="" role="status"> {{ en2bn(1) }} </div>
+                            </h3>
+                            <p>{{ 'মোট রিয়েলিটি শো' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon green">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="total_completed_movies">
+                                <div class="" role="status">{{ en2bn(1) }}</div>
+                            </h3>
+                            <p>{{ 'অপেক্ষমান রিয়েলিটি শো' }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="dashboard_card">
+                <a class="indexLink" href="#" style="text-decoration: none!important;">
+                    <div class="custom-card">
+                        <div class="card-icon blue">
+                            <i class="icon im im-icon-User"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="movies_awaiting_approval">
+                                <div class="" role="status">{{ en2bn(1) }}</div>
+                            </h3>
+                            <p>{{ 'অনুমোদিত রিয়েলিটি শো' }}</p>
                         </div>
                     </div>
                 </a>

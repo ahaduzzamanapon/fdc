@@ -343,6 +343,25 @@ class ProducerController extends AppBaseController
             Flash::error('First Login');
             return redirect(url('/login'));
         }
+        $producer_id = Auth::guard('producer')->user()->id;
+        $bookings = Booking::where('producer_id', $producer_id)
+                ->where('status', '!=', 'reject')
+                ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+                ->first();
+        $bookings = Booking::where('producer_id', $producer_id)
+                ->where('status', '!=', 'reject')
+                ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+                ->first();
+
+
 
         return view('producers.mainView.dashboard');
     }
