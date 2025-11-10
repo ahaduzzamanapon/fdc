@@ -1,6 +1,10 @@
 @php
         $categories = \App\Models\ItemCategory::all()->pluck('name_bn', key: 'id')->prepend(__('messages.select_category'), '')->toArray();
     $units = \App\Models\ItemUnit::all()->pluck('name_bn', key: 'id')->prepend(__('messages.select_unit'), '')->toArray();
+    $service_type = array(
+        'day' => 'দিন',
+        'shift' => 'শিফট',
+    );
 @endphp
 <!-- Name Bn Field -->
 <div class="col-md-3">
@@ -61,6 +65,14 @@
     <div class="form-group">
         {!! Form::label('amount', __('messages.amount'),['class'=>'control-label']) !!}
         {!! Form::text('amount', null, ['class' => 'form-control', 'required']) !!}
+    </div>
+</div>
+
+<!-- service_type Field -->
+<div class="col-md-3">
+    <div class="form-group">
+        {!! Form::label('service_type', __('পরিষেবার ধরণ'),['class'=>'control-label']) !!}
+        {!! Form::select('service_type', $service_type, null, ['class' => 'form-control', 'required']) !!}
     </div>
 </div>
 

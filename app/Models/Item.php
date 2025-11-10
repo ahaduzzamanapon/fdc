@@ -22,7 +22,7 @@ class Item extends Model
 {
 
     public $table = 'items';
-    
+
 
 
 
@@ -31,6 +31,7 @@ class Item extends Model
         'name_en',
         'cat_id',
         'unit_id',
+        'service_type',
         'duration',
         'max_times',
         'amount',
@@ -48,6 +49,7 @@ class Item extends Model
         'name_en' => 'string',
         'cat_id' => 'integer',
         'unit_id' => 'integer',
+        'service_type' => 'string',
         'duration' => 'integer',
         'max_times' => 'decimal:2',
         'amount' => 'decimal:2',
@@ -60,8 +62,8 @@ class Item extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }
