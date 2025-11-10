@@ -539,17 +539,15 @@ class ProducerController extends AppBaseController
         $start_date = new DateTime($booking_start_date);
         $end_date = new DateTime($booking_end_date);
         $interval = $start_date->diff($end_date);
-        $total_day = $interval->format('%d') + 1;
+        $total_day = $interval->days + 1;
         $item = Item::join('itemunits', 'items.unit_id', '=', 'itemunits.id')
             ->where('items.id', $item_id)
             ->select('items.*', 'itemunits.name_bn as unit_name_bn')
             ->first();
         $item_category = ItemCategory::where('id', $category_id)->first();
-        $shift = Shift::where('id', $shift_id)->first();
+        
         $data = [
             'item_id' => $item->id,
-            'shift_id' => $shift->id,
-            'shift_name' => $shift->name,
             'item_name' => $item->name_bn,
             'item_unit' => $item->unit_name_bn,
             'item_price' => $item->amount,
@@ -558,8 +556,19 @@ class ProducerController extends AppBaseController
             'booking_start_date' => $booking_start_date,
             'booking_end_date' => $booking_end_date,
             'total_day' => $total_day,
-            'total_price' => $item->amount * $total_day
+            'total_price' => $item->amount * $total_day,
+            'shift_id' => null,
+            'shift_name' => null
         ];
+
+        if ($shift_id) {
+            $shift = Shift::where('id', $shift_id)->first();
+            if ($shift) {
+                $data['shift_id'] = $shift->id;
+                $data['shift_name'] = $shift->name;
+            }
+        }
+
         return response()->json($data);
     }
 
@@ -602,7 +611,7 @@ class ProducerController extends AppBaseController
                     'booking_id' => $booking->id,
                     'catagori' => $category_ids[$i],
                     'item_id' => $item_id,
-                    'shift_id' => $shift_ids[$i],
+                    'shift_id' => !empty($shift_ids[$i]) ? $shift_ids[$i] : null,
                     'amount' => 1,
                     'start_date' => $start_dates[$i],
                     'end_date' => $end_dates[$i],

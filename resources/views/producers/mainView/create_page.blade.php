@@ -4,14 +4,20 @@
 
 @section('content')
     <style>
-        .flatpickr-day.booked {
+        .flatpickr-day.booked, td.booked {
             background: #dc3545 !important;
             color: white !important;
             cursor: not-allowed;
         }
-        .flatpickr-day.pending {
+        .flatpickr-day.pending, td.pending {
             background: #ffc107 !important;
             color: black !important;
+        }
+        td.day-available {
+            cursor: pointer;
+        }
+        td.day-available:hover {
+            background: #e9ecef !important;
         }
 
         th {
@@ -112,34 +118,18 @@
                     </div>
                 </div>
 
-                <div @class(['row', 'g-3', 'mt-3']) id="booking_date_div">
-                    <!-- Start Date -->
-                    <div @class(['col-md-6'])>
-                        <label for="booking_start_date"
-                            @class(['form-label'])>{{ __('messages.start_date') }}</label>
-                        <input type="text" @class(['form-control']) id="booking_start_date"
-                            placeholder="{{ __('messages.select_date') }}">
-                    </div>
-                    <!-- End Date -->
-                    <div @class(['col-md-6'])>
-                        <label for="booking_end_date" @class(['form-label'])>{{ __('messages.end_date') }}</label>
-                        <input type="text" @class(['form-control']) id="booking_end_date"
-                            placeholder="{{ __('messages.select_date') }}">
-                    </div>
-                </div>
-
-                <div id="shift_booking_div" class="row g-3 mt-3 align-items-end" style="display: none;">
+                <div id="booking_ui_div" class="row g-3 mt-3 align-items-end" style="display: none;">
                     <div class="col-md-4">
                         <label class="form-label">Start Date</label>
-                        <button type="button" id="shift_start_date_btn" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="start">Select Start Date</button>
-                        <input type="hidden" id="shift_start_date_input">
+                        <button type="button" id="start_date_btn" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="start">Select Start Date</button>
+                        <input type="hidden" id="start_date_input">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">End Date</label>
-                        <button type="button" id="shift_end_date_btn" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="end" disabled>Select End Date</button>
-                        <input type="hidden" id="shift_end_date_input">
+                        <button type="button" id="end_date_btn" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="end" disabled>Select End Date</button>
+                        <input type="hidden" id="end_date_input">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="shift_dropdown_wrapper">
                         <label for="shift_id_dropdown" class="form-label">Shift</label>
                         <select id="shift_id_dropdown" class="form-select" disabled>
                             <option value="">Select Shift</option>
@@ -219,7 +209,7 @@
         // --- Global Variables ---
         let last_cart = 0;
         let current_item_data = {};
-        let datePickerType = 'start'; // 'start' or 'end'
+        let datePickerType = 'start';
         let calendarDate = new Date();
 
         // --- Helper Functions ---
@@ -228,7 +218,7 @@
             const category_id = $('#category_id').val();
             const service_type = $('#service_type').val();
             
-            $('#booking_date_div, #shift_booking_div, #add_cart_div').hide();
+            $('#booking_ui_div, #add_cart_div').hide();
             $('#item_id').empty().append('<option value="">{{ __("messages.select_item_placeholder") }}</option>');
             
             if (!category_id || !service_type) return;
@@ -247,63 +237,34 @@
 
         function get_booking_data() {
             const item_id = $('#item_id').val();
-            const service_type = $('#service_type').val();
-
-            $('#add_cart_div, #booking_date_div, #shift_booking_div').hide();
             
-            if (service_type === 'day') {
-                $('#booking_start_date, #booking_end_date').val('');
-            } else if (service_type === 'shift') {
-                $('#shift_start_date_btn').text('Select Start Date');
-                $('#shift_end_date_btn').text('Select End Date').prop('disabled', true);
-                $('#shift_start_date_input, #shift_end_date_input').val('');
-                $('#shift_id_dropdown').empty().append('<option value="">Select Shift</option>').prop('disabled', true);
-            }
+            $('#add_cart_div, #booking_ui_div').hide();
+            
+            // Reset UI
+            $('#start_date_btn').text('Select Start Date');
+            $('#end_date_btn').text('Select End Date').prop('disabled', true);
+            $('#start_date_input, #end_date_input').val('');
+            $('#shift_id_dropdown').empty().append('<option value="">Select Shift</option>').prop('disabled', true);
 
             if (!item_id) return;
 
+            const service_type = $('#service_type').val();
             $.ajax({
                 url: "{{ route('producer.get_booking_date') }}",
                 type: "GET",
                 data: { item_id, service_type },
                 success: function(data) {
                     current_item_data = data;
-                    if (data.service_type === 'day') {
-                        $('#booking_date_div').show();
-                        setup_day_booking(data);
-                        $('#add_cart_div').show();
-                    } else if (data.service_type === 'shift') {
-                        $('#shift_booking_div').show();
-                        $('#add_cart_div').show();
+                    // Show the unified booking UI
+                    $('#booking_ui_div').show();
+                    $('#add_cart_div').show();
+                    // Hide shift dropdown for 'day' service type
+                    if(data.service_type === 'day') {
+                        $('#shift_dropdown_wrapper').hide();
+                    } else {
+                        $('#shift_dropdown_wrapper').show();
                     }
                 }
-            });
-        }
-
-        function setup_day_booking(data) {
-            const { approved_dates, pending_dates } = data;
-            const approvedDatesFlat = getDatesFromRanges(approved_dates);
-            const pendingDatesFlat = getDatesFromRanges(pending_dates);
-
-            const onDayCreate = function(dObj, dStr, fp, dayElem) {
-                const date = dayElem.dateObj.toISOString().split('T')[0];
-                if (approvedDatesFlat.includes(date)) dayElem.classList.add("booked");
-                if (pendingDatesFlat.includes(date)) dayElem.classList.add("pending");
-            };
-
-            const endPicker = flatpickr("#booking_end_date", {
-                dateFormat: "Y-m-d", minDate: "today", disable: approved_dates, onDayCreate,
-                onClose: function(selectedDates, dateStr) {
-                    const start = $('#booking_start_date').val();
-                    if (!start || !dateStr) return;
-                    if (new Date(dateStr) < new Date(start)) alert("{{ __('messages.end_date_after_start_date') }}");
-                    if (checkOverlap(start, dateStr, approved_dates)) alert("{{ __('messages.time_already_booked') }}");
-                }
-            });
-
-            flatpickr("#booking_start_date", {
-                dateFormat: "Y-m-d", minDate: "today", disable: approved_dates, onDayCreate,
-                onChange: function(selectedDates, dateStr) { endPicker.set('minDate', dateStr); }
             });
         }
 
@@ -313,6 +274,7 @@
             
             const year = date.getFullYear();
             const month = date.getMonth();
+            const service_type = $('#service_type').val();
 
             $('#month-year').text(date.toLocaleString('default', { month: 'long', year: 'numeric' }));
 
@@ -338,40 +300,79 @@
             table += '</tr></tbody></table>';
             calendarEl.html(table);
 
-            // Now, populate shifts
+            // Determine minDate for end date selection
+            let minDateForSelection = null;
+            if (datePickerType === 'end' && $('#start_date_input').val()) {
+                minDateForSelection = new Date($('#start_date_input').val());
+                minDateForSelection.setHours(0,0,0,0); // Normalize to start of day
+            }
+
+            // Apply booking statuses and disable past/invalid dates
+            calendarEl.find('td[data-date]').each(function() {
+                const cellDate = $(this).data('date');
+                const currentDate = new Date(cellDate);
+                currentDate.setHours(0,0,0,0); // Normalize to start of day
+
+                // Disable dates before minDateForSelection (for end date picker)
+                if (minDateForSelection && currentDate < minDateForSelection) {
+                    $(this).addClass('booked'); // Use 'booked' class for visual disabling
+                    return; // Skip further processing for this cell
+                }
+
+                if (service_type === 'shift') {
+                    populateShiftsInCalendar($(this), cellDate);
+                } else { // 'day'
+                    populateDaysInCalendar($(this), cellDate);
+                }
+            });
+        }
+
+        function populateShiftsInCalendar(cellElement, cellDate) {
             const { item_shifts, approved_shifts, pending_shifts } = current_item_data;
             if (!item_shifts) return;
 
-            calendarEl.find('td[data-date]').each(function() {
-                const cellDate = $(this).data('date');
-                let shiftContainer = $('<div class="shift-container"></div>');
+            let shiftContainer = $('<div class="shift-container"></div>');
 
-                item_shifts.forEach(shift => {
-                    let isVisible = true;
-                    if (datePickerType === 'end') {
-                        const selectedShiftId = $('#shift_id_dropdown').val();
-                        if (!selectedShiftId || shift.id.toString() !== selectedShiftId) isVisible = false;
+            item_shifts.forEach(shift => {
+                let isVisible = true;
+                if (datePickerType === 'end') {
+                    const selectedShiftId = $('#shift_id_dropdown').val();
+                    if (!selectedShiftId || shift.id.toString() !== selectedShiftId) isVisible = false;
+                }
+
+                if (isVisible) {
+                    const isApproved = approved_shifts.some(s => s.date === cellDate && s.shift_id === shift.id);
+                    const isPending = pending_shifts.some(s => s.date === cellDate && s.shift_id === shift.id);
+
+                    let shiftButton = $(`<button type="button" class="shift-btn">${shift.name}</button>`);
+                    shiftButton.data('shift-id', shift.id).data('shift-name', shift.name).data('date', cellDate);
+
+                    if (isApproved) {
+                        shiftButton.addClass('booked').prop('disabled', true);
+                    } else if (isPending) {
+                        shiftButton.addClass('pending');
                     }
-
-                    if (isVisible) {
-                        const isApproved = approved_shifts.some(s => s.date === cellDate && s.shift_id === shift.id);
-                        const isPending = pending_shifts.some(s => s.date === cellDate && s.shift_id === shift.id);
-
-                        let shiftButton = $(`<button type="button" class="shift-btn">${shift.name}</button>`);
-                        shiftButton.data('shift-id', shift.id);
-                        shiftButton.data('shift-name', shift.name);
-                        shiftButton.data('date', cellDate);
-
-                        if (isApproved) {
-                            shiftButton.addClass('booked').prop('disabled', true);
-                        } else if (isPending) {
-                            shiftButton.addClass('pending');
-                        }
-                        shiftContainer.append(shiftButton);
-                    }
-                });
-                $(this).append(shiftContainer);
+                    shiftContainer.append(shiftButton);
+                }
             });
+            cellElement.append(shiftContainer);
+        }
+
+        function populateDaysInCalendar(cellElement, cellDate) {
+            const { approved_dates, pending_dates } = current_item_data;
+            const approvedDatesFlat = getDatesFromRanges(approved_dates);
+            const pendingDatesFlat = getDatesFromRanges(pending_dates);
+
+            // Check if already disabled by minDateForSelection
+            if (cellElement.hasClass('booked')) return; 
+
+            if (approvedDatesFlat.includes(cellDate)) {
+                cellElement.addClass('booked');
+            } else if (pendingDatesFlat.includes(cellDate)) {
+                cellElement.addClass('pending');
+            } else {
+                cellElement.addClass('day-available');
+            }
         }
 
         function getDatesFromRanges(ranges) {
@@ -388,36 +389,21 @@
             return dates;
         }
 
-        function checkOverlap(start, end, ranges) {
-            const s = new Date(start), e = new Date(end);
-            for (let r of ranges) {
-                const rStart = new Date(r.from), rEnd = new Date(r.to);
-                if (s <= rEnd && e >= rStart) return true;
-            }
-            return false;
-        }
-
         window.add_to_cart = function() {
             const item_id = $('#item_id').val();
             const category_id = $('#category_id').val();
             const service_type = $('#service_type').val();
-            let booking_start_date, booking_end_date, shift_id;
+            const booking_start_date = $('#start_date_input').val();
+            const booking_end_date = $('#end_date_input').val();
+            const shift_id = (service_type === 'shift') ? $('#shift_id_dropdown').val() : null;
 
-            if (service_type === 'day') {
-                booking_start_date = $('#booking_start_date').val();
-                booking_end_date = $('#booking_end_date').val();
-                if (!item_id || !category_id || !booking_start_date || !booking_end_date) {
-                    alert("{{ __('messages.fill_all_information') }}");
-                    return;
-                }
-            } else if (service_type === 'shift') {
-                booking_start_date = $('#shift_start_date_input').val();
-                booking_end_date = $('#shift_end_date_input').val();
-                shift_id = $('#shift_id_dropdown').val();
-                if (!item_id || !category_id || !booking_start_date || !booking_end_date || !shift_id) {
-                    alert("Please select start date, end date, and shift.");
-                    return;
-                }
+            if (!item_id || !category_id || !booking_start_date || !booking_end_date) {
+                alert("Please select start and end dates.");
+                return;
+            }
+            if (service_type === 'shift' && !shift_id) {
+                alert("Please select a shift.");
+                return;
             }
 
             $.ajax({
@@ -496,7 +482,7 @@
                 const filmType = $(this).val();
                 $('#film_balance_div').toggle(filmType === 'film');
                 $('#film_id').empty().append('<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
-                $('#form_film_type').val(filmType); // Update hidden input
+                $('#form_film_type').val(filmType);
 
                 if (!filmType) return;
 
@@ -526,7 +512,7 @@
             });
 
             $('#film_id').on('change', function() {
-                $('#form_film_id').val($(this).val()); // Update hidden input
+                $('#form_film_id').val($(this).val());
             });
 
             // Setup main event listeners
@@ -554,27 +540,47 @@
                 renderCustomCalendar(calendarDate);
             });
 
-            // Delegated event handler for shift clicks in custom calendar
+            // Delegated event handlers for modal content
             $('#modal_calendar').on('click', '.shift-btn:not(.booked)', function() {
                 const date = $(this).data('date');
                 const shiftId = $(this).data('shift-id');
                 const shiftName = $(this).data('shift-name');
 
                 if (datePickerType === 'start') {
-                    $('#shift_start_date_btn').text(date);
-                    $('#shift_start_date_input').val(date);
+                    $('#start_date_btn').text(date);
+                    $('#start_date_input').val(date);
                     $('#shift_id_dropdown').html(`<option value="${shiftId}">${shiftName}</option>`).prop('disabled', true);
-                    $('#shift_end_date_btn').prop('disabled', false);
-                    $('#shift_end_date_btn').text('Select End Date');
-                    $('#shift_end_date_input').val('');
-                } else { // 'end'
-                    const startDate = $('#shift_start_date_input').val();
+                    $('#end_date_btn').prop('disabled', false);
+                    $('#end_date_btn').text('Select End Date');
+                    $('#end_date_input').val('');
+                } else {
+                    const startDate = $('#start_date_input').val();
                     if (new Date(date) < new Date(startDate)) {
                         alert('End date cannot be before start date.');
                         return;
                     }
-                    $('#shift_end_date_btn').text(date);
-                    $('#shift_end_date_input').val(date);
+                    $('#end_date_btn').text(date);
+                    $('#end_date_input').val(date);
+                }
+                $('#calendarModal').modal('hide');
+            });
+
+            $('#modal_calendar').on('click', 'td.day-available', function() {
+                const date = $(this).data('date');
+                if (datePickerType === 'start') {
+                    $('#start_date_btn').text(date);
+                    $('#start_date_input').val(date);
+                    $('#end_date_btn').prop('disabled', false);
+                    $('#end_date_btn').text('Select End Date');
+                    $('#end_date_input').val('');
+                } else {
+                    const startDate = $('#start_date_input').val();
+                    if (new Date(date) < new Date(startDate)) {
+                        alert('End date cannot be before start date.');
+                        return;
+                    }
+                    $('#end_date_btn').text(date);
+                    $('#end_date_input').val(date);
                 }
                 $('#calendarModal').modal('hide');
             });
