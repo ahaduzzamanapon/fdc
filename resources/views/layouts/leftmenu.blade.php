@@ -92,15 +92,26 @@
         </ul>
     </li>
 
-
     {{-- পেমেন্ট --}}
     <li class="nav-item">
-        <a class="nav-link {!! Request::is('makePayments*') ? 'active' : '' !!}"
-            href="{{ route('makePayments.index') }}">
+        <a class="nav-link {!! Request::is('makePayments*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#services" role="button" aria-expanded="false" aria-controls="hr">
             <i class="icon im im-icon-Settings-Window"></i>
             <i class="sidenav-mini-icon"> পা </i>
-            <span class="item-name">পেমেন্ট তালিকা</span>
+            <span class="item-name">পেমেন্ট</span>
+            <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
+        <ul class="sub-nav collapse {!! Request::is('makePayments*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'show' : '' !!}" id="services"
+            data-bs-parent="#sidebar-menu">
+
+            {{-- Film Application --}}
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('makePayments*') ? 'active' : '' !!}" aria-current="page"
+                    href="{{ route('makePayments.index') }}">
+                    <i class="icon im im-icon-Home"></i>
+                    <span class="item-name">{{ 'পেমেন্ট তালিকা' }}</span>
+                </a>
+            </li>
+        </ul>
     </li>
 
     {{-- রিপোর্ট --}}
