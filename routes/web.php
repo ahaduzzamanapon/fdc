@@ -105,10 +105,18 @@ Route::prefix('film-applications')->name('filmApplications.')->group(function ()
 
 // reports
 Route::prefix('reports')->name('reports.')->group(function () {
-    Route::get('film-reports', [Reports::class, 'film_report'])->name('filmReport');
-    Route::get('drama-reports', [Reports::class, 'drama_report'])->name('dramaReport');
-    Route::get('pramanno-reports', [Reports::class, 'pramanno_report'])->name('pramannoReport');
-    Route::get('reality-reports', [Reports::class, 'reality_report'])->name('realityReport');
+    Route::get('film-reports', [Reports::class, 'film_report_index'])->name('filmReport');
+    Route::post('show-film-reports', [Reports::class, 'film_report_show'])->name('showFilmReport');
+
+    Route::get('drama-reports', [Reports::class, 'drama_report_index'])->name('dramaReport');
+    Route::post('show-drama-reports', [Reports::class, 'drama_report_show'])->name('showDramaReport');
+
+    Route::get('pramanno-reports', [Reports::class, 'pramanno_report_index'])->name('pramannoReport');
+    Route::post('show-pramanno-reports', [Reports::class, 'pramanno_report_show'])->name('showPramannoReport');
+
+    Route::get('reality-reports', [Reports::class, 'reality_report_index'])->name('realityReport');
+    Route::post('show-reality-reports', [Reports::class, 'reality_report_show'])->name('showRealityReport');
+
 });
 
 Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');

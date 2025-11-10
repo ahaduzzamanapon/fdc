@@ -127,65 +127,170 @@
     {{-- রিপোর্ট --}}
     @if (can('reports'))
         <li class="nav-item">
-            @php
-                $isActive = Request::is('reports*');
-            @endphp
+            <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
+                href="{{ route('producer.dashboard') }}">
+                <i class="icon im im-icon-Home"></i>
+                <span class="item-name">{{ 'বুকিং ড্যাশবোর্ড' }}</span>
+            </a>
+        </li>
+        {{-- Booking --}}
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
+                href="{{ route('producer.booking') }}">
+                <i class="icon im im-icon-Home"></i>
+                <span class="item-name">সেবা {{ __('messages.booking') }}</span>
+            </a>
+        </li>
 
-            <a class="nav-link {{ $isActive ? 'active' : '' }}" data-bs-toggle="collapse" href="#reports_menu"
-            role="button" aria-expanded="{{ $isActive ? 'true' : 'false' }}" aria-controls="reports_menu">
+        {{-- সেবা সমূহ --}}
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('filmApplications*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#services" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name">{{ __('রিপোর্টস') }}</span>
+                <span class="item-name"> সেবা সমূহ </span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
+            <ul class="sub-nav collapse {!! Request::is('filmApplications*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'show' : '' !!}" id="services"
+                data-bs-parent="#sidebar-menu">
 
-            <ul class="sub-nav collapse {{ $isActive ? 'show' : '' }}" id="reports_menu" data-bs-parent="#sidebar-menu">
-                @if (can('flim_report'))
+                {{-- Film Application --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('filmApplications*') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('filmApplications.index') }}">
+                        <i class="icon im im-icon-Home"></i>
+                        <span class="item-name">{{ __('messages.film_application') }}</span>
+                    </a>
+                </li>
+
+                {{-- নাটক অ্যাপ্লিকেশন --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('dramaApplications*') ? 'active' : '' !!}"
+                        href="{{ route('dramaApplications.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> তা </i>
+                        <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
+                    </a>
+                </li>
+
+                {{-- প্রামান্যচিত্র অ্যাপ্লিকেশন --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('docufilmApplications*') ? 'active' : '' !!}"
+                        href="{{ route('docufilmApplications.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> তা </i>
+                        <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
+                    </a>
+                </li>
+
+                {{-- রিয়েলিটি শো অ্যাপ্লিকেশন --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('realityApplications*') ? 'active' : '' !!}"
+                        href="{{ route('realityApplications.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> তা </i>
+                        <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
+                    </a>
+                </li>
+
+                {{-- পার্টি অ্যাপ্লিকেশন --}}
+                @php
+                    $type = Auth::guard('producer')->user();
+                @endphp
+                @if ($type->desk_id == null && $type->status == 'Inactive')
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('reports/film-reports') ? 'active' : '' }}"
-                        href="{{ route('reports.filmReport') }}">
+                        <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                            href="{{ route('partyApplications.create') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
-                            <i class="sidenav-mini-icon">ফি</i>
-                            <span class="item-name">{{ __('ফিল্ম রিপোর্ট') }}</span>
+                            <i class="sidenav-mini-icon"> পা </i>
+                            <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
+                        </a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('partyApplications*') ? 'active' : '' !!}"
+                            href="{{ route('partyApplications.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> পা </i>
+                            <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
                         </a>
                     </li>
                 @endif
 
-                @if (can('drama_reports'))
-                    <li class="nav-item">
-                        <a class="nav-link {{ Request::is('reports/drama-reports') ? 'active' : '' }}"
-                        href="{{ route('reports.dramaReport') }}">
-                            <i class="icon im im-icon-Settings-Window"></i>
-                            <i class="sidenav-mini-icon">না</i>
-                            <span class="item-name">{{ __('নাটক রিপোর্ট') }}</span>
-                        </a>
-                    </li>
-                @endif
-
-                @if (can('pramanno_report'))
-                    <li class="nav-item">
-                        <a class="nav-link {{ Request::is('reports/pramanno-reports') ? 'active' : '' }}"
-                        href="{{ route('reports.pramannoReport') }}">
-                            <i class="icon im im-icon-Settings-Window"></i>
-                            <i class="sidenav-mini-icon">প্রা</i>
-                            <span class="item-name">{{ __('প্রামান্যচিত্র রিপোর্ট') }}</span>
-                        </a>
-                    </li>
-                @endif
-
-                @if (can('reality_report'))
-                    <li class="nav-item">
-                        <a class="nav-link {{ Request::is('reports/reality-reports') ? 'active' : '' }}"
-                        href="{{ route('reports.realityReport') }}">
-                            <i class="icon im im-icon-Settings-Window"></i>
-                            <i class="sidenav-mini-icon">রি</i>
-                            <span class="item-name">{{ __('রিয়েলিটি শো রিপোর্ট') }}</span>
-                        </a>
-                    </li>
-                @endif
             </ul>
         </li>
-    @endif
-@else
+
+
+        {{-- পেমেন্ট --}}
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('makePayments*') ? 'active' : '' !!}"
+                href="{{ route('makePayments.index') }}">
+                <i class="icon im im-icon-Settings-Window"></i>
+                <i class="sidenav-mini-icon"> পা </i>
+                <span class="item-name">পেমেন্ট তালিকা</span>
+            </a>
+        </li>
+
+        {{-- রিপোর্ট --}}
+        @if (can('reports'))
+            <li class="nav-item">
+                @php
+                    $isActive = Request::is('reports*');
+                @endphp
+
+                <a class="nav-link {{ $isActive ? 'active' : '' }}" data-bs-toggle="collapse" href="#reports_menu"
+                role="button" aria-expanded="{{ $isActive ? 'true' : 'false' }}" aria-controls="reports_menu">
+                    <i class="icon im im-icon-Gear"></i>
+                    <span class="item-name">{{ __('রিপোর্টস') }}</span>
+                    <i class="right-icon im im-icon-Arrow-Right"></i>
+                </a>
+
+                <ul class="sub-nav collapse {{ $isActive ? 'show' : '' }}" id="reports_menu" data-bs-parent="#sidebar-menu">
+                    @if (can('flim_report'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('reports/film-reports') ? 'active' : '' }}"
+                            href="{{ route('reports.filmReport') }}">
+                                <i class="icon im im-icon-Settings-Window"></i>
+                                <i class="sidenav-mini-icon">ফি</i>
+                                <span class="item-name">{{ __('ফিল্ম রিপোর্ট') }}</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (can('drama_reports'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('reports/drama-reports') ? 'active' : '' }}"
+                            href="{{ route('reports.dramaReport') }}">
+                                <i class="icon im im-icon-Settings-Window"></i>
+                                <i class="sidenav-mini-icon">না</i>
+                                <span class="item-name">{{ __('নাটক রিপোর্ট') }}</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (can('pramanno_report'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('reports/pramanno-reports') ? 'active' : '' }}"
+                            href="{{ route('reports.pramannoReport') }}">
+                                <i class="icon im im-icon-Settings-Window"></i>
+                                <i class="sidenav-mini-icon">প্রা</i>
+                                <span class="item-name">{{ __('প্রামান্যচিত্র রিপোর্ট') }}</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (can('reality_report'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('reports/reality-reports') ? 'active' : '' }}"
+                            href="{{ route('reports.realityReport') }}">
+                                <i class="icon im im-icon-Settings-Window"></i>
+                                <i class="sidenav-mini-icon">রি</i>
+                                <span class="item-name">{{ __('রিয়েলিটি শো রিপোর্ট') }}</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </li>
+        @endif
+    @else
 
     {{-- Dashboard --}}
     <li class="nav-item">
