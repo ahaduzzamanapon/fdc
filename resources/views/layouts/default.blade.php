@@ -50,7 +50,8 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
+    {{-- Google Fonts --}}
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 
     @include('layouts/datatables_css')
 
@@ -59,6 +60,7 @@
     <style>
         * {
             font-family: "Noto Sans Bengali", sans-serif;
+            /* font-family: 'Hind Siliguri', 'Poppins', sans-serif; */
         }
 
         /* Chrome, Safari, Edge, Opera */
@@ -603,7 +605,7 @@
         }
     </script>
 
-   
+
 
 
     <script>

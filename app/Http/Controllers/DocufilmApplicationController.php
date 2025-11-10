@@ -190,7 +190,6 @@ class DocufilmApplicationController extends AppBaseController
     }
     public function forward(DocufilmApplication $docufilmApplication, $desk)
     {
-        dd($desk);
         $app_id = $docufilmApplication->id;
         $role_id = $docufilmApplication->desk_id;
         $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Documentary Film')->where('current_role_id', $role_id)->first();

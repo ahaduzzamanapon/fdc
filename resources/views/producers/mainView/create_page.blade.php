@@ -28,7 +28,7 @@
                 <div @class(['row'])>
                     <div @class(['col-md-4'])>
                         <label for="film_type" @class(['form-label'])>{{ 'টাইপ নির্বাচন' }}</label>
-                        <select id="film_type" @class(['form-select'])>
+                        <select id="film_type"  @class(['form-select'])>
                             <option value="">{{ 'টাইপ নির্বাচন করুন' }}</option>
                             <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
                             <option value="drama">নাটক অ্যাপ্লিকেশন</option>
@@ -108,17 +108,17 @@
                                 </tr>
                             </thead>
                             <tbody id="booking_request_table"></tbody>
+                            {{-- Total Price --}}
                             <tfoot>
                                 <tr>
                                     <td colspan="4" @class(['text-end'])>{{ __('messages.total_price_label') }}</td>
-                                    <td><input type="number" readonly @class(['form-control']) name="total_price_input_total"
-                                            id="total_price_input_total" value="0"></td>
+                                    <td><input type="number" readonly @class(['form-control']) name="total_price_input_total" id="total_price_input_total" value="0"></td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
 
-                    <!-- Total Price -->
+                    <!-- Final Submit -->
                     <div @class(['row', 'mt-3'])>
                         <div @class(['col-md-8', 'text-end', 'mt-4'])>
                             <button type="button" @class(['btn', 'btn-success']) onclick="submit_booking_request()">{{ __('messages.final_booking') }}</button>
@@ -330,28 +330,30 @@
                             item_id, category_id, shift_id, booking_start_date, booking_end_date
                         },
                         success: function (data) {
-                            film_id = $('#film_id').val();
+                            film_id   = $('#film_id').val();
+                            film_type = $('#film_type').val();
                             last_cart++;
                             const row = `
-                                        <tr id="row_${last_cart}">
-                                            <td>
-                                                ${last_cart}
-                                                <input type="hidden" name="item_id[]" value="${data.item_id}">
-                                                <input type="hidden" name="shift_id[]" value="${data.shift_id}">
-                                                <input type="hidden" name="category_id[]" value="${data.category_id}">
-                                                <input type="hidden" name="booking_start_date[]" value="${data.booking_start_date}">
-                                                <input type="hidden" name="booking_end_date[]" value="${data.booking_end_date}">
-                                                <input type="hidden" name="total_price[]" value="${data.total_price}">
-                                                <input type="hidden" name="film_id" value="${film_id}">
-                                            </td>
-                                            <td>${data.item_name} <br><small>(${data.item_unit})</small> <br><small>(${data.shift_name})</small></td>
-                                            <td>${data.item_price}</td>
-                                            <td>${data.booking_start_date} <br> থেকে <br> ${data.booking_end_date}</td>
-                                            <td>${data.total_price}</td>
-                                            <td>
-                                                <button type="button" @class(['btn', 'btn-danger', 'btn-sm']) onclick="remove_from_cart(${last_cart})">X</button>
-                                            </td>
-                                        </tr>`;
+                                <tr id="row_${last_cart}">
+                                    <td>
+                                        ${last_cart}
+                                        <input type="hidden" name="item_id[]" value="${data.item_id}">
+                                        <input type="hidden" name="shift_id[]" value="${data.shift_id}">
+                                        <input type="hidden" name="category_id[]" value="${data.category_id}">
+                                        <input type="hidden" name="booking_start_date[]" value="${data.booking_start_date}">
+                                        <input type="hidden" name="booking_end_date[]" value="${data.booking_end_date}">
+                                        <input type="hidden" name="total_price[]" value="${data.total_price}">
+                                        <input type="hidden" name="film_id" value="${film_id}">
+                                        <input type="hidden" name="film_type" value="${film_type}">
+                                    </td>
+                                    <td>${data.item_name} <br><small>(${data.item_unit})</small> <br><small>(${data.shift_name})</small></td>
+                                    <td>${data.item_price}</td>
+                                    <td>${data.booking_start_date} <br> থেকে <br> ${data.booking_end_date}</td>
+                                    <td>${data.total_price}</td>
+                                    <td>
+                                        <button type="button" @class(['btn', 'btn-danger', 'btn-sm']) onclick="remove_from_cart(${last_cart})">X</button>
+                                    </td>
+                                </tr>`;
                             $('#booking_request_table').append(row);
                             $('#item_id').val('');
                             $('#booking_start_date').val('');
@@ -382,6 +384,7 @@
 
                     film_balance = parseFloat($('#film_balance').val());
                     total_price = parseFloat($('#total_price_input_total').val());
+                    film_id = $('#film_id').val();
 
                     // console.log(total_price +'==='+ film_balance);
 
@@ -390,6 +393,10 @@
                         return false;
                     }
 
+                    if (film_id === null || film_id === undefined || film_id === '') {
+                        alert("অ্যাত্লিভেশন নির্লাচন লরুন");
+                        return false;
+                    }
 
                     Swal.fire({
                         title: "Are you sure?",
