@@ -460,21 +460,27 @@ class ProducerController extends AppBaseController
         if ($service_type == 'day') {
             $bookedDetails = BookingDetail::where('item_id', $item_id)
                 ->whereHas('booking', function ($q) {
-                    $q->whereIn('status', ['approved', 'on process']);
+                    $q->whereIn('status', ['approved', 'on process', 'draft', 'reject']);
                 })
                 ->with('booking:id,status')
                 ->select('start_date', 'end_date', 'booking_id')
                 ->get();
 
             $approved_dates = [];
-            $pending_dates = [];
+            $pending_dates = []; // 'on process'
+            $draft_dates = [];
+            $rejected_dates = [];
 
             foreach ($bookedDetails as $detail) {
                 $range = ['from' => $detail->start_date, 'to' => $detail->end_date];
                 if ($detail->booking->status == 'approved') {
                     $approved_dates[] = $range;
-                } else {
+                } elseif ($detail->booking->status == 'on process') {
                     $pending_dates[] = $range;
+                } elseif ($detail->booking->status == 'draft') {
+                    $draft_dates[] = $range;
+                } elseif ($detail->booking->status == 'reject') {
+                    $rejected_dates[] = $range;
                 }
             }
 
@@ -482,6 +488,8 @@ class ProducerController extends AppBaseController
                 'service_type' => 'day',
                 'approved_dates' => $approved_dates,
                 'pending_dates' => $pending_dates,
+                'draft_dates' => $draft_dates,
+                'rejected_dates' => $rejected_dates,
             ]);
 
         } else if ($service_type == 'shift') {

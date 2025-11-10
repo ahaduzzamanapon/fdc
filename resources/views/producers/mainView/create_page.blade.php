@@ -4,18 +4,35 @@
 
 @section('content')
     <style>
-        .flatpickr-day.booked, td.booked {
+        .flatpickr-day.booked,
+        td.booked {
             background: #dc3545 !important;
             color: white !important;
             cursor: not-allowed;
         }
-        .flatpickr-day.pending, td.pending {
+
+        .flatpickr-day.pending,
+        td.pending {
             background: #ffc107 !important;
             color: black !important;
         }
+
+        td.draft {
+            background: #6c757d !important;
+            /* Grey for draft */
+            color: white !important;
+        }
+
+        td.rejected {
+            background: #dc3545 !important;
+            /* Red for rejected, but still selectable */
+            color: white !important;
+        }
+
         td.day-available {
             cursor: pointer;
         }
+
         td.day-available:hover {
             background: #e9ecef !important;
         }
@@ -24,12 +41,39 @@
             background: #198754 !important;
             color: white !important;
         }
+
         /* Custom Calendar Styles */
-        .custom-calendar { width: 100%; border-collapse: collapse; }
-        .custom-calendar th, .custom-calendar td { border: 1px solid #ddd; padding: 8px; vertical-align: top; }
-        .custom-calendar th { background-color: #f2f2f2; text-align: center; }
-        .custom-calendar td { height: 100px; }
-        .day-number { font-weight: bold; }
+        .custom-calendar {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 7px;
+        }
+
+        .custom-calendar th,
+        .custom-calendar td {
+            padding: 8px;
+            vertical-align: top;
+            box-shadow: 0px 0px 4px 1px #b7b7b7;
+            border-radius: 10px;
+        }
+        .custom-calendar td:hover{
+            background: #e9ecef;
+            cursor: pointer;
+            transform: scale(1.1);
+            transition: 0.2s ease-in-out;
+        }
+
+        .custom-calendar th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        .day-number {
+            font-weight: bold;
+            font-size: 24px;
+            place-self: center;
+            color: black;
+        }
 
         .shift-container {
             display: flex;
@@ -37,6 +81,7 @@
             gap: 5px;
             margin-top: 5px;
         }
+
         .shift-btn {
             padding: 2px 5px;
             border: 1px solid #ccc;
@@ -44,13 +89,23 @@
             cursor: pointer;
             font-size: 0.8em;
             background-color: #f9f9f9;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
+
+        .shift-btn:hover {
+            transform: scale(1.1);
+            background-color: #007bff;
+            color: white;
+
+        }
+
         .shift-btn.booked {
             background-color: #dc3545;
             color: white;
             cursor: not-allowed;
             text-decoration: line-through;
         }
+
         .shift-btn.pending {
             background-color: #ffc107;
             color: black;
@@ -121,12 +176,16 @@
                 <div id="booking_ui_div" class="row g-3 mt-3 align-items-end" style="display: none;">
                     <div class="col-md-4">
                         <label class="form-label">Start Date</label>
-                        <button type="button" id="start_date_btn" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="start">Select Start Date</button>
+                        <button type="button" id="start_date_btn" class="btn btn-outline-primary w-100"
+                            data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="start">Select Start
+                            Date</button>
                         <input type="hidden" id="start_date_input">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">End Date</label>
-                        <button type="button" id="end_date_btn" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="end" disabled>Select End Date</button>
+                        <button type="button" id="end_date_btn" class="btn btn-outline-primary w-100"
+                            data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="end" disabled>Select End
+                            Date</button>
                         <input type="hidden" id="end_date_input">
                     </div>
                     <div class="col-md-4" id="shift_dropdown_wrapper">
@@ -194,9 +253,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <button id="prev-month" class="btn btn-outline-secondary">&lt;</button>
+                            <button id="prev-month" class="btn btn-primary">&lt; Previous Month </button>
                             <h5 id="month-year"></h5>
-                            <button id="next-month" class="btn btn-outline-secondary">&gt;</button>
+                            <button id="next-month" class="btn btn-primary">Next Month &gt; </button>
                         </div>
                         <div id="modal_calendar" class="mt-3"></div>
                     </div>
@@ -217,16 +276,19 @@
         function fetchItems() {
             const category_id = $('#category_id').val();
             const service_type = $('#service_type').val();
-            
+
             $('#booking_ui_div, #add_cart_div').hide();
-            $('#item_id').empty().append('<option value="">{{ __("messages.select_item_placeholder") }}</option>');
-            
+            $('#item_id').empty().append('<option value="">{{ __('messages.select_item_placeholder') }}</option>');
+
             if (!category_id || !service_type) return;
 
             $.ajax({
                 url: "{{ route('producer.get_items_by_category') }}",
                 type: "GET",
-                data: { category_id, service_type },
+                data: {
+                    category_id,
+                    service_type
+                },
                 success: function(data) {
                     $.each(data, function(i, item) {
                         $('#item_id').append(`<option value="${item.id}">${item.name_bn}</option>`);
@@ -237,9 +299,9 @@
 
         function get_booking_data() {
             const item_id = $('#item_id').val();
-            
+
             $('#add_cart_div, #booking_ui_div').hide();
-            
+
             // Reset UI
             $('#start_date_btn').text('Select Start Date');
             $('#end_date_btn').text('Select End Date').prop('disabled', true);
@@ -252,14 +314,17 @@
             $.ajax({
                 url: "{{ route('producer.get_booking_date') }}",
                 type: "GET",
-                data: { item_id, service_type },
+                data: {
+                    item_id,
+                    service_type
+                },
                 success: function(data) {
                     current_item_data = data;
                     // Show the unified booking UI
                     $('#booking_ui_div').show();
                     $('#add_cart_div').show();
                     // Hide shift dropdown for 'day' service type
-                    if(data.service_type === 'day') {
+                    if (data.service_type === 'day') {
                         $('#shift_dropdown_wrapper').hide();
                     } else {
                         $('#shift_dropdown_wrapper').show();
@@ -271,18 +336,22 @@
         function renderCustomCalendar(date) {
             const calendarEl = $('#modal_calendar');
             calendarEl.empty();
-            
+
             const year = date.getFullYear();
             const month = date.getMonth();
             const service_type = $('#service_type').val();
 
-            $('#month-year').text(date.toLocaleString('default', { month: 'long', year: 'numeric' }));
+            $('#month-year').text(date.toLocaleString('default', {
+                month: 'long',
+                year: 'numeric'
+            }));
 
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
             let table = '<table class="custom-calendar">';
-            table += '<thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>';
+            table +=
+                '<thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>';
             table += '<tbody><tr>';
 
             for (let i = 0; i < firstDay; i++) {
@@ -304,14 +373,14 @@
             let minDateForSelection = null;
             if (datePickerType === 'end' && $('#start_date_input').val()) {
                 minDateForSelection = new Date($('#start_date_input').val());
-                minDateForSelection.setHours(0,0,0,0); // Normalize to start of day
+                minDateForSelection.setHours(0, 0, 0, 0); // Normalize to start of day
             }
 
             // Apply booking statuses and disable past/invalid dates
             calendarEl.find('td[data-date]').each(function() {
                 const cellDate = $(this).data('date');
                 const currentDate = new Date(cellDate);
-                currentDate.setHours(0,0,0,0); // Normalize to start of day
+                currentDate.setHours(0, 0, 0, 0); // Normalize to start of day
 
                 // Disable dates before minDateForSelection (for end date picker)
                 if (minDateForSelection && currentDate < minDateForSelection) {
@@ -328,7 +397,11 @@
         }
 
         function populateShiftsInCalendar(cellElement, cellDate) {
-            const { item_shifts, approved_shifts, pending_shifts } = current_item_data;
+            const {
+                item_shifts,
+                approved_shifts,
+                pending_shifts
+            } = current_item_data;
             if (!item_shifts) return;
 
             let shiftContainer = $('<div class="shift-container"></div>');
@@ -359,19 +432,32 @@
         }
 
         function populateDaysInCalendar(cellElement, cellDate) {
-            const { approved_dates, pending_dates } = current_item_data;
+            const {
+                approved_dates,
+                pending_dates,
+                draft_dates,
+                rejected_dates
+            } = current_item_data;
             const approvedDatesFlat = getDatesFromRanges(approved_dates);
             const pendingDatesFlat = getDatesFromRanges(pending_dates);
+            const draftDatesFlat = getDatesFromRanges(draft_dates);
+            const rejectedDatesFlat = getDatesFromRanges(rejected_dates);
 
             // Check if already disabled by minDateForSelection
-            if (cellElement.hasClass('booked')) return; 
+            if (cellElement.hasClass('booked')) return;
 
             if (approvedDatesFlat.includes(cellDate)) {
-                cellElement.addClass('booked');
-            } else if (pendingDatesFlat.includes(cellDate)) {
-                cellElement.addClass('pending');
+                cellElement.addClass('booked'); // Unselectable (red)
             } else {
+                // All other statuses (pending, draft, rejected, or free) are selectable
                 cellElement.addClass('day-available');
+                if (pendingDatesFlat.includes(cellDate)) {
+                    cellElement.addClass('pending'); // Selectable (yellow)
+                } else if (draftDatesFlat.includes(cellDate)) {
+                    cellElement.addClass('draft'); // Selectable (grey)
+                } else if (rejectedDatesFlat.includes(cellDate)) {
+                    cellElement.addClass('rejected'); // Selectable (red, but still clickable)
+                }
             }
         }
 
@@ -409,7 +495,14 @@
             $.ajax({
                 url: "{{ route('producer.add_to_cart') }}",
                 type: "POST",
-                data: { _token: '{{ csrf_token() }}', item_id, category_id, booking_start_date, booking_end_date, shift_id },
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    item_id,
+                    category_id,
+                    booking_start_date,
+                    booking_end_date,
+                    shift_id
+                },
                 success: function(data) {
                     last_cart++;
                     const row = `
@@ -433,7 +526,9 @@
                     $('#item_id').val('').trigger('change');
                     calculate_total_price();
                 },
-                error: function() { alert('Failed to add item to cart. Please check the details.'); }
+                error: function() {
+                    alert('Failed to add item to cart. Please check the details.');
+                }
             });
         }
 
@@ -444,7 +539,9 @@
 
         function calculate_total_price() {
             let total = 0;
-            $('input[name="total_price[]"]').each(function() { total += parseFloat($(this).val()) || 0; });
+            $('input[name="total_price[]"]').each(function() {
+                total += parseFloat($(this).val()) || 0;
+            });
             $('#total_price_input_total').val(total);
         }
 
@@ -468,8 +565,12 @@
             }
 
             Swal.fire({
-                title: "Are you sure?", icon: "warning", showCancelButton: true,
-                confirmButtonColor: "#3085d6", cancelButtonColor: "#d33", confirmButtonText: "Yes"
+                title: "Are you sure?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
             }).then((result) => {
                 if (result.isConfirmed) $('#booking_request_form').submit();
             });
@@ -481,7 +582,8 @@
             $('#film_type').on('change', function() {
                 const filmType = $(this).val();
                 $('#film_balance_div').toggle(filmType === 'film');
-                $('#film_id').empty().append('<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
+                $('#film_id').empty().append(
+                    '<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
                 $('#form_film_type').val(filmType);
 
                 if (!filmType) return;
@@ -489,10 +591,14 @@
                 $.ajax({
                     url: "{{ route('producer.get_application') }}",
                     type: "GET",
-                    data: { filmId: filmType },
+                    data: {
+                        filmId: filmType
+                    },
                     success: function(data) {
                         $.each(data, function(i, item) {
-                            $('#film_id').append(`<option value="${item.id}">${item.film_title}</option>`);
+                            $('#film_id').append(
+                                `<option value="${item.id}">${item.film_title}</option>`
+                            );
                         });
                     }
                 });
@@ -501,7 +607,9 @@
                     $.ajax({
                         url: "{{ route('producer.get_applicant_balance') }}",
                         type: "GET",
-                        data: { filmId: filmType },
+                        data: {
+                            filmId: filmType
+                        },
                         success: function(data) {
                             $('#film_balance').val(data);
                         }
@@ -524,7 +632,8 @@
             $('#calendarModal').on('shown.bs.modal', function(event) {
                 const button = $(event.relatedTarget);
                 datePickerType = button.data('date-type');
-                $(this).find('.modal-title').text(`Select ${datePickerType === 'start' ? 'Start' : 'End'} Date`);
+                $(this).find('.modal-title').text(
+                    `Select ${datePickerType === 'start' ? 'Start' : 'End'} Date`);
                 calendarDate = new Date(); // Reset to current month
                 renderCustomCalendar(calendarDate);
             });
@@ -549,7 +658,8 @@
                 if (datePickerType === 'start') {
                     $('#start_date_btn').text(date);
                     $('#start_date_input').val(date);
-                    $('#shift_id_dropdown').html(`<option value="${shiftId}">${shiftName}</option>`).prop('disabled', true);
+                    $('#shift_id_dropdown').html(`<option value="${shiftId}">${shiftName}</option>`).prop(
+                        'disabled', true);
                     $('#end_date_btn').prop('disabled', false);
                     $('#end_date_btn').text('Select End Date');
                     $('#end_date_input').val('');
