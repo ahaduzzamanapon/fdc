@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-নাটক অ্যাপ্লিকেশন @parent
+পেমেন্ট @parent
 @stop
 
 @section('content')

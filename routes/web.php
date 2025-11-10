@@ -53,6 +53,7 @@ Route::prefix('make-payment')->name('makePayments.')->group(function () {
     Route::get('{makePayment}/forward/{desk}', [MakePaymentController::class, 'forward'])->name('forward');
     Route::post('change_status', [MakePaymentController::class, 'update_status'])->name('st.status');
     Route::get('make_payment/{package_id}', [MakePaymentController::class, 'make_payment'])->name('make_payment');
+    Route::get('package', [MakePaymentController::class, 'package'])->name('package');
 });
 Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
 

@@ -214,6 +214,11 @@ class MakePaymentController extends AppBaseController
         return redirect(route('makePayments.forward.table'));
     }
 
+    function package() {
+        $films = array();
+        return view('make_payments.package')->with('filmPackage', $films);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
