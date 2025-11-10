@@ -456,23 +456,77 @@ class ProducerController extends AppBaseController
     {
         $item_id = $request->item_id;
         $service_type = $request->service_type;
-        $type = $request->type;
-        if ($type == 'day') {
-            $bookedDates = BookingDetail::where('item_id', $item_id)
-                ->select('start_date as from', 'end_date as to')
+
+        if ($service_type == 'day') {
+            $bookedDetails = BookingDetail::where('item_id', $item_id)
+                ->whereHas('booking', function ($q) {
+                    $q->whereIn('status', ['approved', 'on process']);
+                })
+                ->with('booking:id,status')
+                ->select('start_date', 'end_date', 'booking_id')
                 ->get();
-        }else if ($type == 'shift') {
-            $bookedDates = BookingDetail::where('shift_id', $shift_id)
-                ->select('start_date as from', 'end_date as to')
+
+            $approved_dates = [];
+            $pending_dates = [];
+
+            foreach ($bookedDetails as $detail) {
+                $range = ['from' => $detail->start_date, 'to' => $detail->end_date];
+                if ($detail->booking->status == 'approved') {
+                    $approved_dates[] = $range;
+                } else {
+                    $pending_dates[] = $range;
+                }
+            }
+
+            return response()->json([
+                'service_type' => 'day',
+                'approved_dates' => $approved_dates,
+                'pending_dates' => $pending_dates,
+            ]);
+
+        } else if ($service_type == 'shift') {
+            
+            $bookedDetails = BookingDetail::where('item_id', $item_id)
+                ->whereHas('booking', function ($q) {
+                    $q->whereIn('status', ['approved', 'on process']);
+                })
+                ->with('booking:id,status')
+                ->select('start_date', 'end_date', 'shift_id', 'booking_id')
                 ->get();
-            $item_shift = Shift::where('item_id', $item_id)->get();
-        }else{
-            $bookedDates =null;
+
+            $approved_shifts = [];
+            $pending_shifts = [];
+
+            foreach ($bookedDetails as $detail) {
+                $current = new \DateTime($detail->start_date);
+                $end = new \DateTime($detail->end_date);
+
+                while ($current <= $end) {
+                    $shift_booking = [
+                        'date' => $current->format('Y-m-d'),
+                        'shift_id' => $detail->shift_id,
+                    ];
+
+                    if ($detail->booking->status == 'approved') {
+                        $approved_shifts[] = $shift_booking;
+                    } else {
+                        $pending_shifts[] = $shift_booking;
+                    }
+                    $current->modify('+1 day');
+                }
+            }
+            
+            $item_shifts = Shift::where('item_id', $item_id)->get();
+
+            return response()->json([
+                'service_type' => 'shift',
+                'item_shifts' => $item_shifts,
+                'approved_shifts' => $approved_shifts,
+                'pending_shifts' => $pending_shifts,
+            ]);
         }
-        return response()->json([
-            'bookedDates' => $bookedDates,
-            'item_shift' => $item_shift,
-        ]);
+
+        return response()->json(['error' => 'Invalid service type'], 400);
     }
 
     public function add_to_cart(Request $request)
