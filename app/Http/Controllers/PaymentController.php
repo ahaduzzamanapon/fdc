@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\FilmPackage;
 use App\Models\FilmApplication;
 use App\Models\ProducerBalance;
+use App\Models\ApprovalFlowMaster;
+use App\Models\ApprovalFlowSteps;
+use App\Models\ApprovalRequests;
+use App\Models\ApprovalLogs;
 use App\Models\ProducerPaymentDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -124,41 +128,85 @@ class PaymentController extends Controller
         if (!$film_package) {
             return response()->json(['error' => 'Transaction not found'], 404);
         }
-        $film_package->updated_by = Auth::guard('producer')->user()->id;
-        $film_package->status = 'paid';
-        $film_package->save();
 
-        $user_id = $film_package->created_by;
-        if ($user_id == Auth::guard('producer')->user()->id) {
-            $producer_balance = ProducerBalance::where('producer_id', $user_id)->first();
-            if (empty($producer_balance)) {
-                $producer_balance = new ProducerBalance;
-                $producer_balance->producer_id = $user_id;
-                $producer_balance->total_in = $film_package->amount;
-                $producer_balance->current_balance = $film_package->amount;
-                $producer_balance->created_at = date('Y-m-d H:i:s');
-                $producer_balance->updated_at = date('Y-m-d H:i:s');
-                // dd($producer_balance);
-                $producer_balance->save();
-            } else {
-                $producer_balance->current_balance = $producer_balance->current_balance + $film_package->amount;
-                $producer_balance->total_in = $producer_balance->total_in + $film_package->amount;
-                $producer_balance->updated_at = date('Y-m-d H:i:s');
-                $producer_balance->save();
+        $producer = Auth::guard('producer')->user();
+        $role_id = $producer->group_id;
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Payment Flow%')->first();
+        $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+        $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
+
+        DB::beginTransaction();
+        try {
+            $user_id = $film_package->created_by;
+            if ($user_id == $producer->id) {
+                $film_package->updated_by = $producer->id;
+                $film_package->status = 'paid';
+                $film_package->review_status = 'on process';
+                $film_package->desk_id = $step->to_role_id;
+                $film_package->save();
+
+                $producer_balance = ProducerBalance::where('producer_id', $user_id)->first();
+                if (empty($producer_balance)) {
+                    $producer_balance = new ProducerBalance;
+                    $producer_balance->producer_id = $user_id;
+                    $producer_balance->total_in = $film_package->amount;
+                    $producer_balance->current_balance = $film_package->amount;
+                    $producer_balance->created_at = date('Y-m-d H:i:s');
+                    $producer_balance->updated_at = date('Y-m-d H:i:s');
+                    $producer_balance->save();
+                } else {
+                    $producer_balance->current_balance = $producer_balance->current_balance + $film_package->amount;
+                    $producer_balance->total_in = $producer_balance->total_in + $film_package->amount;
+                    $producer_balance->updated_at = date('Y-m-d H:i:s');
+                    $producer_balance->save();
+                }
+
+                $balance_details = new ProducerPaymentDetails;
+                $balance_details->producer_id = $user_id;
+                $balance_details->amount = $film_package->amount;
+                $balance_details->type = 'in';
+                $balance_details->created_at = date('Y-m-d H:i:s');
+                $balance_details->created_by = Auth::guard('producer')->user()->id;
+                $balance_details->save();
+
+                // payment approval flow
+                $data = array(
+                    'flow_id' => $flow->id,
+                    'request_type' => $flow->name,
+                    'application_id' => $producer->id,
+                    'prev_role_id' => $role_id,
+                    'current_role_id' => $step->to_role_id,
+                    'next_role_id' => !empty($next) ? $next->to_role_id : $step->to_role_id,
+                    'status' => 'on process',
+                    'created_by' => $producer->id,
+                    'updated_by' => $producer->id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $insert = ApprovalRequests::create($data);
+
+                $data1 = array(
+                    'request_id' => $insert->id,
+                    'request_type' => $flow->name,
+                    'flow_id' => $flow->id,
+                    'action_by' => $producer->id,
+                    'action_role_id' => $role_id,
+                    'next_role_id' => $step->to_role_id,
+                    'status' => 'forward',
+                    'remarks' => 'New Payment',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $insert1 = ApprovalLogs::create($data1);
             }
-
-            $balance_details = new ProducerPaymentDetails;
-            $balance_details->producer_id = $user_id;
-            $balance_details->amount = $film_package->amount;
-            $balance_details->type = 'in';
-            $balance_details->created_at = date('Y-m-d H:i:s');
-            $balance_details->created_by = Auth::guard('producer')->user()->id;
-            $balance_details->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
 
         Flash::success('Payment successful');
         return redirect()->route('makePayments.index');
-
     }
 
     public function ekPayCancel(Request $request)
