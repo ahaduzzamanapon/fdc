@@ -29,6 +29,22 @@
             color: white !important;
         }
 
+        td.past-date {
+            background: #d3d3d3 !important; /* Light gray */
+            color: #ccc !important;
+            cursor: not-allowed !important;
+        }
+        td.today .day-number {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 40px; /* Adjust size as needed */
+            height: 40px; /* Adjust size as needed */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         td.day-available {
             cursor: pointer;
         }
@@ -66,6 +82,7 @@
         .custom-calendar th {
             background-color: #f2f2f2;
             text-align: center;
+            font-size: 23px;
         }
 
         .day-number {
@@ -253,9 +270,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <button id="prev-month" class="btn btn-primary">&lt; Previous Month </button>
-                            <h5 id="month-year"></h5>
-                            <button id="next-month" class="btn btn-primary">Next Month &gt; </button>
+                            <button id="prev-month" class="btn btn-primary text-bold">&lt; Previous Month </button>
+                            <h3 id="month-year"></h3>
+                            <button id="next-month" class="btn btn-primary text-bold">Next Month &gt; </button>
                         </div>
                         <div id="modal_calendar" class="mt-3"></div>
                     </div>
@@ -340,6 +357,8 @@
             const year = date.getFullYear();
             const month = date.getMonth();
             const service_type = $('#service_type').val();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalize today's date
 
             $('#month-year').text(date.toLocaleString('default', {
                 month: 'long',
@@ -351,7 +370,7 @@
 
             let table = '<table class="custom-calendar">';
             table +=
-                '<thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>';
+                '<thead><tr><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr></thead>';
             table += '<tbody><tr>';
 
             for (let i = 0; i < firstDay; i++) {
@@ -380,7 +399,18 @@
             calendarEl.find('td[data-date]').each(function() {
                 const cellDate = $(this).data('date');
                 const currentDate = new Date(cellDate);
-                currentDate.setHours(0, 0, 0, 0); // Normalize to start of day
+                currentDate.setHours(0, 0, 0, 0); // Normalize cell date
+
+                // Mark today's date
+                if (currentDate.getTime() === today.getTime()) {
+                    $(this).addClass('today');
+                }
+
+                // Disable past dates
+                if (currentDate < today) {
+                    $(this).addClass('past-date').removeClass('day-available');
+                    return; // Skip further processing for past dates
+                }
 
                 // Disable dates before minDateForSelection (for end date picker)
                 if (minDateForSelection && currentDate < minDateForSelection) {
