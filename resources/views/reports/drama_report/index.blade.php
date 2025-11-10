@@ -8,89 +8,94 @@ Flim Report
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div aria-label="breadcrumb" class="card-breadcrumb">
-        <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">{{ __('messages.dashboard') }}</a> > {{ __('Drama Report') }} </h5>
+        <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">{{ __('messages.dashboard') }}</a> > {{ __('নাটকের রিপোর্ট') }} </h5>
     </div>
     <div class="separator-breadcrumb border-top"></div>
 </section>
 <div class="content">
-    <div class="clearfix"></div>
+    <div class="card" width="88vw;"  height= "50vh">
+        <div class="card-body table-responsive" style="height: 40vh !important">
+            <form id="filmReportFilter" class="row g-3 mb-4 align-items-end">
+                @csrf
+                <div class="col-md-2">
+                    <label for="from_date" class="form-label">{{ __('শুরু তারিখ') }}</label>
+                    <input type="date" id="from_date" name="from_date" class="form-control">
+                </div>
 
-    @include('flash::message')
+                <div class="col-md-2">
+                    <label for="to_date" class="form-label">{{ __('শেষ তারিখ') }}</label>
+                    <input type="date" id="to_date" name="to_date" class="form-control">
+                </div>
 
-    <div class="clearfix"></div>
-    <div class="card" width="88vw;">
+                <div class="col-md-2">
+                    <label for="status" class="form-label">{{ __('অবস্থা') }}</label>
+                    <select id="status" name="status" class="form-select">
+                        <option value="">{{ __('সব অবস্থা') }}</option>
+                        <option value="1">{{ __('অনিষ্পন্ন') }}</option>
+                        <option value="2">{{ __('অনুমোদন') }}</option>
+                        <option value="3">{{ __('বাতিল') }}</option>
+                    </select>
+                </div>
 
-<div class="card-body table-responsive">
+                <div class="col-md-6">
+                    <label for="organization" class="form-label">{{ __('নাটকের নাম') }}</label>
+                    <input type="text" id="organization" name="organization" class="form-control" placeholder="{{ __('নাটকের নাম...') }}">
+                </div>
 
-    <!-- 🔎 Filter Section -->
-    <form id="filmReportFilter" class="row g-3 mb-4 align-items-end">
-        <div class="col-md-2">
-            <label for="from_date" class="form-label">{{ __('From Date') }}</label>
-            <input type="date" id="from_date" name="from_date" class="form-control">
+                <div class="col-12 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-secondary" id="resetFilter">
+                        <i class="bi bi-arrow-clockwise"></i> {{ __('Reset') }}
+                    </button>
+                    <button type="button" class="btn btn-primary" id="showReport">
+                        <i class="bi bi-search"></i> {{ __('Show Report') }}
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div class="col-md-2">
-            <label for="to_date" class="form-label">{{ __('To Date') }}</label>
-            <input type="date" id="to_date" name="to_date" class="form-control">
-        </div>
-
-        <div class="col-md-2">
-            <label for="status" class="form-label">{{ __('Status') }}</label>
-            <select id="status" name="status" class="form-select">
-                <option value="">{{ __('All Status') }}</option>
-                <option value="pending">{{ __('Pending') }}</option>
-                <option value="approved">{{ __('Approved') }}</option>
-                <option value="rejected">{{ __('Rejected') }}</option>
-            </select>
-        </div>
-
-        <div class="col-md-6">
-            <label for="organization" class="form-label">{{ __('Organization Name') }}</label>
-            <input type="text" id="organization" name="organization" class="form-control" placeholder="{{ __('Search Organization') }}">
-        </div>
-
-        <div class="col-12 d-flex justify-content-end gap-2">
-            <button type="button" class="btn btn-secondary" id="resetFilter">
-                <i class="bi bi-arrow-clockwise"></i> {{ __('Reset') }}
-            </button>
-            <button type="button" class="btn btn-primary" id="showReport">
-                <i class="bi bi-search"></i> {{ __('Show Report') }}
-            </button>
-        </div>
-    </form>
-
-    <table class="table table-bordered table-hover align-middle text-center">
-        <thead class="table-light">
-            <tr>
-                <th>SL</th>
-                <th>Film Title</th>
-                <th>Applicant Name</th>
-                <th>Organization Name</th>
-                <th>Status</th>
-                <th>Desk</th>
-            </tr>
-        </thead>
-        <tbody id="reportTableBody">
-            <!-- Dynamic rows will be inserted here -->
-            <tr>
-                <td colspan="6" class="text-muted">Please select filters and click <strong>"Show Report"</strong>.</td>
-            </tr>
-        </tbody>
-    </table>
-
-</div>
-
     </div>
 </div>
-
 @endsection
 
 @section('footer_scripts')
     <script>
-    $(document).ready(function () {
-        $('#resetFilter').on('click', function () {
-            $('#filmReportFilter')[0].reset();
+        $(document).ready(function () {
+            $('#resetFilter').on('click', function () {
+                $('#filmReportFilter')[0].reset();
+            });
         });
-    });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#showReport').on('click', function () {
+                var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                var status = $('#status').val();
+                var organization = $('#organization').val();
+                $.ajax({
+                    url: "{{ route('reports.showDramaReport') }}",
+                    method: "POST",
+                    type: "POST",
+                    data: {
+                        from_date: from_date,
+                        to_date: to_date,
+                        status: status,
+                        organization: organization,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function (response) {
+                        var width = screen.availWidth;
+                        var height = screen.availHeight;
+                        // Open popup with full width and height
+                        var newWindow = window.open(
+                            '',
+                            '_blank',
+                            `width=${width},height=${height},top=0,left=0,scrollbars=yes,resizable=yes`
+                        );
+                        newWindow.document.write(response);
+                        newWindow.document.close();
+                    }
+                });
+            });
+        });
     </script>
 @endsection
