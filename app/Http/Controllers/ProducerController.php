@@ -337,6 +337,7 @@ class ProducerController extends AppBaseController
 
     public function dashboard()
     {
+        // dd(Auth::guard('producer')->user());
         if (!Auth::guard('producer')->check()) {
             Flash::error('First Login');
             return redirect(url('/login'));
