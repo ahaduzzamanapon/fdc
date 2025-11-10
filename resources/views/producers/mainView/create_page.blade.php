@@ -28,7 +28,7 @@
                 <div @class(['row'])>
                     <div @class(['col-md-4'])>
                         <label for="film_type" @class(['form-label'])>{{ 'টাইপ নির্বাচন' }}</label>
-                        <select id="film_type"  @class(['form-select'])>
+                        <select id="film_type" @class(['form-select'])>
                             <option value="">{{ 'টাইপ নির্বাচন করুন' }}</option>
                             <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
                             <option value="drama">নাটক অ্যাপ্লিকেশন</option>
@@ -43,8 +43,9 @@
                         </select>
                     </div>
 
-                    <div @class(['col-md-3']) id="film_balance_div" style="display: none;">
-                        <label for="film_balance" @class(['form-label'])>{{ __('messages.remaining_balance') }}</label>
+                    <div @class(['col-md-3']) id="film_balance_div">
+                        <label for="film_balance"
+                            @class(['form-label'])>{{ __('messages.remaining_balance') }}</label>
                         <input type="number" @class(['form-control']) id="film_balance" readonly>
                     </div>
                 </div>
@@ -52,7 +53,8 @@
                 <div @class(['row', 'g-3', 'mt-3'])>
                     <!-- Category Select -->
                     <div @class(['col-md-4'])>
-                        <label for="category_id" @class(['form-label'])>{{ __('messages.select_category_label') }}</label>
+                        <label for="category_id"
+                            @class(['form-label'])>{{ __('messages.select_category_label') }}</label>
                         <select id="category_id" @class(['form-select'])>
                             <option value="">{{ __('messages.select_category_placeholder') }}</option>
                             @foreach (\App\Models\ItemCategory::all() as $category)
@@ -60,29 +62,34 @@
                             @endforeach
                         </select>
                     </div>
-
+                    <div @class(['col-md-4'])>
+                        <label for="service_type" @class(['form-label'])>সেবার ধরণ</label>
+                        <select id="service_type" @class(['form-select'])>
+                            <option value="">সেবার ধরণ নির্বাচন</option>
+                            <option value="day">দিন</option>
+                            <option value="shift">শিফট</option>
+                        </select>
+                    </div>
                     <!-- Item Select -->
                     <div @class(['col-md-4'])>
                         <label for="item_id" @class(['form-label'])>{{ __('messages.select_item') }}</label>
                         <select id="item_id" @class(['form-select'])></select>
                     </div>
-                    <!-- Item Select -->
-                    <div @class(['col-md-4'])>
-                        <label for="shift_id" @class(['form-label'])>{{ __('messages.select_shift') }}</label>
-                        <select id="shift_id" @class(['form-select'])></select>
-                    </div>
                 </div>
 
-                <div @class(['row', 'g-3', 'mt-3']) id="booking_date_div" style="display: none;">
+                <div @class(['row', 'g-3', 'mt-3']) id="booking_date_div">
                     <!-- Start Date -->
                     <div @class(['col-md-6'])>
-                        <label for="booking_start_date" @class(['form-label'])>{{ __('messages.start_date') }}</label>
-                        <input type="text" @class(['form-control']) id="booking_start_date" placeholder="{{ __('messages.select_date') }}">
+                        <label for="booking_start_date"
+                            @class(['form-label'])>{{ __('messages.start_date') }}</label>
+                        <input type="text" @class(['form-control']) id="booking_start_date"
+                            placeholder="{{ __('messages.select_date') }}">
                     </div>
                     <!-- End Date -->
                     <div @class(['col-md-6'])>
                         <label for="booking_end_date" @class(['form-label'])>{{ __('messages.end_date') }}</label>
-                        <input type="text" @class(['form-control']) id="booking_end_date" placeholder="{{ __('messages.select_date') }}">
+                        <input type="text" @class(['form-control']) id="booking_end_date"
+                            placeholder="{{ __('messages.select_date') }}">
                     </div>
                 </div>
 
@@ -92,7 +99,7 @@
                     </button>
                 </div>
 
-                 <!-- Booking Cart Table -->
+                <!-- Booking Cart Table -->
                 <form action="{{ route('producer.producer_booking_request') }}" method="POST" id="booking_request_form">
                     @csrf
                     <div @class(['table-responsive', 'mt-4'])>
@@ -111,8 +118,10 @@
                             {{-- Total Price --}}
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" @class(['text-end'])>{{ __('messages.total_price_label') }}</td>
-                                    <td><input type="number" readonly @class(['form-control']) name="total_price_input_total" id="total_price_input_total" value="0"></td>
+                                    <td colspan="4" @class(['text-end'])>{{ __('messages.total_price_label') }}
+                                    </td>
+                                    <td><input type="number" readonly @class(['form-control'])
+                                            name="total_price_input_total" id="total_price_input_total" value="0"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -121,219 +130,214 @@
                     <!-- Final Submit -->
                     <div @class(['row', 'mt-3'])>
                         <div @class(['col-md-8', 'text-end', 'mt-4'])>
-                            <button type="button" @class(['btn', 'btn-success']) onclick="submit_booking_request()">{{ __('messages.final_booking') }}</button>
+                            <button type="button" @class(['btn', 'btn-success'])
+                                onclick="submit_booking_request()">{{ __('messages.final_booking') }}</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    @section('scripts')
-        <script>
-            $(document).ready(function () {
-                $('#film_type').on('change', function () {
-                    const filmId = $(this).val();
-                    $('#film_balance_div').toggle(filmId === 'film');
-                    if (!filmId) return;
-                    $('#film_id').empty();
-                    // application list show
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#film_type').on('change', function() {
+                const filmId = $(this).val();
+                $('#film_balance_div').toggle(filmId === 'film');
+                if (!filmId) return;
+                $('#film_id').empty();
+                // application list show
+                $.ajax({
+                    url: "{{ route('producer.get_application') }}",
+                    type: "GET",
+                    data: {
+                        filmId
+                    },
+                    success: function(data) {
+                        $('#film_id').append(
+                            '<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
+                        $.each(data, function(i, item) {
+                            $('#film_id').append(
+                                `<option value="${item.id}">${item.film_title}</option>`
+                                );
+                        });
+                    }
+                });
+
+                // applicant balance show
+                if (filmId === 'film') {
                     $.ajax({
-                        url: "{{ route('producer.get_application') }}",
+                        url: "{{ route('producer.get_applicant_balance') }}",
                         type: "GET",
-                        data: { filmId },
-                        success: function (data) {
-                            $('#film_id').append('<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
-                            $.each(data, function (i, item) {
-                                $('#film_id').append(`<option value="${item.id}">${item.film_title}</option>`);
-                            });
+                        data: {
+                            filmId
+                        },
+                        success: function(data) {
+                            $('#film_balance').val(data);
                         }
                     });
+                } else {
+                    $('#film_balance').val('');
+                }
+            });
+        });
+    </script>
 
-                    // applicant balance show
-                    if (filmId === 'film') {
-                        $.ajax({
-                            url: "{{ route('producer.get_applicant_balance') }}",
-                            type: "GET",
-                            data: { filmId },
-                            success: function (data) {
-                                $('#film_balance').val(data);
-                            }
+
+    <script>
+        $(document).ready(function() {
+            let bookedRanges = [],
+                bookedDates = [];
+            let last_cart = 0;
+
+            $('#service_type').on('change', function() {
+                $('#item_id').empty();
+                const category_id = $('#category_id').val();
+                const service_type = $('#service_type').val();
+                if (!category_id) return;
+                if (!service_type) return;
+
+                $.ajax({
+                    url: "{{ route('producer.get_items_by_category') }}",
+                    type: "GET",
+                    data: {
+                        category_id,
+                        service_type
+                    },
+                    success: function(data) {
+                        $('#item_id').append(
+                            '<option value="">{{ __('messages.select_item_placeholder') }}</option>'
+                            );
+                        $.each(data, function(i, item) {
+                            $('#item_id').append(
+                                `<option value="${item.id}">${item.name_bn}</option>`
+                                );
                         });
-                    } else {
-                        $('#film_balance').val('');
                     }
                 });
             });
-        </script>
+            $('#item_id').on('change', function() {
+                get_booking_date();
+            });
 
-        <script>
-            // $(document).ready(function () {
-            //     $('#film_id').on('change', function () {
-            //         var filmId = $(this).val();
-            //         var balance = $('#film_id option[value="' + filmId + '"]').data('balance');
-            //         $('#film_balance').val(balance);
-            //     });
-            // });
-        </script>
-        <script>
-            $(document).ready(function () {
-                let bookedRanges = [], bookedDates = [];
-                let last_cart = 0;
 
-                $('#category_id').on('change', function () {
-                    $('#item_id').empty();
-                    const category_id = $(this).val();
-                    if (!category_id) return;
 
+
+
+
+            function get_booking_date() {
+                var item_id = $('#item_id').val();
+                var service_type = $('#service_type').val();
+                $('#booking_date_div, #add_cart_div').hide();
+                $('#booking_start_date, #booking_end_date').val('');
+
+                if (item_id) {
                     $.ajax({
-                        url: "{{ route('producer.get_items_by_category') }}",
+                        url: "{{ route('producer.get_booking_date') }}",
                         type: "GET",
-                        data: { category_id },
-                        success: function (data) {
-                            $('#item_id').append('<option value="">{{ __('messages.select_item_placeholder') }}</option>');
-                            $.each(data, function (i, item) {
-                                $('#item_id').append(`<option value="${item.id}">${item.name_bn}</option>`);
-                            });
-                        }
-                    });
-                });
-                $('#item_id').on('change', function () {
-                    $('#shift_id').empty();
-                    const item_id = $(this).val();
-                    if (!item_id) return;
-
-                    $.ajax({
-                        url: "{{ route('producer.get_shift_by_item') }}",
-                        type: "GET",
-                        data: { item_id },
-                        success: function (data) {
-                            $('#shift_id').append('<option value="">{{ __('messages.select_shift_placeholder') }}</option>');
-                            $.each(data, function (i, shift) {
-                                $('#shift_id').append(`<option value="${shift.id}">${shift.name}</option>`);
-                            });
-                        }
-                    });
-                });
-
-
-
-
-
-
-                $('#shift_id').on('change', function () {
-                    const shift_id = $('#shift_id').val();
-                    const item_id = $('#item_id').val();
-                    $('#booking_date_div, #add_cart_div').hide();
-                    $('#booking_start_date, #booking_end_date').val('');
-
-                    let exist = false;
-                    $('input[name="item_id[]"]').each(function () {
-                        if ($(this).val() == item_id) exist = true;
-                    });
-
-                    if (exist) {
-                        alert("{{ __('messages.item_already_added') }}");
-                        return;
-                    }
-
-                    if (item_id) {
-                        $.ajax({
-                            url: "{{ route('producer.get_booking_date_by_shift') }}",
-                            type: "GET",
-                            data: { shift_id },
-                            success: function (data) {
-                                bookedRanges = data;
-                                bookedDates = getBookedDates(data);
-
-                                $('#booking_date_div, #add_cart_div').show();
-
-                                flatpickr("#booking_start_date", {
-                                    dateFormat: "Y-m-d",
-                                    minDate: "today",
-                                    disable: bookedRanges,
-                                    onDayCreate: highlightBooked,
-                                    onChange: function (selectedDates, dateStr) {
-                                        endPicker.set('minDate', dateStr);
-                                    }
-                                });
-
-                                const endPicker = flatpickr("#booking_end_date", {
-                                    dateFormat: "Y-m-d",
-                                    disable: bookedRanges,
-                                    onDayCreate: highlightBooked,
-                                    onClose: function (selectedDates, dateStr) {
-                                        const start = $('#booking_start_date').val();
-                                        if (!start) return;
-
-                                        if (new Date(dateStr) < new Date(start)) {
-                                            alert("{{ __('messages.end_date_after_start_date') }}");
-                                            $('#item_id').trigger('change');
-                                        }
-
-                                        if (checkOverlap(start, dateStr, bookedRanges)) {
-                                            alert("{{ __('messages.time_already_booked') }}");
-                                            $('#item_id').trigger('change');
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-
-                function highlightBooked(dObj, dStr, fp, dayElem) {
-                    const date = dayElem.dateObj.toISOString().split('T')[0];
-                    if (bookedDates.includes(date)) {
-                        dayElem.classList.add("booked");
-                    }
-                }
-
-                function getBookedDates(ranges) {
-                    let dates = [];
-                    ranges.forEach(range => {
-                        let current = new Date(range.from + "T00:00:00");
-                        const end = new Date(range.to + "T00:00:00");
-                        while (current <= end) {
-                            dates.push(current.toISOString().split('T')[0]);
-                            current.setDate(current.getDate() + 1);
-                        }
-                    });
-                    return dates;
-                }
-
-                function checkOverlap(start, end, ranges) {
-                    const s = new Date(start), e = new Date(end);
-                    for (let r of ranges) {
-                        const rStart = new Date(r.from), rEnd = new Date(r.to);
-                        if (s <= rEnd && e >= rStart) return true;
-                    }
-                    return false;
-                }
-
-                window.add_to_cart = function () {
-                    const item_id = $('#item_id').val();
-                    const category_id = $('#category_id').val();
-                    const shift_id = $('#shift_id').val();
-                    const booking_start_date = $('#booking_start_date').val();
-                    const booking_end_date = $('#booking_end_date').val();
-
-                    if (!item_id || !category_id || !booking_start_date || !booking_end_date || !shift_id) {
-                        alert("{{ __('messages.fill_all_information') }}");
-                        return;
-                    }
-
-                    $.ajax({
-                        url: "{{ route('producer.add_to_cart') }}",
-                        type: "POST",
                         data: {
-                            _token: '{{ csrf_token() }}',
-                            item_id, category_id, shift_id, booking_start_date, booking_end_date
+                            item_id,
+                            service_type
                         },
-                        success: function (data) {
-                            film_id   = $('#film_id').val();
-                            film_type = $('#film_type').val();
-                            last_cart++;
-                            const row = `
+                        success: function(data) {
+                            bookedRanges = data;
+                            make_datepicker();
+                        }
+                    });
+                }
+            });
+
+        function make_datepicker(bookedRanges) {
+            bookedDates = getBookedDates(bookedRanges);
+            flatpickr("#booking_start_date", {
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                disable: bookedRanges,
+                onDayCreate: highlightBooked,
+                onChange: function(selectedDates, dateStr) {
+                    endPicker.set('minDate', dateStr);
+                }
+            });
+            const endPicker = flatpickr("#booking_end_date", {
+                dateFormat: "Y-m-d",
+                disable: bookedRanges,
+                onDayCreate: highlightBooked,
+                onClose: function(selectedDates, dateStr) {
+                    const start = $('#booking_start_date').val();
+                    if (!start) return;
+
+                    if (new Date(dateStr) < new Date(start)) {
+                        alert("{{ __('messages.end_date_after_start_date') }}");
+                        $('#item_id').trigger('change');
+                    }
+
+                    if (checkOverlap(start, dateStr, bookedRanges)) {
+                        alert("{{ __('messages.time_already_booked') }}");
+                        $('#item_id').trigger('change');
+                    }
+                }
+            });
+        }
+
+        function highlightBooked(dObj, dStr, fp, dayElem) {
+            const date = dayElem.dateObj.toISOString().split('T')[0];
+            if (bookedDates.includes(date)) {
+                dayElem.classList.add("booked");
+            }
+        }
+
+        function getBookedDates(ranges) {
+            let dates = [];
+            ranges.forEach(range => {
+                let current = new Date(range.from + "T00:00:00");
+                const end = new Date(range.to + "T00:00:00");
+                while (current <= end) {
+                    dates.push(current.toISOString().split('T')[0]);
+                    current.setDate(current.getDate() + 1);
+                }
+            });
+            return dates;
+        }
+
+        function checkOverlap(start, end, ranges) {
+            const s = new Date(start),
+                e = new Date(end);
+            for (let r of ranges) {
+                const rStart = new Date(r.from),
+                    rEnd = new Date(r.to);
+                if (s <= rEnd && e >= rStart) return true;
+            }
+            return false;
+        }
+
+        window.add_to_cart = function() {
+            const item_id = $('#item_id').val();
+            const category_id = $('#category_id').val();
+            const shift_id = $('#shift_id').val();
+            const booking_start_date = $('#booking_start_date').val();
+            const booking_end_date = $('#booking_end_date').val();
+
+            if (!item_id || !category_id || !booking_start_date || !booking_end_date || !shift_id) {
+                alert("{{ __('messages.fill_all_information') }}");
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('producer.add_to_cart') }}",
+                type: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    item_id,
+                    category_id,
+                    shift_id,
+                    booking_start_date,
+                    booking_end_date
+                },
+                success: function(data) {
+                    film_id = $('#film_id').val();
+                    film_type = $('#film_type').val();
+                    last_cart++;
+                    const row = `
                                 <tr id="row_${last_cart}">
                                     <td>
                                         ${last_cart}
@@ -354,66 +358,66 @@
                                         <button type="button" @class(['btn', 'btn-danger', 'btn-sm']) onclick="remove_from_cart(${last_cart})">X</button>
                                     </td>
                                 </tr>`;
-                            $('#booking_request_table').append(row);
-                            $('#item_id').val('');
-                            $('#booking_start_date').val('');
-                            $('#booking_end_date').val('');
-                            calculate_total_price();
-                        }
-                    });
-                }
-
-                window.remove_from_cart = function (index) {
-                    $('#row_' + index).remove();
+                    $('#booking_request_table').append(row);
+                    $('#item_id').val('');
+                    $('#booking_start_date').val('');
+                    $('#booking_end_date').val('');
                     calculate_total_price();
                 }
-
-                function calculate_total_price() {
-                    let total = 0;
-                    $('input[name="total_price[]"]').each(function () {
-                        total += parseFloat($(this).val());
-                    });
-                    $('#total_price_input_total').val(total);
-                }
-
-                window.submit_booking_request = function () {
-                    if (last_cart === 0) {
-                        alert("{{ __('messages.booking_list_empty') }}");
-                        return false;
-                    }
-
-                    film_balance = parseFloat($('#film_balance').val());
-                    total_price = parseFloat($('#total_price_input_total').val());
-                    film_id = $('#film_id').val();
-
-                    // console.log(total_price +'==='+ film_balance);
-
-                    if (total_price > film_balance) {
-                        alert("{{ __('messages.no_film_balance') }}");
-                        return false;
-                    }
-
-                    if (film_id === null || film_id === undefined || film_id === '') {
-                        alert("অ্যাত্লিভেশন নির্লাচন লরুন");
-                        return false;
-                    }
-
-                    Swal.fire({
-                        title: "Are you sure?",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#booking_request_form').submit();
-                        }
-                    });
-                }
-
             });
-        </script>
-    @endsection
+        }
+
+        window.remove_from_cart = function(index) {
+            $('#row_' + index).remove();
+            calculate_total_price();
+        }
+
+        function calculate_total_price() {
+            let total = 0;
+            $('input[name="total_price[]"]').each(function() {
+                total += parseFloat($(this).val());
+            });
+            $('#total_price_input_total').val(total);
+        }
+
+        window.submit_booking_request = function() {
+            if (last_cart === 0) {
+                alert("{{ __('messages.booking_list_empty') }}");
+                return false;
+            }
+
+            film_balance = parseFloat($('#film_balance').val());
+            total_price = parseFloat($('#total_price_input_total').val());
+            film_id = $('#film_id').val();
+
+            // console.log(total_price +'==='+ film_balance);
+
+            if (total_price > film_balance) {
+                alert("{{ __('messages.no_film_balance') }}");
+                return false;
+            }
+
+            if (film_id === null || film_id === undefined || film_id === '') {
+                alert("অ্যাত্লিভেশন নির্লাচন লরুন");
+                return false;
+            }
+
+            Swal.fire({
+                title: "Are you sure?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#booking_request_form').submit();
+                }
+            });
+        }
+
+        });
+    </script>
+@endsection
 
 @endsection

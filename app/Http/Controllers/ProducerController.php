@@ -440,7 +440,8 @@ class ProducerController extends AppBaseController
     {
 
         $cat_id = $request->category_id;
-        $items = Item::where('cat_id', $cat_id)->get();
+        $service_type = $request->service_type;
+        $items = Item::where('cat_id', $cat_id)->where('service_type', $service_type)->get();
         return response()->json($items);
     }
 
@@ -451,14 +452,27 @@ class ProducerController extends AppBaseController
         $Shift = Shift::where('item_id', $item_id)->get();
         return response()->json($Shift);
     }
-    public function get_booking_date_by_shift(Request $request)
+    public function get_booking_date(Request $request)
     {
-        $shift_id = $request->shift_id;
-        // Get all date ranges where the item is booked
-        $bookedDates = BookingDetail::where('shift_id', $shift_id)
-            ->select('start_date as from', 'end_date as to')
-            ->get();
-        return response()->json($bookedDates);
+        $item_id = $request->item_id;
+        $service_type = $request->service_type;
+        $type = $request->type;
+        if ($type == 'day') {
+            $bookedDates = BookingDetail::where('item_id', $item_id)
+                ->select('start_date as from', 'end_date as to')
+                ->get();
+        }else if ($type == 'shift') {
+            $bookedDates = BookingDetail::where('shift_id', $shift_id)
+                ->select('start_date as from', 'end_date as to')
+                ->get();
+            $item_shift = Shift::where('item_id', $item_id)->get();
+        }else{
+            $bookedDates =null;
+        }
+        return response()->json([
+            'bookedDates' => $bookedDates,
+            'item_shift' => $item_shift,
+        ]);
     }
 
     public function add_to_cart(Request $request)
