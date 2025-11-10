@@ -440,7 +440,8 @@ class ProducerController extends AppBaseController
     {
 
         $cat_id = $request->category_id;
-        $items = Item::where('cat_id', $cat_id)->get();
+        $service_type = $request->service_type;
+        $items = Item::where('cat_id', $cat_id)->where('service_type', $service_type)->get();
         return response()->json($items);
     }
 
@@ -451,14 +452,89 @@ class ProducerController extends AppBaseController
         $Shift = Shift::where('item_id', $item_id)->get();
         return response()->json($Shift);
     }
-    public function get_booking_date_by_shift(Request $request)
+    public function get_booking_date(Request $request)
     {
-        $shift_id = $request->shift_id;
-        // Get all date ranges where the item is booked
-        $bookedDates = BookingDetail::where('shift_id', $shift_id)
-            ->select('start_date as from', 'end_date as to')
-            ->get();
-        return response()->json($bookedDates);
+        $item_id = $request->item_id;
+        $service_type = $request->service_type;
+
+        if ($service_type == 'day') {
+            $bookedDetails = BookingDetail::where('item_id', $item_id)
+                ->whereHas('booking', function ($q) {
+                    $q->whereIn('status', ['approved', 'on process', 'draft', 'reject']);
+                })
+                ->with('booking:id,status')
+                ->select('start_date', 'end_date', 'booking_id')
+                ->get();
+
+            $approved_dates = [];
+            $pending_dates = []; // 'on process'
+            $draft_dates = [];
+            $rejected_dates = [];
+
+            foreach ($bookedDetails as $detail) {
+                $range = ['from' => $detail->start_date, 'to' => $detail->end_date];
+                if ($detail->booking->status == 'approved') {
+                    $approved_dates[] = $range;
+                } elseif ($detail->booking->status == 'on process') {
+                    $pending_dates[] = $range;
+                } elseif ($detail->booking->status == 'draft') {
+                    $draft_dates[] = $range;
+                } elseif ($detail->booking->status == 'reject') {
+                    $rejected_dates[] = $range;
+                }
+            }
+
+            return response()->json([
+                'service_type' => 'day',
+                'approved_dates' => $approved_dates,
+                'pending_dates' => $pending_dates,
+                'draft_dates' => $draft_dates,
+                'rejected_dates' => $rejected_dates,
+            ]);
+
+        } else if ($service_type == 'shift') {
+            
+            $bookedDetails = BookingDetail::where('item_id', $item_id)
+                ->whereHas('booking', function ($q) {
+                    $q->whereIn('status', ['approved', 'on process']);
+                })
+                ->with('booking:id,status')
+                ->select('start_date', 'end_date', 'shift_id', 'booking_id')
+                ->get();
+
+            $approved_shifts = [];
+            $pending_shifts = [];
+
+            foreach ($bookedDetails as $detail) {
+                $current = new \DateTime($detail->start_date);
+                $end = new \DateTime($detail->end_date);
+
+                while ($current <= $end) {
+                    $shift_booking = [
+                        'date' => $current->format('Y-m-d'),
+                        'shift_id' => $detail->shift_id,
+                    ];
+
+                    if ($detail->booking->status == 'approved') {
+                        $approved_shifts[] = $shift_booking;
+                    } else {
+                        $pending_shifts[] = $shift_booking;
+                    }
+                    $current->modify('+1 day');
+                }
+            }
+            
+            $item_shifts = Shift::where('item_id', $item_id)->get();
+
+            return response()->json([
+                'service_type' => 'shift',
+                'item_shifts' => $item_shifts,
+                'approved_shifts' => $approved_shifts,
+                'pending_shifts' => $pending_shifts,
+            ]);
+        }
+
+        return response()->json(['error' => 'Invalid service type'], 400);
     }
 
     public function add_to_cart(Request $request)
@@ -471,17 +547,15 @@ class ProducerController extends AppBaseController
         $start_date = new DateTime($booking_start_date);
         $end_date = new DateTime($booking_end_date);
         $interval = $start_date->diff($end_date);
-        $total_day = $interval->format('%d') + 1;
+        $total_day = $interval->days + 1;
         $item = Item::join('itemunits', 'items.unit_id', '=', 'itemunits.id')
             ->where('items.id', $item_id)
             ->select('items.*', 'itemunits.name_bn as unit_name_bn')
             ->first();
         $item_category = ItemCategory::where('id', $category_id)->first();
-        $shift = Shift::where('id', $shift_id)->first();
+        
         $data = [
             'item_id' => $item->id,
-            'shift_id' => $shift->id,
-            'shift_name' => $shift->name,
             'item_name' => $item->name_bn,
             'item_unit' => $item->unit_name_bn,
             'item_price' => $item->amount,
@@ -490,8 +564,19 @@ class ProducerController extends AppBaseController
             'booking_start_date' => $booking_start_date,
             'booking_end_date' => $booking_end_date,
             'total_day' => $total_day,
-            'total_price' => $item->amount * $total_day
+            'total_price' => $item->amount * $total_day,
+            'shift_id' => null,
+            'shift_name' => null
         ];
+
+        if ($shift_id) {
+            $shift = Shift::where('id', $shift_id)->first();
+            if ($shift) {
+                $data['shift_id'] = $shift->id;
+                $data['shift_name'] = $shift->name;
+            }
+        }
+
         return response()->json($data);
     }
 
@@ -534,7 +619,7 @@ class ProducerController extends AppBaseController
                     'booking_id' => $booking->id,
                     'catagori' => $category_ids[$i],
                     'item_id' => $item_id,
-                    'shift_id' => $shift_ids[$i],
+                    'shift_id' => !empty($shift_ids[$i]) ? $shift_ids[$i] : null,
                     'amount' => 1,
                     'start_date' => $start_dates[$i],
                     'end_date' => $end_dates[$i],
