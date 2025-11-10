@@ -159,7 +159,7 @@
                         $.each(data, function(i, item) {
                             $('#film_id').append(
                                 `<option value="${item.id}">${item.film_title}</option>`
-                                );
+                            );
                         });
                     }
                 });
@@ -185,67 +185,60 @@
 
 
     <script>
-        $(document).ready(function() {
-            let bookedRanges = [],
-                bookedDates = [];
-            let last_cart = 0;
+        let bookedRanges = [],
+            bookedDates = [];
+        let last_cart = 0;
 
-            $('#service_type').on('change', function() {
-                $('#item_id').empty();
-                const category_id = $('#category_id').val();
-                const service_type = $('#service_type').val();
-                if (!category_id) return;
-                if (!service_type) return;
+        $('#service_type').on('change', function() {
+            $('#item_id').empty();
+            const category_id = $('#category_id').val();
+            const service_type = $('#service_type').val();
+            if (!category_id) return;
+            if (!service_type) return;
 
-                $.ajax({
-                    url: "{{ route('producer.get_items_by_category') }}",
-                    type: "GET",
-                    data: {
-                        category_id,
-                        service_type
-                    },
-                    success: function(data) {
+            $.ajax({
+                url: "{{ route('producer.get_items_by_category') }}",
+                type: "GET",
+                data: {
+                    category_id,
+                    service_type
+                },
+                success: function(data) {
+                    $('#item_id').append(
+                        '<option value="">{{ __('messages.select_item_placeholder') }}</option>'
+                    );
+                    $.each(data, function(i, item) {
                         $('#item_id').append(
-                            '<option value="">{{ __('messages.select_item_placeholder') }}</option>'
-                            );
-                        $.each(data, function(i, item) {
-                            $('#item_id').append(
-                                `<option value="${item.id}">${item.name_bn}</option>`
-                                );
-                        });
-                    }
-                });
-            });
-            $('#item_id').on('change', function() {
-                get_booking_date();
-            });
-
-
-
-
-
-
-            function get_booking_date() {
-                var item_id = $('#item_id').val();
-                var service_type = $('#service_type').val();
-                $('#booking_date_div, #add_cart_div').hide();
-                $('#booking_start_date, #booking_end_date').val('');
-
-                if (item_id) {
-                    $.ajax({
-                        url: "{{ route('producer.get_booking_date') }}",
-                        type: "GET",
-                        data: {
-                            item_id,
-                            service_type
-                        },
-                        success: function(data) {
-                            bookedRanges = data;
-                            make_datepicker();
-                        }
+                            `<option value="${item.id}">${item.name_bn}</option>`
+                        );
                     });
                 }
             });
+        });
+        $('#item_id').on('change', function() {
+            get_booking_date();
+        });
+        function get_booking_date() {
+            var item_id = $('#item_id').val();
+            var service_type = $('#service_type').val();
+            $('#booking_date_div, #add_cart_div').hide();
+            $('#booking_start_date, #booking_end_date').val('');
+
+            if (item_id) {
+                $.ajax({
+                    url: "{{ route('producer.get_booking_date') }}",
+                    type: "GET",
+                    data: {
+                        item_id,
+                        service_type
+                    },
+                    success: function(data) {
+                        bookedRanges = data;
+                        make_datepicker();
+                    }
+                });
+            }
+        }
 
         function make_datepicker(bookedRanges) {
             bookedDates = getBookedDates(bookedRanges);
@@ -415,8 +408,6 @@
                 }
             });
         }
-
-        });
     </script>
 @endsection
 
