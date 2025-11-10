@@ -318,8 +318,6 @@ class ProducerController extends AppBaseController
         return redirect(route('producers.index'));
     }
 
-
-
     public function producers_login(Request $request)
     {
         $username = $request->username;
@@ -352,7 +350,31 @@ class ProducerController extends AppBaseController
                     SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
                 ")
                 ->first();
-        $bookings = Booking::where('producer_id', $producer_id)
+        $films = Film::where('producer_id', $producer_id)
+                ->where('status', '!=', 'reject')
+                ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+                ->first();
+        $dramas = DramaApplication::where('producer_id', $producer_id)
+                ->where('status', '!=', 'reject')
+                ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+                ->first();
+        $docufilms = DocufilmApplication::where('producer_id', $producer_id)
+                ->where('status', '!=', 'reject')
+                ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+                ->first();
+        $reality = RealityApplication::where('producer_id', $producer_id)
                 ->where('status', '!=', 'reject')
                 ->selectRaw("
                     COUNT(*) AS totalRow,
@@ -361,9 +383,7 @@ class ProducerController extends AppBaseController
                 ")
                 ->first();
 
-
-
-        return view('producers.mainView.dashboard');
+        return view('producers.mainView.dashboard', compact('bookings', 'films', 'dramas', 'docufilms', 'reality'));
     }
     public function booking()
     {

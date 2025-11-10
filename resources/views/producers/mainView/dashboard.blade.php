@@ -153,7 +153,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_students">
-                                <div class="" role="status"> {{ en2bn(1) }} </div>
+                                <div class="" role="status"> {{ en2bn($bookings->totalRow) }} </div>
                             </h3>
                             <p>{{ __('messages.total_bookings') }}</p>
                         </div>
@@ -168,7 +168,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_completed_movies">
-                                <div class="" role="status">{{ en2bn(1) }}</div>
+                                <div class="" role="status">{{ en2bn($bookings->pendingRow) }}</div>
                             </h3>
                             <p>{{ 'অপেক্ষমান বুকিং' }}</p>
                         </div>
@@ -183,7 +183,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="movies_awaiting_approval">
-                                <div class="" role="status">{{ en2bn(1) }}</div>
+                                <div class="" role="status">{{ en2bn($bookings->approveRow) }}</div>
                             </h3>
                             <p>{{ 'অনুমোদিত বুকিং' }}</p>
                         </div>
@@ -200,7 +200,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="commercials_awaiting_approval">
-                                <div class="" role="status">{{ 1 }}</div>
+                                <div class="" role="status">{{ en2bn($films->totalRow) }}</div>
                             </h3>
                             <p>{{ 'মোট চলচ্চিত্র' }}</p>
                         </div>
@@ -215,7 +215,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_producer_list">
-                                <div class="" role="status">{{ 1 }}</div>
+                                <div class="" role="status">{{ en2bn($films->pendingRow) }}</div>
                             </h3>
                             <p>{{ 'অপেক্ষমান চলচ্চিত্র' }}</p>
                         </div>
@@ -230,7 +230,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_approved_producer_pending_list">
-                                <div class="" role="status">{{ 1 }}</div>
+                                <div class="" role="status">{{ en2bn($films->approveRow) }}</div>
                             </h3>
                             <p>{{ 'অনুমোদিত চলচ্চিত্র' }}</p>
                         </div>
@@ -247,7 +247,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_students">
-                                <div class="" role="status"> {{ en2bn(1) }} </div>
+                                <div class="" role="status"> {{ en2bn($dramas->totalRow) }} </div>
                             </h3>
                             <p>{{ 'মোট নাটক' }}</p>
                         </div>
@@ -262,7 +262,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_completed_movies">
-                                <div class="" role="status">{{ en2bn(1) }}</div>
+                                <div class="" role="status">{{ en2bn($dramas->pendingRow) }}</div>
                             </h3>
                             <p>{{ 'অপেক্ষমান নাটক' }}</p>
                         </div>
@@ -277,7 +277,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="movies_awaiting_approval">
-                                <div class="" role="status">{{ en2bn(1) }}</div>
+                                <div class="" role="status">{{ en2bn($dramas->approveRow) }}</div>
                             </h3>
                             <p>{{ 'অনুমোদিত নাটক' }}</p>
                         </div>
@@ -294,7 +294,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="commercials_awaiting_approval">
-                                <div class="" role="status">{{ 1 }}</div>
+                                <div class="" role="status">{{ en2bn($docufilms->totalRow) }}</div>
                             </h3>
                             <p>{{ 'মোট প্রামান্যচিত্র' }}</p>
                         </div>
@@ -309,7 +309,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_producer_list">
-                                <div class="" role="status">{{ 1 }}</div>
+                                <div class="" role="status">{{ en2bn($docufilms->pendingRow) }}</div>
                             </h3>
                             <p>{{ 'অপেক্ষমান প্রামান্যচিত্র' }}</p>
                         </div>
@@ -324,7 +324,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_approved_producer_pending_list">
-                                <div class="" role="status">{{ 1 }}</div>
+                                <div class="" role="status">{{ en2bn($docufilms->approveRow) }}</div>
                             </h3>
                             <p>{{ 'অনুমোদিত প্রামান্যচিত্র' }}</p>
                         </div>
@@ -341,7 +341,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_students">
-                                <div class="" role="status"> {{ en2bn(1) }} </div>
+                                <div class="" role="status"> {{ en2bn($reality->totalRow) }} </div>
                             </h3>
                             <p>{{ 'মোট রিয়েলিটি শো' }}</p>
                         </div>
@@ -356,7 +356,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="total_completed_movies">
-                                <div class="" role="status">{{ en2bn(1) }}</div>
+                                <div class="" role="status">{{ en2bn($reality->pendingRow) }}</div>
                             </h3>
                             <p>{{ 'অপেক্ষমান রিয়েলিটি শো' }}</p>
                         </div>
@@ -371,7 +371,7 @@
                         </div>
                         <div class="card-content">
                             <h3 id="movies_awaiting_approval">
-                                <div class="" role="status">{{ en2bn(1) }}</div>
+                                <div class="" role="status">{{ en2bn($reality->approveRow) }}</div>
                             </h3>
                             <p>{{ 'অনুমোদিত রিয়েলিটি শো' }}</p>
                         </div>
