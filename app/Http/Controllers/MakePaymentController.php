@@ -123,7 +123,6 @@ class MakePaymentController extends AppBaseController
         return view('make_payments.index')->with('filmPackage', $films);
     }
 
-
     public function forward(MakePayment $makePayment, $desk)
     {
         $app_id = $makePayment->id;
@@ -138,7 +137,6 @@ class MakePaymentController extends AppBaseController
             'logs' => $logs,
         ]);
     }
-
 
     public function update_status(Request $request)
     {
@@ -214,10 +212,18 @@ class MakePaymentController extends AppBaseController
         return redirect(route('makePayments.forward.table'));
     }
 
+
+    // package section
     function package() {
         $films = array();
         return view('make_payments.package')->with('filmPackage', $films);
     }
+
+    function makeCustomPayment() {
+        $films = array();
+        return view('make_payments.custom_package')->with('filmPackage', $films);
+    }
+    // package section
 
     /**
      * Remove the specified resource from storage.

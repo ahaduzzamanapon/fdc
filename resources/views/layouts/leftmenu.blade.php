@@ -94,13 +94,13 @@
 
         {{-- পেমেন্ট --}}
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment/package') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#makePayments" role="button" aria-expanded="false">
+            <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment/package') || Request::is('make-payment/makeCustomPayment') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#makePayments" role="button" aria-expanded="false">
                 <i class="icon im im-icon-Settings-Window"></i>
                 <i class="sidenav-mini-icon"> পা </i>
                 <span class="item-name">পেমেন্ট </span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
-            <ul class="sub-nav collapse {!! Request::is('makePayments') || Request::is('make-payment/package') ? 'show' : '' !!}" id="makePayments"
+            <ul class="sub-nav collapse {!! Request::is('makePayments') || Request::is('make-payment/package') || Request::is('make-payment/makeCustomPayment') ? 'show' : '' !!}" id="makePayments"
                 data-bs-parent="#sidebar-menu">
 
                 {{-- পেমেন্ট তালিকা --}}
@@ -114,7 +114,7 @@
 
                 {{-- পেমেন্ট প্যাকেজ --}}
                 <li class="nav-item">
-                    <a class="nav-link {!! Request::is('make-payment/package') ? 'active' : '' !!}" aria-current="page"
+                    <a class="nav-link {!! Request::is('make-payment/package') || Request::is('make-payment/makeCustomPayment') ? 'active' : '' !!}" aria-current="page"
                         href="{{ route('makePayments.package') }}">
                         <i class="icon im im-icon-Home"></i>
                         <span class="item-name">{{ 'পেমেন্ট প্যাকেজ' }}</span>

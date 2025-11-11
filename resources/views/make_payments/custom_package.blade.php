@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-প্যাকেজ @parent
+কাস্টম @parent
 @stop
 
 <style>
@@ -92,7 +92,7 @@
         <div class="clearfix"></div>
         <div class="card" width="88vw;">
             <section class="card-header">
-                <h5 class="card-title d-inline">পেমেন্ট প্যাকেজ </h5>
+                <h5 class="card-title d-inline">কাস্টম প্যাকেজ </h5>
             </section>
 
             @php
