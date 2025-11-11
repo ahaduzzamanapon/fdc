@@ -157,7 +157,7 @@
                                     </span>
                                     <span>কাস্টম প্যাকেজ</span>
                                     <br>
-                                    <a class="btn btn-primary" href="{{ route('makePayments.makeCustomPayment') }}">তৈরি করুন</a>
+                                    <a class="btn btn-primary" href="{{ route('makePayments.makeCustomPackage') }}">তৈরি করুন</a>
                                     <br>
                                     <br>
                                 </span>

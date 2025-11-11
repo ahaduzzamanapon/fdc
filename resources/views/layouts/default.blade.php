@@ -463,7 +463,11 @@
                                             @elseif(isset(Auth::guard('producer')->user()->group_id))
                                                 {{ Auth::guard('producer')->user()->organization_name }}
                                             @else
-                                                {{ __('Unauthorized') }}
+                                                @php
+                                                    // Redirect to another page
+                                                    header("Location: /");
+                                                    exit; // Always use exit after redirect
+                                                @endphp
                                             @endif
                                         </h6>
                                         {{-- <p class="mb-0 caption-sub-title" style="color: white;">
@@ -490,7 +494,11 @@
                                                     @elseif(isset(Auth::guard('producer')->user()->group_id))
                                                         {{ Auth::guard('producer')->user()->organization_name }}
                                                     @else
-                                                        {{ __('Unauthorized') }}
+                                                        @php
+                                                            // Redirect to another page
+                                                            header("Location: /");
+                                                            exit; // Always use exit after redirect
+                                                        @endphp
                                                     @endif
 
 
@@ -502,7 +510,11 @@
                                                     @elseif(isset(Auth::guard('producer')->user()->group_id))
                                                         {{ Auth::guard('producer')->user()->email }}
                                                     @else
-                                                        {{ __('Unauthorized') }}
+                                                        @php
+                                                            // Redirect to another page
+                                                            header("Location: /");
+                                                            exit; // Always use exit after redirect
+                                                        @endphp
                                                     @endif
 
                                                 </small>

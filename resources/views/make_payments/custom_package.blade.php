@@ -2,173 +2,228 @@
 
 {{-- Page title --}}
 @section('title')
-কাস্টম @parent
+কাস্টম প্যাকেজ {{ __('messages.package') }} @parent
 @stop
 
-<style>
-  .checkbox-wrapper-20 *,
-    .checkbox-wrapper-20 *:after,
-    .checkbox-wrapper-20 *:before {
-    box-sizing: border-box;
-  }
-  .checkbox-wrapper-20 .checkbox-wrapper {
-    width: 100%;
-  }
-
-  .checkbox-wrapper-20 .checkbox-input {
-    clip: rect(0 0 0 0);
-    -webkit-clip-path: inset(100%);
-    clip-path: inset(100%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-  }
-
-  .checkbox-wrapper-20 .checkbox-input:checked + .checkbox-tile {
-    border-color: #2260ff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    color: #2260ff;
-  }
-
-  .checkbox-wrapper-20 .checkbox-input:checked + .checkbox-tile .checkbox-icon,
-    .checkbox-wrapper-20 .checkbox-input:checked + .checkbox-tile .checkbox-label {
-    color: #2260ff;
-  }
-
-  .checkbox-wrapper-20 .checkbox-input:focus + .checkbox-tile {
-    border-color: #2260ff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 0 0 4px #b5c9fc;
-  }
-
-  .checkbox-wrapper-20 .checkbox-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 7rem;
-    min-height: 7rem;
-    border-radius: 0.5rem;
-    border: 2px solid #b5bfd9;
-    background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    transition: 0.15s ease;
-    cursor: pointer;
-    position: relative;
-    width: 100%;
-  }
-
-  .checkbox-wrapper-20 .checkbox-tile:hover {
-    border-color: #2260ff;
-  }
-
-  .checkbox-wrapper-20 .checkbox-icon {
-    transition: 0.375s ease;
-    color: #494949;
-  }
-
-  .checkbox-wrapper-20 .checkbox-icon svg {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .checkbox-wrapper-20 .checkbox-label {
-    color: #707070;
-    transition: 0.375s ease;
-    text-align: center;
-  }
-
-</style>
-
 @section('content')
-<!-- Content Header (Page header) -->
-<!-- Main content -->
+    <section class="content-header">
+    </section>
+
     <div class="content">
-        <div class="clearfix"></div>
+      @include('adminlte-templates::common.errors')
+      <div class="card">
 
-        @include('flash::message')
+        <div class="card-header">
+            <h5 class="card-title">কাস্টম প্যাকেজ তৈরি করুন</h5>
+        </div>
 
-        <div class="clearfix"></div>
-        <div class="card" width="88vw;">
-            <section class="card-header">
-                <h5 class="card-title d-inline">কাস্টম প্যাকেজ </h5>
-            </section>
-
-            @php
-                $packages = \App\Models\Package::all();
-            @endphp
-
-            <div class="card-body">
-                <!-- From Uiverse.io by Bodyhc -->
+        <div class="card-body">
+            <div class="row">
+                {!! Form::open(['route' => 'makePayments.cp.store','class' => 'form-horizontal col-md-12', 'id' => 'submit_booking_request']) !!}
                 <div class="row">
-                    @foreach ($packages as $package)
-                    <div class="col-md-4">
-                        <div class="checkbox-wrapper-20">
-                            <label class="checkbox-wrapper">
-                                {{-- <input class="checkbox-input" type="radio" name="package_id" value="{{ $package->id }}"> --}}
-                                <span class="checkbox-tile">
-                                    <span class="checkbox-icon">
-                                        <br>
-                                        <svg viewBox="0 0 256 256" fill="currentColor" height="192" width="192"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <rect fill="none" height="256" width="256"></rect>
-                                            <polygon stroke-width="12" stroke-linejoin="round" stroke-linecap="round"
-                                                stroke="currentColor" fill="none"
-                                                points="72 40 184 40 240 104 128 224 16 104 72 40"></polygon>
-                                            <polygon stroke-width="12" stroke-linejoin="round" stroke-linecap="round"
-                                                stroke="currentColor" fill="none"
-                                                points="177.091 104 128 224 78.909 104 128 40 177.091 104"></polygon>
-                                            <line stroke-width="12" stroke-linejoin="round" stroke-linecap="round"
-                                                stroke="currentColor" fill="none" y2="104" x2="240" y1="104" x1="16"></line>
-                                        </svg>
-                                    </span>
-                                    <span>{{ $package->name }}</span>
-                                    <span>Price : {{ $package->amount }}</span>
-                                    <br>
-                                    <a class="btn btn-primary" href="{{ route('makePayments.make_payment', $package->id) }}">বাছাই করুন</a>
-                                    <br>
-                                    <span>{{ $package->description }}</span>
-                                    <br>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-                    @endforeach
 
-                    <div class="col-md-4">
-                        <div class="checkbox-wrapper-20">
-                            <label class="checkbox-wrapper">
-                                <span class="checkbox-tile">
-                                    <span class="checkbox-icon">
-                                        <br>
-                                        <svg viewBox="0 0 256 256" fill="currentColor" height="192" width="192"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <rect fill="none" height="256" width="256"></rect>
-                                            <polygon stroke-width="12" stroke-linejoin="round" stroke-linecap="round"
-                                                stroke="currentColor" fill="none"
-                                                points="72 40 184 40 240 104 128 224 16 104 72 40"></polygon>
-                                            <polygon stroke-width="12" stroke-linejoin="round" stroke-linecap="round"
-                                                stroke="currentColor" fill="none"
-                                                points="177.091 104 128 224 78.909 104 128 40 177.091 104"></polygon>
-                                            <line stroke-width="12" stroke-linejoin="round" stroke-linecap="round"
-                                                stroke="currentColor" fill="none" y2="104" x2="240" y1="104" x1="16"></line>
-                                        </svg>
-                                    </span>
-                                    <span>কাস্টম প্যাকেজ</span>
-                                    <br>
-                                    <a class="btn btn-primary" href="{{ route('makePayments.makeCustomPayment') }}">তৈরি করুন</a>
-                                    <br>
-                                    <br>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
+                  <!-- Name Field -->
+                  <div @class(['col-md-3'])>
+                    <label for="film_type" @class(['form-label'])>{{ 'টাইপ নির্বাচন' }}</label>
+                    <select id="film_type" @class(['form-select']) required>
+                      <option value="">{{ 'নির্বাচন করুন' }}</option>
+                      <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
+                      <option value="drama">নাটক অ্যাপ্লিকেশন</option>
+                      <option value="docufilm">প্রামান্যচিত্র অ্যাপ্লিকেশন</option>
+                      <option value="realityshow">রিয়েলিটি শো অ্যাপ্লিকেশন</option>
+                    </select>
+                  </div>
+
+                  <!-- Film Field -->
+                  <div @class(['col-md-4'])>
+                    <label for="film_id" @class(['form-label'])>{{ 'অ্যাপ্লিকেশন নির্বাচন' }}</label>
+                    <select id="film_id" @class(['form-select']) required>
+                        <option value="">{{ 'নির্বাচন করুন' }}</option>
+                    </select>
+                  </div>
+
+                  <!-- Service Type Field -->
+                  <div @class(['col-md-3'])>
+                    <label for="service_type" @class(['form-label'])>{{ 'সেবার ধরণ' }}</label>
+                    <select id="service_type" @class(['form-select']) onchange="getItems()" required>
+                        <option value="">{{ 'নির্বাচন করুন' }}</option>
+                        <option value="day">দিন</option>
+                        <option value="shift">শিফট</option>
+                    </select>
+                  </div>
+
+                  <!-- Amount Field -->
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          {!! Form::label('amount', __('messages.amount'),['class'=>'control-label']) !!}
+                          {!! Form::number('grand_amount', 0, ['class' => 'form-control', 'readonly', 'id' => 'grand_amount']) !!}
+                      </div>
+                  </div>
+
+                    <!-- Item Search Field -->
+                  <div @class(['col-md-6'])>
+                    <label for="item_id" @class(['form-label'])>{{ ' আইটেম নির্বাচন ' }}</label>
+                    <select id="item_id" @class(['form-select']) onchange="set_items(this.value)">
+                      <option value="">{{ 'নির্বাচন করুন' }}</option>
+                    </select>
+                  </div>
+                  <br><br>
+
+                  {{-- Item Table --}}
+                  <div class="col-md-12 pt-3">
+                    <table class="table table-bordered table-striped">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Item Name</th>
+                          <th>Price</th>
+                          <th width="15%">Day</th>
+                          <th width="15%">Amount</th>
+                          <th width="5%"> Add Item </th>
+                        </tr>
+                      </thead>
+                      <tbody id="custom_package_items">
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Description Field -->
+                  <div class="col-md-12">
+                      <div class="form-group ">
+                          {!! Form::label('description', __('messages.description'),['class'=>'control-label']) !!}
+                          {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                      </div>
+                  </div>
+
+                  <!-- Submit Field -->
+                  <div class="form-group col-sm-12" style="text-align-last: right;">
+                    <input type="button">
+                    {!! Form::submit(__('messages.save'), ['class' => 'btn btn-primary' ]) !!}
+                    <a href="{{ route('makePayments.package') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>
+                  </div>
+
                 </div>
+
+                {!! Form::close() !!}
             </div>
         </div>
+      </div>
     </div>
-
 @endsection
 
+@section('scripts')
+    <script>
+      $('#submit_booking_request').submit(function(e) {
+        e.preventDefault();
+          values = $('tr').find('.item_total_amount').val();
+          if (values == undefined) {
+            alert("{{ __('messages.booking_list_empty') }}");
+            return false;
+          } else {
+            this.submit();
+          }
+      })
+    </script>
 
+    <script>
+      function set_items(e) {
+        data = e.split('---');
+
+        $checkitem = $(`#check-item${data[0]}`);
+        if ($checkitem.length) {
+          alert('Item already added.');
+          return;
+        }
+
+        $('#custom_package_items').append(`
+          <tr>
+            <input type="hidden" id="check-item${data[0]}" name="item_id[]" value="${data[0]}">
+            <input type="hidden" class="item_amt" name="item_amt[]" value="${data[1]}">
+            <td> ${data[2]} </td>
+            <td> ${data[1]} </td>
+            <td>
+              <input type="number" name="days[]" class="form-control form-control-sm item_day" onkeyup="cal_total_amt(this)" value="1">
+            </td>
+            <td>
+              <input name="item_total_amount[]" class="form-control form-control-sm item_total_amount" value="${data[1]}" readonly>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          </tr>
+        `);
+        cal_grand_total();
+      }
+    </script>
+
+
+    <script>
+      function cal_total_amt(el) {
+        const amt = $(el).closest('tr').find('.item_amt').val();
+        const day = $(el).val();
+        const total = amt * day;
+        $(el).closest('tr').find('.item_total_amount').val(total);
+        cal_grand_total();
+      }
+      function cal_grand_total() {
+        let total = 0;
+        $('.item_total_amount').each(function() {
+          total += parseFloat($(this).val()) || 0;
+        });
+        $('#grand_amount').val(total);
+      }
+    </script>
+
+
+    <script>
+      function getItems() {
+        const service_type = $('#service_type').val();
+        if (!service_type) return;
+
+        $('#item_id').empty().append('<option value="">নির্বাচন করুন</option>');
+        $.ajax({
+          url: "{{ route('makePayments.get_items_by_type') }}",
+          type: "GET",
+          data: {
+            service_type
+          },
+          success: function(data) {
+            $.each(data, function(i, item) {
+              $('#item_id').append(`<option value="${item.id}---${item.amount}---${item.name_bn}">${item.name_bn}</option>`);
+            });
+          }
+        });
+      }
+    </script>
+
+
+    <script>
+      $(document).ready(function () {
+        // Film type change logic
+        $('#film_type').on('change', function() {
+          const filmType = $(this).val();
+          $('#film_balance_div').toggle(filmType === 'film');
+          $('#film_id').empty().append(
+              '<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
+          $('#form_film_type').val(filmType);
+
+          if (!filmType) return;
+
+          $.ajax({
+            url: "{{ route('producer.get_application') }}",
+            type: "GET",
+            data: {
+              filmId: filmType
+            },
+            success: function(data) {
+              $.each(data, function(i, item) {
+                $('#film_id').append(
+                  `<option value="${item.id}">${item.film_title}</option>`
+                );
+              });
+            }
+          });
+        });
+      });
+    </script>
+
+@endsection

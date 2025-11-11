@@ -8,6 +8,7 @@ use App\Models\FilmPackage;
 use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Response;
 use Auth;
@@ -212,17 +213,33 @@ class MakePaymentController extends AppBaseController
         return redirect(route('makePayments.forward.table'));
     }
 
-
     // package section
     function package() {
         $films = array();
         return view('make_payments.package')->with('filmPackage', $films);
     }
 
-    function makeCustomPayment() {
+    // function cm_package_list() {
+    //     $films = array();
+    //     return view('make_payments.cm_package_list')->with('filmPackage', $films);
+    // }
+
+    function makeCustomPackage() {
         $films = array();
         return view('make_payments.custom_package')->with('filmPackage', $films);
     }
+
+    public function get_items_by_type(Request $request)
+    {
+        $items = Item::where('service_type', $request->service_type)->get();
+        return response()->json($items);
+    }
+
+    public function custom_package_store(Request $request)
+    {
+        dd($request->all());
+    }
+
     // package section
 
     /**
