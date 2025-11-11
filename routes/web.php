@@ -118,6 +118,10 @@ Route::prefix('reports')->name('reports.')->group(function () {
     Route::get('reality-reports', [Reports::class, 'reality_report_index'])->name('realityReport');
     Route::post('show-reality-reports', [Reports::class, 'reality_report_show'])->name('showRealityReport');
 
+
+    Route::post('/export/{type}', [Reports::class, 'exportReport'])->name('export');
+
+
 });
 
 Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');
