@@ -22,41 +22,42 @@ Flim Report
 
 <div class="card-body table-responsive">
 
-    <form id="filmReportFilter" class="row g-3 mb-4 align-items-end">
-        <div class="col-md-2">
-            <label for="from_date" class="form-label">{{ __('শুরু তারিখ') }}</label>
-            <input type="date" id="from_date" name="from_date" class="form-control">
-        </div>
+<form id="filmReportFilter" class="row g-3 mb-4 align-items-end" action="{{ route('reports.export', ['type' => 'film']) }}" method="POST">
+@csrf
+    <div class="col-md-2">
+        <label for="from_date" class="form-label">শুরু তারিখ</label>
+        <input type="date" id="from_date" name="from_date" class="form-control">
+    </div>
 
-        <div class="col-md-2">
-            <label for="to_date" class="form-label">{{ __('শেষ তারিখ') }}</label>
-            <input type="date" id="to_date" name="to_date" class="form-control">
-        </div>
+    <div class="col-md-2">
+        <label for="to_date" class="form-label">শেষ তারিখ</label>
+        <input type="date" id="to_date" name="to_date" class="form-control">
+    </div>
 
-        <div class="col-md-2">
-            <label for="status" class="form-label">{{ __('অবস্থা') }}</label>
-            <select id="status" name="status" class="form-select">
-                <option value="">{{ __('সব অবস্থা') }}</option>
-                <option value="1">{{ __('অনিষ্পন্ন') }}</option>
-                <option value="2">{{ __('অনুমোদন') }}</option>
-                <option value="3">{{ __('বাতিল') }}</option>
-            </select>
-        </div>
+    <div class="col-md-2">
+        <label for="status" class="form-label">অবস্থা</label>
+        <select id="status" name="status" class="form-select">
+            <option value="">সব অবস্থা</option>
+            <option value="on process">অনিষ্পন্ন</option>
+            <option value="approved">অনুমোদন</option>
+            <option value="reject">বাতিল</option>
+        </select>
+    </div>
 
-        <div class="col-md-6">
-            <label for="organization" class="form-label">{{ __('ফিল্মের নাম') }}</label>
-            <input type="text" id="organization" name="organization" class="form-control" placeholder="{{ __('ফিল্মের নাম...') }}">
-        </div>
+    <div class="col-12 d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary" id="resetFilter">
+            {{ __('Reset') }}
+        </button>
+        <button type="button" class="btn btn-primary" id="showReport">
+            {{ __('Show Report') }}
+        </button>
 
-        <div class="col-12 d-flex justify-content-end gap-2">
-            <button type="button" class="btn btn-secondary" id="resetFilter">
-                <i class="bi bi-arrow-clockwise"></i> {{ __('Reset') }}
-            </button>
-            <button type="button" class="btn btn-primary" id="showReport">
-                <i class="bi bi-search"></i> {{ __('Show Report') }}
-            </button>
-        </div>
-    </form>
+        <button type="submit" class="btn btn-success">
+            Export Film Report
+        </button>
+    </div>
+</form>
+
 
 </div>
 
