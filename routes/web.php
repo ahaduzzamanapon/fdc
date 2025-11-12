@@ -54,12 +54,15 @@ Route::prefix('make-payment')->name('makePayments.')->group(function () {
     Route::post('change_status', [MakePaymentController::class, 'update_status'])->name('st.status');
     Route::get('make_payment/{package_id}', [MakePaymentController::class, 'make_payment'])->name('make_payment');
     Route::get('package', [MakePaymentController::class, 'package'])->name('package');
-    Route::post('package', [MakePaymentController::class, 'custom_package_store'])->name('cp.store');
     Route::get('cm_package_list', [MakePaymentController::class, 'cm_package_list'])->name('cm_package_list');
     Route::get('makeCustomPackage', [MakePaymentController::class, 'makeCustomPackage'])->name('makeCustomPackage');
     Route::get('get_items_by_type', [MakePaymentController::class, 'get_items_by_type'])->name('get_items_by_type');
+    Route::post('package', [MakePaymentController::class, 'custom_package_store'])->name('cp.store');
+    Route::post('cp_change_status', [MakePaymentController::class, 'cp_update_status'])->name('cp.st.status');
 });
+Route::get('makePayments/cp_forward/{desk}', [MakePaymentController::class, 'cp_forward'])->name('cp.forward');
 Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
+Route::get('makePayments_cp_forward_table', [MakePaymentController::class, 'cp_forward_table'])->name('makePayments.cp.forward.table');
 
 // party applications
 Route::resource('partyApplications', 'PartyApplicationController');

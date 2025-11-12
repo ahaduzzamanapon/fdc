@@ -6,6 +6,7 @@ use App\Models\MakePayment;
 use App\Models\Package;
 use App\Models\Package_details;
 use App\Models\FilmPackage;
+use App\Models\ApprovalFlowMaster;
 use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Response;
 use Auth;
 use Flash;
+use Illuminate\Support\Facades\DB;
 
 class MakePaymentController extends AppBaseController
 {
@@ -220,12 +222,6 @@ class MakePaymentController extends AppBaseController
         return view('make_payments.package')->with('filmPackage', $films);
     }
 
-    function cm_package_list() {
-        $producer = Auth::guard('producer')->user();
-        $films = Package::where('producer_id', $producer->id)->get();
-        return view('make_payments.cm_package_list')->with('filmPackage', $films);
-    }
-
     function makeCustomPackage() {
         $films = array();
         return view('make_payments.custom_package')->with('filmPackage', $films);
@@ -237,9 +233,19 @@ class MakePaymentController extends AppBaseController
         return response()->json($items);
     }
 
+    function cm_package_list() {
+        $producer = Auth::guard('producer')->user();
+        $films = Package::where('producer_id', $producer->id)->get();
+        return view('make_payments.cm_package_list')->with('filmPackage', $films);
+    }
+
     public function custom_package_store(Request $request)
     {
         $producer = Auth::guard('producer')->user();
+        $check = Package::where('film_id', $request->film_id)->where('producer_id', $producer->id)->first();
+        if (!empty($check)) {
+            return redirect()->back()->with('error', 'You have already applied for this film.');
+        }
         $role_id = $producer->group_id;
         $flow = ApprovalFlowMaster::where('name', 'like', '%Custom Package Flow%')->first();
         $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
@@ -319,6 +325,100 @@ class MakePaymentController extends AppBaseController
             Flash::error('Failed to create package: ' . $e->getMessage());
             return back()->with('error', 'Failed to create package: ' . $e->getMessage());
         }
+    }
+    public function cp_forward_table(Request $request)
+    {
+        $user = Auth::user()->user_role;
+        $films = Package::latest()->where('status', 'on process')->where('desk_id', $user)->get();
+        return view('make_payments.cm_package_list')->with('filmPackage', $films);
+    }
+
+    public function cp_forward($id)
+    {
+        $package = Package::find($id);
+        $role_id = $package->desk_id;
+        $auth_user = ApprovalRequests::where('application_id', $id)->where('request_type', 'Custom Package Flow')->where('current_role_id', $role_id)->first();
+        $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
+
+        return view('make_payments.cp_forward', [
+            'film' => $package,
+            'auth_user' => $auth_user,
+            'logs' => $logs,
+        ]);
+    }
+
+    public function cp_update_status(Request $request)
+    {
+        $film = Package::find($request->film_id);
+        $steps = ApprovalRequests::find($request->request_id);
+
+        if ($request->status == 'backward') {
+            $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = !empty($prev->from_role_id) ? $prev->from_role_id : $steps->current_role_id;
+            $current_role_id = $steps->prev_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = 'backward';
+            $status = "on process";
+        } else if ($request->status == 'forward') {
+            $next = ApprovalFlowSteps::where('from_role_id', $steps->next_role_id)->where('flow_id', $steps->flow_id)->first();
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->next_role_id;
+            $next_role_id = !empty($next->to_role_id) ? $next->to_role_id : $steps->current_role_id;
+            $fstatus = 'forward';
+            $status = "on process";
+        } else {
+            $prev_role_id = $steps->current_role_id;
+            $current_role_id = $steps->current_role_id;
+            $next_role_id = $steps->current_role_id;
+            $fstatus = $request->status;
+            $status = $request->status;
+        }
+
+        // film_packages
+        $data = array(
+            'desk_id' => $current_role_id,
+            'status' => $status,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        // approval_requests
+        $data1 = array(
+            'prev_role_id' => $prev_role_id,
+            'current_role_id' => $current_role_id,
+            'next_role_id' => $next_role_id,
+            'status' => $status,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        // approval_logs
+        $data2 = array(
+            'request_id' => $request->request_id,
+            'request_type' => $steps->request_type,
+            'flow_id' => $steps->flow_id,
+            'action_by' => Auth::user()->id,
+            'action_role_id' => Auth::user()->user_role,
+            'next_role_id' => $current_role_id,
+            'status' => $fstatus,
+            'remarks' => $request->log_remarks,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_by' => Auth::user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        try {
+            \DB::beginTransaction();
+            Package::where('id', $request->film_id)->update($data);
+            // ApprovalRequests::where('id', $request->request_id)->update($data1);
+            // ApprovalLogs::create($data2);
+            \DB::commit();
+            Flash::success('Package updated successfully.');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error('Package update failed. Please try again later.');
+        }
+
+        return redirect(route('makePayments.cp.forward.table'));
     }
     // package section
 

@@ -429,6 +429,14 @@
                             <span class="item-name">{{ __('messages.pending_list') }}</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('makePayments_cp_forward_table*') ? 'active' : '' !!}"
+                            href="{{ route('makePayments.cp.forward.table') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> কা </i>
+                            <span class="item-name"> কাস্টম প্যাকেজ </span>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endif
