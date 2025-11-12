@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\AppBaseController;
 use App\Models\MakePayment;
 use App\Models\Package;
+use App\Models\Package_details;
 use App\Models\FilmPackage;
 use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
@@ -219,10 +220,11 @@ class MakePaymentController extends AppBaseController
         return view('make_payments.package')->with('filmPackage', $films);
     }
 
-    // function cm_package_list() {
-    //     $films = array();
-    //     return view('make_payments.cm_package_list')->with('filmPackage', $films);
-    // }
+    function cm_package_list() {
+        $producer = Auth::guard('producer')->user();
+        $films = Package::where('producer_id', $producer->id)->get();
+        return view('make_payments.cm_package_list')->with('filmPackage', $films);
+    }
 
     function makeCustomPackage() {
         $films = array();
@@ -237,10 +239,91 @@ class MakePaymentController extends AppBaseController
 
     public function custom_package_store(Request $request)
     {
-        dd($request->all());
-    }
+        $producer = Auth::guard('producer')->user();
+        $role_id = $producer->group_id;
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Custom Package Flow%')->first();
+        $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+        $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
 
+        DB::beginTransaction();
+        try {
+            // 1. Create Booking
+            $package = array(
+                'name' => 'Custom Package '.$producer->id,
+                'desk_id' => $step->to_role_id,
+                'film_type' => $request->film_type,
+                'film_id' => $request->film_id,
+                'service_type' => $request->service_type,
+                'producer_id' => $producer->id,
+                'package_type' => 'custom',
+                'request_amt' => $request->grand_amount,
+                'amount' => $request->grand_amount,
+                'type'  => $request->film_type,
+                'status'  => 'on process',
+                'description' => $request->description
+            );
+            $insert = Package::create($package);
+
+            // 2. Loop through details
+            $item_ids = $request->input('item_id');
+            $item_amt = $request->input('item_amt');
+            $days = $request->input('days');
+            $item_amount = $request->input('item_total_amount');
+
+            foreach ($item_ids as $i => $item_id) {
+                Package_details::create([
+                    'package_id' => $insert->id,
+                    'item_id' => $item_ids[$i],
+                    'item_amt' => $item_amt[$i],
+                    'request_days' => $days[$i],
+                    'request_total_amt' => $item_amount[$i],
+                    'app_days' => $days[$i],
+                    'app_total_amt' => $item_amount[$i]
+                ]);
+            }
+
+            $data = array(
+                'flow_id' => $flow->id,
+                'request_type' => $flow->name,
+                'application_id' => $insert->id,
+                'prev_role_id' => $role_id,
+                'current_role_id' => $step->to_role_id,
+                'next_role_id' => $next->to_role_id,
+                'status' => 'on process',
+                'created_by' => $producer->id,
+                'updated_by' => $producer->id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert1 = ApprovalRequests::create($data);
+
+            $data1 = array(
+                'request_id' => $insert1->id,
+                'request_type' => $flow->name,
+                'flow_id' => $flow->id,
+                'action_by' => $producer->id,
+                'action_role_id' => $role_id,
+                'next_role_id' => $step->to_role_id,
+                'status' => 'forward',
+                'remarks' => 'New Request Created',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert2 = ApprovalLogs::create($data1);
+
+            DB::commit();
+            Flash::success('Package created successfully!');
+            return redirect(route('makePayments.cm_package_list'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Flash::error('Failed to create package: ' . $e->getMessage());
+            return back()->with('error', 'Failed to create package: ' . $e->getMessage());
+        }
+    }
     // package section
+
+
+
 
     /**
      * Remove the specified resource from storage.

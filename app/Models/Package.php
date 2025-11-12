@@ -19,12 +19,19 @@ class Package extends Model
 {
 
     public $table = 'packages';
-    
+
 
 
 
     public $fillable = [
         'name',
+        'desk_id',
+        'film_type',
+        'film_id',
+        'service_type',
+        'producer_id',
+        'package_type',
+        'request_amt',
         'amount',
         'type',
         'status',
@@ -39,6 +46,13 @@ class Package extends Model
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
+        'desk_id' => 'integer',
+        'film_type' => 'string',
+        'film_id' => 'integer',
+        'service_type' => 'string',
+        'producer_id' => 'integer',
+        'package_type' => 'string',
+        'request_amt' => 'integer',
         'amount' => 'integer',
         'type' => 'string',
         'status' => 'string',
@@ -51,8 +65,8 @@ class Package extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

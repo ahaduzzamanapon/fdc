@@ -25,7 +25,7 @@
                   <!-- Name Field -->
                   <div @class(['col-md-3'])>
                     <label for="film_type" @class(['form-label'])>{{ 'টাইপ নির্বাচন' }}</label>
-                    <select id="film_type" @class(['form-select']) required>
+                    <select id="film_type" name="film_type" @class(['form-select']) required>
                       <option value="">{{ 'নির্বাচন করুন' }}</option>
                       <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
                       <option value="drama">নাটক অ্যাপ্লিকেশন</option>
@@ -37,7 +37,7 @@
                   <!-- Film Field -->
                   <div @class(['col-md-4'])>
                     <label for="film_id" @class(['form-label'])>{{ 'অ্যাপ্লিকেশন নির্বাচন' }}</label>
-                    <select id="film_id" @class(['form-select']) required>
+                    <select id="film_id" name="film_id" @class(['form-select']) required>
                         <option value="">{{ 'নির্বাচন করুন' }}</option>
                     </select>
                   </div>
@@ -45,7 +45,7 @@
                   <!-- Service Type Field -->
                   <div @class(['col-md-3'])>
                     <label for="service_type" @class(['form-label'])>{{ 'সেবার ধরণ' }}</label>
-                    <select id="service_type" @class(['form-select']) onchange="getItems()" required>
+                    <select id="service_type" name="service_type" @class(['form-select']) onchange="getItems()" required>
                         <option value="">{{ 'নির্বাচন করুন' }}</option>
                         <option value="day">দিন</option>
                         <option value="shift">শিফট</option>
