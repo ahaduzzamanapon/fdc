@@ -119,20 +119,25 @@
                               <td>{{ $payment->name ?? 'N/A' }}</td>
                               <td>{{ $payment->amount ?? 'N/A' }}</td>
                               <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
-                              <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->review_status ?? 'N/A' }}</span></td>
+                              <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->pay_status ?? 'N/A' }}</span></td>
                               <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
                               <td>
-                                  <div class="dropdown">
-                                      <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
-                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
+                                <div class="dropdown">
+                                  <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @if ($payment->status == 'on process' && !Auth::guard('producer')->check())
+                                      <a href="{{ route('cp.forward', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i>Check And Forward</a>
+                                    @endif
 
-                                          @if ($payment->status == 'on process' && !Auth::guard('producer')->check())
-                                              <a href="{{ route('cp.forward', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i>Check And Forward</a>
-                                          @endif
-                                      </div>
+                                    @if ($payment->status == 'approved' && $payment->pay_status == 'unpaid' && Auth::guard('producer')->check())
+                                      <a href="{{ route('make_payment_cm', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Payment"></i>Pay Now</a>
+                                    @endif
+
+                                    @if ($payment->pay_status == 'paid')
+                                      <a target="_blank" href="{{ route('cm_payment_receipt', $payment->trn_id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
+                                    @endif
                                   </div>
-
+                                </div>
                               </td>
                           </tr>
                           @empty

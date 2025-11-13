@@ -120,6 +120,25 @@ class MakePaymentController extends AppBaseController
 
     }
 
+    public function make_payment_cm($package_id) {
+
+        $transaction_id = 'TRN-' . time().rand(1000,9999);
+        $package = Package::find($package_id);
+
+        if (!$package) {
+            Flash::error('Payment Failed');
+            return redirect()->route('makePayments.cm_package_list');
+        }
+        $data = array(
+            'trn_id' => $transaction_id,
+            'pay_status' => 'on processing',
+            'updated_by' => Auth::guard('producer')->user()->id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        Package::where('id', $package_id)->update($data);
+        return redirect()->route('initiate_cm_payment', ['transaction_id' => $transaction_id]);
+    }
+
     public function forward_table(Request $request)
     {
         $user = Auth::user()->user_role;
@@ -343,8 +362,15 @@ class MakePaymentController extends AppBaseController
         $auth_user = ApprovalRequests::where('application_id', $id)->where('request_type', 'Custom Package Flow')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
 
+        $details = Package_details::where('package_id', $id)
+            ->join('items', 'items.id', '=', 'packages_details.item_id')
+            ->select('packages_details.*', 'items.name_bn as item_name')
+            ->get();
+        // dd($details);
+
         return view('make_payments.cp_forward', [
             'film' => $package,
+            'details' => $details,
             'auth_user' => $auth_user,
             'logs' => $logs,
         ]);
@@ -352,6 +378,7 @@ class MakePaymentController extends AppBaseController
 
     public function cp_update_status(Request $request)
     {
+        // dd($request->all());
         $film = Package::find($request->film_id);
         $steps = ApprovalRequests::find($request->request_id);
 
@@ -381,6 +408,7 @@ class MakePaymentController extends AppBaseController
         $data = array(
             'desk_id' => $current_role_id,
             'status' => $status,
+            'pay_status' => $status == 'approved' ? 'unpaid' : null,
             'updated_by' => Auth::user()->id,
             'updated_at' => date('Y-m-d H:i:s'),
         );
@@ -409,11 +437,27 @@ class MakePaymentController extends AppBaseController
             'updated_at' => date('Y-m-d H:i:s'),
         );
 
+        $details_id = $request->input('details_id');
+        $app_days = $request->input('app_days');
+        $app_total_amt = $request->input('app_total_amt');
+
         try {
             \DB::beginTransaction();
+            $package_amt = 0;
+            foreach ($details_id as $i => $item_id) {
+                $package_amt += $app_total_amt[$i];
+                $details = array(
+                    'app_days' => $app_days[$i],
+                    'app_total_amt' => $app_total_amt[$i],  // $request->input('app_total_amt')[$i],
+                    'updated_at' => date('Y-m-d H:i:s'),
+                );
+                Package_details::where('id', $item_id)->update($details);
+            }
+
+            // Add new element
+            $data['amount'] = $package_amt;
             Package::where('id', $request->film_id)->update($data);
-            // ApprovalRequests::where('id', $request->request_id)->update($data1);
-            // ApprovalLogs::create($data2);
+
             \DB::commit();
             Flash::success('Package updated successfully.');
         } catch (\Exception $e) {
@@ -423,6 +467,12 @@ class MakePaymentController extends AppBaseController
 
         return redirect(route('makePayments.cp.forward.table'));
     }
+    public function cm_payment_receipt($id)
+    {
+        $package = Package::where('trn_id', $id)->first();
+        return view('make_payments.cm_payment_receipt', compact('package'));
+    }
+
     // package section
 
 

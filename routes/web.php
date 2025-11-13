@@ -60,6 +60,7 @@ Route::prefix('make-payment')->name('makePayments.')->group(function () {
     Route::post('package', [MakePaymentController::class, 'custom_package_store'])->name('cp.store');
     Route::post('cp_change_status', [MakePaymentController::class, 'cp_update_status'])->name('cp.st.status');
 });
+Route::get('make_payment_cm/{cm_id}', [MakePaymentController::class, 'make_payment_cm'])->name('make_payment_cm');
 Route::get('makePayments/cp_forward/{desk}', [MakePaymentController::class, 'cp_forward'])->name('cp.forward');
 Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
 Route::get('makePayments_cp_forward_table', [MakePaymentController::class, 'cp_forward_table'])->name('makePayments.cp.forward.table');
@@ -135,13 +136,18 @@ Route::get('filmApplications_backward_table', [FilmApplicationController::class,
 
 
 
-
-
+// EkPay routes for payment (initiate, success, cancel)
 Route::get('/innitiate_payment/{transaction_id}', [PaymentController::class, 'innitiate_payment'])->name('innitiate_payment');
 
 // EkPay callback routes (success, cancel)
 Route::get('/filmApplications/payment/success', [PaymentController::class, 'ekPaySuccess']);
 Route::get('/filmApplications/payment/cancel', [PaymentController::class, 'ekPayCancel']);
+
+// custom package payment
+Route::get('/initiate_cm_payment/{transaction_id}', [PaymentController::class, 'initiate_cm_payment'])->name('initiate_cm_payment');
+Route::get('/customPackage/payment/success', [PaymentController::class, 'ekPayCmSuccess']);
+Route::get('/customPackage/payment/cancel', [PaymentController::class, 'ekPayCmCancel']);
+Route::get('cm_payment_receipt/{cm}', [MakePaymentController::class, 'cm_payment_receipt'])->name('cm_payment_receipt');
 
 // GUI crud builder routes
 Route::group(['middleware' => 'auth'], function () {
