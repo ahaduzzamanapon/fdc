@@ -1,4 +1,11 @@
-{!! Form::open(['route' => 'makePayments.cp.st.status','class' => 'form-horizontal col-md-12']) !!}
+<style>
+    .form-horizontal {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+</style>
+
+{!! Form::open(['route' => 'makePayments.cp.st.status','class' => 'form-horizontal']) !!}
     <!-- Section: Form -->
     <fieldset class="border p-3 mb-4">
         <legend class="float-none w-auto px-2">তথ্য হাল নাগাদ করুন</legend>

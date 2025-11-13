@@ -222,11 +222,6 @@ class MakePaymentController extends AppBaseController
         return view('make_payments.package')->with('filmPackage', $films);
     }
 
-    function makeCustomPackage() {
-        $films = array();
-        return view('make_payments.custom_package')->with('filmPackage', $films);
-    }
-
     public function get_items_by_type(Request $request)
     {
         $items = Item::where('service_type', $request->service_type)->get();
@@ -239,13 +234,21 @@ class MakePaymentController extends AppBaseController
         return view('make_payments.cm_package_list')->with('filmPackage', $films);
     }
 
+    function makeCustomPackage() {
+        $films = array();
+        return view('make_payments.custom_package')->with('filmPackage', $films);
+    }
+
     public function custom_package_store(Request $request)
     {
         $producer = Auth::guard('producer')->user();
         $check = Package::where('film_id', $request->film_id)->where('producer_id', $producer->id)->first();
+
         if (!empty($check)) {
-            return redirect()->back()->with('error', 'You have already applied for this film.');
+            Flash::error('You have already applied for this application.');
+            return back();
         }
+
         $role_id = $producer->group_id;
         $flow = ApprovalFlowMaster::where('name', 'like', '%Custom Package Flow%')->first();
         $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();

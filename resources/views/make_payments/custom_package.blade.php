@@ -6,11 +6,9 @@
 @stop
 
 @section('content')
-    <section class="content-header">
-    </section>
-
     <div class="content">
-      @include('adminlte-templates::common.errors')
+      @include('flash::message')
+
       <div class="card">
 
         <div class="card-header">
@@ -114,14 +112,22 @@
     <script>
       $('#submit_booking_request').submit(function(e) {
         e.preventDefault();
-          values = $('tr').find('.item_total_amount').val();
-          if (values == undefined) {
-            alert("{{ __('messages.booking_list_empty') }}");
-            return false;
-          } else {
-            this.submit();
-          }
+        values = $('tr').find('.item_total_amount').val();
+        if (values == undefined) {
+          alert("{{ __('messages.booking_list_empty') }}");
+          return false;
+        } else {
+          this.submit();
+        }
       })
+    </script>
+
+    <script>
+      function removeRow(el) {
+        console.log('Are you sure?');
+        $(el).closest('tr').remove();
+        cal_grand_total();
+      }
     </script>
 
     <script>
@@ -147,7 +153,7 @@
               <input name="item_total_amount[]" class="form-control form-control-sm item_total_amount" value="${data[1]}" readonly>
             </td>
             <td>
-              <button type="button" class="btn btn-danger btn-sm">Delete</button>
+              <button type="button" onclick="removeRow(this)" class="btn btn-danger btn-sm">Delete</button>
             </td>
           </tr>
         `);

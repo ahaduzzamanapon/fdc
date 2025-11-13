@@ -14,9 +14,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="row">
-                        @include('make_payments.cp_forward_fields')
-                    </div>
+                    @include('make_payments.cp_forward_fields')
                 </div>
             </div>
         </div>
