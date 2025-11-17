@@ -134,32 +134,45 @@
 
         <div @class(['card'])>
             <div @class(['card-header'])>
-                <h4 @class(['mb-0'])>{{ __('messages.booking_form') }}</h4>
+                <h5 class="card-title d-inline">{{ __('messages.booking_form') }}</h5>
+                <span class="float-right">
+                    <a class="btn btn-primary pull-right" href="{{ route('producer.booking') }}">বুকিং তালিকা</a>
+                </span>
             </div>
 
             <div @class(['card-body'])>
                 <div @class(['row'])>
                     <div @class(['col-md-4'])>
-                        <label for="film_type" @class(['form-label'])>{{ 'টাইপ নির্বাচন' }}</label>
+                        <label for="film_type" @class(['form-label'])>{{ 'সেবা নির্বাচন' }}</label>
                         <select id="film_type" @class(['form-select'])>
-                            <option value="">{{ 'টাইপ নির্বাচন করুন' }}</option>
-                            <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
-                            <option value="drama">নাটক অ্যাপ্লিকেশন</option>
-                            <option value="docufilm">প্রামান্যচিত্র অ্যাপ্লিকেশন</option>
-                            <option value="realityshow">রিয়েলিটি শো অ্যাপ্লিকেশন</option>
+                            <option value="">{{ 'সেবা নির্বাচন করুন' }}</option>
+                            <option value="film">সিনেমা </option>
+                            <option value="drama">নাটক</option>
+                            <option value="docufilm">প্রামান্যচিত্র</option>
+                            <option value="realityshow">রিয়েলিটি শো</option>
                         </select>
                     </div>
                     <div @class(['col-md-4'])>
-                        <label for="film_id" @class(['form-label'])>{{ 'অ্যাপ্লিকেশন নির্বাচন' }}</label>
+                        <label id="film_id_label" for="film_id" @class(['form-label'])>{{ 'আবেদনকৃত সেবা' }}</label>
                         <select id="film_id" @class(['form-select'])>
-                            <option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>
+                            <option value="">{{ 'সেবা নির্বাচন করুন' }}</option>
                         </select>
                     </div>
 
-                    <div @class(['col-md-3']) id="film_balance_div">
+                    {{-- <div @class(['col-md-3']) id="film_balance_div">
                         <label for="film_balance"
                             @class(['form-label'])>{{ __('messages.remaining_balance') }}</label>
                         <input type="number" @class(['form-control']) id="film_balance" readonly>
+                    </div> --}}
+                    {{-- সেবার ধরণ --}}
+                    <div @class(['col-md-4'])>
+                        <label for="service_type" @class(['form-label'])>সেবার ধরণ</label>
+                        <select id="service_type" @class(['form-select'])>
+                            <option value="">সেবার ধরণ নির্বাচন</option>
+                            <option value="day">দিন</option>
+                            <option value="shift">শিফট</option>
+                            <option value="package">প্যাকেজ</option>
+                        </select>
                     </div>
                 </div>
 
@@ -175,14 +188,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div @class(['col-md-4'])>
-                        <label for="service_type" @class(['form-label'])>সেবার ধরণ</label>
-                        <select id="service_type" @class(['form-select'])>
-                            <option value="">সেবার ধরণ নির্বাচন</option>
-                            <option value="day">দিন</option>
-                            <option value="shift">শিফট</option>
-                        </select>
-                    </div>
+
                     <!-- Item Select -->
                     <div @class(['col-md-4'])>
                         <label for="item_id" @class(['form-label'])>{{ __('messages.select_item') }}</label>
@@ -281,6 +287,17 @@
         </div>
     </div>
 @section('scripts')
+    <script>
+        $(document).ready(function() {
+            // Film type change logic
+            $('#service_type').on('change', function() {
+                if (this.value == 'package') {
+                    window.location.href = "{{ route('makePayments.package') }}";
+                }
+            });
+        });
+    </script>
+
     <script>
         // --- Global Variables ---
         let last_cart = 0;
@@ -585,10 +602,11 @@
             const film_id = $('#form_film_id').val();
             const film_type = $('#form_film_type').val();
 
-            if (film_type === 'film' && total_price > film_balance) {
-                alert("{{ __('messages.no_film_balance') }}");
-                return false;
-            }
+            // if (film_type === 'film' && total_price > film_balance) {
+            //     alert("{{ __('messages.no_film_balance') }}");
+            //     return false;
+            // }
+
             if (!film_id) {
                 alert("অ্যাপ্লিকেশন নির্বাচন করুন");
                 return false;
@@ -611,9 +629,26 @@
             // Film type change logic
             $('#film_type').on('change', function() {
                 const filmType = $(this).val();
-                $('#film_balance_div').toggle(filmType === 'film');
-                $('#film_id').empty().append(
-                    '<option value="">{{ 'অ্যাপ্লিকেশন নির্বাচন করুন' }}</option>');
+                if (filmType === 'film') {
+                    var appTitle = 'আবেদনকৃত সিনেমা'
+                    var appTitleOption = 'সিনেমা নির্বাচন করুন'
+                } else if (filmType === 'drama') {
+                    var appTitle = 'আবেদনকৃত নাটক'
+                    var appTitleOption = 'নাটক নির্বাচন করুন'
+                } else if (filmType === 'docufilm') {
+                    var appTitle = 'আবেদনকৃত প্রামান্যচিত্র'
+                    var appTitleOption = 'প্রামান্যচিত্র নির্বাচন করুন'
+                } else if (filmType === 'realityshow') {
+                    var appTitle = 'আবেদনকৃত রিয়েলিটি শো'
+                    var appTitleOption = 'রিয়েলিটি শো নির্বাচন করুন'
+                } else {
+                    var appTitle = 'আবেদনকৃত সেবা'
+                    var appTitleOption = 'সেবা নির্বাচন করুন'
+                }
+                $('#film_id_label').text(appTitle);
+
+                // $('#film_balance_div').toggle(filmType === 'film');
+                $('#film_id').empty().append( `<option value=""> ${appTitleOption} </option>`);
                 $('#form_film_type').val(filmType);
 
                 if (!filmType) return;

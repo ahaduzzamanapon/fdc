@@ -12,7 +12,10 @@
       <div class="card">
 
         <div class="card-header">
-            <h5 class="card-title">কাস্টম প্যাকেজ তৈরি করুন</h5>
+            <h5 class="card-title d-inline">কাস্টম প্যাকেজ তৈরি করুন</h5>
+            <span class="float-right">
+              <a class="btn btn-primary pull-right" href="{{ route('makePayments.cm_package_list') }}" > তালিকা </a>
+            </span>
         </div>
 
         <div class="card-body">
@@ -25,7 +28,7 @@
                     <label for="film_type" @class(['form-label'])>{{ 'টাইপ নির্বাচন' }}</label>
                     <select id="film_type" name="film_type" @class(['form-select']) required>
                       <option value="">{{ 'নির্বাচন করুন' }}</option>
-                      <option value="film">ফিল্ম অ্যাপ্লিকেশন </option>
+                      <option value="film">সিনেমা অ্যাপ্লিকেশন </option>
                       <option value="drama">নাটক অ্যাপ্লিকেশন</option>
                       <option value="docufilm">প্রামান্যচিত্র অ্যাপ্লিকেশন</option>
                       <option value="realityshow">রিয়েলিটি শো অ্যাপ্লিকেশন</option>

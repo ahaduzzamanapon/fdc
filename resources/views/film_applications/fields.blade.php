@@ -1,4 +1,4 @@
-<!-- Section: ফিল্ম সংক্রান্ত তথ্য -->
+<!-- Section: সিনেমা সংক্রান্ত তথ্য -->
 <fieldset class="border p-3 mb-4">
     <legend class="float-none w-auto px-2">{{ __('messages.film_related_information') }}</legend>
     <div class="row">

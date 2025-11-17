@@ -23,10 +23,22 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
+            <style>
+                .fontSize .nav-item a {
+                    font-size: 16px !important;
+                    padding: 3px !important;
+                }
+                .login_btn {
+                    font-size: 14px !important;
+                    padding: 5px 10px !important;
+                    white-space: nowrap !important;
+                    /* margin-left: 15px !important; */
+                }
 
+            </style>
             <div class="collapse navbar-collapse" id="navbarSupportedContent"
                 style="z-index: 999999; background: white;">
-                <ul class="navbar-nav mr-auto w-100 justify-content-center">
+                <ul class="fontSize navbar-nav mr-auto w-100 justify-content-center">
                     <li class="nav-item active">
                         <a class="nav-link" href="#">{{ __('messages.about_us') }}</a>
                     </li>
@@ -34,16 +46,16 @@
                         <a class="nav-link" href="#">{{ __('messages.film_transmission') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{ __('messages.report') }}</a>
+                        <a class="nav-link" href="#">{{ __('চলচ্চিত্রের ইতিহাস ও ঐতিহ্য') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{ __('messages.notices') }}</a>
+                        <a class="nav-link" href="#">{{ __('ফটোগ্যালারি') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{ __('messages.proceedings') }}</a>
+                        <a class="nav-link" href="#">{{ __('আমাদের সেবাসমূহ') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{ __('messages.contact') }}</a>
+                        <a class="nav-link" href="#">{{ __('NOC আবেদন') }}</a>
                     </li>
                 </ul>
                 @if (Auth::check())
@@ -52,7 +64,7 @@
 
                 @else
                     <a href="{{ url('/login') }}" class="login_btn justify-content-end"><img
-                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">{{ __('messages.login') }}</a>
+                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">{{ __('লগইন ') }}</a>
                 @endif
             </div>
         </div>

@@ -23,9 +23,9 @@
     <div class="clearfix"></div>
     <div class="card" width="88vw;">
         <section class="card-header">
-            <h5 class="card-title d-inline">{{ __('messages.product_booking') }}</h5>
+            <h5 class="card-title d-inline">{{ __('বুকিং তালিকা') }}</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('producer.create_page') }}">{{ __('messages.book_product') }}</a>
+                <a class="btn btn-primary pull-right" href="{{ route('producer.create_page') }}">{{ __('বুকিং করুন') }}</a>
             </span>
         </section>
         <div class="card-body table-responsive" >

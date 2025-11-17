@@ -1,26 +1,10 @@
 {{-- Producer --}}
     @if (Auth::guard('producer')->check())
-        <li class="nav-item">
-            <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
-                href="{{ route('producer.dashboard') }}">
-                <i class="icon im im-icon-Home"></i>
-                <span class="item-name">{{ 'বুকিং ড্যাশবোর্ড' }}</span>
-            </a>
-        </li>
-        {{-- Booking --}}
-        <li class="nav-item">
-            <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
-                href="{{ route('producer.booking') }}">
-                <i class="icon im im-icon-Home"></i>
-                <span class="item-name">সেবা {{ __('messages.booking') }}</span>
-            </a>
-        </li>
-
-        {{-- সেবা সমূহ --}}
+        {{-- সেবার আবেদন সমূহ --}}
         <li class="nav-item">
             <a class="nav-link {!! Request::is('filmApplications*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#services" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Gear"></i>
-                <span class="item-name"> সেবা সমূহ </span>
+                <span class="item-name"> সেবার আবেদন </span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('filmApplications*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'show' : '' !!}" id="services"
@@ -92,6 +76,39 @@
             </ul>
         </li>
 
+        {{-- সেবা শিডিউল বুকিং --}}
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('producer/booking') || Request::is('producer/create_page')  ? 'active' : '' !!}" data-bs-toggle="collapse" href="#shebaBooking" role="button" aria-expanded="false">
+                <i class="icon im im-icon-Settings-Window"></i>
+                <i class="sidenav-mini-icon"> সে </i>
+                <span class="item-name">সেবা শিডিউল বুকিং </span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('producer/booking') || Request::is('producer/create_page') ? 'show' : '' !!}" id="shebaBooking"
+                data-bs-parent="#sidebar-menu">
+
+                {{-- শিডিউল বুকিং --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('producer/create_page') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('producer.create_page') }}">
+                        <i class="icon im im-icon-Home"></i>
+                        <span class="item-name">{{ 'শিডিউল বুকিং' }}</span>
+                    </a>
+                </li>
+
+                {{-- তালিকা --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('producer.booking') }}">
+                        <i class="icon im im-icon-Home"></i>
+                        <span class="item-name">{{ 'তালিকা' }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+
         {{-- পেমেন্ট --}}
         <li class="nav-item">
             <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment/package') || Request::is('make-payment/makeCustomPackage') || Request::is('make-payment/cm_package_list') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#makePayments" role="button" aria-expanded="false">
@@ -103,34 +120,43 @@
             <ul class="sub-nav collapse {!! Request::is('makePayments') || Request::is('make-payment/package') || Request::is('make-payment/makeCustomPackage') || Request::is('make-payment/cm_package_list') ? 'show' : '' !!}" id="makePayments"
                 data-bs-parent="#sidebar-menu">
 
-                {{-- পেমেন্ট তালিকা --}}
-                <li class="nav-item">
-                    <a class="nav-link {!! Request::is('makePayments') ? 'active' : '' !!}" aria-current="page"
-                        href="{{ route('makePayments.index') }}">
-                        <i class="icon im im-icon-Home"></i>
-                        <span class="item-name">{{ 'পেমেন্ট তালিকা' }}</span>
-                    </a>
-                </li>
-
                 {{-- পেমেন্ট প্যাকেজ --}}
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('make-payment/package') ? 'active' : '' !!}" aria-current="page"
                         href="{{ route('makePayments.package') }}">
                         <i class="icon im im-icon-Home"></i>
-                        <span class="item-name">{{ 'পেমেন্ট প্যাকেজ' }}</span>
+                        <span class="item-name">{{ 'প্যাকেজ' }}</span>
                     </a>
                 </li>
 
                 {{-- কাস্টম প্যাকেজ --}}
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('make-payment/cm_package_list') || Request::is('make-payment/makeCustomPackage') ? 'active' : '' !!}" aria-current="page"
-                        href="{{ route('makePayments.cm_package_list') }}">
+                        href="{{ route('makePayments.makeCustomPackage') }}">
                         <i class="icon im im-icon-Home"></i>
                         <span class="item-name">{{ 'কাস্টম প্যাকেজ' }}</span>
                     </a>
                 </li>
 
+                {{-- পেমেন্ট তালিকা --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('makePayments') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('makePayments.index') }}">
+                        <i class="icon im im-icon-Home"></i>
+                        <span class="item-name">{{ 'তালিকা' }}</span>
+                    </a>
+                </li>
+
             </ul>
+        </li>
+
+        {{-- বুকিং ড্যাশবোর্ড --}}
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
+                href="{{ route('producer.dashboard') }}">
+                <i class="icon im im-icon-Home"></i>
+                <span class="item-name">{{ 'বুকিং ড্যাশবোর্ড' }}</span>
+            </a>
         </li>
 
         {{-- রিপোর্ট --}}
@@ -153,7 +179,7 @@
                         href="{{ route('reports.filmReport') }}">
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon">ফি</i>
-                            <span class="item-name">{{ __('ফিল্ম রিপোর্ট') }}</span>
+                            <span class="item-name">{{ __('সিনেমা রিপোর্ট') }}</span>
                         </a>
                     </li>
                 @endif

@@ -8,7 +8,7 @@ Flim Report
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div aria-label="breadcrumb" class="card-breadcrumb">
-        <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">{{ __('messages.dashboard') }}</a> > {{ __('ফিল্ম রিপোর্ট') }} </h5>
+        <h5><a href="{{ url('/dashboard') }}"  style="text-decoration: none; color: black;">{{ __('messages.dashboard') }}</a> > {{ __('সিনেমা রিপোর্ট') }} </h5>
     </div>
     <div class="separator-breadcrumb border-top"></div>
 </section>
