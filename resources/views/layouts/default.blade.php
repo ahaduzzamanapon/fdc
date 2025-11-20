@@ -306,6 +306,30 @@
             color: #000000;
             /* font-size: 13px!important; */
         }
+
+        .form-control[readonly],
+        .form-select {
+            color: #080808 !important;
+            border: var(--bs-border-width) solid #646363 !important;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #080808 !important;
+            opacity: 1 !important;
+        }
+
+        input[type="file"],
+        input[type="file"]::file-selector-button {
+            color: #080808 !important;
+            opacity: 1 !important;
+            padding-top: 6px !important;
+        }
+
+        .form-select {
+            padding: 5px 10px !important;
+        }
+
     </style>
 
 </head>

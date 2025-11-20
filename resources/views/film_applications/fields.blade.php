@@ -2,16 +2,8 @@
 <fieldset class="border p-3 mb-4">
     <legend class="float-none w-auto px-2">{{ __('messages.film_related_information') }}</legend>
     <div class="row">
-        <div class="mb-3 col-md-4">
-            <label for="film_title" class="form-label">{{ __('messages.category_label') }}</label>
-            <select class="form-select" id="category" name="category" re>
-                <option selected>{{ __('messages.select_category_film') }}</option>
-                <option value="cinema">সিনেমা </option>
-                <option value="adds">{{ __('messages.advertisement') }}</option>
+        <input type="hidden" id="category" name="category" value="cinema">
 
-            </select>
-
-        </div>
         <div class="mb-3 col-md-8">
             <label for="film_title" class="form-label">{{ __('messages.name_of_produced_film_advertisement') }}</label>
             <input type="text" class="form-control" id="film_title" name="film_title">
@@ -62,6 +54,7 @@
         </div>
     </div>
 </fieldset>
+
 <!-- Section: অতিরিক্ত চলচ্চিত্র সংক্রান্ত তথ্য -->
 <fieldset class="border p-3 mb-4">
     <legend class="float-none w-auto px-2">{{ __('messages.additional_film_related_information') }}</legend>

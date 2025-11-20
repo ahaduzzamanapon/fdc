@@ -261,12 +261,13 @@ class MakePaymentController extends AppBaseController
     public function custom_package_store(Request $request)
     {
         $producer = Auth::guard('producer')->user();
-        $check = Package::where('film_id', $request->film_id)->where('producer_id', $producer->id)->first();
+        $check = Package::where('producer_id', $producer->id)->orderBy('id', 'desc')->first();
+        dd($check->id);
 
-        if (!empty($check)) {
-            Flash::error('You have already applied for this application.');
-            return back();
-        }
+        // if (!empty($check)) {
+        //     Flash::error('You have already applied for this application.');
+        //     return back();
+        // }
 
         $role_id = $producer->group_id;
         $flow = ApprovalFlowMaster::where('name', 'like', '%Custom Package Flow%')->first();
