@@ -262,7 +262,13 @@ class MakePaymentController extends AppBaseController
     {
         $producer = Auth::guard('producer')->user();
         $check = Package::where('producer_id', $producer->id)->orderBy('id', 'desc')->first();
-        dd($check->id);
+        if (empty($check)) {
+            $custom_name = 'Custom Package '. $producer->id.'.1';
+        } else {
+            $ex = explode(' ', $check->name);
+            $ls = explode('.', $ex[2]);
+            $custom_name = 'Custom Package '. $producer->id .'.'. $ls[1]+1;
+        }
 
         // if (!empty($check)) {
         //     Flash::error('You have already applied for this application.');
@@ -278,7 +284,7 @@ class MakePaymentController extends AppBaseController
         try {
             // 1. Create Booking
             $package = array(
-                'name' => 'Custom Package '.$producer->id,
+                'name' => $custom_name,
                 'desk_id' => $step->to_role_id,
                 'film_type' => $request->film_type,
                 'film_id' => $request->film_id,
