@@ -35,7 +35,8 @@ include 'demo.php';
 
 
 Auth::routes();
-
+Route::get('/login/{type}', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])
+    ->name('login.custom');
 // login2, register2 pages
 Route::view('login2', 'auth.login2');
 Route::view('login3', 'auth.login3');

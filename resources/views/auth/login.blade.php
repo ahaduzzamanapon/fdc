@@ -168,112 +168,111 @@
         </div>
          @include('flash::message')
         <ul class="nav nav-tabs mb-4 col-md-12" id="myTab" role="tablist">
-          <li class="nav-item col-md-6" role="presentation">
+          {{-- <li class="nav-item col-md-6" role="presentation">
             <button class="nav-link active col-md-12" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button"
               role="tab" aria-controls="login" aria-selected="true">{{ __('messages.administrative') }}</button>
           </li>
           <li class="nav-item col-md-6" role="presentation">
             <button class="nav-link col-md-12" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button"
               role="tab" aria-controls="register" aria-selected="false">{{ 'নাগরিক' }}</button>
-          </li>
+          </li> --}}
         </ul>
 
         <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-            <form action="{{ route('login') }}" method="POST">
-              @csrf
-              <p
-                style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                {{ __('messages.mobile') }}</p>
-              <div class="input-group mb-3">
-                <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
-                  <path
-                    d="M34 26C37.3141 26 40 23.3141 40 20C40 16.6859 37.3141 14 34 14C30.6859 14 28 16.6859 28 20C28 23.3141 30.6859 26 34 26ZM38.4906 27.5281L36.25 36.5L34.75 30.125L36.25 27.5H31.75L33.25 30.125L31.75 36.5L29.5094 27.5281C26.1672 27.6875 23.5 30.4203 23.5 33.8V35.75C23.5 36.9922 24.5078 38 25.75 38H42.25C43.4922 38 44.5 36.9922 44.5 35.75V33.8C44.5 30.4203 41.8328 27.6875 38.4906 27.5281Z"
-                    fill="white" />
-                </svg>
-                <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
-              </div>
-              <p
-                style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                {{ __('messages.password') }}</p>
-              <div class="input-group mb-3">
-                <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
-                  <g clip-path="url(#clip0_157_63)">
+          @if ($request == 'citizen')
+            <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
+              <form action="{{ route('producers_login') }}" method="POST">
+                @csrf
+                <p
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  {{ __('messages.mobile') }}</p>
+                <div class="input-group mb-3">
+                  <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
                     <path
-                      d="M42.4375 21.75H41.5V18C41.5 13.8637 38.1363 10.5 34 10.5C29.8637 10.5 26.5 13.8637 26.5 18V21.75H25.5625C24.0125 21.75 22.75 23.0112 22.75 24.5625V37.6875C22.75 39.2388 24.0125 40.5 25.5625 40.5H42.4375C43.9875 40.5 45.25 39.2388 45.25 37.6875V24.5625C45.25 23.0112 43.9875 21.75 42.4375 21.75ZM29 18C29 15.2425 31.2425 13 34 13C36.7575 13 39 15.2425 39 18V21.75H29V18ZM35.25 31.4025V34.25C35.25 34.94 34.6912 35.5 34 35.5C33.3088 35.5 32.75 34.94 32.75 34.25V31.4025C32.0062 30.9688 31.5 30.1712 31.5 29.25C31.5 27.8712 32.6212 26.75 34 26.75C35.3788 26.75 36.5 27.8712 36.5 29.25C36.5 30.1712 35.9938 30.9688 35.25 31.4025Z"
+                      d="M34 26C37.3141 26 40 23.3141 40 20C40 16.6859 37.3141 14 34 14C30.6859 14 28 16.6859 28 20C28 23.3141 30.6859 26 34 26ZM38.4906 27.5281L36.25 36.5L34.75 30.125L36.25 27.5H31.75L33.25 30.125L31.75 36.5L29.5094 27.5281C26.1672 27.6875 23.5 30.4203 23.5 33.8V35.75C23.5 36.9922 24.5078 38 25.75 38H42.25C43.4922 38 44.5 36.9922 44.5 35.75V33.8C44.5 30.4203 41.8328 27.6875 38.4906 27.5281Z"
                       fill="white" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_157_63">
-                      <rect width="30" height="30" fill="white" transform="translate(19 10.5)" />
-                    </clipPath>
-                  </defs>
-                </svg>
-                <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
-              </div>
-
-              <div class="d-flex justify-content-between helper-text mb-3">
-                <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
-                  href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
-              </div>
-              <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
-            </form>
-          </div>
-          <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-            <form action="{{ route('producers_login') }}" method="POST">
-              @csrf
-              <p
-                style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                {{ __('messages.mobile') }}</p>
-              <div class="input-group mb-3">
-                <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
-                  <path
-                    d="M34 26C37.3141 26 40 23.3141 40 20C40 16.6859 37.3141 14 34 14C30.6859 14 28 16.6859 28 20C28 23.3141 30.6859 26 34 26ZM38.4906 27.5281L36.25 36.5L34.75 30.125L36.25 27.5H31.75L33.25 30.125L31.75 36.5L29.5094 27.5281C26.1672 27.6875 23.5 30.4203 23.5 33.8V35.75C23.5 36.9922 24.5078 38 25.75 38H42.25C43.4922 38 44.5 36.9922 44.5 35.75V33.8C44.5 30.4203 41.8328 27.6875 38.4906 27.5281Z"
-                    fill="white" />
-                </svg>
-                <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
-              </div>
-              <p
-                style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
-                {{ __('messages.password') }}</p>
+                  </svg>
+                  <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
+                </div>
+                <p
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  {{ __('messages.password') }}</p>
 
 
-              <div class="input-group mb-3">
-                <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
-                  <g clip-path="url(#clip0_157_63)">
+                <div class="input-group mb-3">
+                  <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
+                    <g clip-path="url(#clip0_157_63)">
+                      <path
+                        d="M42.4375 21.75H41.5V18C41.5 13.8637 38.1363 10.5 34 10.5C29.8637 10.5 26.5 13.8637 26.5 18V21.75H25.5625C24.0125 21.75 22.75 23.0112 22.75 24.5625V37.6875C22.75 39.2388 24.0125 40.5 25.5625 40.5H42.4375C43.9875 40.5 45.25 39.2388 45.25 37.6875V24.5625C45.25 23.0112 43.9875 21.75 42.4375 21.75ZM29 18C29 15.2425 31.2425 13 34 13C36.7575 13 39 15.2425 39 18V21.75H29V18ZM35.25 31.4025V34.25C35.25 34.94 34.6912 35.5 34 35.5C33.3088 35.5 32.75 34.94 32.75 34.25V31.4025C32.0062 30.9688 31.5 30.1712 31.5 29.25C31.5 27.8712 32.6212 26.75 34 26.75C35.3788 26.75 36.5 27.8712 36.5 29.25C36.5 30.1712 35.9938 30.9688 35.25 31.4025Z"
+                        fill="white" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_157_63">
+                        <rect width="30" height="30" fill="white" transform="translate(19 10.5)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+
+                  <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
+                </div>
+
+                <div class="d-flex justify-content-between helper-text mb-3">
+                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
+                    href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
+                  <span
+                    style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
+                    href="#" class="">{{ __('messages.no_account') }} <a href="{{ route('register') }}" class="text-primary text-link">
+                      {{ __('messages.register') }}</a> </span>
+                </div>
+                <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
+              </form>
+            </div>
+          @else
+            <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+              <form action="{{ route('login') }}" method="POST">
+                @csrf
+                <p
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  {{ __('messages.mobile') }}</p>
+                <div class="input-group mb-3">
+                  <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
                     <path
-                      d="M42.4375 21.75H41.5V18C41.5 13.8637 38.1363 10.5 34 10.5C29.8637 10.5 26.5 13.8637 26.5 18V21.75H25.5625C24.0125 21.75 22.75 23.0112 22.75 24.5625V37.6875C22.75 39.2388 24.0125 40.5 25.5625 40.5H42.4375C43.9875 40.5 45.25 39.2388 45.25 37.6875V24.5625C45.25 23.0112 43.9875 21.75 42.4375 21.75ZM29 18C29 15.2425 31.2425 13 34 13C36.7575 13 39 15.2425 39 18V21.75H29V18ZM35.25 31.4025V34.25C35.25 34.94 34.6912 35.5 34 35.5C33.3088 35.5 32.75 34.94 32.75 34.25V31.4025C32.0062 30.9688 31.5 30.1712 31.5 29.25C31.5 27.8712 32.6212 26.75 34 26.75C35.3788 26.75 36.5 27.8712 36.5 29.25C36.5 30.1712 35.9938 30.9688 35.25 31.4025Z"
+                      d="M34 26C37.3141 26 40 23.3141 40 20C40 16.6859 37.3141 14 34 14C30.6859 14 28 16.6859 28 20C28 23.3141 30.6859 26 34 26ZM38.4906 27.5281L36.25 36.5L34.75 30.125L36.25 27.5H31.75L33.25 30.125L31.75 36.5L29.5094 27.5281C26.1672 27.6875 23.5 30.4203 23.5 33.8V35.75C23.5 36.9922 24.5078 38 25.75 38H42.25C43.4922 38 44.5 36.9922 44.5 35.75V33.8C44.5 30.4203 41.8328 27.6875 38.4906 27.5281Z"
                       fill="white" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_157_63">
-                      <rect width="30" height="30" fill="white" transform="translate(19 10.5)" />
-                    </clipPath>
-                  </defs>
-                </svg>
+                  </svg>
+                  <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
+                </div>
+                <p
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  {{ __('messages.password') }}</p>
+                <div class="input-group mb-3">
+                  <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
+                    <g clip-path="url(#clip0_157_63)">
+                      <path
+                        d="M42.4375 21.75H41.5V18C41.5 13.8637 38.1363 10.5 34 10.5C29.8637 10.5 26.5 13.8637 26.5 18V21.75H25.5625C24.0125 21.75 22.75 23.0112 22.75 24.5625V37.6875C22.75 39.2388 24.0125 40.5 25.5625 40.5H42.4375C43.9875 40.5 45.25 39.2388 45.25 37.6875V24.5625C45.25 23.0112 43.9875 21.75 42.4375 21.75ZM29 18C29 15.2425 31.2425 13 34 13C36.7575 13 39 15.2425 39 18V21.75H29V18ZM35.25 31.4025V34.25C35.25 34.94 34.6912 35.5 34 35.5C33.3088 35.5 32.75 34.94 32.75 34.25V31.4025C32.0062 30.9688 31.5 30.1712 31.5 29.25C31.5 27.8712 32.6212 26.75 34 26.75C35.3788 26.75 36.5 27.8712 36.5 29.25C36.5 30.1712 35.9938 30.9688 35.25 31.4025Z"
+                        fill="white" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_157_63">
+                        <rect width="30" height="30" fill="white" transform="translate(19 10.5)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
+                </div>
 
-                <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
-              </div>
-
-              <div class="d-flex justify-content-between helper-text mb-3">
-                <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
-                  href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
-                <span
-                  style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
-                  href="#" class="">{{ __('messages.no_account') }} <a href="{{ route('register') }}" class="text-primary text-link">
-                    {{ __('messages.register') }}</a> </span>
-              </div>
-              <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
-            </form>
-          </div>
-
-
-
-
+                <div class="d-flex justify-content-between helper-text mb-3">
+                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
+                    href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
+                </div>
+                <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
+              </form>
+            </div>
+          @endif
         </div>
         <footer class="text-center">
           <span>{{ __('messages.copyright') }}</span>

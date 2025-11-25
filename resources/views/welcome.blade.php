@@ -16,6 +16,7 @@
 
 <body>
 
+    {{-- Header top menu bar --}}
     <nav class="navbar sticky-top navbar-expand-lg">
         <div class="container p-0">
             <a class="navbar-brand" href="#"><img src="{{ asset('portal/image/logo.svg') }}" alt=""></a>
@@ -34,48 +35,162 @@
                     white-space: nowrap !important;
                     /* margin-left: 15px !important; */
                 }
+                .nav-100 {
+                    display: flex;
+                    gap: 30px;
+                }
 
+                .custom-menu {
+                    position: relative;
+                }
+
+                .custom-menu .submenu,
+                .custom-menu .submenu2 {
+                    display: none;
+                    position: absolute;
+                    background: #fff;
+                    padding: 10px 15px;
+                    list-style: none;
+                    border: 1px solid #ddd;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    z-index: 999;
+                }
+
+                /* First level submenu */
+                .custom-menu .has-submenu:hover > .submenu {
+                    display: block;
+                }
+
+                /* Style items */
+                .custom-menu .submenu li {
+                    position: relative;
+                    padding: 5px 10px;
+                    white-space: nowrap;
+                }
+
+                /* Sub-submenu position (appears on right side) */
+                .custom-menu .submenu2 {
+                    top: 0;
+                    left: 100%;
+                    margin-left: -15px;
+                    min-width: 150px;
+                }
+
+                /* Hover to open sub-submenu */
+                .custom-menu .has-submenu2:hover > .submenu2 {
+                    display: block;
+                }
+
+                /* Links inside submenu */
+                .custom-menu .submenu a,
+                .custom-menu .submenu2 a {
+                    text-decoration: none;
+                    color: #333;
+                    display: block;
+                    padding: 3px 0;
+                }
+
+                .custom-menu .submenu a:hover,
+                .custom-menu .submenu2 a:hover {
+                    text-decoration: underline;
+                }
             </style>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent"
                 style="z-index: 999999; background: white;">
-                <ul class="fontSize navbar-nav mr-auto w-100 justify-content-center">
-                    <li class="nav-item active">
+                <ul class="fontSize navbar-nav mr-auto w-100 justify-content-center nav-100 custom-menu">
+
+                    <li class="nav-item">
                         <a class="nav-link" href="#">{{ __('messages.about_us') }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ __('messages.film_transmission') }}</a>
-                    </li>
-                    <li class="nav-item">
+
+                    <li class="nav-item has-submenu">
                         <a class="nav-link" href="#">{{ __('চলচ্চিত্রের ইতিহাস ও ঐতিহ্য') }}</a>
+
+                        <ul class="submenu">
+                            <!-- Submenu item WITH sub-submenu -->
+                            <li class="has-submenu2">
+                                <a class="nav-link" href="#">দশক ভিত্তিক মুক্তিপ্রাপ্ত চলচ্চিত্র</a>
+                                <!-- Sub-submenu -->
+                                <ul class="submenu2">
+                                    <li><a href="#">৬০ দশক</a></li>
+                                    <li><a href="#">৭০ দশক</a></li>
+                                    <li><a href="#">৮০র দশক</a></li>
+                                    <li><a href="#">৯০ এর দশক</a></li>
+                                    <li><a href="#">২০০০ দশক</a></li>
+                                    <li><a href="#">২০১০ দশক</a></li>
+                                    <li><a href="#">২০২০ দশক</a></li>
+                                </ul>
+                            </li>
+
+                            <li><a class="nav-link" href="#">কালজয়ী বাংলা চলচ্চিত্র</a></li>
+                            <li><a class="nav-link" href="#">বছরভিত্তিক সর্বোচ্চ ব্যবসাসফল সিনেমা</a></li>
+
+                            <li class="has-submenu2">
+                                <a class="nav-link" href="#">জাতীয় চলচ্চিত্র পুরশকার</a>
+                                <ul class="submenu2">
+                                    <li><a href="#">৭০ দশক</a></li>
+                                    <li><a href="#">৮০র দশক</a></li>
+                                    <li><a href="#">৯০ এর দশক</a></li>
+                                    <li><a href="#">২০০০ দশক</a></li>
+                                    <li><a href="#">২০১০ দশক</a></li>
+                                    <li><a href="#">২০২০ দশক</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="nav-link" href="#">আন্তর্জাতিক পর্যায়ে বাংলা চলচ্চিত্র</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ __('ফটোগ্যালারি') }}</a>
+
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link" href="#">{{ __('গ্যালারি') }}</a>
+
+                        <ul class="submenu">
+                            <li><a class="nav-link" href="#">সাধারন গ্যালারি</a></li>
+                            <li><a class="nav-link" href="#">ফটোগ্যালারী</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
+
+                    <li class="nav-item has-submenu">
                         <a class="nav-link" href="#">{{ __('আমাদের সেবাসমূহ') }}</a>
+
+                        <ul class="submenu">
+                            <li><a class="nav-link" href="#">সেবার তালিকা</a></li>
+                            <li><a class="nav-link" href="#">NOC portal</a></li>
+                            <li><a class="nav-link" href="#">রেট কার্ড (Rate Card)</a></li>
+                        </ul>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{ __('NOC আবেদন') }}</a>
+                        <a class="nav-link" href="#">{{ __('নোটিশ') }}</a>
                     </li>
                 </ul>
+
                 @if (Auth::check())
                     <a href="{{ url('/dashboard') }}" class="login_btn justify-content-end"><img
                             src="{{ asset('portal/image/login_icon.svg') }}" alt="">{{ __('messages.dashboard') }}</a>
 
                 @else
-                    <a href="{{ url('/login') }}" class="login_btn justify-content-end"><img
-                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">{{ __('লগইন ') }}</a>
+                    {{-- <a href="{{ url('/login') }}" class="login_btn justify-content-end"><img
+                            src="{{ asset('portal/image/login_icon.svg') }}" alt="">{{ __('লগইন ') }}</a> --}}
                 @endif
             </div>
         </div>
     </nav>
+
+    <!-- banner section -->
+    <style>
+        .heroSection {
+            background: linear-gradient(135deg, #FF3CAC, #784BA0, #2B86C5) !important;
+            color: #f7f3f3 !important;
+        }
+    </style>
     <section class="heroSection">
         <div class="container">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-7 heroLeft">
                         <span class="heroTitle">{{ __('messages.digital_film_management_new_chapter') }}</span>
-                        <span class="heroDesc">{{ __('messages.modern_user_friendly_solution') }}</span>
+                        <span class="">{{ __('messages.modern_user_friendly_solution') }}</span>
                     </div>
                     <div class="col-md-5">
                         <img class="heroImg" src="{{ asset('portal/image/hero.svg') }}" alt="hero.svg" alt="">
@@ -84,7 +199,9 @@
             </div>
         </div>
     </section>
-    <section class="cardSection">
+
+    <!-- card section -->
+    <section class="cardSection" style="background-color: #eaf9fb;">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -93,17 +210,7 @@
                 <div class="col-md-12 mt-3">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div>
-                                        <img src="{{ asset('portal/image/card1.svg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <span class="cardTitle">{{ __('messages.register') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div>
                                         <img src="{{ asset('portal/image/card2.svg') }}" alt="card2.svg">
@@ -113,7 +220,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div>
                                         <img src="{{ asset('portal/image/card3.svg') }}" alt="card3.svg">
@@ -123,137 +230,110 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div>
+                                        <img src="{{ asset('portal/image/card1.svg') }}" alt="">
+                                    </div>
+                                    <div>
+                                        <span class="cardTitle">{{ __('messages.register') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- <br> --}}
+                        <style>
+                            .modified {
+                                font-size: 22px !important;
+                                text-decoration: none !important;
+                            }
+                            .modified:hover {
+                                text-decoration: none !important;
+                            }
+                        </style>
+                        <div class="row pt-4">
+                            <div class="col-md-4">
+                                <a href="{{ route('login.custom', 'citizen') }}" class="justify-content-end modified">
+                                    <div class="card">
+                                        <div>
+                                            <img src="{{ asset('portal/image/card4.svg') }}" alt="card4.svg">
+                                        </div>
+                                        <div>
+                                            <span class="cardTitle">সেবা সমূহ পেতে প্রবেশ করুন</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4">
+                                <a href="{{ route('login.custom', 'admin') }}" class="justify-content-end modified">
+                                    <div class="card">
+                                        <div>
+                                            <img src="{{ asset('portal/image/card4.svg') }}" alt="card4.svg">
+                                        </div>
+                                        <div>
+                                            <span class="cardTitle">প্রশাসনিক কার্যক্রম</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div>
                                         <img src="{{ asset('portal/image/card4.svg') }}" alt="card4.svg">
                                     </div>
                                     <div>
-                                        <span class="cardTitle">{{ __('messages.notice') }}</span>
+                                        <span class="cardTitle">NOC আবেদন</span>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="cardSection">
+
+    <!-- contact section -->
+    <section class="cardSection" style="background-color: #eaf9fb; padding-bottom: 45px;">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="container">
-
-                                        <p class="S_Title">{{ __('messages.general_questions') }}</p>
-                                        <div class="col-md-12"
-                                            style="background-image: url('{{ asset('portal/image/question.svg') }}');overflow: hidden;padding: 0px;background-repeat:no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" class="collapsed_button collapsed"
-                                                                data-parent="#accordion" href="#collapse1">
-                                                                <span>{{ __('messages.what_is_fdc') }}</span>
-                                                                <span class="pull-right clickable">+</span>
-                                                            </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse1" class="panel-collapse collapse in">
-                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
-                                                    </div>
-                                                </div>
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" class="collapsed_button collapsed"
-                                                                data-parent="#accordion" href="#collapse2">
-                                                                <span>{{ __('messages.how_to_book_for_shooting') }}</span>
-                                                                <span class="pull-right clickable">+</span>
-                                                            </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse2" class="panel-collapse collapse in">
-                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
-                                                    </div>
-                                                </div>
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" class="collapsed_button collapsed"
-                                                                data-parent="#accordion" href="#collapse3">
-                                                                <span>{{ __('messages.benefits_from_profile') }}</span>
-                                                                <span class="pull-right clickable">+</span>
-                                                            </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse3" class="panel-collapse collapse in">
-                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
-                                                    </div>
-                                                </div>
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" class="collapsed_button collapsed"
-                                                                data-parent="#accordion" href="#collapse4">
-                                                                <span>{{ __('messages.how_to_know_fdc_updates') }}</span>
-                                                                <span class="pull-right clickable">+</span>
-                                                            </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse4" class="panel-collapse collapse in">
-                                                        <div class="panel-body">{{ __('messages.fdc_description') }}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="container">
+                                <p class="S_Title">{{ __('messages.contact') }}</p>
+                                <div class="col-md-12"
+                                    style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="text" name="name" class="inputField" id="name"
+                                                placeholder="{{ __('messages.name') }}">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="email" name="email" class="inputField" id="email"
+                                                placeholder="{{ __('messages.email') }}">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <textarea name="message" class="inputField" id=""
+                                                placeholder="{{ __('messages.message') }}"></textarea>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="inpusubmitField"
+                                                id="submit">{{ __('messages.send') }}</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="container">
-                                        <p class="S_Title">{{ __('messages.contact') }}</p>
-                                        <div class="col-md-12"
-                                            style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <input type="text" name="name" class="inputField" id="name"
-                                                        placeholder="{{ __('messages.name') }}">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input type="email" name="email" class="inputField" id="email"
-                                                        placeholder="{{ __('messages.email') }}">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <textarea name="message" class="inputField" id=""
-                                                        placeholder="{{ __('messages.message') }}"></textarea>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <button type="submit" class="inpusubmitField"
-                                                        id="submit">{{ __('messages.send') }}</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container" style="margin: auto;display: flex;flex-wrap: wrap;justify-content: space-between;">
             <!-- Left Links -->
@@ -339,6 +419,7 @@
             </div>
         </div>
     </footer>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

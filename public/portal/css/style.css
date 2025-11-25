@@ -90,7 +90,7 @@
 }
 
 .cardSection {
-  margin-top: 50px;
+  padding-top: 50px;
   background-color: white;
 }
 
@@ -210,7 +210,7 @@ p{
 .footer {
     background: #edf0fc;
     padding: 16px 0px 0px 0px;
-    margin-top: 46px;
+    /* margin-top: 46px; */
     box-shadow: 1px 0px 4px 0px #848484;
 }
 .footer-column {
