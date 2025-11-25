@@ -19,7 +19,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        
+
         $this->middleware('auth');
 
     }
@@ -40,18 +40,12 @@ class HomeController extends Controller
 
         return view('index', compact('totalRunningMovies', 'totalCompletedMovies', 'moviesAwaitingApproval', 'commercialsAwaitingApproval', 'totalProducerList', 'totalApprovedProducerPendingList'));
     }
-  
 
     public function get_upazilas(Request $request){
-
-     
-
         $upazilas = Upazila::where('dis_id', $request->district_id)->get(['id', 'name_en as name']);
         if ($upazilas->isEmpty()) {
             return response()->json(['message' => __('messages.no_upazilas_found')], 404);
         }
         return response()->json($upazilas);
     }
-
-  
 }

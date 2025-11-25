@@ -15,9 +15,14 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MakePaymentController;
 use App\Http\Controllers\Reports;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\FrontendController;
 
 Route::get('lang/{locale}', [LanguageController::class, 'switch']);
 
+// Frontend Pages start here
+Route::get('/about_us', [FrontendController::class, 'about_us'])->name('about_us');
+
+// Frontend Pages end here
 
 
 
@@ -230,14 +235,6 @@ Route::group(["middleware" => []], function () {
         Route::post('/change_status', 'update_status')->name('producerBooking.st.status');
     });
 });
-
-
-
-
-
-
-
-
 
 Route::get('/upload_exell', function () {
     return view('upload_exell');

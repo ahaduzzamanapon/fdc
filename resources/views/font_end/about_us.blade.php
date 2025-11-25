@@ -177,31 +177,8 @@
         </div>
     </nav>
 
-    <!-- banner section -->
-    <style>
-        .heroSection {
-            background: linear-gradient(135deg, #FF3CAC, #784BA0, #2B86C5) !important;
-            color: #f7f3f3 !important;
-        }
-    </style>
-    <section class="heroSection">
-        <div class="container">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-7 heroLeft">
-                        <span class="heroTitle">{{ __('messages.digital_film_management_new_chapter') }}</span>
-                        <span class="">{{ __('messages.modern_user_friendly_solution') }}</span>
-                    </div>
-                    <div class="col-md-5">
-                        <img class="heroImg" src="{{ asset('portal/image/hero.svg') }}" alt="hero.svg" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- card section -->
-    <section class="cardSection" style="background-color: #eaf9fb;">
+    <section class="cardSection pb-5" style="background-color: #eaf9fb;">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -287,45 +264,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- contact section -->
-    <section class="cardSection" style="background-color: #eaf9fb; padding-bottom: 45px;">
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-6">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="container">
-                                <p class="S_Title">{{ __('messages.contact') }}</p>
-                                <div class="col-md-12"
-                                    style="background-image: url('{{ asset('portal/image/contact.svg') }}');overflow: hidden;padding: 0px;background-repeat: no-repeat;background-size: cover;background-position: 38%;overflow-x: hidden;margin-top: 29px;">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <input type="text" name="name" class="inputField" id="name"
-                                                placeholder="{{ __('messages.name') }}">
-                                        </div>
-                                        <div class="col-md-12">
-                                            <input type="email" name="email" class="inputField" id="email"
-                                                placeholder="{{ __('messages.email') }}">
-                                        </div>
-                                        <div class="col-md-12">
-                                            <textarea name="message" class="inputField" id=""
-                                                placeholder="{{ __('messages.message') }}"></textarea>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <button type="submit" class="inpusubmitField"
-                                                id="submit">{{ __('messages.send') }}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
