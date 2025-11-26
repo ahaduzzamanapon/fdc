@@ -21,6 +21,9 @@ Route::get('lang/{locale}', [LanguageController::class, 'switch']);
 
 // Frontend Pages start here
 Route::get('/about_us', [FrontendController::class, 'about_us'])->name('about_us');
+Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinema.')->group(function () {
+    Route::get('/films-released-by-decade/{decade}', [FrontendController::class, 'films_released_by_decade'])->name('films_released_by_decade');
+});
 
 // Frontend Pages end here
 

@@ -10,4 +10,9 @@ class FrontendController extends Controller
     {
         return view('font_end.about_us');
     }
+
+    public function films_released_by_decade($decade)
+    {
+        return view('font_end.films_released_by_decade', compact('decade'));
+    }
 }

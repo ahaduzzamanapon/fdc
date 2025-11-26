@@ -66,169 +66,111 @@
             color: #fff;
             padding: 25px 0;
         }
-
-        .team-card {
-    transition: 0.3s;
-    background: #ffffff;
-}
-
-.team-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.team-img {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    transition: 0.3s;
-}
-
-.team-card:hover .team-img {
-    transform: scale(1.05);
-}
-
-.carousel-indicators button {
-    width: 12px !important;
-    height: 12px !important;
-    border-radius: 50%;
-    background-color: #4f46e5 !important;
-}
-
     </style>
     
     <!-- card section -->
         <div class="about-header">
-            <h1>আমাদের সম্পর্কে</h1>
-            <p class="mt-3 container">একটি আধুনিক ও ইউজার-ফ্রেন্ডলি সল্যুশন, যা চলচ্চিত্র নির্মাতাদের জন্য এনেছে এক ছাদের নিচে সব সুবিধা। আপনার প্রোডাকশন, এখন সম্পূর্ণ ডিজিটালি নিয়ন্ত্রিত।প্রযোজকদের জন্য তৈরি একটি সহজ ও কার্যকর সফটওয়্যার</p>
+            <h1>দশক ভিত্তিক মুক্তিপ্রাপ্ত চলচ্চিত্র <span style="font-family:SutonnyMJ">{{ $decade }}</span></h1>
         </div>
+
         <section class="cardSection pb-5" style="background-color: #eaf9fb;">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="text-center">{{ __('আমাদের সম্পর্কে') }}</h1>
-                    </div>
-                    <div class="container py-5">
-                        <div class="row align-iitems-center">
-                            <div class="col-lg-6">`
-                                <p class="text-justify">
-                                    একটি আধুনিক ও ইউজার-ফ্রেন্ডলি সল্যুশন, যা চলচ্চিত্র নির্মাতাদের জন্য এনেছে এক ছাদের নিচে সব সুবিধা। আপনার প্রোডাকশন, এখন সম্পূর্ণ ডিজিটালি নিয়ন্ত্রিত।প্রযোজকদের জন্য তৈরি একটি সহজ ও কার্যকর সফটওয়্যার.
-                                </p>
+                    <div class="col-12 d-flex align-items-start" >
+                        @php
+                            // 1. Generate dynamic decades
+                            $currentYear = date('Y'); // current year
+                            $startDecade = 1960;      // first decade
+                            $decadeRanges = [];
+
+                            while ($startDecade <= $currentYear) {
+                                $endYear = $startDecade + 9;
+                                if ($endYear > $currentYear) $endYear = $currentYear;
+                                $decadeRanges[$startDecade] = [$startDecade, $endYear];
+                                $startDecade += 10;
+                            }
+
+                            // 2. Dynamic decade sequence for next/previous links
+                            $decadeSequence = array_keys($decadeRanges);
+                            $currentIndex = array_search($decade, $decadeSequence);
+                            $nextDecade = ($currentIndex !== false && isset($decadeSequence[$currentIndex + 1])) 
+                                        ? $decadeSequence[$currentIndex + 1] 
+                                        : null;
+                            $prevDecade = ($currentIndex !== false && isset($decadeSequence[$currentIndex - 1])) 
+                                        ? $decadeSequence[$currentIndex - 1] 
+                                        : null;
+                        @endphp
+
+                        <div class="d-flex flex-wrap" style="gap: 20px;">
+                            <!-- Year list + Prev/Next dosok -->
+                            <div class="nav nav-pills flex-column border" role="tablist">
+                                @php [$startYear, $endYear] = $decadeRanges[$decade]; @endphp
+
+                                @for($year = $startYear; $year <= $endYear; $year++)
+                                    <button style="padding: 5px 20px; border-radius:0; border-bottom:1px solid blue"
+                                        class="nav-link {{ $year === $startYear ? 'active' : '' }}"
+                                        id="v-pills-{{ $year }}-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#v-pills-{{ $year }}"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="v-pills-{{ $year }}"
+                                        aria-selected="{{ $year === $startYear ? 'true' : 'false' }}">
+                                        {{ $year }}
+                                    </button>
+                                @endfor
+
+                                @if($prevDecade)
+                                    <a href="{{ route('historyAndHeritageOfCinema.films_released_by_decade', ['decade' => $prevDecade]) }}"
+                                    style="padding: 5px 20px; border-radius:0; border-bottom:1px solid blue; white-space:nowrap">
+                                    <icon class="fa fa-backward"> </icon> পূর্ববর্তী দশক
+                                    </a>
+                                @endif
+
+                                @if($nextDecade)
+                                    <a href="{{ route('historyAndHeritageOfCinema.films_released_by_decade', ['decade' => $nextDecade]) }}"
+                                    style="padding: 5px 20px; border-radius:0; border-bottom:1px solid blue; white-space:nowrap">
+                                        পরবর্তী দশক <icon class="fa fa-forward"> </icon>
+                                    </a>
+                                @endif
                             </div>
-                            <div class="col-lg-6 text-center">
-                                <img src="{{asset('/assets/images/about.png')}}" class="img-fluid rounded shadow">
+
+                            <!-- Tab content -->
+                            <div class="tab-content flex-grow-1 border" style="min-width: 400px;">
+                                @for($year = $startYear; $year <= $endYear; $year++)
+                                    <div class="tab-pane fade {{ $year === $startYear ? 'show active' : '' }}"
+                                        id="v-pills-{{ $year }}"
+                                        role="tabpanel"
+                                        aria-labelledby="v-pills-{{ $year }}-tab"
+                                        tabindex="0">
+                                        <h3 class="text-center mt-2">{{ $year }} সালের মুক্তি পাওয়া সিনেমা গুলোর তালিকা</h3>
+                                    </div>
+                                @endfor
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-bordered table-striped">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>সিনেমার নাম</th>
+                                                <th>প্রকাশের তারিখ</th>
+                                                <th>প্রযোজকের নাম</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{  1 }}</td>
+                                                <td>{{ "Cinema A" }}</td>
+                                                <td>{{ "1960-03-15" }}</td>
+                                                <td>{{ "Producer X" }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- WHAT WE DO -->
-                    <div class="container py-5">
-
-                        <div class="row g-4">
-                            <div class="col-md-4">
-                                <div class="icon-box">
-                                    <h5>এফডিসি</h5>
-                                    <ul>
-                                        <li>বিএফডিসি সাংগঠনিক কাঠামো ১৯৮৪ (এনাম কমিটি)</li>
-                                        <li>মুক্তি প্রাপ্ত বাংলা চলচ্চিত্রের তালিকা (১৯৫৬-২০২৪)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="icon-box">
-                                    <h5>এফডিসি</h5>
-                                    <ul>
-                                        <li>বিএফডিসি সাংগঠনিক কাঠামো ১৯৮৪ (এনাম কমিটি)</li>
-                                        <li>মুক্তি প্রাপ্ত বাংলা চলচ্চিত্রের তালিকা (১৯৫৬-২০২৪)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="icon-box">
-                                    <h5>এফডিসি</h5>
-                                    <ul>
-                                        <li>বিএফডিসি সাংগঠনিক কাঠামো ১৯৮৪ (এনাম কমিটি)</li>
-                                        <li>মুক্তি প্রাপ্ত বাংলা চলচ্চিত্রের তালিকা (১৯৫৬-২০২৪)</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-
-   
-                        </div>
-                    </div>
-
-                    <!-- TEAM SECTION -->
-                    <div class="container py-5">
-                        <h2 class="section-title text-center mb-4">জনবল</h2>
-
-                        <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
-                            
-                            <!-- Carousel Inner -->
-                            <div class="carousel-inner">
-
-                                <!-- Slide 1 -->
-                                <div class="carousel-item active">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-3 text-center">
-                                            <div class="team-card p-4 shadow rounded">
-                                                <img src="https://fdc.portal.gov.bd/sites/default/files/files/fdc.portal.gov.bd/npfblock//2025-02-26-15-05-c1bf9124772d8faf3b96b4936734d2a3.jpeg" class="team-img" alt="">
-                                                <h5 class="mt-3">মোঃ মাহফুজ আলম</h5>
-                                                <h6>মাননীয় উপদেষ্টা (তথ্য ও সম্প্রচার মন্ত্রণালয়)</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Slide 2 -->
-                                <div class="carousel-item">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-3 text-center">
-                                            <div class="team-card p-4 shadow rounded">
-                                                <img src="https://fdc.portal.gov.bd/sites/default/files/files/fdc.portal.gov.bd/npfblock//2024-10-24-14-31-ef71a0c41b7565ef866afe9702a7c43e.jpg" class="team-img" alt="">
-                                                <h5 class="mt-3">মাহবুবা ফারজানা</h5>
-                                                <h6>সচিব (তথ্য ও সম্প্রচার মন্ত্রণালয়)</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Slide 3 -->
-                                <div class="carousel-item">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-3 text-center">
-                                            <div class="team-card p-4 shadow rounded">
-                                                <img src="https://fdc.portal.gov.bd/sites/default/files/files/fdc.portal.gov.bd/npfblock//2025-02-26-14-58-d24e5616da518d26f3331b5ca7b9c1e8.jpeg" class="team-img" alt="">
-                                                <h5 class="mt-3">মাসুমা রহমান তানি</h5>
-                                                <h6>তথ্য ও সম্প্রচার মন্ত্রণালয়</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <!-- Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon"></span>
-                            </button>
-
-                            <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon"></span>
-                            </button>
-
-                            <!-- Indicators -->
-                            <div class="carousel-indicators position-relative mt-4">
-                                <button type="button" data-bs-target="#teamCarousel" data-bs-slide-to="0" class="active"></button>
-                                <button type="button" data-bs-target="#teamCarousel" data-bs-slide-to="1"></button>
-                                <button type="button" data-bs-target="#teamCarousel" data-bs-slide-to="2"></button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+                    </div>    
+                </div>    
+            </div>    
         </section>
 
     <!-- Footer -->
