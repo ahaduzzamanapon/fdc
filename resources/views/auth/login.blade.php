@@ -35,13 +35,12 @@
     }
 
     .login-wrapper {
-      background: #ECF2FAB8;
-
-
-      border-radius: 16px;
-      max-width: 550px;
-      width: 100%;
-      margin: auto;
+        border-radius: 16px;
+        max-width: 550px;
+        width: 100%;
+        margin: auto;
+        box-shadow: 0px 0px 15px white;
+        background: linear-gradient(49deg, #0c2aef85, #d24848b0); 
     }
 
     .form-control {
@@ -158,13 +157,13 @@
 </head>
 
 <body
-  style="">
+  style="background: linear-gradient(49deg, #d24848ad, #0c2aef63);">
 
   <div class="container d-flex flex-column justify-content-center align-items-center min-vh-100">
     <div class="login-wrapper text-center text-dark">
       <div style="padding: 40px 30px;">
         <div class="logo-text mb-4">
-          <img src="{{ asset('images/logo.svg') }}" alt="logo">
+          <img style="filter: drop-shadow(1px 0px 3px white);" src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
          @include('flash::message')
         <ul class="nav nav-tabs mb-4 col-md-12" id="myTab" role="tablist">
@@ -184,7 +183,7 @@
               <form action="{{ route('producers_login') }}" method="POST">
                 @csrf
                 <p
-                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
                   {{ __('messages.mobile') }}</p>
                 <div class="input-group mb-3">
                   <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -196,7 +195,7 @@
                   <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
                 </div>
                 <p
-                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
                   {{ __('messages.password') }}</p>
 
 
@@ -219,11 +218,10 @@
                 </div>
 
                 <div class="d-flex justify-content-between helper-text mb-3">
-                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
+                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
                     href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
-                  <span
-                    style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
-                    href="#" class="">{{ __('messages.no_account') }} <a href="{{ route('register') }}" class="text-primary text-link">
+                  <span style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
+                    href="#" class="">{{ __('messages.no_account') }} <a href="{{ route('register') }}" class="text-light text-link" style="text-decoration: underline">
                       {{ __('messages.register') }}</a> </span>
                 </div>
                 <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
@@ -234,7 +232,7 @@
               <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <p
-                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
                   {{ __('messages.mobile') }}</p>
                 <div class="input-group mb-3">
                   <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -246,7 +244,7 @@
                   <input type="text" class="form-control" name="username" placeholder="মোবাইল" required>
                 </div>
                 <p
-                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: #000000;">
+                  style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
                   {{ __('messages.password') }}</p>
                 <div class="input-group mb-3">
                   <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -266,7 +264,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between helper-text mb-3">
-                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: #000000;"
+                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
                     href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
                 </div>
                 <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
@@ -274,9 +272,9 @@
             </div>
           @endif
         </div>
-        <footer class="text-center">
+        <footer class="text-center text-light">
           <span>{{ __('messages.copyright') }}</span>
-          <span> {{ __('messages.technical_support') }} <a href="https://mysoftheaven.com"><svg width="130" height="23" viewBox="0 0 130 23"
+          <span> {{ __('messages.technical_support') }} <a style="filter: drop-shadow(0px 0px 2px white);" href="https://mysoftheaven.com"><svg style="filter: drop-shadow(0px 0px 2px white);" width="130" height="23" viewBox="0 0 130 23"
                 fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <rect width="129.749" height="22.8986" fill="url(#pattern0_18_49)" />
                 <defs>
