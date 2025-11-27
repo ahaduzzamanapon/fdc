@@ -116,7 +116,7 @@
       font-family: "Noto Sans Bengali", sans-serif;
       font-weight: 500;
       font-size: 16px !important;
-      border-top: 2px solid #5f5e5e;
+      border-top: 2px solid white;
       padding: 18px 0px 0px 0px;
       display: flex;
       place-content: center;
