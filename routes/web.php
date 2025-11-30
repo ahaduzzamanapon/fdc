@@ -20,10 +20,15 @@ use App\Http\Controllers\FrontendController;
 Route::get('lang/{locale}', [LanguageController::class, 'switch']);
 
 // Frontend Pages start here
+
+Route::get('/', [FrontendController::class, 'index']);
 Route::get('/about_us', [FrontendController::class, 'about_us'])->name('about_us');
 Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinema.')->group(function () {
     Route::get('/films-released-by-decade/{decade}', [FrontendController::class, 'films_released_by_decade'])->name('films_released_by_decade');
 });
+
+Route::get('/service/rate-card', [FrontendController::class, 'rate_card'])->name('rate_card');
+
 
 // Frontend Pages end here
 
@@ -52,9 +57,7 @@ Route::view('register2', 'auth.register2');
 Route::view('register3', 'auth.register3');
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth');
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 // payments
 Route::resource('makePayments', 'MakePaymentController');
