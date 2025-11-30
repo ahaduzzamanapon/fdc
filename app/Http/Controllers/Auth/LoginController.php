@@ -42,7 +42,7 @@ class LoginController extends Controller
     public function showLoginForm($request = null)
     {
         if (is_null($request)) {
-            return view('welcome');
+            return view('font_end.body');
         }
         return view('auth.login', compact('request'));
     }
