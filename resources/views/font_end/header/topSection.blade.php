@@ -175,7 +175,7 @@
                             <li><a class="nav-link" href="#">বছরভিত্তিক সর্বোচ্চ ব্যবসাসফল সিনেমা</a></li>
 
                             <li class="has-submenu2">
-                                <a class="nav-link" href="#">জাতীয় চলচ্চিত্র পুরশকার</a>
+                                <a class="nav-link" href="#">জাতীয় চলচ্চিত্র পুরস্কার</a>
                                 <ul class="submenu2">
                                     <li><a href="#">৭০ দশক</a></li>
                                     <li><a href="#">৮০র দশক</a></li>
@@ -193,7 +193,7 @@
                         <a class="nav-link" href="#">{{ __('গ্যালারি') }}</a>
 
                         <ul class="submenu">
-                            <li><a class="nav-link" href="#">সাধারন গ্যালারি</a></li>
+                            <li><a class="nav-link" href="#">সিনেমা ফটোগ্যালারি</a></li>
                             <li><a class="nav-link" href="#">ফটোগ্যালারী</a></li>
                         </ul>
                     </li>
@@ -203,7 +203,7 @@
 
                         <ul class="submenu">
                             <li><a class="nav-link" href="#">সেবার তালিকা</a></li>
-                            <li><a class="nav-link" href="#">NOC portal</a></li>
+                            <li><a class="nav-link" href="#">NOC আবেদন</a></li>
                             <li><a class="nav-link" href="{{route('rate_card')}}" target="_blank">রেট কার্ড (Rate Card)</a></li>
                         </ul>
                     </li>

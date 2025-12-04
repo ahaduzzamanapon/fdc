@@ -48,14 +48,16 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card">
-                                    <div>
-                                        <img src="{{ asset('portal/image/card1.svg') }}" alt="">
+                                <a href="{{ route('register') }}">
+                                    <div class="card">
+                                        <div>
+                                            <img src="{{ asset('portal/image/card1.svg') }}" alt="">
+                                        </div>
+                                        <div>
+                                            <span class="cardTitle">{{ __('messages.register') }}</span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <span class="cardTitle">{{ __('messages.register') }}</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
 
