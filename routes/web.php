@@ -28,6 +28,7 @@ Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinem
 });
 
 Route::get('/service/rate-card', [FrontendController::class, 'rate_card'])->name('rate_card');
+Route::resource('noc', 'NocController');
 
 
 // Frontend Pages end here

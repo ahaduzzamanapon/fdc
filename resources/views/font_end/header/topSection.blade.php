@@ -203,7 +203,7 @@
 
                         <ul class="submenu">
                             <li><a class="nav-link" href="#">সেবার তালিকা</a></li>
-                            <li><a class="nav-link" href="#">NOC আবেদন</a></li>
+                            <li><a class="nav-link" href="{{route('noc.create')}}">NOC আবেদন</a></li>
                             <li><a class="nav-link" href="{{route('rate_card')}}" target="_blank">রেট কার্ড (Rate Card)</a></li>
                         </ul>
                     </li>
