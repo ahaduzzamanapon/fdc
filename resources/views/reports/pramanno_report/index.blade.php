@@ -73,7 +73,7 @@ Flim Report
         });
     });
     </script>
-        <script>
+    <script>
         $(document).ready(function () {
             $('#showReport').on('click', function () {
                 var from_date = $('#from_date').val();

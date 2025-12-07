@@ -29,7 +29,9 @@ Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinem
 
 Route::get('/service/rate-card', [FrontendController::class, 'rate_card'])->name('rate_card');
 Route::resource('noc', 'NocController');
-
+Route::get('/noc-search-list', [App\Http\Controllers\NocController::class, 'showSearchList'])->name('noc.search.list');
+Route::post('/noc-ajax-search', [App\Http\Controllers\NocController::class, 'ajaxSearch'])->name('noc.ajax.search');
+Route::get('/noc-download/{noc}', [App\Http\Controllers\NocController::class, 'downloadNoc'])->name('noc.download');
 
 // Frontend Pages end here
 
@@ -49,8 +51,7 @@ include 'demo.php';
 
 
 Auth::routes();
-Route::get('/login/{type}', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])
-    ->name('login.custom');
+Route::get('/login/{type}', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.custom');
 // login2, register2 pages
 Route::view('login2', 'auth.login2');
 Route::view('login3', 'auth.login3');

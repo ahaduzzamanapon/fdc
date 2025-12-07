@@ -51,7 +51,7 @@ class Noc extends Model
         'token' => 'string',
         'status' => 'string',
         'current_role_id' => 'integer',
-        'producer' => 'integer',
+        'producer' => 'string',
         'organization' => 'string',
         'type' => 'string',
         'cen_certificate_no' => 'string',

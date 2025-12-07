@@ -21,7 +21,7 @@
         <div class="container">
             <div class="form-header">
                 <p class="fleft">NOC আবেদন ফরম</p>
-                <p class="fright"> NOC আবেদন তালিকা </p>
+                <p class="fright"> <a href="{{ route('noc.search.list') }}">NOC আবেদন তালিকা</a> </p>
             </div>
 
             <div class="card">

@@ -129,6 +129,28 @@ class NocController extends Controller
         //
     }
 
+    public function showSearchList()
+    {
+        return view('noc.searchForm');
+    }
+
+    public function ajaxSearch(Request $request)
+    {
+        $token = $request->token_number;
+        $noc = Noc::where('token', $token)->first();
+
+        if (!$noc) {
+            return response()->json(['status' => 'fail', 'result' => "<p class='text-danger center'> ⚠ কীনো তথ্য পাদয়া যায়নি </p>"]);
+        }
+        return response()->json(['status' => 'success', 'result' => $noc]);
+    }
+
+    public function downloadNoc($token)
+    {
+        $noc = Noc::where('token', $token)->first();
+        return view('noc.downloadNoc')->with('noc', $noc);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -1,7 +1,7 @@
 <table class="table table-data">
     <thead>
         <tr>
-            <th>Token</th>
+            <th>Registration No</th>
             <th>Status</th>
             <th>Name</th>
             <th>Producer</th>

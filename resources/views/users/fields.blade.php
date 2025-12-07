@@ -274,7 +274,7 @@
             <div class="form-group">
                 {!! Form::label('current_status', __('messages.current_status'), ['class' => 'control-label']) !!}
                 <span style="color:red">*</span>
-                {!! Form::select('current_status', [__('messages.active') => __('messages.active'), __('messages.inactive') => __('messages.inactive')], null, ['class' => 'form-control', 'required' => true]) !!}
+                {!! Form::select('current_status', [__('active') => __('messages.active'), __('inactive') => __('messages.inactive')], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 

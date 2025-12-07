@@ -24,7 +24,8 @@
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/ray": "^1.42",
         "yajra/laravel-datatables-buttons": "^9.0.10",
-        "yajra/laravel-datatables-oracle": "~v10.1.2"
+        "yajra/laravel-datatables-oracle": "~v10.1.2",
+        "mpdf/mpdf": "^8.1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
@@ -83,3 +84,4 @@
     "minimum-stability": "dev",
     "prefer-stable": true
 }
+
