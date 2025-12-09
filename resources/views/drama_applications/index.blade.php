@@ -18,7 +18,7 @@
         <section class="card-header">
             <h5 class="card-title d-inline">নাটক অ্যাপ্লিকেশন</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('dramaApplications.create') }}">{{ __('messages.add_new') }}</a>
+                <a class="btn btn-primary pull-right" href="{{ route('dramaApplications.create') }}">{{ 'নতুন নাটক আবেদন।' }}</a>
             </span>
         </section>
         <div class="card-body table-responsive" >

@@ -156,7 +156,7 @@
             <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
         <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px;cursor: pointer;">
-            <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'নাগরিক রেজিস্ট্রেশন' }}</span>
+            <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'প্রযোজক / প্রযোজনা প্রতিষ্ঠান রেজিস্ট্রেশন' }}</span>
         </div>
 
         <form action="{{ route('producers_register') }}" method="POST" enctype="multipart/form-data">
@@ -166,7 +166,7 @@
 
                     <!-- Organization Info -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">{{  'নাগরিক তথ্য' }}</legend>
+                        <legend class="w-auto">{{  'প্রযোজক / প্রযোজনা প্রতিষ্ঠান তথ্য' }}</legend>
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('organization_name', 'নাম') !!}

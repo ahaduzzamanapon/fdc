@@ -18,7 +18,7 @@
         <section class="card-header">
             <h5 class="card-title d-inline">প্রামান্যচিত্র অ্যাপ্লিকেশন</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('docufilmApplications.create') }}">{{ __('messages.add_new') }}</a>
+                <a class="btn btn-primary pull-right" href="{{ route('docufilmApplications.create') }}">{{ 'নতুন প্রামান্যচিত্র আবেদন।' }}</a>
             </span>
         </section>
         <div class="card-body table-responsive" >

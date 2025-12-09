@@ -95,7 +95,7 @@
                 },
                 success: function(res){
                     if (res.status === 'success') {
-                        
+
                         const downloadUrl = "{{ route('noc.download', ':id') }}"; // placeholder :id
                         var row = '<tr>' +
                             '<td>' + res.result.token + '</td>' +
@@ -105,7 +105,7 @@
                             '<td>' + res.result.publish_date + '</td>' +
                             '<td>' + res.result.full_name + '</td>' +
                             '<td>' + res.result.designation + '</td>' +
-                            '<td> <a href="' + downloadUrl.replace(':id', res.result.token) + '" target="_blank"> Download </td>' +
+                            '<td> <a href="' + downloadUrl.replace(':id', res.result.token) + '" target="_blank"> Download </a></td>' +
                             '</tr>';
                         $('#searchResults').html(row);
                     } else {

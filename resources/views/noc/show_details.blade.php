@@ -8,7 +8,7 @@
             <th>Publish Date</th>
             <th>Full Name</th>
             <th>Designation</th>
-            <th>Mobile No</th>
+            <th>Download</th>
         </tr>
     </thead>
     <tbody>
@@ -17,10 +17,10 @@
             <td>{{ $noc->status }}</td>
             <td>{{ $noc->name }}</td>
             <td>{{ $noc->producer }}</td>
-            <td>{{ $noc->publish_date }}</td>
+            <td>{{ date('d-m-Y', strtotime($noc->publish_date)) ?? '' }}</td>
             <td>{{ $noc->full_name }}</td>
             <td>{{ $noc->designation }}</td>
-            <td>{{ $noc->mobile_no }}</td>
+            <td> <a href="{{ route('noc.download', $noc->token) }}" target='_blank'>Download</a> </td>
         </tr>
     </tbody>
 </table>

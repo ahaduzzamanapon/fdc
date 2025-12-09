@@ -18,7 +18,7 @@
         <section class="card-header">
             <h5 class="card-title d-inline">রিয়েলিটি শো অ্যাপ্লিকেশন</h5>
             <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('realityApplications.create') }}">{{ __('messages.add_new') }}</a>
+                <a class="btn btn-primary pull-right" href="{{ route('realityApplications.create') }}">{{ 'নতুন রিয়েলিটি শো আবেদন।' }}</a>
             </span>
         </section>
         <div class="card-body table-responsive" >
