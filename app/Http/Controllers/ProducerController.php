@@ -493,7 +493,7 @@ class ProducerController extends AppBaseController
             ]);
 
         } else if ($service_type == 'shift') {
-            
+
             $bookedDetails = BookingDetail::where('item_id', $item_id)
                 ->whereHas('booking', function ($q) {
                     $q->whereIn('status', ['approved', 'on process']);
@@ -523,7 +523,7 @@ class ProducerController extends AppBaseController
                     $current->modify('+1 day');
                 }
             }
-            
+
             $item_shifts = Shift::where('item_id', $item_id)->get();
 
             return response()->json([
@@ -553,7 +553,7 @@ class ProducerController extends AppBaseController
             ->select('items.*', 'itemunits.name_bn as unit_name_bn')
             ->first();
         $item_category = ItemCategory::where('id', $category_id)->first();
-        
+
         $data = [
             'item_id' => $item->id,
             'item_name' => $item->name_bn,
@@ -692,7 +692,6 @@ class ProducerController extends AppBaseController
 
     public function update_status(Request $request)
     {
-
         $booking = Booking::find($request->booking);
         $steps = ApprovalRequests::find($request->request_id);
         if ($request->status == 'backward') {
@@ -761,21 +760,17 @@ class ProducerController extends AppBaseController
 
         try {
             \DB::beginTransaction();
-            RealityApplication::where('id', $request->booking)->update($data);
+            Booking::where('id', $request->booking)->update($data);
             ApprovalRequests::where('id', $request->request_id)->update($data1);
             ApprovalLogs::create($data2);
             \DB::commit();
-            Flash::success('Reality Application updated successfully.');
+            Flash::success('Booking updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();
-            Flash::error('Reality Application update failed. Please try again later.');
+            Flash::error('Booking update failed. Please try again later.');
         }
 
-        if (empty(Auth::user())) {
-            return redirect(route('realityApplications.index'));
-        } else {
-            return redirect(route('realityApplications.forward.table'));
-        }
+        return redirect(route('producerBooking.forward.table'));
     }
 
     public function approve_booking($id)
