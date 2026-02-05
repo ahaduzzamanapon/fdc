@@ -11,6 +11,8 @@ class Producer extends Authenticatable
         'who',
         'username',
         'organization_name',
+        'owners_name',
+        'owners_nid',
         'address',
         'phone_number',
         'email',
@@ -34,7 +36,8 @@ class Producer extends Authenticatable
         'trade_license_attachment',
         'vat_attachment',
         'tin_attachment',
-        'status'
+        'status',
+        'qr_code',
     ];
 
     /**
@@ -45,6 +48,8 @@ class Producer extends Authenticatable
     protected $casts = [
         'id' => 'integer',
         'organization_name' => 'string',
+        'owners_name' => 'string',
+        'owners_nid' => 'string',
         'address' => 'string',
         'phone_number' => 'string',
         'email' => 'string',
@@ -67,7 +72,8 @@ class Producer extends Authenticatable
         'trade_license_attachment' => 'string',
         'vat_attachment' => 'string',
         'tin_attachment' => 'string',
-        'status' => 'string'
+        'status' => 'string',
+        'qr_code' => 'string'
     ];
 
     /**
@@ -76,8 +82,8 @@ class Producer extends Authenticatable
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

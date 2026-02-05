@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0.2",
         "creativeorange/gravatar": "v1.0.22",
+        "endroid/qr-code": "^6.0",
         "guzzlehttp/guzzle": "^7.2",
         "harvesthq/chosen": "^1.8",
         "infyomlabs/adminlte-templates": "v4.0.2",
@@ -18,14 +19,13 @@
         "laravel/ui": "^v3.0.0",
         "laravelcollective/html": "^v6.3.0",
         "maatwebsite/excel": "^3.1",
+        "mpdf/mpdf": "^8.2",
         "phpoffice/phpspreadsheet": "^1.29",
         "sayeed/payment-by-ekpay": "^0.7.0",
         "sentry/sentry-laravel": "^2.3",
-        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/ray": "^1.42",
         "yajra/laravel-datatables-buttons": "^9.0.10",
-        "yajra/laravel-datatables-oracle": "~v10.1.2",
-        "mpdf/mpdf": "^8.1.1"
+        "yajra/laravel-datatables-oracle": "~v10.1.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
@@ -84,4 +84,3 @@
     "minimum-stability": "dev",
     "prefer-stable": true
 }
-

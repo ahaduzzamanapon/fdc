@@ -339,45 +339,51 @@
 <body style="background: #d6e1ea;font-family: 'Noto Sans Bengali', sans-serif;">
     @include('all_modal')
     <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all">
+
+        {{-- top header --}}
         <div class="sidebar-header d-flex align-items-center justify-content-start"
             style="background: #8dc641;height: 58px;border-bottom: 2px solid;">
             @if (Auth::guard('producer')->check())
                 <a href="{{ route('producer.dashboard') }}" class="navbar-brand">
             @else
-                    <a href="{{ url('/dashboard') }}" class="navbar-brand">
-                @endif
-
-                    <div class="logo-main">
-                        <img src="{{ !empty($setting) ? asset($setting->logo) : 'assets/images/Picture1.jpg' }} "
-                            class="img-fluid" alt="logo" style="height: 58px;width: 65px;">
-                    </div>
-                    <span class="logo-title"> {{ !empty($setting) ? $setting->name : 'BFDC' }} </span>
-                </a>
-                <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
-                    <i class="icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.25 12.2744L19.25 12.2744" stroke="currentColor" stroke-width="1.5"
-                                stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M10.2998 18.2988L4.2498 12.2748L10.2998 6.24976" stroke="currentColor"
-                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                    </i>
+                <a href="{{ url('/dashboard') }}" class="navbar-brand">
+            @endif
+                <div class="logo-main">
+                    <img src="{{ !empty($setting) ? asset($setting->logo) : 'assets/images/Picture1.jpg' }} "
+                        class="img-fluid" alt="logo" style="height: 58px;width: 65px;">
                 </div>
+                <span class="logo-title"> {{ !empty($setting) ? $setting->name : 'BFDC' }} </span>
+            </a>
+            <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
+                <i class="icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.25 12.2744L19.25 12.2744" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M10.2998 18.2988L4.2498 12.2748L10.2998 6.24976" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </i>
+            </div>
         </div>
+        {{-- top header --}}
+
+        <!-- Sidebar Menu Start -->
         <div class="sidebar-body pt-0">
             <div class="sidebar-list">
-                <!-- Sidebar Menu Start -->
                 <ul class="navbar-nav iq-main-menu" id="sidebar-menu" style="height: 82vh;overflow-y: scroll;">
                     @include('layouts/leftmenu')
                 </ul>
-                <!-- Sidebar Menu End -->
             </div>
         </div>
+        <!-- Sidebar Menu End -->
+
         <div class="sidebar-footer"
             style="bottom: 0;position: absolute;border: 1px solid #8dc641;width: 100%;padding: 7px;color: black;font-size: 12px;background: #8dc641;font-weight: bold;">
             {{ __('messages.developed_by_text') }} <a href="https://mysoftheaven.com" target="_blank" style="color: white;">{{ __('messages.mysoftheaven_ltd') }}</a>
         </div>
     </aside>
+
+    <!-- Wrapper Start-->
     <main class="main-content">
         <div class="position-relative iq-banner">
             <!--Nav Start-->

@@ -1,5 +1,14 @@
 {{-- Producer --}}
     @if (Auth::guard('producer')->check())
+        {{-- ডাউনলোড সার্টিফিকেট --}}
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('producer/download-certificate') ? 'active' : '' !!}" aria-current="page"
+                href="{{ route('producer.download.certificate') }}" target="_blank">
+                <i class="icon im im-icon-Home"></i>
+                <span class="item-name">{{ 'ডাউনলোড সার্টিফিকেট' }}</span>
+            </a>
+        </li>
+
         {{-- সেবার আবেদন সমূহ --}}
         <li class="nav-item">
             <a class="nav-link {!! Request::is('filmApplications*') || Request::is('dramaApplications*') || Request::is('docufilmApplications*') || Request::is('realityApplications*') || Request::is('partyApplications*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#services" role="button" aria-expanded="false" aria-controls="hr">
@@ -106,8 +115,6 @@
                 </li>
             </ul>
         </li>
-
-
 
         {{-- পেমেন্ট --}}
         <li class="nav-item">

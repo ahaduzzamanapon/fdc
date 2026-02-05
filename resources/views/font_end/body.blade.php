@@ -97,14 +97,16 @@
                                 </a>
                             </div>
                             <div class="col-md-4">
-                                <div class="card">
-                                    <div>
-                                        <img src="{{ asset('portal/image/card4.svg') }}" alt="card4.svg">
+                                <a href="{{ route('noc.create') }}" class="justify-content-end modified">
+                                    <div class="card">
+                                        <div>
+                                            <img src="{{ asset('portal/image/card4.svg') }}" alt="card4.svg">
+                                        </div>
+                                        <div>
+                                            <span class="cardTitle">NOC আবেদন</span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <span class="cardTitle">NOC আবেদন</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>

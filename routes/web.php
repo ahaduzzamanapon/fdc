@@ -27,6 +27,10 @@ Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinem
     Route::get('/films-released-by-decade/{decade}', [FrontendController::class, 'films_released_by_decade'])->name('films_released_by_decade');
 });
 
+// verify certificate
+Route::get('certificate/verify/{producer}', [FrontendController::class, 'certificate_verify'])
+     ->name('certificate.verify');
+
 Route::get('/service/rate-card', [FrontendController::class, 'rate_card'])->name('rate_card');
 Route::resource('noc', 'NocController');
 Route::get('/noc-search-list', [App\Http\Controllers\NocController::class, 'showSearchList'])->name('noc.search.list');
@@ -224,6 +228,7 @@ Route::post('/producers_login', [ProducerController::class, 'producers_login'])-
 Route::group(["middleware" => []], function () {
     Route::prefix('producer')->controller(ProducerController::class)
         ->group(function () {
+        Route::get('/download-certificate', 'download_certificate')->name('producer.download.certificate');
         Route::get('/dashboard', 'dashboard')->name('producer.dashboard');
         Route::get('/booking', 'booking')->name('producer.booking');
         Route::get('/create_page', 'create_page')->name('producer.create_page');

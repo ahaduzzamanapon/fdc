@@ -28,6 +28,9 @@ use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Shift;
 use Illuminate\Support\Facades\DB;
+use Mpdf\Mpdf;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
 
 class ProducerController extends AppBaseController
 {
@@ -108,6 +111,7 @@ class ProducerController extends AppBaseController
 
         return redirect(route('producers.index'));
     }
+
     public function producers_register(Request $request)
     {
         $input = $request->all();
@@ -181,6 +185,36 @@ class ProducerController extends AppBaseController
 
         // Save producer
         $producer = Producer::create($input);
+
+        /* =========================
+        🔥 QR CODE GENERATION
+        ========================= */
+        $verifyUrl = route('certificate.verify', $producer->id);
+
+        $qrDir = public_path('qrcodes');
+        if (!is_dir($qrDir)) {
+            mkdir($qrDir, 0755, true);
+        }
+
+        $qrFile = $qrDir . '/producer_' . $producer->id . '.png';
+
+        /* ✅ endroid/qr-code 6.0.x – CORRECT WAY */
+        $builder = new Builder(
+            writer: new PngWriter(),
+            data: $verifyUrl,
+            size: 300,
+            margin: 10
+        );
+
+        $result = $builder->build();
+        $result->saveToFile($qrFile);
+
+        $producer->update([
+            'qr_code' => 'qrcodes/producer_' . $producer->id . '.png'
+        ]);
+        /* =========================
+        🔥 QR CODE GENERATION
+        ========================= */
 
         Flash::success('Producer registered successfully.');
         return redirect(route('login'));
@@ -335,6 +369,72 @@ class ProducerController extends AppBaseController
         }
     }
 
+    // Download Certificate
+    public function download_certificatessssss()
+    {
+        if (!Auth::guard('producer')->check()) {
+            return redirect('/login')->with('error', 'First login');
+        }
+
+        $producer = Auth::guard('producer')->user();
+
+        // Convert background image to base64
+        $path = public_path('images/certificate/real.jpeg');
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+        // Pass $base64 to Blade
+        // return view('producers.mainView.download_certificate', compact('producer', 'base64'))->render();
+        $html = view('producers.mainView.download_certificate', compact('producer', 'base64'))->render();
+
+        // Dompdf
+        $dompdf = new Dompdf();
+        $dompdf->set_option('isRemoteEnabled', true);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        return response($dompdf->output())
+            ->header('Content-Type', 'application/pdf')
+            ->header(
+                'Content-Disposition',
+                'inline; filename="certificate_'.$producer->id.'.pdf"'
+            );
+    }
+
+    public function download_certificate()
+    {
+        if (!Auth::guard('producer')->check()) {
+            return redirect('/login')->with('error', 'First login');
+        }
+        $producer = Auth::guard('producer')->user();
+
+        $mpdf = new \Mpdf\Mpdf([
+            'format' => 'A4',
+            'margin_left'   => 0,
+            'margin_right'  => 0,
+            'margin_top'    => 0,
+            'margin_bottom' => 0,
+        ]);
+
+        /* 🔥 HTML (NO QR HERE) */
+        $html = view('producers.mainView.download_certificate',compact('producer'))->render();
+        $mpdf->WriteHTML($html);
+
+        /* 🔥 QR CODE – DIRECT PDF CANVAS */
+        $mpdf->Image(
+            public_path($producer->qr_code), // file path
+            90,   // X (mm)
+            252,  // Y (mm)
+            30,   // Width (mm)
+            30    // Height (mm)
+        );
+        return $mpdf->Output($producer->id.'_certificate.pdf', 'I');
+    }
+
+
+    // Producer Dashboard
     public function dashboard()
     {
         // dd(Auth::guard('producer')->user());
@@ -386,6 +486,8 @@ class ProducerController extends AppBaseController
 
         return view('producers.mainView.dashboard', compact('bookings', 'films', 'dramas', 'docufilms', 'reality'));
     }
+
+    // Producer Booking
     public function booking()
     {
 

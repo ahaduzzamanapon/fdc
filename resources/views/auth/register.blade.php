@@ -156,7 +156,8 @@
             <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
         <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px;cursor: pointer;">
-            <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'প্রযোজক / প্রযোজনা প্রতিষ্ঠান রেজিস্ট্রেশন' }}</span>
+            {{-- <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'প্রযোজক / প্রযোজনা প্রতিষ্ঠান রেজিস্ট্রেশন' }}</span> --}}
+            {{-- <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'নিবন্ধন ফরম' }}</span> --}}
         </div>
 
         <form action="{{ route('producers_register') }}" method="POST" enctype="multipart/form-data">
@@ -166,32 +167,63 @@
 
                     <!-- Organization Info -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        <legend class="w-auto">{{  'প্রযোজক / প্রযোজনা প্রতিষ্ঠান তথ্য' }}</legend>
+                        {{-- <legend class="w-auto">{{  'প্রযোজক / প্রযোজনা প্রতিষ্ঠান তথ্য' }}</legend> --}}
+                        <legend class="w-auto">{{  'নিবন্ধন ফরম' }}</legend>
                         <div class="row">
                             <div class="col-md-3">
-                                {!! Form::label('organization_name', 'নাম') !!}
+                                {{-- {!! Form::label('organization_name', 'নাম') !!} --}}
+                                {!! Form::label('organization_name', 'নির্মাতা প্রতিষ্ঠানের নাম') !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('organization_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('address', __('messages.address')) !!}
+                                {!! Form::label('owners_name', 'স্বত্বাধীকারীর নাম') !!}
                                  <span class="text-danger">*</span>
-                                {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!}
+                                {!! Form::text('owners_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
+                                {!! Form::label('owners_nid', 'জাতীয় পরিচয়পত্র (NID) নম্বর') !!}
+                                 <span class="text-danger">*</span>
+                                {!! Form::text('owners_nid', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('tin_number', 'TIN নম্বর') !!}
+                                 <span class="text-danger">*</span>
+                                {!! Form::text('tin_number', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                {!! Form::label('trade_license', 'ট্রেড লাইসেন্স নম্বর') !!}
+                                 <span class="text-danger">*</span>
+                                {!! Form::text('trade_license', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-3">
                                 {!! Form::label('phone_number', __('messages.phone_number')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('phone_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 {!! Form::label('email', __('messages.email')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::email('email', null, ['class' => 'form-control', 'required']) !!}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 {!! Form::label('password', __('messages.password_label')) !!}
                                 <span class="text-danger">*</span>
                                 {!! Form::text('password', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                {!! Form::label('address', 'নির্মাতা প্রতিষ্ঠানের ঠিকানা') !!}
+                                 <span class="text-danger">*</span>
+                                {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!}
+                            </div>
+                            <div class="col-md-6 text-end" style="text-align-last: right; margin-top: 27px;">
+                                <a href="{{ route('login') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>&nbsp;
+                                <button type="reset" class="btn btn-secondary">{{ __('messages.reset') }}</button>&nbsp;
+                                <button type="submit" class="btn btn-primary">{{ __('messages.submit') }}</button>
                             </div>
                         </div>
                     </fieldset>
@@ -358,11 +390,11 @@
                     </script>
 
                     <!-- Submit Buttons -->
-                    <div class="col-md-12 text-end mt-3" style="text-align-last: right;">
+                    {{-- <div class="col-md-12 text-end mt-3" style="text-align-last: right;">
                         <a href="{{ route('login') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>&nbsp;
                         <button type="reset" class="btn btn-secondary">{{ __('messages.reset') }}</button>&nbsp;
                         <button type="submit" class="btn btn-primary">{{ __('messages.submit') }}</button>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>
