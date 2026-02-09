@@ -40,7 +40,7 @@
         width: 100%;
         margin: auto;
         box-shadow: 0px 0px 15px white;
-        background: linear-gradient(49deg, #0c2aef85, #d24848b0); 
+        background: linear-gradient(49deg, #0c2aef85, #d24848b0);
     }
 
     .form-control {

@@ -246,6 +246,11 @@ Route::group(["middleware" => []], function () {
         Route::get('/booking_forward_table', 'forward_table')->name('producerBooking.forward.table');
         Route::get('{booking}/forward/{desk}', 'forward')->name('producerBooking.forward');
         Route::post('/change_status', 'update_status')->name('producerBooking.st.status');
+
+        // registration applications
+        Route::get('/registration_list/{types}', 'registration_list')->name('producer.registration_list');
+        Route::get('/registration_forward/{id}', 'registration_forward')->name('producer.registration.forward');
+        Route::post('/registration_forward', 'registration_forward_st')->name('producer.registration.forward.st');
     });
 });
 

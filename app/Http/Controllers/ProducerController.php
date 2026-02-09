@@ -216,8 +216,27 @@ class ProducerController extends AppBaseController
         🔥 QR CODE GENERATION
         ========================= */
 
+        $role_id = 18;  // citizen role id from role table // default 18 set
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Registration Flow%')->first();
+        $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+
+        $datass = array(
+            'flow_id' => $flow->id,
+            'request_type' => $flow->name,
+            'application_id' => $producer->id,
+            'prev_role_id' => $role_id,
+            'current_role_id' => $step->to_role_id,
+            'next_role_id' => $step->to_role_id,
+            'status' => 'on process',
+            'created_by' => $producer->id,
+            'updated_by' => $producer->id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        );
+        $insert = ApprovalRequests::create($datass);
+
         Flash::success('Producer registered successfully.');
-        return redirect(route('login'));
+        return redirect(route('login.custom', 'citizen'));
 
     }
 
@@ -359,13 +378,15 @@ class ProducerController extends AppBaseController
         Auth::guard('producer')->attempt([
             'username' => $username,
             'password' => $password,
+            'reg_status' => 'verified',
         ]);
 
         if (Auth::guard('producer')->check()) {
             return redirect(url('producer/dashboard'));
         } else {
-            Flash::error('Login Failed');
-            return redirect(url('/login'));
+            Flash::error('Login Failed! Please check your credentials and registration status.');
+            // return redirect(url('/login'));
+            return redirect(url(route('login.custom', 'citizen')))->with('error', 'Login Failed');
         }
     }
 
@@ -431,6 +452,95 @@ class ProducerController extends AppBaseController
             30    // Height (mm)
         );
         return $mpdf->Output($producer->id.'_certificate.pdf', 'I');
+    }
+
+    // Producer Registration Application list
+    public function registration_list($types)
+    {
+        $producers = Producer::where('reg_status', $types)->get();
+        return view('producers.registration.registration_list', compact('producers', 'types'));
+    }
+
+    // Producer Registration Application list
+    public function registration_forward($id)
+    {
+        $producer = Producer::find($id);
+        return view('producers.registration.registration_forward', compact('producer'));
+    }
+    public function registration_forward_st(Request $request)
+    {
+
+        $id = $request->reg_id;
+        $producer = Producer::find($id);
+        $producer->reg_status = $request->reg_status;
+        $producer->updated_by = Auth::user()->id;
+        $producer->updated_at = date('Y-m-d H:i:s');
+        $producer->save();
+
+        $steps = ApprovalRequests::find($request->request_id);
+
+
+        if (empty(Auth::user())) {
+            $users = Auth::guard('producer')->user();
+            $user_id = $users->id;
+            $user_role = $users->group_id;
+        } else {
+            $users = Auth::user();
+            $user_id = $users->id;
+            $user_role = $users->user_role;
+        }
+
+        // filmapplications
+        $data = array(
+            'desk_id' => $current_role_id,
+            'status' => $status,
+            'updated_by' => $user_id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        // approval_requests
+        $data1 = array(
+            'prev_role_id' => $prev_role_id,
+            'current_role_id' => $current_role_id,
+            'next_role_id' => $next_role_id,
+            'status' => $status,
+            'updated_by' => $user_id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        // approval_logs
+        $data2 = array(
+            'request_id' => $request->request_id,
+            'request_type' => $steps->request_type,
+            'flow_id' => $steps->flow_id,
+            'action_by' => $user_id,
+            'action_role_id' => $user_role,
+            'next_role_id' => $current_role_id,
+            'status' => $fstatus,
+            'remarks' => $request->log_remarks,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_by' => $user_id,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        try {
+            \DB::beginTransaction();
+            Booking::where('id', $request->booking)->update($data);
+            ApprovalRequests::where('id', $request->request_id)->update($data1);
+            ApprovalLogs::create($data2);
+            \DB::commit();
+            Flash::success('Booking updated successfully.');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error('Booking update failed. Please try again later.');
+        }
+
+
+
+        $status = $request->reg_status;
+        $log_remarks = $request->log_remarks;
+        $producer->log_remarks = $log_remarks;
+        $producer->save();
+        return view('producers.registration.registration_forward', compact('producer'));
     }
 
 

@@ -474,6 +474,44 @@
             </li>
         @endif
 
+        {{-- নিবন্ধন অ্যাপ্লিকেশন  --}}
+        @if (can('registration_flow'))
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('producer/registration_list*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#reg_list" role="button" aria-expanded="false" aria-controls="hr">
+                    <i class="icon im im-icon-Gear"></i>
+                    <span class="item-name">নিবন্ধন অ্যাপ্লিকেশন</span>
+                    <i class="right-icon im im-icon-Arrow-Right"></i>
+                </a>
+                <ul class="sub-nav collapse {!! Request::is('producer/registration_list*') ? 'show' : '' !!}" id="reg_list"
+                    data-bs-parent="#sidebar-menu">
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('producer/registration_list/pending') ? 'active' : '' !!}"
+                            href="{{ route('producer.registration_list', 'pending') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> প </i>
+                            <span class="item-name"> পেন্ডিং  </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('producer/registration_list/verified') ? 'active' : '' !!}"
+                            href="{{ route('producer.registration_list', 'verified') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> অ </i>
+                            <span class="item-name"> অনুমোদিত  </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('producer/registration_list/rejected') ? 'active' : '' !!}"
+                            href="{{ route('producer.registration_list', 'rejected') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> প </i>
+                            <span class="item-name"> প্রত্যাখ্যাত  </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endif
+
         @if (can('profile'))
             <li class="nav-item">
                 <a class="nav-link {!! Request::is('profile') ? 'active' : '' !!}" aria-current="page" href="{{ url('/profile') }}">
