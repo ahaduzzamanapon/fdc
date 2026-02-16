@@ -9,6 +9,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
+use Auth;
 
 class ItemController extends AppBaseController
 {
@@ -21,11 +22,17 @@ class ItemController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $user_role = Auth::user()->user_role;
+        $inv_permission = Auth::user()->inv_permission;
+
         /** @var Item $items */
         $items = Item::select('items.*', 'itemcategorys.name_bn as cat_name_bn', 'itemcategorys.name_en as cat_name_en')
-            ->join('itemcategorys', 'items.cat_id', '=', 'itemcategorys.id')
-            ->orderBy('itemcategorys.id', 'asc')
-            ->get();
+            ->join('itemcategorys', 'items.cat_id', '=', 'itemcategorys.id');
+
+        if ($user_role != 1) {
+            $items = $items->where('items.dept_id', $inv_permission);
+        }
+        $items = $items->orderBy('itemcategorys.id', 'asc')->get();
 
         return view('items.index')
             ->with('items', $items);

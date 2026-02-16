@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Permission {{ __('messages.permission') }} @parent
+User {{ __('messages.user') }} @parent
 @stop
 
 @section('content')
@@ -12,9 +12,9 @@ Permission {{ __('messages.permission') }} @parent
        <div class="card">
            <div class="card-body">
                 <div class="row">
-                    {!! Form::model($permission, ['route' => ['permissions.update', $permission->id], 'method' => 'patch','class' => 'form-horizontal col-md-12']) !!}
+                    {!! Form::model($users, ['route' => ['invPermissions.update', $users->id], 'method' => 'patch', 'files' => true,'class' => 'form-horizontal col-md-12']) !!}
                         <div class="row">
-                            @include('permissions.fields')
+                            @include('invPermissions.fields')
                         </div>
                     {!! Form::close() !!}
                 </div>

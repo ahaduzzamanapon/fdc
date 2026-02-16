@@ -563,6 +563,7 @@
                 </ul>
             </li>
         @endif
+
         {{-- ব্যবহারকারী ব্যবস্থাপনা --}}
         @if (can('user_management'))
             <li class="nav-item">
@@ -600,10 +601,19 @@
                                 <span class="item-name">অনুমতিসমূহ</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {!! Request::is('invPermissions*') ? 'active' : '' !!}"
+                                href="{{ route('invPermissions.index') }}">
+                                <i class="icon im im-icon-Security-Settings"></i>
+                                <i class="sidenav-mini-icon"> ই </i>
+                                <span class="item-name">ইনভেন্টরি</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </li>
         @endif
+
         {{-- ইনভেন্টরি --}}
         @if (can('inventory'))
             <li class="nav-item">
@@ -649,6 +659,13 @@
                                 <i class="icon im im-icon-Settings-Window"></i>
                                 <i class="sidenav-mini-icon"> উ </i>
                                 <span class="item-name">{{ __('messages.unit') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {!! Request::is('itemDepartments*') ? 'active' : '' !!}" href="{{ route('itemDepartments.index') }}">
+                                <i class="icon im im-icon-Settings-Window"></i>
+                                <i class="sidenav-mini-icon"> ডি </i>
+                                <span class="item-name">{{ 'ডিপার্টমেন্ট' }}</span>
                             </a>
                         </li>
                     @endif

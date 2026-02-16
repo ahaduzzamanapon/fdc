@@ -2,6 +2,7 @@
 
 Route::resource('siteSettings', 'SiteSettingController');
 Route::resource('users', 'UserController');
+Route::resource('invPermissions', 'InvPermissionController');
 Route::resource('permissions', 'PermissionController');
 Route::resource('roleAndPermissions', 'RoleAndPermissionController');
 Route::resource('designations', 'DesignationController');
@@ -15,6 +16,7 @@ Route::resource('producers', 'ProducerController');
 
 
 
+Route::resource('itemDepartments', 'ItemDepartmentController');
 Route::resource('itemUnits', 'ItemUnitController');
 Route::resource('itemCategories', 'ItemCategoryController');
 Route::resource('items', 'ItemController');
