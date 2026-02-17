@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateFilmApplicationRequest;
 use App\Http\Requests\UpdateFilmApplicationRequest;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationMail;
+use App\Models\FilmApplication;
 use App\Models\PartyApplication;
 use App\Models\ApprovalFlowMaster;
 use App\Models\ApprovalFlowSteps;
@@ -16,6 +20,7 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 use Auth;
+use DB;
 
 class PartyApplicationController extends AppBaseController
 {
@@ -179,6 +184,110 @@ class PartyApplicationController extends AppBaseController
         }
     }
 
+    // save as draft
+    public function storePartyAsDraft(Request $request)
+    {
+        $input = $request->all();
+        $input['trade_license_validity_date'] = date('Y-m-d', strtotime($input['trade_license_validity_date']));
+
+        // Handle single file uploads
+        $input_file = [
+            'bank_attachment',
+            'tin_attachment',
+            'vat_attachment',
+            'trade_license_attachment',
+            'nominee_photo',
+        ];
+
+        foreach ($input_file as $file_name) {
+            if ($request->hasFile($file_name)) {
+                $file = $request->file($file_name);
+                $folder = 'producers_file/' . $file_name;
+                $customName = 'producers_file-' . $file_name . '-' . time();
+                $input[$file_name] = uploadFile($file, $folder, $customName);
+            } else {
+                unset($input[$file_name]);
+            }
+        }
+
+        // Handle multiple file-name pairs as JSON and store in a single string column
+        $multi_file_fields = [
+            'partnership' => 'partnership_attachment',
+            'ltd_company' => 'ltd_company_attachment',
+            'somobay' => 'somobay_attachment',
+            'other' => 'other_attachment',
+        ];
+
+        foreach ($multi_file_fields as $field => $fileField) {
+            $nameInput = $request->input($field . '_name', []);
+            $fileInput = $request->file($fileField, []);
+            $combinedData = [];
+
+            foreach ($nameInput as $index => $name) {
+                if (!empty($name) && isset($fileInput[$index])) {
+                    $file = $fileInput[$index];
+                    $folder = 'producers_file/' . $fileField;
+                    $customName = $field . '-' . $index . '-' . time();
+                    $filePath = uploadFile($file, $folder, $customName);
+                    $combinedData[] = [
+                        'name' => $name,
+                        'file' => $filePath,
+                    ];
+                }
+            }
+
+            // Save as JSON string into corresponding single column
+            $columnName = $field . '_agreement'; // e.g. partnership_agreement
+            $input[$columnName] = json_encode($combinedData); // Store as JSON string
+        }
+        $input['other_attachment'] = $input['other_agreement'];
+        unset(
+            $input['partnership_name'],
+            $input['ltd_company_name'],
+            $input['somobay_name'],
+            $input['other_name'],
+            $input['partnership_attachment'],
+            $input['ltd_company_attachment'],
+            $input['somobay_attachment'],
+            $input['other_agreement'],
+            $input['_token'],
+        );
+
+        // Save producer
+        $producer = Auth::guard('producer')->user();
+        $role_id = $producer->group_id;
+
+        /** @var PartyApplication $PartyApplication */
+
+        try {
+            \DB::beginTransaction();
+            $input['desk_id'] = $role_id;
+            $input['status'] = 'draft';
+
+            $partyApplication = PartyApplication::where('id', $producer->id)->update($input);
+            \DB::commit();
+
+            Flash::success('Party Application as draft successfully.');
+            return redirect(route('producer.dashboard'));
+        } catch (\Exception $e) {
+
+            \DB::rollBack();
+            Flash::error($e->getMessage());
+            return redirect(route('producer.dashboard'));
+        }
+    }
+
+    ## Function to edit party for status as draft
+    public function editPartyDraft() {
+        try {
+            $id = $producer = Auth::guard('producer')->user()->id;
+            $film = PartyApplication::findOrFail($id);
+            return view('party_applications.edit', [ 'filmApplication' => $film ]);
+        } catch (\Exception $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display the specified FilmApplication.
      *
@@ -273,6 +382,7 @@ class PartyApplicationController extends AppBaseController
     public function update_status(Request $request)
     {
         $film = PartyApplication::find($request->film_id);
+
         $steps = ApprovalRequests::find($request->request_id);
         if ($request->status == 'backward') {
             $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
@@ -340,6 +450,24 @@ class PartyApplicationController extends AppBaseController
             ApprovalRequests::where('id', $request->request_id)->update($data1);
             ApprovalLogs::create($data2);
             \DB::commit();
+
+            ## Send mail
+            if($request->status === 'approved' || $request->status === 'reject') {
+                try {
+                    Mail::to($film->email)->queue(new NotificationMail([
+                        'type' => 'registration_approval',
+                        'subject' => 'আপনার আবেদন গ্রহণ করা হয়েছে - ' . $steps->request_type,
+                        'producer_name' => $film->owners_name,
+                        'status' => $request->status,
+                        'service_name' => $steps->request_type,
+                        'title' => 'আপনার আবেদন গ্রহণ করা হয়েছে - ' . $steps->request_type,
+                    ]));
+
+                } catch (\Throwable $e) {
+                    \Log::error('Mail failed', ['error' => $e->getMessage()]);
+                }
+            }
+
             Flash::success('Party Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();

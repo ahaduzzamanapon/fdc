@@ -498,10 +498,6 @@ class FilmApplicationController extends AppBaseController
             $status = $request->status;
         }
 
-
-
-
-
         // filmapplications
         $data = array(
             'desk_id' => $current_role_id,

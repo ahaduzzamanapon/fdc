@@ -9,12 +9,16 @@
     <p>প্রিয় {{ $data['producer_name'] }},</p>
     <p>আমাদের সিস্টেমে আপনার নিবন্ধন সফলভাবে
         @if($data['status']== 'verified') অনুমোদন
+        @elseif($data['status']== 'approved') অনুমোদন
         @else প্রত্যাখ্যান @endif
         সম্পন্ন হয়েছে।
     </p>
     @if($data['status']== 'verified')
         <p>আপনার নিবন্ধন অনুমোদিত হয়েছে এবং আপনি এখন থেকে আপনার নিবন্ধন সার্টিফিকেট ডাউনলোড করতে পারবেন।</p>
         <p>সার্টিফিকেটটি আপনার প্রোফাইল থেকে ডাউনলোড করা যাবে।</p>
+    @endif
+    @if($data['status']== 'approved')
+        <p>আপনার নিবন্ধন অনুমোদিত হয়েছে এবং আপনি এখন থেকে FDC থেকে সুযোগ সুবিধা নিতে পারবেন ।</p>
     @endif
 @elseif($data['type'] === 'service_acceptance')
     <p>প্রিয় {{ $data['producer_name'] }},</p>

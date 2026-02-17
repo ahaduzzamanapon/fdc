@@ -101,9 +101,9 @@ Route::prefix('party-application')->name('partyApplications.')->group(function (
     Route::post('change_status', [PartyApplicationController::class, 'update_status'])->name('st.status');
 
     ## For save as draft section
-    Route::post('/draft', [PartyApplicationController::class, 'storePartyAsDraft'])->name('reality.save.draft');
-    Route::get('/draft/{id}/edit', [PartyApplicationController::class, 'editPartyDraft'])->name('reality.edit.draft');
-    Route::post('/draft/update', [PartyApplicationController::class, 'updateRealityDrama'])->name('reality.update.draft');
+    Route::post('/draft', [PartyApplicationController::class, 'storePartyAsDraft'])->name('party.save.draft');
+    Route::get('/draft/{id}/edit', [PartyApplicationController::class, 'editPartyDraft'])->name('party.edit.draft');
+    Route::post('/draft/update', [PartyApplicationController::class, 'updateParty'])->name('party.update.draft');
 });
 Route::get('partyApplications_forward_table', [PartyApplicationController::class, 'forward_table'])->name('partyApplications.forward.table');
 
@@ -162,7 +162,6 @@ Route::prefix('film-applications')->name('filmApplications.')->group(function ()
     ## For save as draft section
     Route::post('/draft', [FilmApplicationController::class, 'storeFilmDraft'])->name('film.save.draft');
     Route::get('/draft/{id}/edit', [FilmApplicationController::class, 'editFilmDraft'])->name('film.edit.draft');
-    Route::post('/draft/update', [FilmApplicationController::class, 'updateDraftFilm'])->name('film.update.draft');
 });
 
 

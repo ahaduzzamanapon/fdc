@@ -11,7 +11,7 @@
        <div class="card">
            <div class="card-body">
                 <div class="row">
-                    {!! Form::model($filmApplication, ['route' => ['partyApplications.update', $filmApplication->id], 'method' => 'patch','class' => 'form-horizontal col-md-12']) !!}
+                    {!! Form::model($filmApplication, ['route' => ['partyApplications.store'], 'class' => 'form-horizontal col-md-12']) !!}
                         <div class="row">
                             @include('party_applications.fields')
                         </div>

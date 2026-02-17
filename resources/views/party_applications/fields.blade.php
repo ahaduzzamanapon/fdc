@@ -162,5 +162,7 @@
     <!-- Submit Field -->
     <div class="form-group col-sm-12" style="text-align-last: right;">
         {!! Form::submit(__('messages.save'), ['class' => 'btn btn-primary']) !!}
+        <button type="submit" class="btn btn-warning" formaction="{{ route('partyApplications.party.save.draft') }}" formmethod="POST"> {{ __('messages.save_as_draft') }}
+        </button>
         <a href="{{ route('producer.dashboard') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>
     </div>
