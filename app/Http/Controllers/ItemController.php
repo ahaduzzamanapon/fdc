@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 use Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ItemsExport;
+use App\Imports\ItemsImport;
 
 class ItemController extends AppBaseController
 {
@@ -159,6 +162,24 @@ class ItemController extends AppBaseController
         $item->delete();
 
         Flash::success('Item deleted successfully.');
+
+        return redirect(route('items.index'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new ItemsExport, 'items.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new ItemsImport, $request->file('file'));
+
+        Flash::success('Items imported successfully.');
 
         return redirect(route('items.index'));
     }

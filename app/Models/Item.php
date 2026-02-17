@@ -68,4 +68,18 @@ class Item extends Model
     ];
 
 
+    public function category()
+    {
+        return $this->belongsTo(\App\Models\ItemCategory::class, 'cat_id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(\App\Models\ItemUnit::class, 'unit_id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(\App\Models\ItemDepartment::class, 'dept_id');
+    }
 }

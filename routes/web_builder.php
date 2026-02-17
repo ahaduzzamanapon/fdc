@@ -19,6 +19,8 @@ Route::resource('producers', 'ProducerController');
 Route::resource('itemDepartments', 'ItemDepartmentController');
 Route::resource('itemUnits', 'ItemUnitController');
 Route::resource('itemCategories', 'ItemCategoryController');
+Route::get('items/export', 'ItemController@export')->name('items.export');
+Route::post('items/import', 'ItemController@import')->name('items.import');
 Route::resource('items', 'ItemController');
 
 
