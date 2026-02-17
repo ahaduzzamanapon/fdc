@@ -107,7 +107,14 @@ class DramaApplication extends Model
         'cameraman_name',
         'main_cast',
         'foreign_participation',
-        'script_writer_name'
+        'script_writer_name',
+        'nid_file',
+        'set_design',
+        'production_type',
+        'approx_cost_general',
+        'approx_cost_animation',
+        'approx_cost_shortfilm',
+        'approx_cost_others'
     ];
 
     /**
@@ -161,7 +168,9 @@ class DramaApplication extends Model
         'cameraman_name' => 'string',
         'main_cast' => 'string',
         'foreign_participation' => 'string',
-        'script_writer_name' => 'string'
+        'script_writer_name' => 'string',
+        'nid_file' => 'string',
+        'production_type' => 'string',
     ];
 
     /**

@@ -99,7 +99,7 @@
     if (!function_exists('get_user')) {
         function get_user($id)
         {
-            return $roll=\App\Models\User::where('id', $id)->first();
+            return \App\Models\User::where('id', $id)->first();
         }
     }
 

@@ -609,4 +609,10 @@ return [
     'total_approved_producer_pending_list' => 'মোট অনুমোদন প্রযোজক অপেক্ষমান তালিকা',
     'item_list' => 'আইটেম তালিকা',
     'film_applications' => 'চলচ্চিত্র আবেদনসমূহ',
+    'save_as_draft' => 'খসড়া সংরক্ষণ করুন',
+    'edit_draft' => 'খসড়া হসম্পাদনা করুন',
+    'draft_saved_successfully' => 'খসড়া সফলভাবে সংরক্ষিত',
+    'draft_updated_successfully' => 'খসড়া সফলভাবে আপডেট করা হয়েছে',
+    'draft_update_failed' => 'খসড়া আপডেট ব্যর্থ হয়েছে',
+    'something_went_wrong' => 'কিছু ভুল হয়েছে'
 ];

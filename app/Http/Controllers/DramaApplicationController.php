@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateFilmApplicationRequest;
+use App\Http\Requests\ServiceApplicationRequest;
 use App\Http\Requests\UpdateFilmApplicationRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Mail\NotificationMail;
 use App\Models\DramaApplication;
 use App\Models\ApprovalFlowMaster;
 use App\Models\ApprovalFlowSteps;
@@ -12,8 +14,12 @@ use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
 use App\Models\Package;
 use App\Models\FilmPackage;
+use App\Models\Producer;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Response;
 use Auth;
 
@@ -208,6 +214,10 @@ class DramaApplicationController extends AppBaseController
     {
         $film = DramaApplication::find($request->film_id);
         $steps = ApprovalRequests::find($request->request_id);
+
+        ## Get producer data
+        $producer = Producer::findOrFail($film->producer_id);
+
         if ($request->status == 'backward') {
             $prev = ApprovalFlowSteps::where('to_role_id', $steps->prev_role_id)->where('flow_id', $steps->flow_id)->first();
             $prev_role_id = !empty($prev->from_role_id) ? $prev->from_role_id : $steps->current_role_id;
@@ -229,6 +239,7 @@ class DramaApplicationController extends AppBaseController
             $fstatus = $request->status;
             $status = $request->status;
         }
+
 
         // filmapplications
         $data = array(
@@ -268,12 +279,29 @@ class DramaApplicationController extends AppBaseController
             ApprovalRequests::where('id', $request->request_id)->update($data1);
             ApprovalLogs::create($data2);
             \DB::commit();
+
+            ## Send mail
+            if($request->status === 'approved' || $request->status === 'reject') {
+                try {
+                    Mail::to($producer->email)->queue(new NotificationMail([
+                        'type' => 'service_acceptance',
+                        'subject' => 'আপনার আবেদন গ্রহণ করা হয়েছে - ' . $steps->request_type,
+                        'producer_name' => $producer->owners_name,
+                        'status' => $request->status,
+                        'service_name' => $steps->request_type,
+                        'title' => $film->film_title
+                    ]));
+
+                } catch (\Throwable $e) {
+                    \Log::error('Mail failed', ['error' => $e->getMessage()]);
+                }
+            }
+
             Flash::success('Drama Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();
             Flash::error('Drama Application update failed. Please try again later.');
         }
-
         return redirect(route('dramaApplications.forward.table'));
     }
 
@@ -302,5 +330,157 @@ class DramaApplicationController extends AppBaseController
         Flash::success('Drama Application deleted successfully.');
 
         return redirect(route('dramaApplications.index'));
+    }
+
+    ## Function for store drama as draft
+    public function storeDramaAsDraft(ServiceApplicationRequest $request) {
+        $validated = $request->validated();
+
+        try {
+            DB::beginTransaction();
+
+            ## Get data
+            $producer = Auth::guard('producer')->user();
+            $role_id = $producer->group_id;
+
+            $flow = ApprovalFlowMaster::where('name', 'like', '%Drama Application%')->first();
+            ## Check
+            if (!$flow) {
+                throw new \Exception('Approval flow not found.');
+            }
+
+            ## Check
+            $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+            if (!$step) {
+                throw new \Exception('Approval step not found.');
+            }
+
+            $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
+            ## Check
+            if (!$next) {
+                throw new \Exception('Approval step not found.');
+            }
+
+            ##
+            $validated['producer_id'] = $producer->id;
+            $validated['status'] = 'draft';
+            $validated['desk_id'] = $step->to_role_id;
+
+            ## Store the NID file
+            if ($request->hasFile('nid_file')) {
+                $file = $request->file('nid_file');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $destinationPath = public_path('drama_applications/nid');
+
+                ## Create folder if it doesn't exist
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $fileName);
+                $validated['nid_file'] = 'drama_applications/nid/' . $fileName;
+            }
+
+            ## Store data
+            $dramaApplication = DramaApplication::create($validated);
+
+            ## Store in approve request
+            $approvalRequest = ApprovalRequests::create([
+                'flow_id' => $flow->id,
+                'request_type' => $flow->name,
+                'application_id' => $dramaApplication->id,
+                'prev_role_id' => $role_id,
+                'current_role_id' => $step->to_role_id,
+                'next_role_id' => $next?->to_role_id,
+                'status' => 'on process',
+                'created_by' => $producer->id,
+                'updated_by' => $producer->id,
+            ]);
+
+            ## Store in logs
+            ApprovalLogs::create([
+                'request_id' => $approvalRequest->id,
+                'request_type' => $flow->name,
+                'flow_id' => $flow->id,
+                'action_by' => $producer->id,
+                'action_role_id' => $role_id,
+                'next_role_id' => $step->to_role_id,
+                'status' => 'forward',
+                'remarks' => 'New Drama Application',
+            ]);
+
+            DB::commit();
+
+            Flash::success(__('messages.draft_saved_successfully'));
+            return redirect()->route('dramaApplications.index');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Drama Draft Save Failed', ['error' => $e->getMessage()]);
+
+            Flash::error(__('messages.something_went_wrong'));
+            return back()->withInput();
+        }
+    }
+
+    ## Function to edit drama for status as draft
+    public function editDramaDraft($encryptedId) {
+        try {
+            $id = Crypt::decrypt($encryptedId); // decrypt the ID
+            $film = DramaApplication::findOrFail($id);
+            return view('drama_applications.edit_draft', [
+                'film' => $film
+            ]);
+        } catch (\Exception $e) {
+            abort(404);
+        }
+    }
+
+    ## Function for update draft drama
+    public function updateDraftDrama(ServiceApplicationRequest $request) {
+        ## Request validate
+        $validated = $request->validated();
+        try {
+            ## Begin DB transaction
+            DB::beginTransaction();
+
+            ## Get existing film draft
+            $film = DramaApplication::findOrFail($request->film_id);
+
+            ## Handle NID file upload
+            if ($request->hasFile('nid_file')) {
+                $file = $request->file('nid_file');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('drama_applications/nid', $filename, 'public');
+
+                ## Delete old file if exists
+                if (!empty($film->nid_file) && \Storage::disk('public')->exists($film->nid_file)) {
+                    \Storage::disk('public')->delete($film->nid_file);
+                }
+
+                $validated['nid_file'] = $path;
+            }
+
+            $validated['status'] = 'on process';
+
+            ## Update the draft
+            $film->update($validated);
+
+            ## Commit transaction
+            DB::commit();
+
+            ## Redirect after success
+            \Laracasts\Flash\Flash::success(__('messages.draft_updated_successfully'));
+            return redirect()->route('dramaApplications.index');
+
+        } catch (\Exception $e) {
+            ## Rollback transaction on error
+            DB::rollBack();
+
+            ## Log the error for debugging
+            Log::error('Draft drama update failed: ' . $e->getMessage());
+
+            Flash::success(__('messages.draft_update_failed'));
+            return redirect()->route('dramaApplications.index');
+        }
     }
 }

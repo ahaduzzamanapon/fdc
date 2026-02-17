@@ -1,5 +1,6 @@
 <?php
 use App\Models\Producer;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\HomeController;
@@ -16,6 +17,16 @@ use App\Http\Controllers\MakePaymentController;
 use App\Http\Controllers\Reports;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\FrontendController;
+
+## To clear cache and other
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+
+    return redirect('/')->with('success', 'All Cache is cleared!');
+})->name('cache-clear-route');
 
 Route::get('lang/{locale}', [LanguageController::class, 'switch']);
 
@@ -96,6 +107,12 @@ Route::resource('realityApplications', 'RealityApplicationController');
 Route::prefix('reality-application')->name('realityApplications.')->group(function () {
     Route::get('{realityApplication}/forward/{desk}', [RealityApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [RealityApplicationController::class, 'update_status'])->name('st.status');
+
+    ## For save as draft section
+    Route::post('/draft', [RealityApplicationController::class, 'storeRealityAsDraft'])->name('reality.save.draft');
+    Route::get('/draft/{id}/edit', [RealityApplicationController::class, 'editRealityDraft'])->name('reality.edit.draft');
+    Route::post('/draft/update', [RealityApplicationController::class, 'updateRealityDrama'])->name('reality.update.draft');
+
 });
 Route::get('realityApplications_forward_table', [RealityApplicationController::class, 'forward_table'])->name('realityApplications.forward.table');
 
@@ -104,6 +121,11 @@ Route::resource('docufilmApplications', 'DocufilmApplicationController');
 Route::prefix('docufilm-application')->name('docufilmApplications.')->group(function () {
     Route::get('{docufilmApplication}/forward/{desk}', [DocufilmApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [DocufilmApplicationController::class, 'update_status'])->name('st.status');
+
+    ## For save as draft section
+    Route::post('/draft', [DocufilmApplicationController::class, 'storeDocAsDraft'])->name('doc.save.draft');
+    Route::get('/draft/{id}/edit', [DocufilmApplicationController::class, 'editDocDraft'])->name('doc.edit.draft');
+    Route::post('/draft/update', [DocufilmApplicationController::class, 'updateDocDrama'])->name('doc.update.draft');
 });
 Route::get('docufilmApplications_forward_table', [DocufilmApplicationController::class, 'forward_table'])->name('docufilmApplications.forward.table');
 
@@ -112,6 +134,11 @@ Route::resource('dramaApplications', 'DramaApplicationController');
 Route::prefix('drama-application')->name('dramaApplications.')->group(function () {
     Route::get('{dramaApplication}/forward/{desk}', [DramaApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [DramaApplicationController::class, 'update_status'])->name('st.status');
+
+    ## For save as draft section
+    Route::post('/draft', [DramaApplicationController::class, 'storeDramaAsDraft'])->name('drama.save.draft');
+    Route::get('/draft/{id}/edit', [DramaApplicationController::class, 'editDramaDraft'])->name('drama.edit.draft');
+    Route::post('/draft/update', [DramaApplicationController::class, 'updateDraftDrama'])->name('drama.update.draft');
 });
 Route::get('dramaApplications_forward_table', [DramaApplicationController::class, 'forward_table'])->name('dramaApplications.forward.table');
 
@@ -126,6 +153,11 @@ Route::prefix('film-applications')->name('filmApplications.')->group(function ()
     Route::get('{filmApplication}/make_payment/{package_id}', [FilmApplicationController::class, 'make_payment'])->name('make_payment');
     Route::get('{filmApplication}/payment_data', [FilmApplicationController::class, 'payment_data'])->name('payment_data');
     Route::get('single_payment_receipt/{filmPackage}', [FilmApplicationController::class, 'single_payment_receipt'])->name('single_payment_receipt');
+
+    ## For save as draft section
+    Route::post('/draft', [FilmApplicationController::class, 'storeFilmDraft'])->name('film.save.draft');
+    Route::get('/draft/{id}/edit', [FilmApplicationController::class, 'editFilmDraft'])->name('film.edit.draft');
+    Route::post('/draft/update', [FilmApplicationController::class, 'updateDraftFilm'])->name('film.update.draft');
 });
 
 

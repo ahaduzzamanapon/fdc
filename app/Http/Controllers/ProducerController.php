@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProducerRequest;
 use App\Http\Requests\UpdateProducerRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Mail\NotificationMail;
 use App\Models\Package;
 use App\Models\Producer;
 use App\Models\Item;
@@ -20,6 +21,7 @@ use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Mail;
 use Response;
 use Auth;
 use DateTime;
@@ -467,19 +469,29 @@ class ProducerController extends AppBaseController
         $producer = Producer::find($id);
         return view('producers.registration.registration_forward', compact('producer'));
     }
-    public function registration_forward_st(Request $request)
-    {
-
-        $id = $request->reg_id;
-        $producer = Producer::find($id);
-        $producer->reg_status = $request->reg_status;
-        $producer->updated_by = Auth::user()->id;
-        $producer->updated_at = date('Y-m-d H:i:s');
-        $producer->save();
-
-        $steps = ApprovalRequests::find($request->request_id);
 
 
+    public function registration_forward_st(Request $request) {
+        ## Request validation
+        $request->validate([
+            'reg_id'       => 'required|integer|exists:producers,id',
+            'reg_status'   => 'required|string',
+            'log_remarks'  => 'nullable|string',
+        ]);
+
+        ## Check data in producers table
+        $producer = Producer::findOrFail($request->reg_id);
+
+        ## Get data from approval_requests table based on application_id (Here application_id = producers table -> id)
+        $steps = ApprovalRequests::where('application_id', $producer->id)->firstOrFail();
+
+        ## Fixed the data for update
+        $current_role_id = $steps->current_role_id;
+        $status = $request->reg_status;
+        $prev_role_id = $steps->prev_role_id;
+        $next_role_id = $steps->next_role_id;
+
+        ## Don't know why is this used
         if (empty(Auth::user())) {
             $users = Auth::guard('producer')->user();
             $user_id = $users->id;
@@ -490,57 +502,75 @@ class ProducerController extends AppBaseController
             $user_role = $users->user_role;
         }
 
-        // filmapplications
-        $data = array(
-            'desk_id' => $current_role_id,
-            'status' => $status,
-            'updated_by' => $user_id,
-            'updated_at' => date('Y-m-d H:i:s'),
-        );
-
-        // approval_requests
-        $data1 = array(
-            'prev_role_id' => $prev_role_id,
-            'current_role_id' => $current_role_id,
-            'next_role_id' => $next_role_id,
-            'status' => $status,
-            'updated_by' => $user_id,
-            'updated_at' => date('Y-m-d H:i:s'),
-        );
-        // approval_logs
-        $data2 = array(
-            'request_id' => $request->request_id,
-            'request_type' => $steps->request_type,
-            'flow_id' => $steps->flow_id,
-            'action_by' => $user_id,
-            'action_role_id' => $user_role,
-            'next_role_id' => $current_role_id,
-            'status' => $fstatus,
-            'remarks' => $request->log_remarks,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_by' => $user_id,
-            'updated_at' => date('Y-m-d H:i:s'),
-        );
+        \DB::beginTransaction();
 
         try {
-            \DB::beginTransaction();
-            Booking::where('id', $request->booking)->update($data);
-            ApprovalRequests::where('id', $request->request_id)->update($data1);
-            ApprovalLogs::create($data2);
+            ## Update producers table
+            $producer->update([
+                'reg_status'  => $status,
+                'updated_by'  =>  $user_id,
+                'updated_at'  =>  now(),
+            ]);
+
+            ## Update approval_requests table
+            ApprovalRequests::where('id', $steps->id)->update([
+                'prev_role_id'    => $prev_role_id,
+                'current_role_id' => $current_role_id,
+                'next_role_id'    => $next_role_id,
+                'status'          => $status,
+                'updated_by'      => $user_id,
+            ]);
+
+            ## Insert into approval_logs table
+            ApprovalLogs::create([
+                'request_id'      => $request->reg_id,
+                'request_type'    => $steps->request_type,
+                'flow_id'         => $steps->flow_id,
+                'action_by'       => $user_id,
+                'action_role_id'  => $user_role,
+                'next_role_id'    => $current_role_id,
+                'status'          => $status,
+                'remarks'         => $request->log_remarks,
+            ]);
+
             \DB::commit();
-            Flash::success('Booking updated successfully.');
-        } catch (\Exception $e) {
+
+            ## Send mail
+            $mailData = [
+                'name' => $producer->name,
+                'message' => "Your registration has been {$status}."
+            ];
+
+            try {
+                Mail::to($producer->email)->queue(new NotificationMail([
+                    'type' => 'registration_approval',
+                    'subject' => 'আপনার নিবন্ধি অনুমোদিত হয়েছে',
+                    'producer_name' => $producer->owners_name,
+                    'status' => $status,
+                ]));
+
+            } catch (\Throwable $e) {
+                \Log::error('Mail failed', ['error' => $e->getMessage()]);
+            }
+
+            if($status == 'verified') {
+                Flash::success('Registration forwarded successfully.');
+                return redirect()->route('producer.registration_list', ['types' => 'verified']);
+            }
+
+            if($status == 'rejected') {
+                Flash::success('Registration rejected successfully.');
+                return redirect()->route('producer.registration_list', ['types' => 'rejected']);
+            }
+        } catch (\Throwable $e) {
             \DB::rollBack();
-            Flash::error('Booking update failed. Please try again later.');
+            \Log::error('Operation Fail', [
+                'error' => $e->getMessage()
+            ]);
+
+            Flash::error('Update failed. Please try again later.');
+            return redirect()->route('producer.registration_list', ['types' => 'pending']);
         }
-
-
-
-        $status = $request->reg_status;
-        $log_remarks = $request->log_remarks;
-        $producer->log_remarks = $log_remarks;
-        $producer->save();
-        return view('producers.registration.registration_forward', compact('producer'));
     }
 
 
