@@ -1,0 +1,49 @@
+<!-- Section: নাটক সংক্রান্ত তথ্য -->
+<fieldset class="border p-3 mb-4">
+    <legend class="float-none w-auto px-2">{{ __('messages.film_related_information') }}</legend>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-default">
+                <tr>
+                    <th scopre="row">{!! Form::label('film_title', 'Film Title:') !!}</th>
+                    <td>{{ $film->film_title }}</td>
+
+                    <th scopre="row">{!! Form::label('applicant_nam', 'Applicant Name:') !!}</th>
+                    <td>{{ $film->applicant_name }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</fieldset>
+
+
+<!-- Section: নাটক সংক্রান্ত আবেদন মন্তব্য -->
+<fieldset class="border p-3 mb-4">
+    <legend class="float-none w-auto px-2">আবেদন মন্তব্য</legend>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-default">
+                <tr>
+                    <th>Sl</th>
+                    <th>Role Name</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                </tr>
+
+                @foreach($logs as $key => $log)
+                    <tr>
+                        <td>{{ $key+1 }}</td>
+                        <td>
+                            @php
+                                $user = get_user($log->action_by);
+                            @endphp
+                            {{ $user ? $user->name_en : 'Unknown User' }}
+                        </td>
+                        <td>{{ $log->status }}</td>
+                        <td>{{ $log->remarks }}</td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+    </div>
+</fieldset>
