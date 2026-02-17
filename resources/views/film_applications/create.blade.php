@@ -17,7 +17,7 @@ Film Application {{ __('messages.film_application') }} @parent
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'filmApplications.store','class' => 'form-horizontal col-md-12']) !!}
+                    {!! Form::open(['route' => 'filmApplications.store','class' => 'form-horizontal col-md-12', 'files' => true]) !!}
                     <div class="row">
                         @include('film_applications.fields')
                     </div>

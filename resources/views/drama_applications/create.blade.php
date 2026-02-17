@@ -11,7 +11,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'dramaApplications.store','class' => 'form-horizontal col-md-12']) !!}
+                    {!! Form::open(['route' => 'dramaApplications.store','class' => 'form-horizontal col-md-12', 'files' => true]) !!}
                     <div class="row">
                         @include('drama_applications.fields')
                     </div>

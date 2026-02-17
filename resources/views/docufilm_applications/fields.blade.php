@@ -89,19 +89,19 @@
         </div>
         <div class="mb-3 col-md-4">
             <label for="approx_cost_general" class="form-label">{{ __('messages.estimated_cost_general') }}</label>
-            <input type="text" class="form-control" id="approx_cost_general" name="approx_cost_general">
+            <input type="number" class="form-control" id="approx_cost_general" name="approx_cost_general">
         </div>
         <div class="mb-3 col-md-4">
             <label for="approx_cost_animation" class="form-label">{{ __('messages.estimated_cost_animation') }}</label>
-            <input type="text" class="form-control" id="approx_cost_animation" name="approx_cost_animation">
+            <input type="number" class="form-control" id="approx_cost_animation" name="approx_cost_animation">
         </div>
         <div class="mb-3 col-md-4">
             <label for="approx_cost_shortfilm" class="form-label">{{ __('messages.estimated_cost_short_film') }}</label>
-            <input type="text" class="form-control" id="approx_cost_shortfilm" name="approx_cost_shortfilm">
+            <input type="number" class="form-control" id="approx_cost_shortfilm" name="approx_cost_shortfilm">
         </div>
         <div class="mb-3 col-md-4">
             <label for="approx_cost_others" class="form-label">{{ __('messages.estimated_cost_others') }}</label>
-            <input type="text" class="form-control" id="approx_cost_others" name="approx_cost_others">
+            <input type="number" class="form-control" id="approx_cost_others" name="approx_cost_others">
         </div>
         <div class="mb-3 col-md-4">
             <label for="film_type" class="form-label">{{ __('messages.film_type') }}</label>
@@ -255,5 +255,11 @@
 <!-- Submit Field -->
 <div class="form-group col-sm-12" style="text-align-last: right;">
     {!! Form::submit(__('messages.save'), ['class' => 'btn btn-primary']) !!}
+    <button type="submit"
+            class="btn btn-warning"
+            formaction="{{ route('docufilmApplications.doc.save.draft') }}"
+            formmethod="POST">
+        {{ __('messages.save_as_draft') }}
+    </button>
     <a href="{{ route('filmApplications.index') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>
 </div>

@@ -19,6 +19,9 @@
     <div class="clearfix"></div>
 
     @include('flash::message')
+    @php
+        use Illuminate\Support\Facades\Crypt;
+    @endphp
 
     <div class="clearfix"></div>
     <div class="card" width="88vw;">

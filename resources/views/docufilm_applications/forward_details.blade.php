@@ -8,8 +8,8 @@
                     <th scopre="row">{!! Form::label('film_title', 'Film Title:') !!}</th>
                     <td>{{ $film->film_title }}</td>
 
-                    <th scopre="row">{!! Form::label('applicant_nam', 'Applicant Nam:') !!}</th>
-                    <td>{{ $film->applicant_nam }}</td>
+                    <th scopre="row">{!! Form::label('applicant_nam', 'Applicant Name:') !!}</th>
+                    <td>{{ $film->applicant_name }}</td>
                 </tr>
             </table>
         </div>
@@ -33,7 +33,13 @@
                 @foreach($logs as $key => $log)
                     <tr>
                         <td>{{ $key+1 }}</td>
-                        <td> {{ get_user($log->action_by)->name_en }} ({{ Str::ucfirst(get_role($log->action_role_id)->name) }})</td>
+{{--                        <td> {{ get_user($log->action_by)->name_en }} ({{ Str::ucfirst(get_role($log->action_role_id)->name) }})</td>--}}
+                        <td>
+                            @php
+                                $user = get_user($log->action_by);
+                            @endphp
+                            {{ $user ? $user->name_en : 'Unknown User' }}
+                        </td>
                         <td>{{ $log->status }}</td>
                         <td>{{ $log->remarks }}</td>
                     </tr>

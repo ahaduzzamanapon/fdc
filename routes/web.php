@@ -99,6 +99,11 @@ Route::resource('partyApplications', 'PartyApplicationController');
 Route::prefix('party-application')->name('partyApplications.')->group(function () {
     Route::get('{partyApplication}/forward/{desk}', [PartyApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [PartyApplicationController::class, 'update_status'])->name('st.status');
+
+    ## For save as draft section
+    Route::post('/draft', [PartyApplicationController::class, 'storePartyAsDraft'])->name('reality.save.draft');
+    Route::get('/draft/{id}/edit', [PartyApplicationController::class, 'editPartyDraft'])->name('reality.edit.draft');
+    Route::post('/draft/update', [PartyApplicationController::class, 'updateRealityDrama'])->name('reality.update.draft');
 });
 Route::get('partyApplications_forward_table', [PartyApplicationController::class, 'forward_table'])->name('partyApplications.forward.table');
 
@@ -111,7 +116,7 @@ Route::prefix('reality-application')->name('realityApplications.')->group(functi
     ## For save as draft section
     Route::post('/draft', [RealityApplicationController::class, 'storeRealityAsDraft'])->name('reality.save.draft');
     Route::get('/draft/{id}/edit', [RealityApplicationController::class, 'editRealityDraft'])->name('reality.edit.draft');
-    Route::post('/draft/update', [RealityApplicationController::class, 'updateRealityDrama'])->name('reality.update.draft');
+    Route::post('/draft/update', [RealityApplicationController::class, 'updateParty'])->name('reality.update.draft');
 
 });
 Route::get('realityApplications_forward_table', [RealityApplicationController::class, 'forward_table'])->name('realityApplications.forward.table');
