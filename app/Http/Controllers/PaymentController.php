@@ -14,11 +14,142 @@ use App\Models\Package;
 use App\Models\ProducerPaymentDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Flash;
 
 class PaymentController extends Controller
 {
-    // custom package
+    /**
+     * Get PayStation credentials from .env
+     */
+    private function getPayStationConfig()
+    {
+        return [
+            'base_url' => env('PAYSTATION_BASE_URL', 'https://sandbox.paystation.com.bd'),
+            'merchant_id' => env('PAYSTATION_MERCHANT_ID'),
+            'password' => env('PAYSTATION_PASSWORD'),
+        ];
+    }
+
+    /**
+     * Initiate PayStation payment for a given set of payment data.
+     * Returns redirect to PayStation payment page or back with error.
+     */
+    private function initiatePayStationPayment(array $paymentData)
+    {
+        $config = $this->getPayStationConfig();
+
+        $postData = [
+            'invoice_number' => $paymentData['invoice_number'],
+            'currency' => 'BDT',
+            'payment_amount' => $paymentData['amount'],
+            'reference' => $paymentData['reference'] ?? $paymentData['invoice_number'],
+            'cust_name' => $paymentData['cust_name'] ?? 'Customer',
+            'cust_phone' => $paymentData['cust_phone'] ?? '01700000000',
+            'cust_email' => $paymentData['cust_email'] ?? '',
+            'cust_address' => $paymentData['cust_address'] ?? 'Dhaka, Bangladesh',
+            'callback_url' => $paymentData['callback_url'],
+            'checkout_items' => $paymentData['checkout_items'] ?? 'Payment',
+            'merchantId' => $config['merchant_id'],
+            'password' => $config['password'],
+        ];
+
+        try {
+            $response = Http::asForm()->post($config['base_url'] . '/initiate-payment', $postData);
+
+            if ($response->successful()) {
+                $result = $response->json();
+
+                // PayStation typically returns a payment URL to redirect to
+                if (isset($result['payment_url'])) {
+                    return redirect()->away($result['payment_url']);
+                }
+
+                // If the response itself is a redirect URL string
+                if (isset($result['url'])) {
+                    return redirect()->away($result['url']);
+                }
+
+                // If there's a redirect in the response
+                if (isset($result['redirect_url'])) {
+                    return redirect()->away($result['redirect_url']);
+                }
+
+                // Log full response for debugging
+                Log::info('PayStation initiate response', ['response' => $result]);
+
+                // Fallback: if gateway_url exists
+                if (isset($result['gateway_url'])) {
+                    return redirect()->away($result['gateway_url']);
+                }
+
+                Flash::error('Payment initiation failed: Unexpected response from payment gateway.');
+                return back();
+            } else {
+                Log::error('PayStation payment initiation failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+                Flash::error('Payment initiation failed. Please try again.');
+                return back();
+            }
+        } catch (\Exception $e) {
+            Log::error('PayStation payment exception', ['error' => $e->getMessage()]);
+            Flash::error('Payment service unavailable. Please try again later.');
+            return back();
+        }
+    }
+
+    /**
+     * Check transaction status from PayStation
+     * Uses: POST https://api.paystation.com.bd/v2/transaction-status
+     * Header: merchantId
+     * Body: {"trxId": "..."}
+     */
+    public function checkTransactionStatus($trxId)
+    {
+        $config = $this->getPayStationConfig();
+
+        try {
+            $response = Http::withHeaders([
+                'merchantId' => $config['merchant_id'],
+                'Content-Type' => 'application/json',
+            ])->post($config['base_url'] . '/transaction-status', [
+                        'trxId' => $trxId,
+                    ]);
+
+            $result = $response->json();
+            Log::info('PayStation transaction status', ['trxId' => $trxId, 'response' => $result]);
+            return $result;
+        } catch (\Exception $e) {
+            Log::error('PayStation status check failed', ['trxId' => $trxId, 'error' => $e->getMessage()]);
+            return null;
+        }
+    }
+
+    /**
+     * Verify if a PayStation transaction was successful.
+     * Returns true if status_code=200 and trx_status=success.
+     */
+    private function isPayStationPaymentSuccess($trxId)
+    {
+        $result = $this->checkTransactionStatus($trxId);
+
+        if (
+            $result && isset($result['status_code']) && $result['status_code'] == '200'
+            && isset($result['data']['trx_status']) && $result['data']['trx_status'] == 'success'
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // =============================================
+    // CUSTOM PACKAGE PAYMENT
+    // =============================================
+
     public function initiate_cm_payment($transaction_id)
     {
         $film_package = Package::where('trn_id', $transaction_id)->first();
@@ -27,92 +158,22 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Transaction not found'], 404);
         }
 
-        $amount = $film_package->amount;
-        $reqst_id = $transaction_id;
         $user = Auth::guard('producer')->user();
-        // Prepare request object
-        $requestObj = (object) [
-            'id' => $reqst_id,
-            'amount' => $amount,
-            'citizen_name' => $user->organization_name,
-            'citizen_mobile' => $user->phone_number,
-            'citizen_address' => $user->address,
-        ];
-
-        return $this->ekPayCm($requestObj);
-    }
-    public function ekPayCm($request)
-    {
-        $reqst_id = $request->id;
-        $paymentUrl = 'https://sandbox.ekpay.gov.bd/ekpaypg/';
-        $token = $this->ekPayTokenCm($request);
-        $redirect = $paymentUrl . "v1?sToken=$token&trnsID=$reqst_id";
-        return redirect($redirect);
-    }
-    public function ekPayTokenCm($request)
-    {
-        date_default_timezone_set('Asia/Dhaka');
-        $req_timestamp = date('Y-m-d H:i:s') . ' GMT+6';
-
         $BackUrl = url('');
-        $paymentUrl = 'https://sandbox.ekpay.gov.bd/ekpaypg/';
-        $userName = 'bbs_test';
-        $password = 'BbstaT@tsT12';
-        $mac_addr = '1.1.1.1';
 
-        // Append trnsID to callback URLs
-        $responseUrlSuccess = $BackUrl . '/customPackage/payment/success';
-        $responseUrlCancel = $BackUrl . '/customPackage/payment/cancel';
-
-        $ipnUrlTrxinfo = $BackUrl . '/response-ekpay-ipn-tax';
-
-        $payload = json_encode([
-            "mer_info" => [
-                "mer_reg_id" => $userName,
-                "mer_pas_key" => $password
-            ],
-            "req_timestamp" => $req_timestamp,
-            "feed_uri" => [
-                "s_uri" => $responseUrlSuccess,
-                "f_uri" => $responseUrlCancel,
-                "c_uri" => $responseUrlCancel
-            ],
-            "cust_info" => [
-                "cust_id" => $request->id,
-                "cust_name" => $request->citizen_name,
-                "cust_mobo_no" => "+88" . $request->citizen_mobile,
-                "cust_mail_addr" => $request->citizen_address
-            ],
-            "trns_info" => [
-                "trnx_id" => $request->id,
-                "trnx_amt" => $request->amount,
-                "trnx_currency" => "BDT",
-                "ord_id" => $request->id,
-                "ord_det" => "Custom Package Fee"
-            ],
-            "ipn_info" => [
-                "ipn_channel" => "3",
-                "ipn_email" => "mafizur.mysoftheaven@gmail.com",
-                "ipn_uri" => $ipnUrlTrxinfo
-            ],
-            "mac_addr" => $mac_addr
+        return $this->initiatePayStationPayment([
+            'invoice_number' => $transaction_id,
+            'amount' => $film_package->amount,
+            'reference' => 'CM-' . $transaction_id,
+            'cust_name' => $user->organization_name,
+            'cust_phone' => $user->phone_number,
+            'cust_email' => $user->email ?? '',
+            'cust_address' => $user->address ?? 'Dhaka, Bangladesh',
+            'callback_url' => $BackUrl . '/customPackage/payment/success?transId=' . $transaction_id,
+            'checkout_items' => 'Custom Package Fee',
         ]);
-
-        //dd($payload);
-
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $paymentUrl . 'v1/merchant-api',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $payload,
-            CURLOPT_HTTPHEADER => ['Content-Type: application/json']
-        ]);
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $info = json_decode($response);
-        return $info->secure_token;
     }
+
     public function ekPayCmSuccess(Request $request)
     {
         $transId = $request->query('transId');
@@ -120,6 +181,13 @@ class PaymentController extends Controller
 
         if (!$package) {
             return response()->json(['error' => 'Transaction not found'], 404);
+        }
+
+        // Verify transaction with PayStation API
+        if (!$this->isPayStationPaymentSuccess($transId)) {
+            Log::warning('PayStation CM payment verification failed', ['transId' => $transId]);
+            Flash::error('Payment verification failed. Please contact support.');
+            return redirect()->route('makePayments.cm_package_list');
         }
 
         $producer = Auth::guard('producer')->user();
@@ -144,9 +212,17 @@ class PaymentController extends Controller
         Flash::success('Payment successful');
         return redirect()->route('makePayments.cm_package_list');
     }
+
     public function ekPayCmCancel(Request $request)
     {
         $transId = $request->query('transId');
+
+        // Double-check with PayStation — maybe user cancelled but payment went through
+        if ($this->isPayStationPaymentSuccess($transId)) {
+            Log::info('PayStation CM cancel callback but payment was successful', ['transId' => $transId]);
+            return $this->ekPayCmSuccess($request);
+        }
+
         $data = array(
             'pay_status' => 'unpaid',
             'updated_by' => Auth::guard('producer')->user()->id,
@@ -154,12 +230,14 @@ class PaymentController extends Controller
         );
         Package::where('trn_id', $transId)->update($data);
 
-        Flash::success('Payment cancelled');
+        Flash::error('Payment cancelled');
         return redirect()->route('makePayments.cm_package_list');
     }
 
+    // =============================================
+    // FILM PACKAGE PAYMENT
+    // =============================================
 
-    // film package payment
     public function innitiate_payment($transaction_id)
     {
         $film_package = FilmPackage::where('trn_id', $transaction_id)->first();
@@ -168,97 +246,20 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Transaction not found'], 404);
         }
 
-        $amount = $film_package->amount;
-        $reqst_id = $transaction_id;
-
-
-
-        // Prepare request object
-        $requestObj = (object) [
-            'id' => $reqst_id,
-            'amount' => $amount,
-            'citizen_name' => 'Demo User', // Replace with actual data if available
-            'citizen_mobile' => '01700000000',
-            'citizen_address' => 'Dhaka, Bangladesh',
-        ];
-
-        return $this->ekPay($requestObj);
-    }
-
-    public function ekPay($request)
-    {
-        $reqst_id = $request->id;
-        $paymentUrl = 'https://sandbox.ekpay.gov.bd/ekpaypg/';
-        $token = $this->ekPaytoken($request);
-        $redirect = $paymentUrl . "v1?sToken=$token&trnsID=$reqst_id";
-
-        return redirect($redirect);
-
-    }
-
-    public function ekPaytoken($request)
-    {
-        date_default_timezone_set('Asia/Dhaka');
-        $req_timestamp = date('Y-m-d H:i:s') . ' GMT+6';
-
+        $user = Auth::guard('producer')->user();
         $BackUrl = url('');
-        $paymentUrl = 'https://sandbox.ekpay.gov.bd/ekpaypg/';
-        $userName = 'bbs_test';
-        $password = 'BbstaT@tsT12';
-        $mac_addr = '1.1.1.1';
 
-        // Append trnsID to callback URLs
-        $responseUrlSuccess = $BackUrl . '/filmApplications/payment/success';
-        $responseUrlCancel = $BackUrl . '/filmApplications/payment/cancel';
-
-        $ipnUrlTrxinfo = $BackUrl . '/response-ekpay-ipn-tax';
-
-        $payload = json_encode([
-            "mer_info" => [
-                "mer_reg_id" => $userName,
-                "mer_pas_key" => $password
-            ],
-            "req_timestamp" => $req_timestamp,
-            "feed_uri" => [
-                "s_uri" => $responseUrlSuccess,
-                "f_uri" => $responseUrlCancel,
-                "c_uri" => $responseUrlCancel
-            ],
-            "cust_info" => [
-                "cust_id" => $request->id,
-                "cust_name" => $request->citizen_name,
-                "cust_mobo_no" => "+88" . $request->citizen_mobile,
-                "cust_mail_addr" => $request->citizen_address
-            ],
-            "trns_info" => [
-                "trnx_id" => $request->id,
-                "trnx_amt" => $request->amount,
-                "trnx_currency" => "BDT",
-                "ord_id" => $request->id,
-                "ord_det" => "Film Application Fee"
-            ],
-            "ipn_info" => [
-                "ipn_channel" => "3",
-                "ipn_email" => "mafizur.mysoftheaven@gmail.com",
-                "ipn_uri" => $ipnUrlTrxinfo
-            ],
-            "mac_addr" => $mac_addr
+        return $this->initiatePayStationPayment([
+            'invoice_number' => $transaction_id,
+            'amount' => $film_package->amount,
+            'reference' => 'FILM-' . $transaction_id,
+            'cust_name' => $user->organization_name ?? 'Demo User',
+            'cust_phone' => $user->phone_number ?? '01700000000',
+            'cust_email' => $user->email ?? '',
+            'cust_address' => $user->address ?? 'Dhaka, Bangladesh',
+            'callback_url' => $BackUrl . '/filmApplications/payment/success?transId=' . $transaction_id,
+            'checkout_items' => 'Film Application Fee',
         ]);
-
-        //dd($payload);
-
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $paymentUrl . 'v1/merchant-api',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $payload,
-            CURLOPT_HTTPHEADER => ['Content-Type: application/json']
-        ]);
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $info = json_decode($response);
-        return $info->secure_token;
     }
 
     public function ekPaySuccess(Request $request)
@@ -268,6 +269,13 @@ class PaymentController extends Controller
 
         if (!$film_package) {
             return response()->json(['error' => 'Transaction not found'], 404);
+        }
+
+        // Verify transaction with PayStation API
+        if (!$this->isPayStationPaymentSuccess($transId)) {
+            Log::warning('PayStation Film payment verification failed', ['transId' => $transId]);
+            Flash::error('Payment verification failed. Please contact support.');
+            return redirect()->route('makePayments.index');
         }
 
         $producer = Auth::guard('producer')->user();
@@ -353,16 +361,14 @@ class PaymentController extends Controller
     public function ekPayCancel(Request $request)
     {
         $transId = $request->query('transId');
-         Flash::success('Payment cancelled');
+
+        // Double-check with PayStation — maybe user cancelled but payment went through
+        if ($this->isPayStationPaymentSuccess($transId)) {
+            Log::info('PayStation Film cancel callback but payment was successful', ['transId' => $transId]);
+            return $this->ekPaySuccess($request);
+        }
+
+        Flash::error('Payment cancelled');
         return redirect()->route('filmApplications.index');
     }
-
 }
-
-
-
-
-
-
-
-
