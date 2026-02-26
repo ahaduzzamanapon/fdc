@@ -58,8 +58,12 @@
                                 <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
                                     <a  class='dropdown-item' href="{{ route('producer.booking_details', $booking->id) }}"><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view_label') }}"></i> {{ __('messages.view_label') }}</a>
 
+                                    @if ($booking->status == 'draft' && Auth::guard('producer')->check())
+                                        <a href="{{ route('producer.edit.draft', [Crypt::encrypt($booking->id), 'booking']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> সম্পাদনা </a>
+                                    @endif
+
                                     @if ($booking->status == 'on process' && !Auth::guard('producer')->check())
-                                        <a href="{{ route('producerBooking.forward', [$booking->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i>Check And Forward</a>
+                                        <a href="{{ route('producerBooking.forward', [$booking->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> চেক এবং ফরোয়ার্ড </a>
                                     @endif
                                 </div>
                             </div>

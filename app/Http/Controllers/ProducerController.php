@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\DB;
 use Mpdf\Mpdf;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\Crypt;
 
 class ProducerController extends AppBaseController
 {
@@ -644,6 +645,7 @@ class ProducerController extends AppBaseController
 
         return view('producers.mainView.booking', compact('booking_requests'));
     }
+    // Producer Create Booking Page
     public function create_page()
     {
         if (!Auth::guard('producer')->check()) {
@@ -652,7 +654,7 @@ class ProducerController extends AppBaseController
         }
         return view('producers.mainView.create_page');
     }
-
+    // Producer Get Application List by Film Type
     public function get_application(Request $request)
     {
         $user = Auth::guard('producer')->user();
@@ -668,7 +670,7 @@ class ProducerController extends AppBaseController
 
         return response()->json($items);
     }
-
+    // Producer Get Applicant Balance
     public function get_applicant_balance(Request $request)
     {
 
@@ -677,7 +679,7 @@ class ProducerController extends AppBaseController
         $balance = !empty($items->current_balance) ? $items->current_balance : 0;
         return response()->json($balance);
     }
-
+    // Producer Get Items by Category
     public function get_items_by_category(Request $request)
     {
 
@@ -686,7 +688,7 @@ class ProducerController extends AppBaseController
         $items = Item::where('cat_id', $cat_id)->where('service_type', $service_type)->get();
         return response()->json($items);
     }
-
+    // Producer Get Shift
     public function get_shift_by_item(Request $request)
     {
 
@@ -694,6 +696,7 @@ class ProducerController extends AppBaseController
         $Shift = Shift::where('item_id', $item_id)->get();
         return response()->json($Shift);
     }
+    // Producer Get Booking Date by Item and Service Type
     public function get_booking_date(Request $request)
     {
         $item_id = $request->item_id;
@@ -778,7 +781,7 @@ class ProducerController extends AppBaseController
 
         return response()->json(['error' => 'Invalid service type'], 400);
     }
-
+    // Producer Add to Cart
     public function add_to_cart(Request $request)
     {
         $item_id = $request->item_id;
@@ -818,10 +821,140 @@ class ProducerController extends AppBaseController
                 $data['shift_name'] = $shift->name;
             }
         }
-
         return response()->json($data);
     }
+    // Booking item insert by producer
+    public function booking_draft(Request $request)
+    {
+        // dd($request->all());
+        $producer = Auth::guard('producer')->user();
+        $role_id = $producer->group_id;
+        $flow = ApprovalFlowMaster::where('name', 'like', '%Booking Flow%')->first();
+        $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+        $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
 
+        $request->validate([
+            'total_price_input_total' => 'required|numeric|gt:0',
+        ], [
+            'total_price_input_total.required' => 'সর্বমোট মূল্য অবশ্যই প্রদান করতে হবে।',
+            'total_price_input_total.numeric'  => 'সর্বমোট মূল্য অবশ্যই একটি সংখ্যা হতে হবে।',
+            'total_price_input_total.gt'       => 'সর্বমোট মূল্য অবশ্যই ০ এর বেশি হতে হবে।',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // 1. Create Booking
+            // Check if booking exists (edit mode)
+            $booking_id = $request->input('booking_id'); // edit page থেকে hidden input
+            if($booking_id){
+                // Update existing booking
+                $booking = Booking::findOrFail($booking_id);
+                $booking->update([
+                    'film_id' => $request->input('film_id'),
+                    'film_type' => $request->input('film_type'),
+                    'total_price' => $request->input('total_price_input_total'),
+                    'status' => 'draft', // বা form থেকে নেওয়া status
+                ]);
+                // Delete old details
+                BookingDetail::where('booking_id', $booking->id)->delete();
+            } else {
+                // New booking insert
+                $booking = Booking::create([
+                    'book_id' => 'BOOK-' . time() . '-' . Auth::guard('producer')->user()->id . '-' . rand(1000, 9999),
+                    'status' => 'draft',
+                    'desk_id' => $step->to_role_id,
+                    'film_id' => $request->input('film_id'),
+                    'film_type' => $request->input('film_type'),
+                    'producer_id' => $producer->id, // or pass producer_id from $request
+                    'total_price' => $request->input('total_price_input_total'),
+                ]);
+
+                // 3. Create approval request
+                $data = array(
+                    'flow_id' => $flow->id,
+                    'request_type' => $flow->name,
+                    'application_id' => $booking->id,
+                    'prev_role_id' => $role_id,
+                    'current_role_id' => $step->to_role_id,
+                    'next_role_id' => $next->to_role_id ?? $step->to_role_id,
+                    'status' => 'on process',
+                    'created_by' => $producer->id,
+                    'updated_by' => $producer->id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $insert = ApprovalRequests::create($data);
+
+                $data1 = array(
+                    'request_id' => $insert->id,
+                    'request_type' => $flow->name,
+                    'flow_id' => $flow->id,
+                    'action_by' => $producer->id,
+                    'action_role_id' => $role_id,
+                    'next_role_id' => $step->to_role_id,
+                    'status' => 'forward',
+                    'remarks' => 'New Booking Created',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $insert1 = ApprovalLogs::create($data1);
+            }
+
+            // Insert Booking Details
+            // 2. Loop through booking details
+            $item_ids = $request->input('item_id');
+            $shift_ids = $request->input('shift_id');
+            $category_ids = $request->input('category_id');
+            $start_dates = $request->input('booking_start_date');
+            $end_dates = $request->input('booking_end_date');
+            $item_price = $request->input('item_price');
+            $total_prices = $request->input('total_price');
+
+            // Check if item_ids is not empty before looping to avoid errors when no items are added
+            if (!empty($item_ids)) {
+                foreach ($item_ids as $i => $item_id) {
+                    $start = \Carbon\Carbon::parse($start_dates[$i]);
+                    $end = \Carbon\Carbon::parse($end_dates[$i]);
+                    $total_day = $start->diffInDays($end) + 1;
+                    BookingDetail::create([
+                        'booking_id' => $booking->id,
+                        'catagori' => $category_ids[$i],
+                        'item_id' => $item_id,
+                        'shift_id' => !empty($shift_ids[$i]) ? $shift_ids[$i] : null,
+                        'amount' => $item_price[$i], // Assuming amount is the quantity of items booked, adjust as necessary
+                        'start_date' => $start_dates[$i],
+                        'end_date' => $end_dates[$i],
+                        'total_day' => $total_day,
+                        'total_amount' => $total_prices[$i],
+                    ]);
+                }
+            }
+
+            DB::commit();
+            Flash::success('Booking draft created successfully!');
+            return redirect(route('producer.booking'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Flash::error('Failed to create booking draft: ' . $e->getMessage());
+            return back()->with('error', 'Failed to create booking draft: ' . $e->getMessage());
+        }
+    }
+    // Edit Booking status from draft to on process
+    function edit_draft($encryptedId)
+    {
+        try {
+            $id = Crypt::decrypt($encryptedId); // decrypt the ID
+            $film = Booking::findOrFail($id);
+            $details = BookingDetail::with('item')->where('booking_id', $id)->get();
+
+            return view('producers.mainView.edit_draft', [
+                'film' => $film,
+                'details' => $details
+            ]);
+        } catch (\Exception $e) {
+            abort(404);
+        }
+    }
     // Booking item insert by producer
     public function producer_booking_request(Request $request)
     {
@@ -835,15 +968,61 @@ class ProducerController extends AppBaseController
         DB::beginTransaction();
         try {
             // 1. Create Booking
-            $booking = Booking::create([
-                'book_id' => 'BOOK-' . time() . '-' . Auth::guard('producer')->user()->id . '-' . rand(1000, 9999),
-                'status' => 'on process',
-                'desk_id' => $step->to_role_id,
-                'film_id' => $request->input('film_id'),
-                'film_type' => $request->input('film_type'),
-                'producer_id' => $producer->id, // or pass producer_id from $request
-                'total_price' => $request->input('total_price_input_total'),
-            ]);
+            // Check if booking exists (edit mode)
+            $booking_id = $request->input('booking_id'); // edit page থেকে hidden input
+            if($booking_id){
+                // Update existing booking
+                $booking = Booking::findOrFail($booking_id);
+                $booking->update([
+                    'film_id' => $request->input('film_id'),
+                    'film_type' => $request->input('film_type'),
+                    'total_price' => $request->input('total_price_input_total'),
+                    'status' => 'on process', // বা form থেকে নেওয়া status
+                ]);
+                // Delete old details
+                BookingDetail::where('booking_id', $booking_id)->delete();
+            } else {
+                // New booking insert
+                $booking = Booking::create([
+                    'book_id' => 'BOOK-' . time() . '-' . Auth::guard('producer')->user()->id . '-' . rand(1000, 9999),
+                    'status' => 'on process',
+                    'desk_id' => $step->to_role_id,
+                    'film_id' => $request->input('film_id'),
+                    'film_type' => $request->input('film_type'),
+                    'producer_id' => $producer->id, // or pass producer_id from $request
+                    'total_price' => $request->input('total_price_input_total'),
+                ]);
+
+                // 3. Create approval request
+                $data = array(
+                    'flow_id' => $flow->id,
+                    'request_type' => $flow->name,
+                    'application_id' => $booking->id,
+                    'prev_role_id' => $role_id,
+                    'current_role_id' => $step->to_role_id,
+                    'next_role_id' => $next->to_role_id ?? $step->to_role_id,
+                    'status' => 'on process',
+                    'created_by' => $producer->id,
+                    'updated_by' => $producer->id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $insert = ApprovalRequests::create($data);
+
+                $data1 = array(
+                    'request_id' => $insert->id,
+                    'request_type' => $flow->name,
+                    'flow_id' => $flow->id,
+                    'action_by' => $producer->id,
+                    'action_role_id' => $role_id,
+                    'next_role_id' => $step->to_role_id,
+                    'status' => 'forward',
+                    'remarks' => 'New Booking Created',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $insert1 = ApprovalLogs::create($data1);
+            }
 
             // 2. Loop through booking details
             $item_ids = $request->input('item_id');
@@ -851,6 +1030,7 @@ class ProducerController extends AppBaseController
             $category_ids = $request->input('category_id');
             $start_dates = $request->input('booking_start_date');
             $end_dates = $request->input('booking_end_date');
+            $item_price = $request->input('item_price');
             $total_prices = $request->input('total_price');
 
             foreach ($item_ids as $i => $item_id) {
@@ -862,42 +1042,13 @@ class ProducerController extends AppBaseController
                     'catagori' => $category_ids[$i],
                     'item_id' => $item_id,
                     'shift_id' => !empty($shift_ids[$i]) ? $shift_ids[$i] : null,
-                    'amount' => 1,
+                    'amount' => $item_price[$i],
                     'start_date' => $start_dates[$i],
                     'end_date' => $end_dates[$i],
                     'total_day' => $total_day,
                     'total_amount' => $total_prices[$i],
                 ]);
             }
-
-            $data = array(
-                'flow_id' => $flow->id,
-                'request_type' => $flow->name,
-                'application_id' => $booking->id,
-                'prev_role_id' => $role_id,
-                'current_role_id' => $step->to_role_id,
-                'next_role_id' => $next->to_role_id,
-                'status' => 'on process',
-                'created_by' => $producer->id,
-                'updated_by' => $producer->id,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            );
-            $insert = ApprovalRequests::create($data);
-
-            $data1 = array(
-                'request_id' => $insert->id,
-                'request_type' => $flow->name,
-                'flow_id' => $flow->id,
-                'action_by' => $producer->id,
-                'action_role_id' => $role_id,
-                'next_role_id' => $step->to_role_id,
-                'status' => 'forward',
-                'remarks' => 'New Booking Created',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            );
-            $insert1 = ApprovalLogs::create($data1);
 
             DB::commit();
             Flash::success('Booking created successfully!');

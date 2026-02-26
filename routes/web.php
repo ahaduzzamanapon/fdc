@@ -266,9 +266,6 @@ Route::group(["middleware" => []], function () {
         ->group(function () {
         Route::get('/download-certificate', 'download_certificate')->name('producer.download.certificate');
         Route::get('/dashboard', 'dashboard')->name('producer.dashboard');
-        Route::get('/booking', 'booking')->name('producer.booking');
-        Route::get('/create_page', 'create_page')->name('producer.create_page');
-        Route::post('/book_store', 'book_store')->name('producer.book_store');
         Route::get('/get_application', 'get_application')->name('producer.get_application');
         Route::get('/get_applicant_balance', 'get_applicant_balance')->name('producer.get_applicant_balance');
         Route::get('/get_items_by_category', 'get_items_by_category')->name('producer.get_items_by_category');
@@ -276,6 +273,15 @@ Route::group(["middleware" => []], function () {
         Route::get('/get_booking_date', 'get_booking_date')->name('producer.get_booking_date');
         Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
         Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
+
+        // for booking section
+        Route::get('/booking', 'booking')->name('producer.booking');
+        Route::get('/create_page', 'create_page')->name('producer.create_page');
+        Route::post('/book_store', 'book_store')->name('producer.book_store');
+        ## For save as draft section
+        Route::post('/booking_draft', 'booking_draft')->name('producer.booking_draft');
+        Route::get('/draft/{id}/edit', 'edit_draft')->name('producer.edit.draft');
+        Route::post('/draft/update', 'update_draft')->name('producer.update.draft');
 
         Route::get('/producer_booking_details/{id}', 'show_booking_details')->name('producer.booking_details');
         Route::get('/approve_booking/{id}', 'approve_booking')->name('producer.approve_booking');

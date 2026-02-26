@@ -148,16 +148,18 @@
 
             <div @class(['card-body'])>
                 <div @class(['row'])>
+                    {{-- Film Type --}}
                     <div @class(['col-md-4'])>
                         <label for="film_type" @class(['form-label'])>{{ 'সেবা নির্বাচন' }}</label>
                         <select id="film_type" @class(['form-select'])>
                             <option value="">{{ 'সেবা নির্বাচন করুন' }}</option>
-                            <option value="film">সিনেমা </option>
-                            <option value="drama">নাটক</option>
-                            <option value="docufilm">প্রামান্যচিত্র</option>
-                            <option value="realityshow">রিয়েলিটি শো</option>
+                            <option @if ($film->film_type == 'film') selected @endif value="film">সিনেমা </option>
+                            <option @if ($film->film_type == 'drama') selected @endif value="drama">নাটক</option>
+                            <option @if ($film->film_type == 'docufilm') selected @endif value="docufilm">প্রামান্যচিত্র</option>
+                            <option @if ($film->film_type == 'realityshow') selected @endif value="realityshow">রিয়েলিটি শো</option>
                         </select>
                     </div>
+
                     <div @class(['col-md-4'])>
                         <label id="film_id_label" for="film_id" @class(['form-label'])>{{ 'আবেদনকৃত সেবা' }}</label>
                         <select id="film_id" @class(['form-select'])>
@@ -165,11 +167,6 @@
                         </select>
                     </div>
 
-                    {{-- <div @class(['col-md-3']) id="film_balance_div">
-                        <label for="film_balance"
-                            @class(['form-label'])>{{ __('messages.remaining_balance') }}</label>
-                        <input type="number" @class(['form-control']) id="film_balance" readonly>
-                    </div> --}}
                     {{-- সেবার ধরণ --}}
                     <div @class(['col-md-4'])>
                         <label for="service_type" @class(['form-label'])>সেবার ধরণ</label>
@@ -202,6 +199,7 @@
                     </div>
                 </div>
 
+                {{-- বুকিং ফর্ম  --}}
                 <div id="booking_ui_div" class="row g-3 mt-3 align-items-end" style="display: none;">
                     <div class="col-md-4">
                         <label class="form-label">Start Date</label>
@@ -217,6 +215,8 @@
                             Date</button>
                         <input type="hidden" id="end_date_input">
                     </div>
+
+                    {{-- শিফট --}}
                     <div class="col-md-4" id="shift_dropdown_wrapper">
                         <label for="shift_id_dropdown" class="form-label">Shift</label>
                         <select id="shift_id_dropdown" class="form-select" disabled>
@@ -234,8 +234,9 @@
                 <!-- Booking Cart Table -->
                 <form action="{{ route('producer.producer_booking_request') }}" method="POST" id="booking_request_form">
                     @csrf
-                    <input type="hidden" name="film_id" id="form_film_id">
-                    <input type="hidden" name="film_type" id="form_film_type">
+                    <input type="hidden" name="booking_id" value="{{ $film->id }}">
+                    <input type="hidden" name="film_id" id="form_film_id" value="{{ $film->film_id }}">
+                    <input type="hidden" name="film_type" id="form_film_type" value="{{ $film->film_type }}">
                     <div @class(['table-responsive', 'mt-4'])>
                         <table @class(['table', 'table-bordered'])>
                             <thead>
@@ -248,13 +249,47 @@
                                     <th>{{ __('messages.action_label') }}</th>
                                 </tr>
                             </thead>
-                            <tbody id="booking_request_table"></tbody>
+                            <tbody id="booking_request_table">
+                                @php $rowCount = 0; @endphp
+                                @foreach($details as $detail)
+                                    @php $rowCount++; @endphp
+                                    <tr id="row_{{ $rowCount }}">
+                                        <td>
+                                            {{ $rowCount }}
+                                            <input type="hidden" name="item_id[]" value="{{ $detail->item_id }}">
+                                            <input type="hidden" name="shift_id[]" value="{{ $detail->shift_id }}">
+                                            <input type="hidden" name="category_id[]" value="{{ $detail->catagori }}">
+                                            <input type="hidden" name="booking_start_date[]"value="{{ $detail->start_date }}">
+                                            <input type="hidden" name="booking_end_date[]" value="{{ $detail->end_date }}">
+                                            <input type="hidden" name="item_price[]" value="{{ $detail->item->amount ?? 0 }}">
+                                            <input type="hidden" name="total_price[]" value="{{ $detail->total_amount }}">
+                                        </td>
+                                        <td>
+                                            {{ $detail->item->name_bn ?? '' }}
+                                            <br>
+                                            <small>({{ $detail->item->service_type ?? '' }})</small>
+                                        </td>
+                                        <td>{{ $detail->amount }}</td>
+                                        <td>
+                                            {{ $detail->start_date }}
+                                            <br> থেকে <br>
+                                            {{ $detail->end_date }}
+                                        </td>
+                                        <td>{{ $detail->total_amount }}</td>
+                                        <td>
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="remove_from_cart({{ $rowCount }})">X</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                             {{-- Total Price --}}
                             <tfoot>
                                 <tr>
                                     <td colspan="4" @class(['text-end'])>{{ __('messages.total_price_label') }}
                                     </td>
-                                    <td><input type="number" readonly @class(['form-control']) name="total_price_input_total" id="total_price_input_total" value="0" step="0.01" min="0" required></td>
+                                    <td><input type="number" readonly @class(['form-control']) name="total_price_input_total" id="total_price_input_total" value="{{ $film->total_price }}" step="0.01" min="0" required></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -295,6 +330,32 @@
     </div>
 
 @section('scripts')
+
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $filmId = "{{ $film->film_id }}";
+                var filmType = $('#film_type').val();
+                if (!filmType) return;
+                $.ajax({
+                    url: "{{ route('producer.get_application') }}",
+                    type: "GET",
+                    data: {
+                        filmId: filmType
+                    },
+                    success: function(data) {
+                        $.each(data, function(i, item) {
+                            $('#film_id').append(
+                                `<option ${item.id == $filmId ? 'selected' : ''} value="${item.id}">${item.film_title}</option>`
+                            );
+                        });
+                    }
+                });
+            }, 2000);
+        });
+    </script>
+
+
     <script>
         $(document).ready(function() {
             // Film type change logic
@@ -308,7 +369,7 @@
 
     <script>
         // --- Global Variables ---
-        let last_cart = 0;
+        let last_cart = {{ count($details) }};
         let current_item_data = {};
         let datePickerType = 'start';
         let calendarDate = new Date();
