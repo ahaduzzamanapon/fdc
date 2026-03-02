@@ -68,6 +68,7 @@
                         <th>Publish Date</th>
                         <th>Full Name</th>
                         <th>Designation</th>
+                        <th>Action</th>
                         <th>Download</th>
                     </tr>
                 </thead>
@@ -98,15 +99,25 @@
                     if (res.status === 'success') {
 
                         const downloadUrl = "{{ route('noc.download', ':id') }}"; // placeholder :id
+                        const showUrl = "{{ route('noc.show', ':id') }}"; // placeholder :id
+
+                        var downloadLink = '';
+                        if (res.result.status === 'approved') {
+                            downloadLink = '<a href="' + downloadUrl.replace(':id', res.result.token) + '" target="_blank" class="btn btn-sm btn-success"> Download </a>';
+                        } else {
+                            downloadLink = '<span class="text-muted">Not Available</span>';
+                        }
+
                         var row = '<tr>' +
                             '<td>' + res.result.token + '</td>' +
-                            '<td>' + res.result.status + '</td>' +
+                            '<td><span class="badge ' + (res.result.status === 'approved' ? 'badge-success' : 'badge-warning') + '">' + res.result.status + '</span></td>' +
                             '<td>' + res.result.name + '</td>' +
                             '<td>' + res.result.producer + '</td>' +
                             '<td>' + res.result.publish_date + '</td>' +
                             '<td>' + res.result.full_name + '</td>' +
                             '<td>' + res.result.designation + '</td>' +
-                            '<td> <a href="' + downloadUrl.replace(':id', res.result.token) + '" target="_blank"> Download </a></td>' +
+                            '<td> <a href="' + showUrl.replace(':id', res.result.id) + '" class="btn btn-sm btn-info"> View </a></td>' +
+                            '<td>' + downloadLink + '</td>' +
                             '</tr>';
                         $('#searchResults').html(row);
                     } else {
