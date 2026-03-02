@@ -47,7 +47,6 @@ Route::resource('noc', 'NocController');
 Route::get('/noc-search-list', [App\Http\Controllers\NocController::class, 'showSearchList'])->name('noc.search.list');
 Route::post('/noc-ajax-search', [App\Http\Controllers\NocController::class, 'ajaxSearch'])->name('noc.ajax.search');
 Route::get('/noc-download/{noc}', [App\Http\Controllers\NocController::class, 'downloadNoc'])->name('noc.download');
-
 // Frontend Pages end here
 
 
@@ -88,11 +87,17 @@ Route::prefix('make-payment')->name('makePayments.')->group(function () {
     Route::get('get_items_by_type', [MakePaymentController::class, 'get_items_by_type'])->name('get_items_by_type');
     Route::post('package', [MakePaymentController::class, 'custom_package_store'])->name('cp.store');
     Route::post('cp_change_status', [MakePaymentController::class, 'cp_update_status'])->name('cp.st.status');
+
+    // booking payment
+    Route::get('booking_payment/{booking_id}', [MakePaymentController::class, 'booking_payment'])->name('booking_payment');
 });
 Route::get('make_payment_cm/{cm_id}', [MakePaymentController::class, 'make_payment_cm'])->name('make_payment_cm');
 Route::get('makePayments/cp_forward/{desk}', [MakePaymentController::class, 'cp_forward'])->name('cp.forward');
 Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
 Route::get('makePayments_cp_forward_table', [MakePaymentController::class, 'cp_forward_table'])->name('makePayments.cp.forward.table');
+// make repayment
+Route::get('make_repayment/{payment_id}', [MakePaymentController::class, 'make_repayment'])->name('make_repayment');
+// end payments
 
 // party applications
 Route::resource('partyApplications', 'PartyApplicationController');
@@ -253,14 +258,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('{name?}', 'JoshController@showView');
 
 
-
+// producer login and registration
 Route::post('/producers_register', [ProducerController::class, 'producers_register'])->name('producers_register');
-
-
-
 Route::post('/producers_login', [ProducerController::class, 'producers_login'])->name('producers_login');
-
-
+// producer
 Route::group(["middleware" => []], function () {
     Route::prefix('producer')->controller(ProducerController::class)
         ->group(function () {

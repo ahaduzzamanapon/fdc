@@ -1123,6 +1123,8 @@ class ProducerController extends AppBaseController
         $data = array(
             'desk_id' => $current_role_id,
             'status' => $status,
+            'exprired_at' => $status === 'approved' ? date('Y-m-d H:i:s') : null,
+            'pay_status' => $status === 'approved' ? 'pending' : null,
             'updated_by' => $user_id,
             'updated_at' => date('Y-m-d H:i:s'),
         );
@@ -1151,12 +1153,32 @@ class ProducerController extends AppBaseController
             'updated_at' => date('Y-m-d H:i:s'),
         );
 
+        ## Get producer data
+        $producer = Producer::findOrFail($booking->producer_id);
+
         try {
             \DB::beginTransaction();
             Booking::where('id', $request->booking)->update($data);
             ApprovalRequests::where('id', $request->request_id)->update($data1);
             ApprovalLogs::create($data2);
             \DB::commit();
+
+            ## Send mail
+            if($request->status === 'approved' || $request->status === 'reject') {
+                try {
+                    Mail::to($producer->email)->queue(new NotificationMail([
+                        'type' => 'service_acceptance',
+                        'subject' => 'আপনার আবেদন গ্রহণ করা হয়েছে - ' . $steps->request_type,
+                        'producer_name' => $producer->owners_name,
+                        'status' => $request->status,
+                        'service_name' => $steps->request_type,
+                        'title' => $film->film_title
+                    ]));
+                } catch (\Throwable $e) {
+                    \Log::error('Mail failed', ['error' => $e->getMessage()]);
+                }
+            }
+
             Flash::success('Booking updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();

@@ -50,10 +50,16 @@
                                 <div class="dropdown">
                                     <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @if ($payment->status == 'pending' && Auth::guard('producer')->check())
+                                            <a href="{{ route('make_repayment', ['payment_id' => $payment->trn_id]) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> পেমেন্ট করুন </a>
+                                        @endif
+
+                                        @if ($payment->status == 'success')
                                         <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
+                                        @endif
 
                                         @if ($payment->review_status == 'on process' && !Auth::guard('producer')->check())
-                                            <a href="{{ route('makePayments.forward', [$payment->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i>Check And Forward</a>
+                                            <a href="{{ route('makePayments.forward', [$payment->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> পেমেন্ট নিশ্চিত করুন </a>
                                         @endif
                                     </div>
                                 </div>

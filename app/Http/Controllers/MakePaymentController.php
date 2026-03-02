@@ -11,6 +11,7 @@ use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
 use App\Models\Item;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Response;
 use Auth;
@@ -93,6 +94,54 @@ class MakePaymentController extends AppBaseController
         //
     }
 
+    // repayment for existing pending payment
+    public function make_repayment($transaction_id) {
+        $film_package = FilmPackage::where('trn_id', $transaction_id)->first();
+        if (!$film_package) {
+            Flash::error('Payment Failed');
+            return redirect()->route('makePayments.index');
+        }
+
+        // নতুন transaction id generate
+        $transaction_id = 'TRN-' . time().rand(1000,9999);
+        // update fields
+        $film_package->update([
+            'trn_id' => $transaction_id,
+            'status' => 'pending',
+            'review_status' => 'pending',
+        ]);
+        return redirect()->route('innitiate_payment', ['transaction_id' => $transaction_id]);
+    }
+
+    // booking payment
+    public function booking_payment($booking_id) {
+        $transaction_id = 'TRN-' . time().rand(1000,9999);
+        $package = Booking::find($booking_id);
+
+        if (!$package) {
+            Flash::error('Payment Failed');
+            return redirect()->route('producer.booking');
+        }
+
+        $film_package = new FilmPackage;
+        $film_package->film_id = $package->film_id;
+        $film_package->package_id = $package->id;  // booking id save as package id in film_package table for booking payment
+        $film_package->type = 'booking';
+        $film_package->name = $package->book_id;
+        $film_package->amount = $package->total_price;
+        $film_package->trn_id = $transaction_id;
+        $film_package->status = 'pending';
+        $film_package->review_status = 'pending';
+        $film_package->created_by = Auth::guard('producer')->user()->id;
+        $film_package->created_at = date('Y-m-d H:i:s');
+        $film_package->updated_at = date('Y-m-d H:i:s');
+
+        $film_package->save();
+        return redirect()->route('innitiate_payment', ['transaction_id' => $transaction_id]);
+
+    }
+
+    // custom functions // package payment
     public function make_payment($package_id) {
 
         $transaction_id = 'TRN-' . time().rand(1000,9999);

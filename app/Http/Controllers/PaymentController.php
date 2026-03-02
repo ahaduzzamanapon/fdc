@@ -135,7 +135,7 @@ class PaymentController extends Controller
     private function isPayStationPaymentSuccess($trxId)
     {
         $result = $this->checkTransactionStatus($trxId);
-
+        dd($result);
         if (
             $result && isset($result['status_code']) && $result['status_code'] == '200'
             && isset($result['data']['trx_status']) && $result['data']['trx_status'] == 'success'
@@ -237,7 +237,6 @@ class PaymentController extends Controller
     // =============================================
     // FILM PACKAGE PAYMENT
     // =============================================
-
     public function innitiate_payment($transaction_id)
     {
         $film_package = FilmPackage::where('trn_id', $transaction_id)->first();
@@ -252,19 +251,32 @@ class PaymentController extends Controller
         return $this->initiatePayStationPayment([
             'invoice_number' => $transaction_id,
             'amount' => $film_package->amount,
-            'reference' => 'FILM-' . $transaction_id,
+            'reference' => $film_package->type . '-' . $transaction_id,
             'cust_name' => $user->organization_name ?? 'Demo User',
             'cust_phone' => $user->phone_number ?? '01700000000',
             'cust_email' => $user->email ?? '',
             'cust_address' => $user->address ?? 'Dhaka, Bangladesh',
             'callback_url' => $BackUrl . '/filmApplications/payment/success?transId=' . $transaction_id,
-            'checkout_items' => 'Film Application Fee',
+            'checkout_items' => $film_package->name . ' Fee BDT',
         ]);
     }
 
     public function ekPaySuccess(Request $request)
     {
         $transId = $request->query('transId');
+        $pstatus = $request->query('status');
+        if ($pstatus == 'Canceled') {
+            $data = array(
+                'status' => 'canceled',
+                'updated_by' => Auth::guard('producer')->user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+            FilmPackage::where('trn_id', $transId)->update($data);
+
+            Flash::error('Payment cancelled');
+            return redirect()->route('makePayments.index');
+        }
+
         $film_package = FilmPackage::where('trn_id', $transId)->first();
 
         if (!$film_package) {
@@ -289,9 +301,11 @@ class PaymentController extends Controller
             $user_id = $film_package->created_by;
             if ($user_id == $producer->id) {
                 $film_package->updated_by = $producer->id;
-                $film_package->status = 'paid';
+                $film_package->status = 'success';
                 $film_package->review_status = 'on process';
                 $film_package->desk_id = $step->to_role_id;
+                $film_package->paid_at = date('Y-m-d H:i:s');
+                $film_package->updated_at = date('Y-m-d H:i:s');
                 $film_package->save();
 
                 $producer_balance = ProducerBalance::where('producer_id', $user_id)->first();

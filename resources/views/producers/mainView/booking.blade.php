@@ -43,6 +43,14 @@
                 </thead>
                 <tbody>
                 @foreach($booking_requests as $key => $booking)
+                    @php $time = date('Y-m-d H:i:s', strtotime('-72 hours')); @endphp
+                    @if($booking->pay_status == 'pending' && !empty($booking->exprired_at) &&  $booking->exprired_at < $time)
+                        @php
+                            $booking->status = 'expired';
+                            $booking->pay_status = null;
+                            $booking->exprired_at = null;
+                        @endphp
+                    @endif
                     <tr>
                         <td>{{  $key+1 }}</td>
                         <td>{{ $booking->book_id }}</td>
@@ -60,6 +68,10 @@
 
                                     @if ($booking->status == 'draft' && Auth::guard('producer')->check())
                                         <a href="{{ route('producer.edit.draft', [Crypt::encrypt($booking->id), 'booking']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> সম্পাদনা </a>
+                                    @endif
+
+                                    @if ($booking->status == 'approved' && Auth::guard('producer')->check())
+                                        <a href="{{ route('makePayments.booking_payment', $booking->id) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> পেমেন্ট করুন </a>
                                     @endif
 
                                     @if ($booking->status == 'on process' && !Auth::guard('producer')->check())
