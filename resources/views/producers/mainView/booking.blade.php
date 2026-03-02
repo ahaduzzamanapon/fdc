@@ -35,6 +35,7 @@
                         <th>{{ __('messages.serial') }}</th>
                         <th>{{ __('messages.booking_id') }}</th>
                         <th>{{ __('messages.status') }}</th>
+                        <th> পেমেন্ট অবস্থা </th>
                         <th>{{ __('messages.producer') }} </th>
                         <th>{{ __('messages.total_price_label') }}</th>
                         <th>{{ __('messages.created_at') }}</th>
@@ -55,6 +56,7 @@
                         <td>{{  $key+1 }}</td>
                         <td>{{ $booking->book_id }}</td>
                         <td>{{ $booking->status }}</td>
+                        <td>{{ $booking->pay_status }}</td>
                         <td>{{ $booking->producer_name }}</td>
                         <td>{{ $booking->total_price }}</td>
                         <td>{{ $booking->created_at }}</td>
@@ -72,6 +74,10 @@
 
                                     @if ($booking->status == 'approved' && Auth::guard('producer')->check())
                                         <a href="{{ route('makePayments.booking_payment', $booking->id) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> পেমেন্ট করুন </a>
+                                    @endif
+
+                                    @if ($booking->status == 'on process' && !Auth::guard('producer')->check())
+                                        <a href="{{ route('producerBooking.forward', [$booking->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> চেক এবং ফরোয়ার্ড </a>
                                     @endif
 
                                     @if ($booking->status == 'on process' && !Auth::guard('producer')->check())

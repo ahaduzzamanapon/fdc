@@ -11,11 +11,14 @@ use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
 use App\Models\Package;
+use App\Models\Booking;
 use App\Models\ProducerPaymentDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationMail;
 use Flash;
 
 class PaymentController extends Controller
@@ -135,7 +138,6 @@ class PaymentController extends Controller
     private function isPayStationPaymentSuccess($trxId)
     {
         $result = $this->checkTransactionStatus($trxId);
-        dd($result);
         if (
             $result && isset($result['status_code']) && $result['status_code'] == '200'
             && isset($result['data']['trx_status']) && $result['data']['trx_status'] == 'success'
@@ -263,6 +265,8 @@ class PaymentController extends Controller
 
     public function ekPaySuccess(Request $request)
     {
+        $film_package = FilmPackage::where('trn_id', $transId)->first();
+
         $transId = $request->query('transId');
         $pstatus = $request->query('status');
         if ($pstatus == 'Canceled') {
@@ -273,11 +277,19 @@ class PaymentController extends Controller
             );
             FilmPackage::where('trn_id', $transId)->update($data);
 
+            if ($film_package->type == 'booking') {
+                $booking = Booking::find($film_package->package_id);
+                if ($booking) {
+                    $booking->pay_status = 'canceled';
+                    $booking->updated_by = Auth::guard('producer')->user()->id;
+                    $booking->save();
+                }
+            }
+
             Flash::error('Payment cancelled');
             return redirect()->route('makePayments.index');
         }
 
-        $film_package = FilmPackage::where('trn_id', $transId)->first();
 
         if (!$film_package) {
             return response()->json(['error' => 'Transaction not found'], 404);
@@ -332,6 +344,15 @@ class PaymentController extends Controller
                 $balance_details->created_by = Auth::guard('producer')->user()->id;
                 $balance_details->save();
 
+                if ($film_package->type == 'booking') {
+                    $booking = Booking::find($film_package->package_id);
+                    if ($booking) {
+                        $booking->pay_status = 'paid';
+                        $booking->updated_by = Auth::guard('producer')->user()->id;
+                        $booking->save();
+                    }
+                }
+
                 // payment approval flow
                 $data = array(
                     'flow_id' => $flow->id,
@@ -361,6 +382,21 @@ class PaymentController extends Controller
                     'updated_at' => date('Y-m-d H:i:s')
                 );
                 $insert1 = ApprovalLogs::create($data1);
+
+                // Send email notification
+                try {
+                    Mail::to($producer->email)->queue(new NotificationMail([
+                        'type' => 'service_acceptance',
+                        'subject' => 'আপনার পেমেন্ট সফল হয়েছে',
+                        'producer_name' => $producer->owners_name,
+                        'status' => 'success',
+                        'service_name' => $film_package->name,
+                        'title' => 'আপনার পেমেন্ট সফল হয়েছে। ধন্যবাদ।',
+                        'message' => 'আপনার পেমেন্ট সফল হয়েছে। আপনার আবেদনটি পর্যালোচনা করা হবে এবং শীঘ্রই আপডেট দেওয়া হবে। ধন্যবাদ।',
+                    ]));
+                } catch (\Throwable $e) {
+                    \Log::error('Mail failed', ['error' => $e->getMessage()]);
+                }
             }
             DB::commit();
         } catch (\Exception $e) {
