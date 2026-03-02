@@ -115,7 +115,7 @@
 <!-- ঠিকানা Field -->
 <div class="col-md-8">
     <div class="form-group">
-        {!! Form::label('address', 'ঠিবানা', ['class'=>'control-label']) !!}
+        {!! Form::label('address', 'ঠিকানা', ['class'=>'control-label']) !!}
         {!! Form::textarea('address', null, ['class' => 'form-control', 'rows' => 2]) !!}
     </div>
 </div>
