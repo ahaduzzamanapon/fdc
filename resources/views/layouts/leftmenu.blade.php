@@ -1,5 +1,14 @@
 {{-- Producer --}}
 @if (Auth::guard('producer')->check())
+
+ {{-- বুকিং ড্যাশবোর্ড --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
+            href="{{ route('producer.dashboard') }}">
+            <i class="icon im im-icon-Home"></i>
+            <span class="item-name">{{ 'বুকিং ড্যাশবোর্ড' }}</span>
+        </a>
+    </li>
     {{-- ডাউনলোড সার্টিফিকেট --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/download-certificate') ? 'active' : '' !!}" aria-current="page"
@@ -160,14 +169,7 @@
         </ul>
     </li>
 
-    {{-- বুকিং ড্যাশবোর্ড --}}
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
-            href="{{ route('producer.dashboard') }}">
-            <i class="icon im im-icon-Home"></i>
-            <span class="item-name">{{ 'বুকিং ড্যাশবোর্ড' }}</span>
-        </a>
-    </li>
+   
 
     {{-- রিপোর্ট --}}
     <li class="nav-item">

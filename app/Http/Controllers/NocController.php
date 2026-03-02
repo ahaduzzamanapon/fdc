@@ -140,7 +140,7 @@ class NocController extends Controller
         $noc = Noc::where('token', $token)->first();
 
         if (!$noc) {
-            return response()->json(['status' => 'fail', 'result' => "<p class='text-danger center'> ⚠ কীনো তথ্য পাদয়া যায়নি </p>"]);
+            return response()->json(['status' => 'fail', 'result' => "<p class='text-danger center'> ⚠  কোনো তথ্য পাওয়া যায়নি </p>"]);
         }
         return response()->json(['status' => 'success', 'result' => $noc]);
     }

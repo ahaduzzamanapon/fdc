@@ -146,6 +146,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'phone_number' => 'ফোন নম্বর',
+        'email' => 'ইমেইল',
+    ],
 
 ];

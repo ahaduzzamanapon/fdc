@@ -1,7 +1,7 @@
 @if (Auth::guard('producer')->check())
-    <script>
-        window.location.href = '/producer/dashboard';
-    </script>
+  <script>
+    window.location.href = '/producer/dashboard';
+  </script>
 @endif
 
 <!DOCTYPE html>
@@ -21,13 +21,15 @@
   <style>
     * {
       margin: 0;
-      padding: 0;z
-      box-sizing: border-box;
+      padding: 0;
+      z box-sizing: border-box;
     }
+
     p {
       margin: 8px;
       padding: 0;
     }
+
     body {
       background-color: #D9DDFF;
 
@@ -35,12 +37,12 @@
     }
 
     .login-wrapper {
-        border-radius: 16px;
-        max-width: 550px;
-        width: 100%;
-        margin: auto;
-        box-shadow: 0px 0px 15px white;
-        background: linear-gradient(49deg, #0c2aef85, #d24848b0);
+      border-radius: 16px;
+      max-width: 550px;
+      width: 100%;
+      margin: auto;
+      box-shadow: 0px 0px 15px white;
+      background: linear-gradient(49deg, #0c2aef85, #d24848b0);
     }
 
     .form-control {
@@ -153,11 +155,24 @@
       background-color: #0314a3;
       border-color: var(--bs-btn-hover-border-color);
     }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 10;
+      color: #333;
+    }
+
+    .input-group {
+      position: relative;
+    }
   </style>
 </head>
 
-<body
-  style="background: linear-gradient(49deg, #d24848ad, #0c2aef63);">
+<body style="background: linear-gradient(49deg, #d24848ad, #0c2aef63);">
 
   <div class="container d-flex flex-column justify-content-center align-items-center min-vh-100">
     <div class="login-wrapper text-center text-dark">
@@ -165,15 +180,16 @@
         <div class="logo-text mb-4">
           <img style="filter: drop-shadow(1px 0px 3px white);" src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
-         @include('flash::message')
+        @include('flash::message')
         <ul class="nav nav-tabs mb-4 col-md-12" id="myTab" role="tablist">
           {{-- <li class="nav-item col-md-6" role="presentation">
-            <button class="nav-link active col-md-12" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button"
-              role="tab" aria-controls="login" aria-selected="true">{{ __('messages.administrative') }}</button>
+            <button class="nav-link active col-md-12" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
+              type="button" role="tab" aria-controls="login" aria-selected="true">{{ __('messages.administrative')
+              }}</button>
           </li>
           <li class="nav-item col-md-6" role="presentation">
-            <button class="nav-link col-md-12" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button"
-              role="tab" aria-controls="register" aria-selected="false">{{ 'নাগরিক' }}</button>
+            <button class="nav-link col-md-12" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
+              type="button" role="tab" aria-controls="register" aria-selected="false">{{ 'নাগরিক' }}</button>
           </li> --}}
         </ul>
 
@@ -184,7 +200,8 @@
                 @csrf
                 <p
                   style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
-                  {{ __('messages.mobile') }}</p>
+                  {{ __('messages.mobile') }}
+                </p>
                 <div class="input-group mb-3">
                   <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -196,7 +213,8 @@
                 </div>
                 <p
                   style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
-                  {{ __('messages.password') }}</p>
+                  {{ __('messages.password') }}
+                </p>
 
 
                 <div class="input-group mb-3">
@@ -214,14 +232,21 @@
                     </defs>
                   </svg>
 
-                  <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
+                  <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}"
+                    required>
+                  <span class="password-toggle">
+                    <i class="fas fa-eye"></i>
+                  </span>
                 </div>
 
                 <div class="d-flex justify-content-between helper-text mb-3">
-                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
-                    href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
-                  <span style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
-                    href="#" class="">{{ __('messages.no_account') }} <a href="{{ route('register') }}" class="text-light text-link" style="text-decoration: underline">
+                  {{-- <a
+                    style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
+                    href="#" class="text-link">{{ __('messages.forgot_password') }}</a> --}}
+                  <span
+                    style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
+                    href="#" class="">{{ __('messages.no_account') }} <a href="{{ route('register') }}"
+                      class="text-light text-link" style="text-decoration: underline">
                       {{ __('messages.register') }}</a> </span>
                 </div>
                 <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
@@ -233,7 +258,8 @@
                 @csrf
                 <p
                   style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
-                  {{ __('messages.mobile') }}</p>
+                  {{ __('messages.mobile') }}
+                </p>
                 <div class="input-group mb-3">
                   <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -245,7 +271,8 @@
                 </div>
                 <p
                   style="justify-self: left;font-family: 'Noto Sans Bengali', sans-serif;font-weight: 600;font-size: 16px;line-height: 100%;vertical-align: middle;color: white;">
-                  {{ __('messages.password') }}</p>
+                  {{ __('messages.password') }}
+                </p>
                 <div class="input-group mb-3">
                   <svg width="68" height="51" viewBox="0 0 68 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 4C0 1.79086 1.79086 0 4 0H68V51H4C1.79086 51 0 49.2091 0 47V4Z" fill="#001BFE" />
@@ -260,7 +287,11 @@
                       </clipPath>
                     </defs>
                   </svg>
-                  <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}" required>
+                  <input type="password" class="form-control" name="password" placeholder="{{ __('messages.password') }}"
+                    required>
+                  <span class="password-toggle">
+                    <i class="fas fa-eye"></i>
+                  </span>
                 </div>
 
                 <div class="d-flex justify-content-between helper-text mb-3">
@@ -274,8 +305,10 @@
         </div>
         <footer class="text-center text-light">
           <span>{{ __('messages.copyright') }}</span>
-          <span> {{ __('messages.technical_support') }} <a style="filter: drop-shadow(0px 0px 2px white);" href="https://mysoftheaven.com"><svg style="filter: drop-shadow(0px 0px 2px white);" width="130" height="23" viewBox="0 0 130 23"
-                fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <span> {{ __('messages.technical_support') }} <a style="filter: drop-shadow(0px 0px 2px white);"
+              href="https://mysoftheaven.com"><svg style="filter: drop-shadow(0px 0px 2px white);" width="130"
+                height="23" viewBox="0 0 130 23" fill="none" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
                 <rect width="129.749" height="22.8986" fill="url(#pattern0_18_49)" />
                 <defs>
                   <pattern id="pattern0_18_49" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -290,6 +323,23 @@
       </div>
     </div>
 
+    <script>
+      document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function () {
+          const input = this.closest('.input-group').querySelector('input');
+          const icon = this.querySelector('i');
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+          } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+          }
+        });
+      });
+    </script>
 </body>
 
 </html>
