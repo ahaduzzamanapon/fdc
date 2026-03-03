@@ -12,7 +12,7 @@ use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
 use App\Models\Package;
 use App\Models\Booking;
-use App\Models\ProducerPaymentDetails;
+use App\Models\ProducerBalanceDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -265,42 +265,43 @@ class PaymentController extends Controller
 
     public function ekPaySuccess(Request $request)
     {
-        $film_package = FilmPackage::where('trn_id', $transId)->first();
-
         $transId = $request->query('transId');
         $pstatus = $request->query('status');
-        if ($pstatus == 'Canceled') {
-            $data = array(
-                'status' => 'canceled',
-                'updated_by' => Auth::guard('producer')->user()->id,
-                'updated_at' => date('Y-m-d H:i:s'),
-            );
-            FilmPackage::where('trn_id', $transId)->update($data);
+        $film_package = FilmPackage::where('trn_id', $transId)->first();
+        // this block temporary comment on
+        // if ($pstatus == 'Canceled') {
+        //     $data = array(
+        //         'status' => 'canceled',
+        //         'review_status' => 'on process',
+        //         'updated_by' => Auth::guard('producer')->user()->id,
+        //         'updated_at' => date('Y-m-d H:i:s'),
+        //     );
+        //     FilmPackage::where('trn_id', $transId)->update($data);
 
-            if ($film_package->type == 'booking') {
-                $booking = Booking::find($film_package->package_id);
-                if ($booking) {
-                    $booking->pay_status = 'canceled';
-                    $booking->updated_by = Auth::guard('producer')->user()->id;
-                    $booking->save();
-                }
-            }
+        //     if ($film_package->type == 'booking') {
+        //         $booking = Booking::find($film_package->package_id);
+        //         if ($booking) {
+        //             $booking->pay_status = 'canceled';
+        //             $booking->updated_by = Auth::guard('producer')->user()->id;
+        //             $booking->save();
+        //         }
+        //     }
 
-            Flash::error('Payment cancelled');
-            return redirect()->route('makePayments.index');
-        }
-
+        //     Flash::error('Payment cancelled');
+        //     return redirect()->route('makePayments.index');
+        // }
 
         if (!$film_package) {
             return response()->json(['error' => 'Transaction not found'], 404);
         }
 
+        // this block temporary comment on
         // Verify transaction with PayStation API
-        if (!$this->isPayStationPaymentSuccess($transId)) {
-            Log::warning('PayStation Film payment verification failed', ['transId' => $transId]);
-            Flash::error('Payment verification failed. Please contact support.');
-            return redirect()->route('makePayments.index');
-        }
+        // if (!$this->isPayStationPaymentSuccess($transId)) {
+        //     Log::warning('PayStation Film payment verification failed', ['transId' => $transId]);
+        //     Flash::error('Payment verification failed. Please contact support.');
+        //     return redirect()->route('makePayments.index');
+        // }
 
         $producer = Auth::guard('producer')->user();
         $role_id = $producer->group_id;
@@ -336,7 +337,8 @@ class PaymentController extends Controller
                     $producer_balance->save();
                 }
 
-                $balance_details = new ProducerPaymentDetails;
+                $balance_details = new ProducerBalanceDetails;
+                $balance_details->payment_id = $film_package->id;
                 $balance_details->producer_id = $user_id;
                 $balance_details->amount = $film_package->amount;
                 $balance_details->type = 'in';
@@ -344,10 +346,14 @@ class PaymentController extends Controller
                 $balance_details->created_by = Auth::guard('producer')->user()->id;
                 $balance_details->save();
 
+                // update booking payment status if this package is for booking
                 if ($film_package->type == 'booking') {
                     $booking = Booking::find($film_package->package_id);
                     if ($booking) {
+                        $booking->status = 'success';
                         $booking->pay_status = 'paid';
+                        $booking->exprired_at = null;
+                        $booking->updated_at = date('Y-m-d H:i:s');
                         $booking->updated_by = Auth::guard('producer')->user()->id;
                         $booking->save();
                     }

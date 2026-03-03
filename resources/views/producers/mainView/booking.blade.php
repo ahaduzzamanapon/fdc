@@ -79,10 +79,6 @@
                                     @if ($booking->status == 'on process' && !Auth::guard('producer')->check())
                                         <a href="{{ route('producerBooking.forward', [$booking->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> চেক এবং ফরোয়ার্ড </a>
                                     @endif
-
-                                    @if ($booking->status == 'on process' && !Auth::guard('producer')->check())
-                                        <a href="{{ route('producerBooking.forward', [$booking->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> চেক এবং ফরোয়ার্ড </a>
-                                    @endif
                                 </div>
                             </div>
                         </td>

@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Eloquent as Model;
 
-class ProducerPaymentDetails extends Model
+class ProducerBalanceDetails extends Model
 {
-    public $table = 'producer_payment_details';
+    public $table = 'producer_balance_details';
     public $fillable = [
         'producer_id',
         'amount',

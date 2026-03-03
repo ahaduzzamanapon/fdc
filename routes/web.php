@@ -95,9 +95,13 @@ Route::get('make_payment_cm/{cm_id}', [MakePaymentController::class, 'make_payme
 Route::get('makePayments/cp_forward/{desk}', [MakePaymentController::class, 'cp_forward'])->name('cp.forward');
 Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
 Route::get('makePayments_cp_forward_table', [MakePaymentController::class, 'cp_forward_table'])->name('makePayments.cp.forward.table');
-// make repayment
+// make booking repayment
 Route::get('make_repayment/{payment_id}', [MakePaymentController::class, 'make_repayment'])->name('make_repayment');
 // end payments
+// cancel payment process start
+Route::get('pay_cancel_request/{pay_id}', [MakePaymentController::class, 'pay_cancel_request'])->name('pay.cancel.request');
+Route::post('pay_cancel_request/{pay_id}', [MakePaymentController::class, 'pay_cancel_submit'])->name('pay.cancel.confirm');
+// cancel payment process end
 
 // party applications
 Route::resource('partyApplications', 'PartyApplicationController');

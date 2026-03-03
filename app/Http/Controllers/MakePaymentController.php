@@ -12,11 +12,17 @@ use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
 use App\Models\Item;
 use App\Models\Booking;
+use App\Models\PaymentRefund;
+use App\Models\ProducerBalance;
+use App\Models\ProducerBalanceDetails;
 use Illuminate\Http\Request;
 use Response;
 use Auth;
 use Flash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationMail;
 
 class MakePaymentController extends AppBaseController
 {
@@ -154,7 +160,7 @@ class MakePaymentController extends AppBaseController
         $film_package = new FilmPackage;
         $film_package->film_id = null;
         $film_package->package_id = $package_id;
-        $film_package->type = 'film';
+        $film_package->type = 'package';
         $film_package->name = $package->name;
         $film_package->amount = $package->amount;
         $film_package->trn_id = $transaction_id;
@@ -283,6 +289,99 @@ class MakePaymentController extends AppBaseController
 
         return redirect(route('makePayments.forward.table'));
     }
+
+    // cancel payment process start
+    public function pay_cancel_request($payment_id) {
+        $id = Crypt::decrypt($payment_id); // decrypt the ID
+        $payment = MakePayment::where('id', $id)->where('status', 'success')->first();
+        if (!$payment) {
+            Flash::error('Invalid payment or payment cannot be cancelled.');
+            return redirect()->route('makePayments.index');
+        }
+        return view('make_payments.pay_cancel_request', compact('payment'));
+    }
+    public function pay_cancel_submit($payment_id, Request $request) {
+        $id = Crypt::decrypt($payment_id); // decrypt the ID
+        $payment = MakePayment::where('id', $id)->where('status', 'success')->first();
+        if (!$payment) {
+            Flash::error('Invalid payment or payment cannot be cancelled.');
+            return redirect()->route('makePayments.index');
+        }
+        $producer = Auth::guard('producer')->user();
+        try {
+            \DB::beginTransaction();
+            $payment->status = 'refound';
+            $payment->review_status = 'on process';
+            $payment->updated_at = date('Y-m-d H:i:s');
+            $payment->updated_by = $producer->id;
+            $payment->save();
+
+            if ($payment->type == 'booking') {
+                $booking = Booking::find($payment->package_id); // package_id is booking id for booking payment
+                if ($booking) {
+                    $booking->status = 'refound';
+                    $booking->pay_status = 'refound';
+                    $booking->updated_at = date('Y-m-d H:i:s');
+                    $booking->updated_by = $producer->id;
+                    $booking->save();
+                }
+            }
+
+            // insert refund details in payment_refunds table
+            $refund = new PaymentRefund();
+            $refund->payment_id = $payment->id;  // film_packages id
+            $refund->trn_id = $payment->trn_id;
+            $refund->amount = $payment->amount - ($payment->amount * 0.1); // deduct 10% charge
+            $refund->charge = $payment->amount * 0.1; // 10% charge
+            $refund->type = $payment->type;
+            $refund->status = 'pending';
+            $refund->created_at = date('Y-m-d H:i:s');
+            $refund->created_by = $producer->id;
+            $refund->updated_at = date('Y-m-d H:i:s');
+            $refund->updated_by = $producer->id;
+            $refund->save();
+
+            //  balance update for producer
+            $producer_balance = ProducerBalance::where('producer_id', $payment->created_by)->first();
+            $producer_balance->current_balance = $producer_balance->current_balance - $payment->amount;
+            $producer_balance->total_out = $producer_balance->total_out + $payment->amount;
+            $producer_balance->updated_at = date('Y-m-d H:i:s');
+            $producer_balance->save();
+
+            // insert balance in details table
+            $balance_details = new ProducerBalanceDetails;
+            $balance_details->payment_id = $payment->id;
+            $balance_details->producer_id = $payment->created_by;
+            $balance_details->amount = $payment->amount;
+            $balance_details->type = 'out';
+            $balance_details->created_at = date('Y-m-d H:i:s');
+            $balance_details->created_by = $producer->id;
+            $balance_details->save();
+
+            \DB::commit();
+
+            // send mail to producer
+            try {
+                Mail::to($producer->email)->queue(new NotificationMail([
+                    'type' => 'service_acceptance',
+                    'subject' => 'আপনার আবেদন গ্রহণ করা হয়েছে',
+                    'producer_name' => $producer->owners_name,
+                    'status' => 'payment refound',
+                    'service_name' => 'পেমেন্ট বাতিল করা হয়েছে',
+                    'title' => 'আপনার পেমেন্ট বাতিল করা হয়েছে',
+                    'message' => 'আপনার পেমেন্ট বাতিল করা হয়েছে',
+                ]));
+            } catch (\Throwable $e) {
+                \Log::error('Mail failed', ['error' => $e->getMessage()]);
+            }
+            Flash::success('Payment refound successfully.');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Flash::error('Payment refound failed. Please try again later.');
+        }
+        return redirect()->route('makePayments.index');
+    }
+    // cancel payment process end
 
     // package section
     function package() {
@@ -528,7 +627,6 @@ class MakePaymentController extends AppBaseController
         $package = Package::where('trn_id', $id)->first();
         return view('make_payments.cm_payment_receipt', compact('package'));
     }
-
     // package section
 
 
