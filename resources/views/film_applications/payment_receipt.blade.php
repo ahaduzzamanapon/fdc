@@ -6,7 +6,7 @@ Payment Receipt @parent
 
 @section('content')
 <div style="width: 300px; margin: 0 auto; padding: 10px; font-family: 'monospace', 'Courier New', Courier, monospace; font-size: 12px;">
-    <div style="text-align: center; margin-bottom: 15px;">
+    <div style="margin-bottom: 15px;">
         <h3>Payment Receipt</h3>
         <p>-----------------------------------</p>
     </div>
@@ -34,7 +34,7 @@ Payment Receipt @parent
     <p>Paid At: {{ $filmPackage->updated_at ? $filmPackage->updated_at->format('Y-m-d H:i:s') : 'N/A' }}</p>
     <p>-----------------------------------</p>
 
-    <div style="text-align: center; margin-top: 15px;">
+    <div style=" margin-top: 15px;">
         <p>Thank You for your payment!</p>
         <p>-----------------------------------</p>
         <p>Date: {{ date('Y-m-d H:i:s') }}</p>

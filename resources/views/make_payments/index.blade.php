@@ -17,9 +17,11 @@
     <div class="card" width="88vw;">
         <section class="card-header">
             <h5 class="card-title d-inline">পেমেন্ট তালিকা </h5>
-            <span class="float-right">
-                <a class="btn btn-primary pull-right" onclick="makePaymentModal()" >{{ __('messages.add_new') }}</a>
-            </span>
+            @if (Auth::guard('producer')->user())
+                <span class="float-right">
+                    <a class="btn btn-primary pull-right" onclick="makePaymentModal()" >{{ __('messages.add_new') }}</a>
+                </span>
+            @endif
         </section>
         <div class="card-body">
             <div class="table-responsive">
@@ -48,7 +50,7 @@
                             <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
+                                    <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> একশন </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         @if ($payment->status == 'pending' && Auth::guard('producer')->check())
                                             <li class="nav-item">
@@ -60,12 +62,14 @@
                                         <li class="nav-item">
                                             <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
                                         </li>
+                                        @if (Auth::guard('producer')->check())
                                         <li class="nav-item">
                                             <a target="_blank" href="{{ route('pay.cancel.request', Crypt::encrypt($payment->id)) }}" class="btn btn-sm text-white" style="background-color: #dc3545; border-color: #dc3545;">{{ 'পেমেন্ট বাতিল করুন' }}</a>
                                         </li>
                                         @endif
+                                        @endif
 
-                                        @if ($payment->review_status == 'on process' && !Auth::guard('producer')->check())
+                                        @if ($payment->review_status == 'success' && !Auth::guard('producer')->check())
                                         <li class="nav-item">
                                             <a href="{{ route('makePayments.forward', [$payment->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> পেমেন্ট নিশ্চিত করুন </a>
                                         </li>

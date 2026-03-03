@@ -53,8 +53,8 @@
                     </select>
                   </div>
                 </div>
-                <br>
-                <div class="row">
+
+                <div class="row pt-3">
                   <!-- Category Select -->
                   <div @class(['col-md-4'])>
                       <label for="category_id" @class(['form-label'])>{{ __('messages.select_category_label') }}</label>
@@ -80,30 +80,44 @@
                           {!! Form::number('grand_amount', 0, ['class' => 'form-control', 'readonly', 'id' => 'grand_amount']) !!}
                       </div>
                   </div>
-                  <br><br>
+                </div>
 
+                <style>
+                  table td {
+                      white-space: normal !important;
+                      word-wrap: break-word;
+                  }
+                  .table > :not(caption) > * > * {
+                    padding: 0.75rem !important;
+                  }
+                </style>
+
+                {{-- Item Table --}}
+                <div class="row">
                   {{-- Item Table --}}
-                  <div class="col-md-12 pt-3">
-                    <table class="table table-bordered table-striped">
-                      <thead class="thead-light">
-                        <tr>
-                          <th>Item Name</th>
-                          <th>Price</th>
-                          <th width="15%">Day</th>
-                          <th width="15%">Amount</th>
-                          <th width="5%"> Add Item </th>
-                        </tr>
-                      </thead>
-                      <tbody id="custom_package_items">
-                      </tbody>
-                    </table>
+                  <div class="col-md-12">
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                          <tr>
+                            <th style="width: 60%;">Item Name</th>
+                            <th style="width: 10%;">Price</th>
+                            <th style="width: 10%;">Day</th>
+                            <th style="width: 15%;">Amount</th>
+                            <th style="width: 5%;"> Action </th>
+                          </tr>
+                        </thead>
+                        <tbody id="custom_package_items">
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   <!-- Description Field -->
                   <div class="col-md-12">
                       <div class="form-group ">
                           {!! Form::label('description', __('messages.description'),['class'=>'control-label']) !!}
-                          {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                          {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 2]) !!}
                       </div>
                   </div>
 
