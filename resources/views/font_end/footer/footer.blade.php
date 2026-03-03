@@ -38,12 +38,7 @@
                         <path d="M17.5244 12.5063L23.7601 20.081V4.93164L17.5244 12.5063Z" fill="black" />
                     </svg>
                 </span> info@fdc.gov.bd</p>
-            <div class="social-icons" style="margin-left: 32px;">
-                <a href="#"><img src="{{ asset('portal/image/facebook.png') }}" alt="Facebook"></a>
-                <a href="#"><img src="{{ asset('portal/image/x.png') }}" alt="X"></a>
-                <a href="#"><img src="{{ asset('portal/image/instagram.png') }}" alt="Instagram"></a>
-                <a href="#"><img src="{{ asset('portal/image/youtube.png') }}" alt="YouTube"></a>
-            </div>
+           
         </div>
     </div>
     <div class="bottom-text">

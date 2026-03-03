@@ -1,7 +1,7 @@
 {{-- Producer --}}
 @if (Auth::guard('producer')->check())
 
- {{-- বুকিং ড্যাশবোর্ড --}}
+    {{-- বুকিং ড্যাশবোর্ড --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/dashboard') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.dashboard') }}">
@@ -13,7 +13,7 @@
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/download-certificate') ? 'active' : '' !!}" aria-current="page"
             href="{{ route('producer.download.certificate') }}" target="_blank">
-            <i class="icon im im-icon-Home"></i>
+            <i class="icon im im-icon-Diploma"></i>
             <span class="item-name">{{ 'ডাউনলোড সার্টিফিকেট' }}</span>
         </a>
     </li>
@@ -99,7 +99,7 @@
     <li class="nav-item">
         <a class="nav-link {!! Request::is('producer/booking') || Request::is('producer/create_page') ? 'active' : '' !!}"
             data-bs-toggle="collapse" href="#shebaBooking" role="button" aria-expanded="false">
-            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="icon im im-icon-Calendar-4"></i>
             <i class="sidenav-mini-icon"> সে </i>
             <span class="item-name">সেবা শিডিউল বুকিং </span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
@@ -131,7 +131,7 @@
     <li class="nav-item">
         <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment/package') || Request::is('make-payment/makeCustomPackage') || Request::is('make-payment/cm_package_list') ? 'active' : '' !!}"
             data-bs-toggle="collapse" href="#makePayments" role="button" aria-expanded="false">
-            <i class="icon im im-icon-Settings-Window"></i>
+            <i class="icon im im-icon-Money-Bag"></i>
             <i class="sidenav-mini-icon"> পা </i>
             <span class="item-name">পেমেন্ট </span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
@@ -169,7 +169,7 @@
         </ul>
     </li>
 
-   
+
 
     {{-- রিপোর্ট --}}
     <li class="nav-item">
@@ -179,7 +179,7 @@
 
         <a class="nav-link {{ $isActive ? 'active' : '' }}" data-bs-toggle="collapse" href="#reports_menu" role="button"
             aria-expanded="{{ $isActive ? 'true' : 'false' }}" aria-controls="reports_menu">
-            <i class="icon im im-icon-Gear"></i>
+            <i class="icon im im-icon-Statistic"></i>
             <span class="item-name">{{ __('রিপোর্টস') }}</span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
@@ -254,7 +254,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('producer*') || Request::is('drama-application*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#producerBooking" role="button" aria-expanded="false" aria-controls="hr"> <i
-                    class="icon im im-icon-Gear"></i> <span class="item-name"> বুকিং </span> <i
+                    class="icon im im-icon-Calendar-4"></i> <span class="item-name"> বুকিং </span> <i
                     class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('producer*') ? 'show' : '' !!}" id="producerBooking"
@@ -284,7 +284,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('filmApplications*') || Request::is('film-application*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#filmApplications" role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Film"></i>
                 <span class="item-name">{{ __('messages.film_application') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -326,7 +326,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('dramaApplications*') || Request::is('drama-application*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#dramaApplications" role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-TV"></i>
                 <span class="item-name">নাটক অ্যাপ্লিকেশন</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -359,7 +359,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('docufilmApplications*') || Request::is('docufilm-application*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#docufilmApplications" role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Director"></i>
                 <span class="item-name">প্রামান্যচিত্র অ্যাপ্লিকেশন</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -392,7 +392,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('realityApplications*') || Request::is('reality-application*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#realityApplications" role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Video"></i>
                 <span class="item-name">রিয়েলিটি শো অ্যাপ্লিকেশন</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -425,7 +425,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('partyApplications*') || Request::is('party-application*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#partyApplications" role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Microphone"></i>
                 <span class="item-name">পার্টি অ্যাপ্লিকেশন</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -458,7 +458,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#makePayments" role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i> <span class="item-name">পেমেন্ট</span>
+                <i class="icon im im-icon-Money-Bag"></i> <span class="item-name">পেমেন্ট</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('makePayments*') ? 'show' : '' !!}" id="makePayments"
@@ -498,7 +498,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('producer/registration_list*') ? 'active' : '' !!}" data-bs-toggle="collapse"
                 href="#reg_list" role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-File-Clipboard"></i>
                 <span class="item-name">নিবন্ধন অ্যাপ্লিকেশন</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -545,7 +545,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('producers*') ? 'active' : '' !!}" aria-current="page"
                 href="{{ route('producers.index') }}">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Address-Book"></i>
                 <span class="item-name">{{ __('messages.producer') }}</span>
             </a>
         </li>
@@ -556,7 +556,7 @@
         <li class="nav-item">
             <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
                 role="button" aria-expanded="false" aria-controls="hr">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Administrator"></i>
                 <span class="item-name">{{ __('messages.human_resources') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -639,7 +639,7 @@
         <li class="nav-item">
             <a class="nav-link {!! (Request::is('inventory*') ? 'active' : '') !!}" data-bs-toggle="collapse"
                 href="#inventory_menu" role="button" aria-expanded="false" aria-controls="inventory_menu">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Box-Full"></i>
                 <span class="item-name">{{ __('messages.inventory') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
@@ -698,13 +698,13 @@
     @if (can('settings'))
         <li class="nav-item">
             <a class="nav-link
-                            {!! (Request::is('siteSettings*') ||
+                                            {!! (Request::is('siteSettings*') ||
                     Request::is('districts*') ||
                     Request::is('departments*') ||
                     Request::is('designations*')
                     ? 'active' : '') !!}" data-bs-toggle="collapse" href="#settings_menu" role="button"
                 aria-expanded="false" aria-controls="settings_menu">
-                <i class="icon im im-icon-Gear"></i>
+                <i class="icon im im-icon-Gear-2"></i>
                 <span class="item-name">{{ __('messages.settings') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
