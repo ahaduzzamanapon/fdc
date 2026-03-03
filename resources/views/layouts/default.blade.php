@@ -631,17 +631,17 @@
                 text: message,
                 showClass: {
                     popup: `
-      animate__animated
-      animate__fadeInUp
-      animate__faster
-    `
+                    animate__animated
+                    animate__fadeInUp
+                    animate__faster
+                    `
                 },
                 hideClass: {
                     popup: `
-      animate__animated
-      animate__fadeOutDown
-      animate__faster
-    `
+                    animate__animated
+                    animate__fadeOutDown
+                    animate__faster
+                    `
                 }
             });
         }
@@ -685,6 +685,7 @@
         }
     </script>
     @include('layouts/datatables_js')
+    
     @yield('footer_scripts')
     @yield('scripts')
     @yield('script')

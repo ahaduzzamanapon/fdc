@@ -185,6 +185,7 @@
         </a>
 
         <ul class="sub-nav collapse {{ $isActive ? 'show' : '' }}" id="reports_menu" data-bs-parent="#sidebar-menu">
+            {{-- সিনেমা রিপোর্ট --}}
             @if (can('flim_report'))
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('reports/film-reports') ? 'active' : '' }}"
@@ -196,6 +197,7 @@
                 </li>
             @endif
 
+            {{-- নাটক রিপোর্ট --}}
             @if (can('drama_reports'))
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('reports/drama-reports') ? 'active' : '' }}"
@@ -207,6 +209,7 @@
                 </li>
             @endif
 
+            {{-- প্রামান্যচিত্র রিপোর্ট --}}
             @if (can('pramanno_report'))
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('reports/pramanno-reports') ? 'active' : '' }}"
@@ -218,6 +221,7 @@
                 </li>
             @endif
 
+            {{-- রিয়ালিটি রিপোর্ট --}}
             @if (can('reality_report'))
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('reports/reality-reports') ? 'active' : '' }}"
@@ -228,6 +232,16 @@
                     </a>
                 </li>
             @endif
+
+            {{-- পেমেন্ট রিপোর্ট --}}
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('reports/payment-reports') ? 'active' : '' }}"
+                    href="{{ route('reports.paymentReport') }}">
+                    <i class="icon im im-icon-Settings-Window"></i>
+                    <i class="sidenav-mini-icon">পে</i>
+                    <span class="item-name">{{ __('পেমেন্ট রিপোর্ট') }}</span>
+                </a>
+            </li>
         </ul>
     </li>
 
