@@ -1,11 +1,11 @@
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var table = $('.table_data').DataTable({
             "language": {
                 "lengthMenu": "{{ __('messages.show_menu_data') }}",
                 "zeroRecords": "{{ __('messages.no_data_found') }}",
                 "info": "{{ __('messages.page_of_pages') }}",
-                "infoEmpty": "{{ __('messages.no_data_found') }}",
+                "infoEmpty": "{{ __('messages.info_empty') }}",
                 "infoFiltered": "( _MAX_   )",
                 "search": "{{ __('messages.search') }}",
                 "paginate": {

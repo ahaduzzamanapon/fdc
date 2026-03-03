@@ -45,7 +45,7 @@
 
         footer {
             background: #1f2937;
-            color: #fff;
+            /* color: #fff; */
             padding: 25px 0;
         }
 

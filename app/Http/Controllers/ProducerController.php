@@ -117,6 +117,14 @@ class ProducerController extends AppBaseController
 
     public function producers_register(Request $request)
     {
+        $request->validate([
+            'phone_number' => 'required|numeric|unique:producers,phone_number',
+            'email' => 'required|email|unique:producers,email',
+            'owners_name' => 'required|string',
+            'owners_nid' => 'required|string',
+            'organization_name' => 'required|string',
+        ]);
+
         $input = $request->all();
 
         // Handle single file uploads
@@ -423,7 +431,7 @@ class ProducerController extends AppBaseController
             ->header('Content-Type', 'application/pdf')
             ->header(
                 'Content-Disposition',
-                'inline; filename="certificate_'.$producer->id.'.pdf"'
+                'inline; filename="certificate_' . $producer->id . '.pdf"'
             );
     }
 
@@ -436,25 +444,50 @@ class ProducerController extends AppBaseController
 
         $mpdf = new \Mpdf\Mpdf([
             'format' => 'A4',
-            'margin_left'   => 0,
-            'margin_right'  => 0,
-            'margin_top'    => 0,
+            'margin_left' => 0,
+            'margin_right' => 0,
+            'margin_top' => 0,
             'margin_bottom' => 0,
         ]);
 
         /* 🔥 HTML (NO QR HERE) */
-        $html = view('producers.mainView.download_certificate',compact('producer'))->render();
+        $html = view('producers.mainView.download_certificate', compact('producer'))->render();
         $mpdf->WriteHTML($html);
 
+        /* 🔥 QR CODE – REGENERATE IF MISSING */
+        if (empty($producer->qr_code) || !file_exists(public_path($producer->qr_code)) || is_dir(public_path($producer->qr_code))) {
+            $verifyUrl = route('certificate.verify', $producer->id);
+            $qrDir = public_path('qrcodes');
+            if (!is_dir($qrDir)) {
+                mkdir($qrDir, 0755, true);
+            }
+            $qrPath = 'qrcodes/producer_' . $producer->id . '.png';
+            $qrFile = public_path($qrPath);
+
+            $builder = new Builder(
+                writer: new PngWriter(),
+                data: $verifyUrl,
+                size: 300,
+                margin: 10
+            );
+            $result = $builder->build();
+            $result->saveToFile($qrFile);
+
+            $producer->update(['qr_code' => $qrPath]);
+        }
+
         /* 🔥 QR CODE – DIRECT PDF CANVAS */
-        $mpdf->Image(
-            public_path($producer->qr_code), // file path
-            90,   // X (mm)
-            252,  // Y (mm)
-            30,   // Width (mm)
-            30    // Height (mm)
-        );
-        return $mpdf->Output($producer->id.'_certificate.pdf', 'I');
+        $qrFullPath = public_path($producer->qr_code);
+        if (!empty($producer->qr_code) && file_exists($qrFullPath) && !is_dir($qrFullPath)) {
+            $mpdf->Image(
+                $qrFullPath, // file path
+                90,   // X (mm)
+                252,  // Y (mm)
+                30,   // Width (mm)
+                30    // Height (mm)
+            );
+        }
+        return $mpdf->Output($producer->id . '_certificate.pdf', 'I');
     }
 
     // Producer Registration Application list
@@ -472,12 +505,13 @@ class ProducerController extends AppBaseController
     }
 
 
-    public function registration_forward_st(Request $request) {
+    public function registration_forward_st(Request $request)
+    {
         ## Request validation
         $request->validate([
-            'reg_id'       => 'required|integer|exists:producers,id',
-            'reg_status'   => 'required|string',
-            'log_remarks'  => 'nullable|string',
+            'reg_id' => 'required|integer|exists:producers,id',
+            'reg_status' => 'required|string',
+            'log_remarks' => 'nullable|string',
         ]);
 
         ## Check data in producers table
@@ -508,30 +542,30 @@ class ProducerController extends AppBaseController
         try {
             ## Update producers table
             $producer->update([
-                'reg_status'  => $status,
-                'updated_by'  =>  $user_id,
-                'updated_at'  =>  now(),
+                'reg_status' => $status,
+                'updated_by' => $user_id,
+                'updated_at' => now(),
             ]);
 
             ## Update approval_requests table
             ApprovalRequests::where('id', $steps->id)->update([
-                'prev_role_id'    => $prev_role_id,
+                'prev_role_id' => $prev_role_id,
                 'current_role_id' => $current_role_id,
-                'next_role_id'    => $next_role_id,
-                'status'          => $status,
-                'updated_by'      => $user_id,
+                'next_role_id' => $next_role_id,
+                'status' => $status,
+                'updated_by' => $user_id,
             ]);
 
             ## Insert into approval_logs table
             ApprovalLogs::create([
-                'request_id'      => $request->reg_id,
-                'request_type'    => $steps->request_type,
-                'flow_id'         => $steps->flow_id,
-                'action_by'       => $user_id,
-                'action_role_id'  => $user_role,
-                'next_role_id'    => $current_role_id,
-                'status'          => $status,
-                'remarks'         => $request->log_remarks,
+                'request_id' => $request->reg_id,
+                'request_type' => $steps->request_type,
+                'flow_id' => $steps->flow_id,
+                'action_by' => $user_id,
+                'action_role_id' => $user_role,
+                'next_role_id' => $current_role_id,
+                'status' => $status,
+                'remarks' => $request->log_remarks,
             ]);
 
             \DB::commit();
@@ -554,12 +588,12 @@ class ProducerController extends AppBaseController
                 \Log::error('Mail failed', ['error' => $e->getMessage()]);
             }
 
-            if($status == 'verified') {
+            if ($status == 'verified') {
                 Flash::success('Registration forwarded successfully.');
                 return redirect()->route('producer.registration_list', ['types' => 'verified']);
             }
 
-            if($status == 'rejected') {
+            if ($status == 'rejected') {
                 Flash::success('Registration rejected successfully.');
                 return redirect()->route('producer.registration_list', ['types' => 'rejected']);
             }
@@ -585,45 +619,45 @@ class ProducerController extends AppBaseController
         }
         $producer_id = Auth::guard('producer')->user()->id;
         $bookings = Booking::where('producer_id', $producer_id)
-                ->where('status', '!=', 'reject')
-                ->selectRaw("
+            ->where('status', '!=', 'reject')
+            ->selectRaw("
                     COUNT(*) AS totalRow,
                     SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
                     SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
                 ")
-                ->first();
+            ->first();
         $films = Film::where('producer_id', $producer_id)
-                ->where('status', '!=', 'reject')
-                ->selectRaw("
+            ->where('status', '!=', 'reject')
+            ->selectRaw("
                     COUNT(*) AS totalRow,
                     SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
                     SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
                 ")
-                ->first();
+            ->first();
         $dramas = DramaApplication::where('producer_id', $producer_id)
-                ->where('status', '!=', 'reject')
-                ->selectRaw("
+            ->where('status', '!=', 'reject')
+            ->selectRaw("
                     COUNT(*) AS totalRow,
                     SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
                     SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
                 ")
-                ->first();
+            ->first();
         $docufilms = DocufilmApplication::where('producer_id', $producer_id)
-                ->where('status', '!=', 'reject')
-                ->selectRaw("
+            ->where('status', '!=', 'reject')
+            ->selectRaw("
                     COUNT(*) AS totalRow,
                     SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
                     SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
                 ")
-                ->first();
+            ->first();
         $reality = RealityApplication::where('producer_id', $producer_id)
-                ->where('status', '!=', 'reject')
-                ->selectRaw("
+            ->where('status', '!=', 'reject')
+            ->selectRaw("
                     COUNT(*) AS totalRow,
                     SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
                     SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
                 ")
-                ->first();
+            ->first();
 
         return view('producers.mainView.dashboard', compact('bookings', 'films', 'dramas', 'docufilms', 'reality'));
     }
@@ -633,14 +667,14 @@ class ProducerController extends AppBaseController
     {
 
         if (!Auth::guard('producer')->check()) {
-          $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
-            ->select('bookings.*', 'producers.organization_name as producer_name')
-            ->get();
-        }else{
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
-            ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
-            ->select('bookings.*', 'producers.organization_name as producer_name')
-            ->get();
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->get();
+        } else {
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->get();
         }
 
         return view('producers.mainView.booking', compact('booking_requests'));
@@ -837,8 +871,8 @@ class ProducerController extends AppBaseController
             'total_price_input_total' => 'required|numeric|gt:0',
         ], [
             'total_price_input_total.required' => 'সর্বমোট মূল্য অবশ্যই প্রদান করতে হবে।',
-            'total_price_input_total.numeric'  => 'সর্বমোট মূল্য অবশ্যই একটি সংখ্যা হতে হবে।',
-            'total_price_input_total.gt'       => 'সর্বমোট মূল্য অবশ্যই ০ এর বেশি হতে হবে।',
+            'total_price_input_total.numeric' => 'সর্বমোট মূল্য অবশ্যই একটি সংখ্যা হতে হবে।',
+            'total_price_input_total.gt' => 'সর্বমোট মূল্য অবশ্যই ০ এর বেশি হতে হবে।',
         ]);
 
         DB::beginTransaction();
@@ -846,7 +880,7 @@ class ProducerController extends AppBaseController
             // 1. Create Booking
             // Check if booking exists (edit mode)
             $booking_id = $request->input('booking_id'); // edit page থেকে hidden input
-            if($booking_id){
+            if ($booking_id) {
                 // Update existing booking
                 $booking = Booking::findOrFail($booking_id);
                 $booking->update([
@@ -970,7 +1004,7 @@ class ProducerController extends AppBaseController
             // 1. Create Booking
             // Check if booking exists (edit mode)
             $booking_id = $request->input('booking_id'); // edit page থেকে hidden input
-            if($booking_id){
+            if ($booking_id) {
                 // Update existing booking
                 $booking = Booking::findOrFail($booking_id);
                 $booking->update([
@@ -1164,7 +1198,7 @@ class ProducerController extends AppBaseController
             \DB::commit();
 
             ## Send mail
-            if($request->status === 'approved' || $request->status === 'reject') {
+            if ($request->status === 'approved' || $request->status === 'reject') {
                 try {
                     Mail::to($producer->email)->queue(new NotificationMail([
                         'type' => 'service_acceptance',

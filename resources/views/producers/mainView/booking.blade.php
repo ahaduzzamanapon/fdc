@@ -24,9 +24,13 @@
     <div class="card" width="88vw;">
         <section class="card-header">
             <h5 class="card-title d-inline">{{ __('বুকিং তালিকা') }}</h5>
+@if (Auth::guard('producer')->check())
+
             <span class="float-right">
                 <a class="btn btn-primary pull-right" href="{{ route('producer.create_page') }}">{{ __('বুকিং করুন') }}</a>
             </span>
+@endif
+
         </section>
         <div class="card-body table-responsive" >
             <table class="table table-default table-hover table-striped">

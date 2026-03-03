@@ -156,9 +156,20 @@
             <img src="{{ asset('images/logo.svg') }}" alt="logo">
         </div>
         <div style="justify-self: center;margin-bottom: 15px;padding: 0px 38px;cursor: pointer;">
-            {{-- <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'প্রযোজক / প্রযোজনা প্রতিষ্ঠান রেজিস্ট্রেশন' }}</span> --}}
+            {{-- <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'প্রযোজক / প্রযোজনা প্রতিষ্ঠান
+                রেজিস্ট্রেশন' }}</span> --}}
             {{-- <span class="text-center" style="font-weight: 650;font-size: 19px;">{{ 'নিবন্ধন ফরম' }}</span> --}}
         </div>
+        @include('flash::message')
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <form action="{{ route('producers_register') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -167,7 +178,7 @@
 
                     <!-- Organization Info -->
                     <fieldset class="border p-2 mb-3 col-md-12">
-                        {{-- <legend class="w-auto">{{  'প্রযোজক / প্রযোজনা প্রতিষ্ঠান তথ্য' }}</legend> --}}
+                        {{-- <legend class="w-auto">{{ 'প্রযোজক / প্রযোজনা প্রতিষ্ঠান তথ্য' }}</legend> --}}
                         <legend class="w-auto">{{  'নিবন্ধন ফরম' }}</legend>
                         <div class="row">
                             <div class="col-md-3">
@@ -178,35 +189,35 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('owners_name', 'স্বত্বাধীকারীর নাম') !!}
-                                 <span class="text-danger">*</span>
+                                <span class="text-danger">*</span>
                                 {!! Form::text('owners_name', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('owners_nid', 'জাতীয় পরিচয়পত্র (NID) নম্বর') !!}
-                                 <span class="text-danger">*</span>
+                                <span class="text-danger">*</span>
                                 {!! Form::text('owners_nid', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('tin_number', 'TIN নম্বর') !!}
-                                 <span class="text-danger">*</span>
+                                <span class="text-danger">*</span>
                                 {!! Form::text('tin_number', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-3">
                                 {!! Form::label('trade_license', 'ট্রেড লাইসেন্স নম্বর') !!}
-                                 <span class="text-danger">*</span>
+                                <span class="text-danger">*</span>
                                 {!! Form::text('trade_license', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('phone_number', __('messages.phone_number')) !!}
                                 <span class="text-danger">*</span>
-                                {!! Form::text('phone_number', null, ['class' => 'form-control', 'required']) !!}
+                                {!! Form::text('phone_number', null, ['class' => 'form-control', 'required', 'pattern' => '01[3-9][0-9]{8}', 'title' => 'Please enter a valid Bangladeshi phone number (e.g., 01712345678)']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('email', __('messages.email')) !!}
                                 <span class="text-danger">*</span>
-                                {!! Form::email('email', null, ['class' => 'form-control', 'required']) !!}
+                                {!! Form::email('email', null, ['class' => 'form-control', 'required', 'pattern' => '[^@\s]+@[^@\s]+\.[^@\s]+', 'title' => 'Please enter a valid email address with @ and . (e.g., test@example.com)']) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('password', __('messages.password_label')) !!}
@@ -217,11 +228,12 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 {!! Form::label('address', 'নির্মাতা প্রতিষ্ঠানের ঠিকানা') !!}
-                                 <span class="text-danger">*</span>
+                                <span class="text-danger">*</span>
                                 {!! Form::text('address', null, ['class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="col-md-6 text-end" style="text-align-last: right; margin-top: 27px;">
-                                <a href="{{ route('login') }}" class="btn btn-danger">{{ __('messages.cancel') }}</a>&nbsp;
+                                <a href="{{ route('login') }}"
+                                    class="btn btn-danger">{{ __('messages.cancel') }}</a>&nbsp;
                                 <button type="reset" class="btn btn-secondary">{{ __('messages.reset') }}</button>&nbsp;
                                 <button type="submit" class="btn btn-primary">{{ __('messages.submit') }}</button>
                             </div>
@@ -290,7 +302,8 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('trade_license_validity_date', __('messages.validity_date')) !!}
-                                {!! Form::date('trade_license_validity_date', null, ['class' => 'form-control date']) !!}
+                                {!! Form::date('trade_license_validity_date', null, ['class' => 'form-control date'])
+                                !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('trade_license_attachment', __('messages.attachment')) !!}
@@ -331,45 +344,47 @@
                         <legend class="w-auto">{{ __('messages.business_agreements') }}</legend>
                         <div class="row">
                             @foreach (['partnership', 'ltd_company', 'somobay', 'other'] as $type)
-                                <div class="col-md-12" style="padding: 15px;">
-                                    {!! Form::label("{$type}_agreement", [
-                                        'partnership' => __('messages.partnership_deed_copy'),
-                                        'ltd_company' => __('messages.limited_company_info'),
-                                        'somobay' => __('messages.cooperative_society_info'),
-                                        'other' => __('messages.others')
-                                    ][$type]) !!}
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>{{ __('messages.name') }}</th>
-                                                <th>{{ __('messages.attachment') }}</th>
-                                                <td>
-                                                    <span href="#" class="btn btn-success add-row" data-type="{{ $type }}">{{ __('messages.add_new') }}</span>
-                                                </td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    {!! Form::text("{$type}_name[]", null, ['class' => 'form-control']) !!}
-                                                </td>
-                                                <td>
-                                                    {!! Form::file("{$type}_attachment[]", ['class' => 'form-control']) !!}
-                                                </td>
-                                                <td>
-                                                    <span class="btn btn-danger remove-row">{{ __('messages.delete') }}</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="col-md-12" style="padding: 15px;">
+                                {!! Form::label("{$type}_agreement", [
+                                'partnership' => __('messages.partnership_deed_copy'),
+                                'ltd_company' => __('messages.limited_company_info'),
+                                'somobay' => __('messages.cooperative_society_info'),
+                                'other' => __('messages.others')
+                                ][$type]) !!}
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ __('messages.name') }}</th>
+                                            <th>{{ __('messages.attachment') }}</th>
+                                            <td>
+                                                <span href="#" class="btn btn-success add-row"
+                                                    data-type="{{ $type }}">{{ __('messages.add_new') }}</span>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {!! Form::text("{$type}_name[]", null, ['class' => 'form-control']) !!}
+                                            </td>
+                                            <td>
+                                                {!! Form::file("{$type}_attachment[]", ['class' => 'form-control']) !!}
+                                            </td>
+                                            <td>
+                                                <span class="btn btn-danger remove-row">{{ __('messages.delete')
+                                                    }}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             @endforeach
                         </div>
                     </fieldset> --}}
 
                     <script>
                         document.querySelectorAll('.add-row').forEach(button => {
-                            button.addEventListener('click', function() {
+                            button.addEventListener('click', function () {
                                 const type = this.getAttribute('data-type');
                                 const tableBody = this.closest('table').querySelector('tbody');
                                 const newRow = document.createElement('tr');
@@ -382,7 +397,7 @@
                             });
                         });
 
-                        document.addEventListener('click', function(event) {
+                        document.addEventListener('click', function (event) {
                             if (event.target.classList.contains('remove-row')) {
                                 event.target.closest('tr').remove();
                             }
@@ -402,7 +417,8 @@
 
         <div class="login-footer">
             <span>{{ __('messages.copyright_bfdc') }}</span>
-            <span>{{ __('messages.developed_by') }}: <strong><a href="https://mysoftheaven.com">Mysoftheaven (BD) Ltd.</a></strong></span>
+            <span>{{ __('messages.developed_by') }}: <strong><a href="https://mysoftheaven.com">Mysoftheaven (BD)
+                        Ltd.</a></strong></span>
         </div>
     </div>
 </body>

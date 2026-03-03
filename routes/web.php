@@ -17,6 +17,11 @@ use App\Http\Controllers\MakePaymentController;
 use App\Http\Controllers\Reports;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\ContactController;
+
+// Contact form submission
+Route::post('/contact-submit', [ContactController::class, 'store'])->name('contact.submit');
+
 
 ## To clear cache and other
 Route::get('/clear-cache', function () {
@@ -40,7 +45,7 @@ Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinem
 
 // verify certificate
 Route::get('certificate/verify/{producer}', [FrontendController::class, 'certificate_verify'])
-     ->name('certificate.verify');
+    ->name('certificate.verify');
 
 Route::get('/service/rate-card', [FrontendController::class, 'rate_card'])->name('rate_card');
 Route::resource('noc', 'NocController');
@@ -244,6 +249,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get_upazilas', 'HomeController@get_upazilas')->name('get_upazilas');
 
     Route::resource('profile', ProfileController::class);
+    Route::resource('contact-messages', ContactController::class)->only(['index', 'show', 'destroy']);
+
 
     // leave action Dept Head / MD
     Route::get('leave-apply-list', 'LeaveController@applyLeaveList')->name('leaves.apply.leave.list');
@@ -269,36 +276,36 @@ Route::post('/producers_login', [ProducerController::class, 'producers_login'])-
 Route::group(["middleware" => []], function () {
     Route::prefix('producer')->controller(ProducerController::class)
         ->group(function () {
-        Route::get('/download-certificate', 'download_certificate')->name('producer.download.certificate');
-        Route::get('/dashboard', 'dashboard')->name('producer.dashboard');
-        Route::get('/get_application', 'get_application')->name('producer.get_application');
-        Route::get('/get_applicant_balance', 'get_applicant_balance')->name('producer.get_applicant_balance');
-        Route::get('/get_items_by_category', 'get_items_by_category')->name('producer.get_items_by_category');
-        Route::get('/get_shift_by_item', 'get_shift_by_item')->name('producer.get_shift_by_item');
-        Route::get('/get_booking_date', 'get_booking_date')->name('producer.get_booking_date');
-        Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
-        Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
+            Route::get('/download-certificate', 'download_certificate')->name('producer.download.certificate');
+            Route::get('/dashboard', 'dashboard')->name('producer.dashboard');
+            Route::get('/get_application', 'get_application')->name('producer.get_application');
+            Route::get('/get_applicant_balance', 'get_applicant_balance')->name('producer.get_applicant_balance');
+            Route::get('/get_items_by_category', 'get_items_by_category')->name('producer.get_items_by_category');
+            Route::get('/get_shift_by_item', 'get_shift_by_item')->name('producer.get_shift_by_item');
+            Route::get('/get_booking_date', 'get_booking_date')->name('producer.get_booking_date');
+            Route::post('/add_to_cart', 'add_to_cart')->name('producer.add_to_cart');
+            Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
 
-        // for booking section
-        Route::get('/booking', 'booking')->name('producer.booking');
-        Route::get('/create_page', 'create_page')->name('producer.create_page');
-        Route::post('/book_store', 'book_store')->name('producer.book_store');
-        ## For save as draft section
-        Route::post('/booking_draft', 'booking_draft')->name('producer.booking_draft');
-        Route::get('/draft/{id}/edit', 'edit_draft')->name('producer.edit.draft');
-        Route::post('/draft/update', 'update_draft')->name('producer.update.draft');
+            // for booking section
+            Route::get('/booking', 'booking')->name('producer.booking');
+            Route::get('/create_page', 'create_page')->name('producer.create_page');
+            Route::post('/book_store', 'book_store')->name('producer.book_store');
+            ## For save as draft section
+            Route::post('/booking_draft', 'booking_draft')->name('producer.booking_draft');
+            Route::get('/draft/{id}/edit', 'edit_draft')->name('producer.edit.draft');
+            Route::post('/draft/update', 'update_draft')->name('producer.update.draft');
 
-        Route::get('/producer_booking_details/{id}', 'show_booking_details')->name('producer.booking_details');
-        Route::get('/approve_booking/{id}', 'approve_booking')->name('producer.approve_booking');
-        Route::get('/booking_forward_table', 'forward_table')->name('producerBooking.forward.table');
-        Route::get('{booking}/forward/{desk}', 'forward')->name('producerBooking.forward');
-        Route::post('/change_status', 'update_status')->name('producerBooking.st.status');
+            Route::get('/producer_booking_details/{id}', 'show_booking_details')->name('producer.booking_details');
+            Route::get('/approve_booking/{id}', 'approve_booking')->name('producer.approve_booking');
+            Route::get('/booking_forward_table', 'forward_table')->name('producerBooking.forward.table');
+            Route::get('{booking}/forward/{desk}', 'forward')->name('producerBooking.forward');
+            Route::post('/change_status', 'update_status')->name('producerBooking.st.status');
 
-        // registration applications
-        Route::get('/registration_list/{types}', 'registration_list')->name('producer.registration_list');
-        Route::get('/registration_forward/{id}', 'registration_forward')->name('producer.registration.forward');
-        Route::post('/registration_forward', 'registration_forward_st')->name('producer.registration.forward.st');
-    });
+            // registration applications
+            Route::get('/registration_list/{types}', 'registration_list')->name('producer.registration_list');
+            Route::get('/registration_forward/{id}', 'registration_forward')->name('producer.registration.forward');
+            Route::post('/registration_forward', 'registration_forward_st')->name('producer.registration.forward.st');
+        });
 });
 
 Route::get('/upload_exell', function () {

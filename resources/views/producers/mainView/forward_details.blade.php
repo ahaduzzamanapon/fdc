@@ -1,17 +1,28 @@
 <!-- Section: বুকিং তথ্য -->
-<fieldset class="border p-3 mb-4">
-    <legend class="float-none w-auto px-2">{{  'বুকিং তথ্য' }}</legend>
-    <div class="row">
-        <div class="table-responsive">
-            <table class="table table-default">
-                <tr>
-                    <th scopre="row">{!! Form::label('booking_type', 'Booking Type:') !!}</th>
-                    <td>{{ $booking->film_type }}</td>
+<fieldset class="border rounded p-3 mb-4">
+    <legend class="float-none w-auto px-2 fw-bold">
+        বুকিং তথ্য
+    </legend>
 
-                    <th scopre="row">{!! Form::label('applicant_name', 'Applicant Name:') !!}</th>
-                    <td>{{ \App\Models\Producer::find($booking->producer_id)->organization_name }}</td>
-                </tr>
-            </table>
+    <div class="row gy-2">
+        <div class="col-md-6">
+            <div class="d-flex">
+                <span class="fw-semibold me-2" style="min-width: 140px;">
+                    Booking Type:
+                </span>
+                <span>{{ $booking->film_type }}</span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="d-flex">
+                <span class="fw-semibold me-2" style="min-width: 140px;">
+                    Applicant Name:
+                </span>
+                <span>
+                    {{ \App\Models\Producer::find($booking->producer_id)->organization_name }}
+                </span>
+            </div>
         </div>
     </div>
 </fieldset>

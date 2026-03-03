@@ -82,7 +82,8 @@ class Producer extends Authenticatable
      * @var array
      */
     public static $rules = [
-
+        'phone_number' => 'required|unique:producers,phone_number',
+        'email' => 'required|email|unique:producers,email',
     ];
 
 

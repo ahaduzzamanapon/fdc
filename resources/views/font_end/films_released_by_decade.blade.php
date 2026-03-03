@@ -200,7 +200,7 @@
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
                                                         <td style="white-space:nowrap">{{ $film['cinema'] }}</td>
-                                                        <td style="white-space:nowrap">{{ $film['nirmata'] }}</td>
+                                                        <td style="white-space:nowrap">{{ $film['nirmata'] ?? '' }}</td>
                                                         <td style="white-space:nowrap">{{ $film['producer'] }}</td>
                                                         <td>{{ $film['acting'] }}</td>
                                                         <td>{{ $film['type'] }}</td>
