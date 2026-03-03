@@ -13,7 +13,7 @@
         <tbody>
         @foreach($producers as $key => $producer)
             <tr>
-                <td>{{ $producer->id }}</td>
+                <td>{{ $key+1 }}</td>
             <td>{{ $producer->organization_name }}</td>
            
             <td>{{ $producer->phone_number }}</td>
