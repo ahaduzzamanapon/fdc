@@ -41,8 +41,18 @@ class HomeController extends Controller
         return view('index', compact('totalRunningMovies', 'totalCompletedMovies', 'moviesAwaitingApproval', 'commercialsAwaitingApproval', 'totalProducerList', 'totalApprovedProducerPendingList'));
     }
 
-    public function get_upazilas(Request $request){
-        $upazilas = Upazila::where('dis_id', $request->district_id)->get(['id', 'name_en as name']);
+    public function get_districts(Request $request)
+    {
+        $districts = District::where('div_id', $request->division_id)->get(['id', 'name_bn as name']);
+        if ($districts->isEmpty()) {
+            return response()->json(['message' => 'No districts found'], 404);
+        }
+        return response()->json($districts);
+    }
+
+    public function get_upazilas(Request $request)
+    {
+        $upazilas = Upazila::where('dis_id', $request->district_id)->get(['id', 'name_bn as name']);
         if ($upazilas->isEmpty()) {
             return response()->json(['message' => __('messages.no_upazilas_found')], 404);
         }
