@@ -335,7 +335,7 @@ return [
 
     'district' => 'জেলা',
     'upazila' => 'উপজেলা',
-    'leave_type' => 'ছুটি প্রকার',
+    'leave_type' => ' ছুটির প্রকার',
     'edit' => 'সম্পাদনা করুন',
     'name_bn' => 'নাম (বাংলা)',
     'name_en' => 'নাম (ইংরেজি)',
@@ -639,4 +639,14 @@ return [
     'address_label' => 'ঠিকানা',
     'bank_name_label' => 'ব্যাংকের নাম',
     'bank_account_number_label' => 'ব্যাংক হিসাব নম্বর',
+    'active' => 'সক্রিয়',
+    'inactive' => 'নিষ্ক্রিয়',
+    'verified' => 'অনুমোদিত',
+    'rejected' => 'প্রত্যাখ্যাত',
+    'approved' => 'অনুমোদিত',
+    'owners_name' => 'মালিকের নাম',
+    'owners_nid' => 'মালিকের এনআইডি',
+    'packages' => 'প্যাকেজ',
+    'designations' => 'পদবি',
+
 ];
