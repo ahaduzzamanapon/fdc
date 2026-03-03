@@ -6,21 +6,22 @@ Leaves @parent
 @stop
 
 @section('content')
-<!-- Content Header (Page header) -->
-<section class="content mb-5 mt-5" >
-    <style>
-        .leave-box {
-            background: linear-gradient(135deg, #8dc542 0%, #f5040463 100%);
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(66, 174, 197, 0.15);
-            transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
-        }
-        .leave-box:hover {
-            box-shadow: 0 8px 24px rgba(66, 174, 197, 0.25);
-            background: linear-gradient(135deg, #8dc542 0%, #42aec58a 100%);
-            transform: translateY(-4px) scale(1.03);
-        }
-    </style>
+    <!-- Content Header (Page header) -->
+    <section class="content mb-5 mt-5">
+        <style>
+            .leave-box {
+                background: linear-gradient(135deg, #8dc542 0%, #f5040463 100%);
+                border-radius: 12px;
+                box-shadow: 0 2px 12px rgba(66, 174, 197, 0.15);
+                transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+            }
+
+            .leave-box:hover {
+                box-shadow: 0 8px 24px rgba(66, 174, 197, 0.25);
+                background: linear-gradient(135deg, #8dc542 0%, #42aec58a 100%);
+                transform: translateY(-4px) scale(1.03);
+            }
+        </style>
         <style>
             .custom-card {
                 display: flex;
@@ -143,81 +144,55 @@ Leaves @parent
                 }
             }
         </style>
-    <div class="row">
+        <div class="row">
 
-        <div class="dashboard_cards_header " >
-            @foreach($total_leaves as $key => $leave)
-                <div class="dashboard_card">
-                    {{-- <a class="indexLink" href="#" style="text-decoration: none!important;"> --}}
+            <div class="dashboard_cards_header ">
+                @foreach($total_leaves as $key => $leave)
+                    @php
+                        $used = $used_leaves[$leave->id]->total_days ?? 0;
+                        $balance = $leave->day - $used;
+                    @endphp
+                    <div class="dashboard_card">
                         <div class="custom-card">
                             <div class="card-icon teal">
                                 <i class="icon im im-icon-User"></i>
                             </div>
                             <div class="card-content">
-                                <h6 class="font-weight-bold" id="total_students">{{ $leave->name_en == 'cl' ? "ক্যাসুয়াল ছুটি" : "অসুস্থতা ছুটি" }}</h6>
-                                <h6 style="font-family: SutonnyMJ">{{ 'মোট: '. $leave->day }}</h6>
+                                <h6 style='line-height: 25px;' class="font-weight-bold">{{ $leave->name_bn }}</h6>
+                                <h6 style="font-family: SutonnyMJ">{{ 'মোট: ' . $leave->day }}</h6>
+                                <h6 style="font-family: SutonnyMJ">{{ 'ব্যবহার: ' . $used }}</h6>
+                                <h6 style="font-family: SutonnyMJ">{{ 'বর্তমান ব্যালেন্স: ' . ($balance > 0 ? $balance : 0) }}
+                                </h6>
                             </div>
                         </div>
-                    </a>
-                </div>
-            @endforeach
-
-            <div class="dashboard_card">
-                    <div class="custom-card">
-                        <div class="card-icon teal">
-                            <i class="icon im im-icon-User"></i>
-                        </div>
-                        <div class="card-content">
-                            <h6 style='line-height: 25px;' class="font-weight-bold">{{  "অসুস্থতা ছুটি" }}</h6>
-                            <h6 style="font-family: SutonnyMJ">{{ 'ব্যবহার: ' . (isset($sl_leaves[0]) ? $sl_leaves[0]->total_days : 0)}}</h6>
-                            <h6 style="font-family: SutonnyMJ">{{ 'বর্তমান ব্যালেন্স: ' . (isset($total_leaves[0]) ? ($total_leaves[0]->day - $sl_leaves[0]->total_days) : 0)}}</h6>
-                        </div>
                     </div>
-                </a>
+                @endforeach
             </div>
-            <div class="dashboard_card">
-                    <div class="custom-card">
-                        <div class="card-icon teal">
-                            <i class="icon im im-icon-User"></i>
-                        </div>
-                        <div class="card-content">
-                            <h6 style='line-height: 25px;' class="font-weight-bold">{{  "ক্যাসুয়াল ছুটি" }}</h6>
-                            <h6 style="font-family: SutonnyMJ">
-                                {{ 'ব্যবহার: ' . ($cl_leaves[0]->total_days ?? '0') }}
-                            </h6>
-                            <h6 style="font-family: SutonnyMJ">
-                                {{ 'বর্তমান ব্যালেন্স: ' . (isset($total_leaves[1]->day) && isset($cl_leaves[0]->total_days) ? $total_leaves[1]->day - $cl_leaves[0]->total_days : '0') }}
-                            </h6>
-                        </div>
-                    </div>
-                </a>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="clearfix"></div>
+        {{-- @dd($total_leaves); --}}
+        @include('flash::message')
+        <script>
+            setTimeout(function () {
+                $('.alert').fadeOut('slow');
+            }, 2000);
+        </script>
+
+        <div class="clearfix"></div>
+        <div class="card" width="88vw;">
+            <section class="card-header">
+                <h5 class="card-title d-inline">ছুটির তালিকা</h5>
+                <span class="float-right">
+                    <a class="btn btn-primary pull-right" href="{{ route('leaves.create') }}">নতুন যোগ করুন</a>
+                </span>
+            </section>
+            <div class="card-body table-responsive">
+                @include('leaves.table')
             </div>
         </div>
     </div>
-</section>
-
-<!-- Main content -->
-<div class="content">
-    <div class="clearfix"></div>
-    {{-- @dd($total_leaves); --}}
-    @include('flash::message')
-    <script>
-        setTimeout(function() {
-            $('.alert').fadeOut('slow');
-        }, 2000);
-    </script>
-
-    <div class="clearfix"></div>
-    <div class="card" width="88vw;">
-        <section class="card-header">
-            <h5 class="card-title d-inline">ছুটির তালিকা</h5>
-            <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('leaves.create') }}">নতুন যোগ করুন</a>
-            </span>
-        </section>
-        <div class="card-body table-responsive">
-            @include('leaves.table')
-        </div>
-    </div>
-</div>
 @endsection

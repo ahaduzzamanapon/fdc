@@ -2,25 +2,27 @@
 
 {{-- Page title --}}
 @section('title')
-পার্টি অ্যাপ্লিকেশন @parent
+{{ __('messages.party_applications') }} @parent
 @stop
 
 @section('content')
-<!-- Content Header (Page header) -->
+    <!-- Content Header (Page header) -->
 
-<div class="content">
-    <div class="clearfix"></div>
+    <div class="content">
+        <div class="clearfix"></div>
 
-    @include('flash::message')
+        @include('flash::message')
 
-    <div class="clearfix"></div>
-    <div class="card">
-        <div class="table-responsive">
-            <table class="table table-default">
-                @include('party_applications.show_fields')
-            </table>
+        <div class="clearfix"></div>
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-default">
+                    @include('party_applications.show_fields')
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="{{ route('partyApplications.index') }}" class="btn btn-primary">{{ __('messages.back') }}</a>
+            </div>
         </div>
     </div>
-    <a href="{{ route('partyApplications.index') }}" class="btn btn-primary float-right mr-4">{{ __('messages.back') }}</a>
-</div>
 @endsection
