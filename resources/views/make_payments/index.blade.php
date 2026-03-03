@@ -50,7 +50,7 @@
                             <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> একশন </button>
+                                    <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> অ্যাকশন </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         @if ($payment->status == 'pending' && Auth::guard('producer')->check())
                                             <li class="nav-item">
