@@ -35,8 +35,8 @@ class PermissionController extends AppBaseController
      */
     public function create()
     {
-        $Permission = Permission::where('cat_id', null)->pluck('name', 'key')->prepend('Select Cat', '');
-        return view('permissions.create', compact('Permission'));
+        $permission = Permission::where('cat_id', null)->pluck('name', 'key')->prepend('Select Cat', '');
+        return view('permissions.create', compact('permission'));
     }
 
     /**
