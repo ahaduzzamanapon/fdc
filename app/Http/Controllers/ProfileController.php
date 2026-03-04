@@ -108,9 +108,9 @@ class ProfileController extends Controller
         }
 
 
-        if ($request->has('password')) {
+        if (!empty($request->password)) {
             $input['password'] = bcrypt($request->password);
-        }else{
+        } else {
             unset($input['password']);
         }
 
