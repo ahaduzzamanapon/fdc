@@ -19,10 +19,11 @@
         <div class="card" width="88vw;">
             <section class="card-header">
                 <h5 class="card-title d-inline">{{ __('messages.film_applications') }}</h5>
-                <span class="float-right">
-                    <a class="btn btn-primary pull-right"
-                        href="{{ route('filmApplications.create') }}">{{ __('messages.new_film_application') }}</a>
-                </span>
+                @if (Auth::guard('producer')->user())
+                    <span class="float-right">
+                        <a class="btn btn-primary pull-right" href="{{ route('filmApplications.create') }}">{{ __('messages.new_film_application') }}</a>
+                    </span>
+                @endif
             </section>
             <div class="card-body table-responsive">
                 @include('film_applications.table')
