@@ -43,7 +43,7 @@ class HomeController extends Controller
 
     public function get_districts(Request $request)
     {
-        $districts = District::where('div_id', $request->division_id)->get(['id', 'name_bn as name']);
+        $districts = District::where('division_id', $request->division_id)->get(['id', 'name_bn as name']);
         if ($districts->isEmpty()) {
             return response()->json(['message' => 'No districts found'], 404);
         }
