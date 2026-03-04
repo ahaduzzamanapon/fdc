@@ -93,9 +93,10 @@
         <div class="card" width="88vw;">
             <section class="card-header">
                 <h5 class="card-title d-inline">কাস্টম প্যাকেজ </h5>
-                <span class="float-right">
-                  <a class="btn btn-primary pull-right" href="{{ route('makePayments.makeCustomPackage') }}" >{{ __('messages.add_new') }}</a>
-              </span>
+                @if (Auth::guard('producer')->user())
+                  <span class="float-right"> <a class="btn btn-primary pull-right" href="{{ route('makePayments.makeCustomPackage') }}" >{{ __('messages.add_new') }}</a>
+                  </span>
+                @endif
             </section>
 
             <div class="card-body">
