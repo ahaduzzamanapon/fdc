@@ -9,6 +9,7 @@ use App\Models\FilmApplication;
 use App\Models\DramaApplication;
 use App\Models\RealityApplication;
 use App\Models\DocufilmApplication;
+use App\Models\MakePayment;
 use App\Exports\ViewExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Auth;
@@ -123,6 +124,12 @@ class Reports extends Controller
                 $filename = 'reality_report.xlsx';
                 $compactName = 'reality';
                 break;
+            case 'payment':
+                $query = MakePayment::query();
+                $view = 'reports.payment_report.paymentReport';
+                $filename = 'payment_report.xlsx';
+                $compactName = 'payments';
+                break;
             default:
                 abort(404, 'Report type not found');
         }
@@ -147,8 +154,7 @@ class Reports extends Controller
     public function payment_report_show(Request $request)
     {
         $producerId = Auth::guard('producer')->user()->id;
-        $payment = Payment::query()
-        ->where('producer_id', $producerId)
+        $payments = MakePayment::query()->where('created_by', $producerId)
         ->when(!empty($request->from_date) && !empty($request->to_date), function ($query) use ($request) {
             $query->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
         })
@@ -156,7 +162,29 @@ class Reports extends Controller
             $query->where('status', $request->status);
         })
         ->get();
-        $html = view('reports.payment_report.paymentReport', compact('payment'))->render();
+
+        $html = view('reports.payment_report.paymentReport', compact('payments'))->render();
         return response($html);
+    }
+    public function payment_exportReport(Request $request, $type )
+    {
+        $producerId = Auth::guard('producer')->user()->id;
+        $view = 'reports.payment_report.paymentReport';
+        $filename = 'payment_report.xlsx';
+        $compactName = 'payments';
+
+
+        $query = MakePayment::query();
+        $data = $query->where('created_by', $producerId)
+        ->when(!empty($request->from_date) && !empty($request->to_date), function ($query) use ($request) {
+            $query->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+        })
+        ->when(!empty($request->status), function ($query) use ($request) {
+            $query->where('status', $request->status);
+        })
+        ->get();
+        $viewData = [$compactName => $data];
+
+        return Excel::download(new ViewExport($view, $viewData), $filename);
     }
 }
