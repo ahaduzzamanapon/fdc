@@ -42,7 +42,6 @@ class PaymentController extends Controller
     private function initiatePayStationPayment(array $paymentData)
     {
         $config = $this->getPayStationConfig();
-
         $postData = [
             'invoice_number' => $paymentData['invoice_number'],
             'currency' => 'BDT',
@@ -113,20 +112,17 @@ class PaymentController extends Controller
     public function checkTransactionStatus($trxId)
     {
         $config = $this->getPayStationConfig();
-
         try {
             $response = Http::withHeaders([
                 'merchantId' => $config['merchant_id'],
                 'Content-Type' => 'application/json',
-            ])->post($config['base_url'] . '/transaction-status', [
-                        'trxId' => $trxId,
-                    ]);
+            ])->post($config['base_url'] . '/transaction-status', [ 'invoice_number' => $trxId, ]);
 
             $result = $response->json();
-            Log::info('PayStation transaction status', ['trxId' => $trxId, 'response' => $result]);
+            Log::info('PayStation transaction status', ['invoice_number' => $trxId, 'response' => $result]);
             return $result;
         } catch (\Exception $e) {
-            Log::error('PayStation status check failed', ['trxId' => $trxId, 'error' => $e->getMessage()]);
+            Log::error('PayStation status check failed', ['invoice_number' => $trxId, 'error' => $e->getMessage()]);
             return null;
         }
     }
@@ -138,13 +134,9 @@ class PaymentController extends Controller
     private function isPayStationPaymentSuccess($trxId)
     {
         $result = $this->checkTransactionStatus($trxId);
-        if (
-            $result && isset($result['status_code']) && $result['status_code'] == '200'
-            && isset($result['data']['trx_status']) && $result['data']['trx_status'] == 'success'
-        ) {
+        if (!empty($result['status_code']) && $result['status_code'] == '200' && !empty($result['data']['trx_status']) && $result['data']['trx_status'] == 'successful') {
             return true;
         }
-
         return false;
     }
 
@@ -268,40 +260,39 @@ class PaymentController extends Controller
         $transId = $request->query('transId');
         $pstatus = $request->query('status');
         $film_package = FilmPackage::where('trn_id', $transId)->first();
-        // this block temporary comment on
-        // if ($pstatus == 'Canceled') {
-        //     $data = array(
-        //         'status' => 'canceled',
-        //         'review_status' => 'on process',
-        //         'updated_by' => Auth::guard('producer')->user()->id,
-        //         'updated_at' => date('Y-m-d H:i:s'),
-        //     );
-        //     FilmPackage::where('trn_id', $transId)->update($data);
 
-        //     if ($film_package->type == 'booking') {
-        //         $booking = Booking::find($film_package->package_id);
-        //         if ($booking) {
-        //             $booking->pay_status = 'canceled';
-        //             $booking->updated_by = Auth::guard('producer')->user()->id;
-        //             $booking->save();
-        //         }
-        //     }
+        if ($pstatus == 'Canceled') {
+            $data = array(
+                'status' => 'canceled',
+                'review_status' => 'on process',
+                'updated_by' => Auth::guard('producer')->user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+            FilmPackage::where('trn_id', $transId)->update($data);
 
-        //     Flash::error('Payment cancelled');
-        //     return redirect()->route('makePayments.index');
-        // }
+            if ($film_package->type == 'booking') {
+                $booking = Booking::find($film_package->package_id);
+                if ($booking) {
+                    $booking->pay_status = 'canceled';
+                    $booking->updated_by = Auth::guard('producer')->user()->id;
+                    $booking->save();
+                }
+            }
+
+            Flash::error('Payment cancelled');
+            return redirect()->route('makePayments.index');
+        }
 
         if (!$film_package) {
             return response()->json(['error' => 'Transaction not found'], 404);
         }
 
-        // this block temporary comment on
         // Verify transaction with PayStation API
-        // if (!$this->isPayStationPaymentSuccess($transId)) {
-        //     Log::warning('PayStation Film payment verification failed', ['transId' => $transId]);
-        //     Flash::error('Payment verification failed. Please contact support.');
-        //     return redirect()->route('makePayments.index');
-        // }
+        if (!$this->isPayStationPaymentSuccess($transId)) {
+            Log::warning('PayStation payment verification failed', ['transId' => $transId]);
+            Flash::error('Payment verification failed. Please contact support.');
+            return redirect()->route('makePayments.index');
+        }
 
         $producer = Auth::guard('producer')->user();
         $role_id = $producer->group_id;
@@ -314,6 +305,7 @@ class PaymentController extends Controller
             $user_id = $film_package->created_by;
             if ($user_id == $producer->id) {
                 $film_package->updated_by = $producer->id;
+                $film_package->trn_id = $transId;
                 $film_package->status = 'success';
                 $film_package->review_status = 'on process';
                 $film_package->desk_id = $step->to_role_id;

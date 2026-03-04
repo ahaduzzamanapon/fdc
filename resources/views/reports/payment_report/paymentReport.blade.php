@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> সিনেমা রিপোর্ট </title>
+    <title>Film Report</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="mt-4">
-        <h4 class="mb-3 text-center"> সিনেমা রিপোর্ট </h4>
+    <div class="container mt-4">
+        <h4 class="mb-3 text-center">Reality Show Report</h4>
         <table class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr style="font-size: 12px">
@@ -33,8 +33,8 @@
                     <th>স্ট্যাটাস</th>
                 </tr>
             </thead>
-            <tbody style="font-size: 11px">
-                @foreach($film as $index => $row)
+            <tbody>
+                @foreach($reality as $index => $row)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $row['category'] }}</td>

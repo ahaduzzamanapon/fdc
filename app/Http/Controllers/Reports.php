@@ -95,7 +95,6 @@ class Reports extends Controller
     }
 
     /// export excel report
-
     public function exportReport(Request $request, $type )
     {
         $producerId = Auth::guard('producer')->user()->id;
@@ -138,5 +137,26 @@ class Reports extends Controller
         $viewData = [$compactName => $data];
         // dd($data);
         return Excel::download(new ViewExport($view, $viewData), $filename);
+    }
+
+    // payment report
+    public function payment_report_index()
+    {
+        return view('reports.payment_report.index');
+    }
+    public function payment_report_show(Request $request)
+    {
+        $producerId = Auth::guard('producer')->user()->id;
+        $payment = Payment::query()
+        ->where('producer_id', $producerId)
+        ->when(!empty($request->from_date) && !empty($request->to_date), function ($query) use ($request) {
+            $query->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+        })
+        ->when(!empty($request->status), function ($query) use ($request) {
+            $query->where('status', $request->status);
+        })
+        ->get();
+        $html = view('reports.payment_report.paymentReport', compact('payment'))->render();
+        return response($html);
     }
 }
