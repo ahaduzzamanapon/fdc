@@ -613,14 +613,14 @@
                             <span class="item-name">{{ __('messages.role_management') }}</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link {!! Request::is('permissions*') ? 'active' : '' !!}"
                             href="{{ route('permissions.index') }}">
                             <i class="icon im im-icon-Security-Settings"></i>
                             <i class="sidenav-mini-icon"> অ </i>
                             <span class="item-name">অনুমতিসমূহ</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('invPermissions*') ? 'active' : '' !!}"
                             href="{{ route('invPermissions.index') }}">

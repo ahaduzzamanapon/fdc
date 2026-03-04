@@ -56,7 +56,17 @@ class LeaveController extends AppBaseController
      */
     public function create()
     {
-        return view('leaves.create');
+        $data = [
+            'leave_types' => LeaveType::pluck('name_bn', 'id')->toArray(),
+            'used_leaves' => Leave::selectRaw('leave_type, sum(total_day) as total_days')
+                ->where('status', 3)
+                ->where('employee_id', Auth::id())
+                ->groupBy('leave_type')
+                ->get()
+                ->keyBy('leave_type'),
+            'all_leaves' => LeaveType::all(), // For compatibility with fields.blade.php if needed
+        ];
+        return view('leaves.create', $data);
     }
 
     /**
@@ -148,7 +158,19 @@ class LeaveController extends AppBaseController
             return redirect(route('leaves.index'));
         }
 
-        return view('leaves.edit')->with('leave', $leave);
+        $data = [
+            'leave' => $leave,
+            'leave_types' => LeaveType::pluck('name_bn', 'id')->toArray(),
+            'used_leaves' => Leave::selectRaw('leave_type, sum(total_day) as total_days')
+                ->where('status', 3)
+                ->where('employee_id', $leave->employee_id)
+                ->groupBy('leave_type')
+                ->get()
+                ->keyBy('leave_type'),
+            'all_leaves' => LeaveType::all(),
+        ];
+
+        return view('leaves.edit', $data);
     }
 
     /**
@@ -169,8 +191,17 @@ class LeaveController extends AppBaseController
             Flash::error('ছুটি খুঁজে পাওয়া যায়নি');
             return redirect(route('leaves.index'));
         }
-        $input['approved_from_date'] = $input['from_date'];
-        $input['approved_to_date'] = $input['to_date'];
+        // Parse dates if they are in d-m-Y or Y-m-d
+        try {
+            $from = Carbon::parse($input['from_date'])->startOfDay();
+            $to = Carbon::parse($input['to_date'])->endOfDay();
+
+            $input['approved_from_date'] = $from->toDateString();
+            $input['approved_to_date'] = $to->toDateString();
+        } catch (\Exception $e) {
+            // Fallback if parsing fails
+        }
+
         $input['approved_total_day'] = $input['total_day'];
         $input['leave_type'] = $input['leave_type'];
 

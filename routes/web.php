@@ -246,6 +246,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     //hguigig7ig
+    Route::get('get_districts', 'HomeController@get_districts')->name('get_districts');
     Route::get('get_upazilas', 'HomeController@get_upazilas')->name('get_upazilas');
 
     Route::resource('profile', ProfileController::class);

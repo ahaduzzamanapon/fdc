@@ -1,12 +1,10 @@
 <style>
-
     .card {
         box-shadow: 0 0px 4px 10px rgb(0 0 0 / 5%);
         border-radius: 0;
         min-height: 0vh;
         margin: 20px;
     }
-
 </style>
 
 
@@ -18,37 +16,41 @@
 
 <!-- কর্মচারী -->
 @if(Auth::user()->user_role == 1)
-<div class=" col-md-3">
-    <div class="form-group">
-        {!! Form::label('employee_id', __('messages.employee'), ['class' => 'control-label']) !!}
-        {!! Form::select('employee_id', $employees, old('employee_id'), ['class' => 'form-control', 'autocomplete' => 'off', 'required']) !!}
-        @error('employee_id')
-            <span class="text-danger">{{ $message }}</span>
-        @enderror
+    <div class=" col-md-3">
+        <div class="form-group">
+            {!! Form::label('employee_id', __('messages.employee'), ['class' => 'control-label']) !!}
+            {!! Form::select('employee_id', $employees, old('employee_id'), ['class' => 'form-control', 'autocomplete' => 'off', 'required']) !!}
+            @error('employee_id')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
     </div>
-</div>
 @endif
 
 @if(Auth::user()->user_role == 5)
+    @php
+        $first_leave_type = $all_leaves->first();
+    @endphp
     <div class="row col-md-12 d-flex justify-content-between">
         <div class="col-md-3 d-flex align-items-center justify-content-between" style="margin-left: -15px">
             <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
                 <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
-                    <span>{{ __('messages.total_leave') }} {{ $all_leaves->day }}</span>
+                    <span>{{ __('messages.total_leave') }} {{ $first_leave_type->day ?? 0 }}</span>
                 </div>
             </div>
         </div>
         <div class="col-md-6 d-flex align-items-center justify-content-between">
             <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
                 <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
-                    <span>{{ __('messages.total_leave_taken') }} {{ $leave_data['leave_taken'] }}</span>
+                    <span>{{ __('messages.total_leave_taken') }} {{ $used_leaves->sum('total_days') ?? 0 }}</span>
                 </div>
             </div>
         </div>
         <div class="col-md-3 d-flex align-items-center justify-content-between">
             <div class="card text-center" style="outline: 1px solid #8dc641;border-radius:5px">
                 <div class="card-body d-flex align-items-center justify-content-center" style="padding:10px">
-                    <span>{{ __('messages.remaining_leave') }} {{ ( $all_leaves->day - $leave_data['leave_taken']) }}</span>
+                    <span>{{ __('messages.remaining_leave') }}
+                        {{ (($first_leave_type->day ?? 0) - ($used_leaves->sum('total_days') ?? 0)) }}</span>
                 </div>
             </div>
         </div>
@@ -94,7 +96,7 @@
 <div class="col-md-3">
     <div class="form-group">
         {!! Form::label('leave_type', __('messages.leave_type_label'), ['class' => 'control-label']) !!}
-        {!! Form::select('leave_type', [__('messages.casual_leave') => __('messages.casual_leave'), __('messages.sick_leave') => __('messages.sick_leave')], old('leave_type'), ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'leave_type', 'placeholder' => __('messages.select_leave_type')]) !!}
+        {!! Form::select('leave_type', $leave_types, old('leave_type'), ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'leave_type', 'placeholder' => __('messages.select_leave_type'), 'required']) !!}
         @error('leave_type')
             <span class="text-danger">{{ $message }}</span>
         @enderror
@@ -126,31 +128,28 @@
 </div>
 
 @section('scripts')
-<script>
-    $(document).ready(function () {
-        $('#from_date, #to_date').change(function () {
-            var from_date = $('#from_date').val();
-            var to_date = $('#to_date').val();
+    <script>
+        $(document).ready(function () {
+            $('#from_date, #to_date').change(function () {
+                var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
 
-            if (from_date && to_date) {
-                var date1Parts = from_date.split("-");
-                var date2Parts = to_date.split("-");
+                if (from_date && to_date) {
+                    var date1 = new Date(from_date);
+                    var date2 = new Date(to_date);
 
-                var date1 = new Date(date1Parts[2], date1Parts[1] - 1, date1Parts[0]);
-                var date2 = new Date(date2Parts[2], date2Parts[1] - 1, date2Parts[0]);
+                    var time_difference = date2.getTime() - date1.getTime();
+                    var days_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24)) + 1;
 
-                var time_difference = date2.getTime() - date1.getTime();
-                var days_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24)) + 1;
-
-                if (isNaN(days_difference) || days_difference < 1) {
-                    $('#total_day').val('');
+                    if (isNaN(days_difference) || days_difference < 1) {
+                        $('#total_day').val('');
+                    } else {
+                        $('#total_day').val(days_difference);
+                    }
                 } else {
-                    $('#total_day').val(days_difference);
+                    $('#total_day').val('');
                 }
-            } else {
-                $('#total_day').val('');
-            }
+            });
         });
-    });
-</script>
+    </script>
 @endsection

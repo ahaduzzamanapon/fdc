@@ -147,7 +147,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('dis_id', __('messages.district_label'), ['class' => 'control-label']) !!}
-                {!! Form::select('dis_id', $districts, null, ['class' => 'form-control']) !!}
+                {!! Form::select('dis_id', ['' => __('messages.select_district')], null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
@@ -224,12 +224,12 @@
                 {!! Form::label('staff_class', __('messages.officer_class'), ['class' => 'control-label']) !!}
                 <span style="color:red">*</span>
                 {!! Form::select('staff_class', [
-                    '' => __('messages.select_class'),
-                    '1' => __('messages.class_a'),
-                    '2' => __('messages.class_b'),
-                    '3' => __('messages.class_c'),
-                    '4' => __('messages.class_d'),
-                ], null, ['class' => 'form-control', 'required' => true]) !!}
+    '' => __('messages.select_class'),
+    '1' => __('messages.class_a'),
+    '2' => __('messages.class_b'),
+    '3' => __('messages.class_c'),
+    '4' => __('messages.class_d'),
+], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -239,24 +239,24 @@
                 {!! Form::label('grade', __('messages.grade'), ['class' => 'control-label']) !!}
                 <span style="color:red">*</span>
                 {!! Form::select('grade', [
-                    '' => __('messages.select_grade'),
-                    '1' => __('messages.first_grade'),
-                    '2' => __('messages.second_grade'),
-                    '3' => __('messages.third_grade'),
-                    '4' => __('messages.fourth_grade'),
-                    '5' => __('messages.fifth_grade'),
-                    '6' => __('messages.sixth_grade'),
-                    '7' => __('messages.seventh_grade'),
-                    '8' => __('messages.eighth_grade'),
-                    '9' => __('messages.ninth_grade'),
-                    '10' => __('messages.tenth_grade'),
-                    '11' => __('messages.eleventh_grade'),
-                    '12' => __('messages.twelfth_grade'),
-                    '13' => __('messages.thirteenth_grade'),
-                    '14' => __('messages.fourteenth_grade'),
-                    '15' => __('messages.fifteenth_grade'),
-                    '16' => __('messages.sixteenth_grade'),
-                ], null, ['class' => 'form-control', 'required' => true]) !!}
+    '' => __('messages.select_grade'),
+    '1' => __('messages.first_grade'),
+    '2' => __('messages.second_grade'),
+    '3' => __('messages.third_grade'),
+    '4' => __('messages.fourth_grade'),
+    '5' => __('messages.fifth_grade'),
+    '6' => __('messages.sixth_grade'),
+    '7' => __('messages.seventh_grade'),
+    '8' => __('messages.eighth_grade'),
+    '9' => __('messages.ninth_grade'),
+    '10' => __('messages.tenth_grade'),
+    '11' => __('messages.eleventh_grade'),
+    '12' => __('messages.twelfth_grade'),
+    '13' => __('messages.thirteenth_grade'),
+    '14' => __('messages.fourteenth_grade'),
+    '15' => __('messages.fifteenth_grade'),
+    '16' => __('messages.sixteenth_grade'),
+], null, ['class' => 'form-control', 'required' => true]) !!}
             </div>
         </div>
 
@@ -326,7 +326,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('picture', 'ছবি', ['class' => 'control-label']) !!}
-                {!! Form::file('picture', ['onchange' => 'previewImage(event, "imagePreview")', 'accept' => 'image/*']) !!}
+                {!! Form::file('picture', ['onchange' => 'previewImage(event, "imagePreview")', 'accept' => 'image/*'])
+                !!}
                 <img id="imagePreview" src="{{ isset($users) ? asset($users->image) : '' }}" alt="Image Preview"
                     style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
             </div>
@@ -335,7 +336,8 @@
         <div class="col-md-3">
             <div class="form-group">
                 {!! Form::label('signature', 'স্বাক্ষর', ['class' => 'control-label']) !!}
-                {!! Form::file('signature', ['onchange' => 'previewImage(event, "signaturePreview")', 'accept' => 'image/*']) !!}
+                {!! Form::file('signature', ['onchange' => 'previewImage(event, "signaturePreview")', 'accept' =>
+                'image/*']) !!}
                 <img id="signaturePreview" src="{{ isset($users) ? asset($users->signature) : '' }}"
                     alt="Signature Preview"
                     style="{{ isset($users) && $users->image ? '' : 'display: none;' }}margin-top:10px;max-width: 45%;height:auto;" />
@@ -368,23 +370,50 @@
 
 @section('footer_scripts')
     <script>
-        $(document).ready(function() {
-            $('#dis_id').change(function() {
+        $(document).ready(function () {
+            // Division -> District
+            $('#div_id').change(function () {
+                var divisionId = $(this).val();
+                if (divisionId) {
+                    $.ajax({
+                        url: "{{ route('get_districts') }}",
+                        type: "GET",
+                        data: { division_id: divisionId },
+                        success: function (data) {
+                            $('#dis_id').empty();
+                            $('#dis_id').append('<option value="">জেলা নির্বাচন করুন</option>');
+                            $.each(data, function (index, district) {
+                                $('#dis_id').append('<option value="' + district.id + '">' + district.name + '</option>');
+                            });
+                            $('#upazila_id').empty();
+                            $('#upazila_id').append('<option value="">উপজেলা নির্বাচন করুন</option>');
+                        }
+                    });
+                } else {
+                    $('#dis_id').empty().append('<option value="">জেলা নির্বাচন করুন</option>');
+                    $('#upazila_id').empty().append('<option value="">উপজেলা নির্বাচন করুন</option>');
+                }
+            });
+
+            // District -> Upazila
+            $('#dis_id').change(function () {
                 var districtId = $(this).val();
-                $.ajax({
-                    url: "{{ route('get_upazilas') }}",
-                    type: "GET",
-                    data: {
-                        district_id: districtId
-                    },
-                    success: function(data) {
-                        $('#upazila_id').empty();
-                        $('#upazila_id').append('<option value="">উপজেলা নির্বাচন করুন</option>');
-                        $.each(data, function(index, upajila) {
-                            $('#upazila_id').append('<option value="' + upajila.id + '">' + upajila.name + '</option>');
-                        });
-                    }
-                });
+                if (districtId) {
+                    $.ajax({
+                        url: "{{ route('get_upazilas') }}",
+                        type: "GET",
+                        data: { district_id: districtId },
+                        success: function (data) {
+                            $('#upazila_id').empty();
+                            $('#upazila_id').append('<option value="">উপজেলা নির্বাচন করুন</option>');
+                            $.each(data, function (index, upajila) {
+                                $('#upazila_id').append('<option value="' + upajila.id + '">' + upajila.name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#upazila_id').empty().append('<option value="">উপজেলা নির্বাচন করুন</option>');
+                }
             });
         });
     </script>
