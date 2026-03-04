@@ -83,7 +83,6 @@ class ProfileController extends Controller
     public function update(Request $request, $id)
     {
         $profile = User::find($id);
-
         if (empty($profile)) {
             Flash::error('User not found');
             return redirect(route('profile.index'));

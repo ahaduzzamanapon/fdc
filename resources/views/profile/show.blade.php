@@ -14,9 +14,11 @@ Profile @parent
     <div class="separator-breadcrumb border-top"></div>
 </section>
 @section('content')
-   <section class="content-header">
 
+    <section class="content-header">
+        @include('flash::message')
     </section>
+
    <div class="content">
        @include('adminlte-templates::common.errors')
        <div class="card">

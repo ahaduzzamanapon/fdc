@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateDistrictRequest;
 use App\Http\Requests\UpdateDistrictRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Division;
 use App\Models\District;
 use Illuminate\Http\Request;
 use Flash;

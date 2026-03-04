@@ -127,6 +127,7 @@ return [
     'back_to_bookings' => 'বুকিংয়ে ফিরে যান',
     'approve_booking' => 'বুকিং অনুমোদন করুন',
     'booking_information' => 'বুকিং তথ্য',
+    'associated_details' => 'প্রডিউসার বিবরণ',
     'status_label' => 'অবস্থা:',
     'total_price' => 'মোট মূল্য:',
     'film_label' => 'চলচ্চিত্র:',
@@ -333,6 +334,7 @@ return [
     'item_category' => 'আইটেম ক্যাটাগরি',
     'item' => 'আইটেম',
 
+    'division' => 'বিভাগ',
     'district' => 'জেলা',
     'upazila' => 'উপজেলা',
     'leave_type' => ' ছুটির প্রকার',
