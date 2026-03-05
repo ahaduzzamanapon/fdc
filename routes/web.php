@@ -44,10 +44,20 @@ Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinem
     Route::get('/films-released-by-decade/{decade}', [FrontendController::class, 'films_released_by_decade'])->name('films_released_by_decade');
 });
 
+<<<<<<< HEAD
 Route::prefix('films-photo-gallery')->name('filmsPhotoGallery.')->group(function () {
     Route::get('/', [FrontendController::class, 'films_photo_gallery'])->name('index');
     Route::get('/films-photo-by-decade/{decade}', [FrontendController::class, 'films_photo_by_decade'])->name('films_photo_by_decade');
 });
+=======
+// Footer Pages Frontend
+Route::get('/film-related', [FrontendController::class, 'film_related'])->name('film_related.page');
+Route::get('/privacy-policy', [FrontendController::class, 'privacy_policy'])->name('privacy_policy.page');
+Route::get('/terms-of-use', [FrontendController::class, 'terms_of_use'])->name('terms_of_use.page');
+Route::get('/notice', [FrontendController::class, 'notices'])->name('notices.page');
+Route::get('/faq', [FrontendController::class, 'faqs'])->name('faqs.page');
+Route::get('/contact-info', [FrontendController::class, 'contact_info'])->name('contact_info.page');
+>>>>>>> origin/apon
 
 // verify certificate
 Route::get('certificate/verify/{producer}', [FrontendController::class, 'certificate_verify'])
@@ -260,6 +270,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('profile', ProfileController::class);
     Route::resource('contact-messages', ContactController::class)->only(['index', 'show', 'destroy']);
+
+    // Footer Pages CRUDs
+    Route::resource('film_related', \App\Http\Controllers\FilmRelatedController::class);
+    Route::resource('privacy_policies', \App\Http\Controllers\PrivacyPolicyController::class);
+    Route::resource('terms_of_uses', \App\Http\Controllers\TermsOfUseController::class);
+    Route::resource('notices', \App\Http\Controllers\NoticeController::class);
+    Route::resource('faqs', \App\Http\Controllers\FaqController::class);
+    Route::resource('contact_infos', \App\Http\Controllers\ContactInfoController::class);
 
 
     // leave action Dept Head / MD
