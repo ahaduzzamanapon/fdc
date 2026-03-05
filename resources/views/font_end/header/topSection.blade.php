@@ -191,9 +191,19 @@
 
                     <li class="nav-item has-submenu">
                         <a class="nav-link" href="#">{{ __('গ্যালারি') }}</a>
-
                         <ul class="submenu">
-                            <li><a class="nav-link" href="#">সিনেমা ফটোগ্যালারি</a></li>
+                            <li class="has-submenu2">
+                                <a class="nav-link" href="#">সিনেমা ফটোগ্যালারি</a>
+                                <ul class="submenu2">
+                                    <li><a href="{{route('filmsPhotoGallery.films_photo_by_decade', ['decade' => '1960'])}}">৬০ দশক</a></li>
+                                    <li><a href="{{route('filmsPhotoGallery.films_photo_by_decade', ['decade' => '1970'])}}">৭০ দশক</a></li>
+                                    <li><a href="{{route('filmsPhotoGallery.films_photo_by_decade', ['decade' => '1980'])}}">৮০র দশক</a></li>
+                                    <li><a href="{{route('filmsPhotoGallery.films_photo_by_decade', ['decade' => '1990'])}}">৯০ এর দশক</a></li>
+                                    <li><a href="{{route('filmsPhotoGallery.films_photo_by_decade', ['decade' => '2000'])}}">২০০০ দশক</a></li>
+                                    <li><a href="{{route('filmsPhotoGallery.films_photo_by_decade', ['decade' => '2010'])}}">২০১০ দশক</a></li>
+                                    <li><a href="{{route('filmsPhotoGallery.films_photo_by_decade', ['decade' => '2020'])}}">২০২০ দশক</a></li>
+                                </ul>
+                            </li>
                             <li><a class="nav-link" href="#">ফটোগ্যালারী</a></li>
                         </ul>
                     </li>

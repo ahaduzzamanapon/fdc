@@ -51,113 +51,16 @@
                             </a>
                         @endif
                     </div>
-                @php
-                    $cinemaData = [
-                        1960 => [
-                            // ["tai naki"],
-                            [ 'cinema' => 'রাজধানীর বুকে' ,
-                                'producer' => 'এহতেশাম',
-                                'acting' => 'রহমান, শবনম, চিত্রা সিনহা, সুভাষ দত্ত, নার্গিস, গোলাম মুস্তাফা, আজিম',
-                                'type' => '',
-                                'publish_date' => '২ সেপ্টেম্বর ১৯৬০',
-                                'sign' => '',
-                                'info' => '-',
-                            ],
-                            [
-                                'cinema' => 'আসিয়া',
-                                'producer' =>'ফতেহ লোহানী',
-                                'acting' => 'সুমিতা দেবী, শহীদ, প্রবীর কুমার, ভবেশ মুখার্জী, কাজী খালেক',
-                                'type' => '',
-                                'publish_date' => '৪ নভেম্বর ১৯৬০',
-                                'sign' => 'শ্রেষ্ঠ বাংলা চলচ্চিত্র হিসেবে প্রেসিডেন্ট পুরস্কার লাভ',
-                                'info' => '-',
-                            ],
-                        ],
-                        1961 => [
-                            [
-                                'cinema' => 'যে নদী মরুপথে',
-                                'producer' => 'সালাউদ্দিন',
-                                'acting' => 'ড. রওশন আরা, খান আতাউর রহমান, ইনাম আহমেদ, সঞ্জীব দত্ত',
-                                'type' => '',
-                                'publish_date' => '২৮ এপ্রিল ১৯৬১',
-                                'sign' => '',
-                                'info' => '-',
-                            ],
-                            [
-                                'cinema' => 'হারানো দিন',
-                                'producer' => 'মুস্তাফিজ',
-                                'acting' => 'রহমান, শবনম, নারায়ণ চক্রবর্তী, আজিম, সুভাষ দত্ত, গোলাম মুস্তাফা',
-                                'type' => '',
-                                'publish_date' => '৪ আগস্ট ১৯৬১',
-                                'sign' => '',
-                                'info' => '',
-                            ],
-                            [
-                                'cinema' => 'তোমার আমার',
-                                'producer' => 'মহিউদ্দিন',
-                                'acting' => 'আমিনুল হক, চিত্রা সিনহা, কাফি খান, সঞ্জীব দত্ত, নারায়ণ চক্রবর্তী, আনোয়ার হোসেন',
-                                'type' => '',
-                                'publish_date' => '১০ নভেম্বর ১৯৬১',
-                                'sign' => '',
-                                'info' =>'-',
-                            ],
-                            [
-                                'cinema' => 'কখনো আসেনি',
-                                'producer' => 'জহির রায়হান',
-                                'acting' => 'সুমিতা দেবী, খান আতাউর রহমান, সঞ্জীব দত্ত, শবনম, কণা, নারায়ণ চক্রবর্তী, মিসবাহউদ্দিন',
-                                'type' => 'সামাজিক',
-                                'publish_date' => '২৪ নভেম্বর ১৯৬১',
-                                'sign' => 'পরিচালক হিসেবে জহির রায়হান এর নির্মিত প্রথম চলচ্চিত্র',
-                                'info' => '-',
-                            ],
-                        ],
-                        1962 => [
-                            [
-                                'cinema' => 'সূর্যস্নান',
-                                'producer' =>'সালাহ্উদ্দিন',
-                                'acting' => 'ড. রওশন আরা, আনোয়ার হোসেন, নাসিমা খান, আসিয়া, নায়না, মিনতি, সুভাষ দত্ত, কাজী খালেক, মফিজ, ইনাম আহমেদ',
-                                'type' => '',
-                                'publish_date' => '৫ জানুয়ারি ১৯৬২',
-                                'sign' => '',
-                                'info' => '-',
-                            ],
-                            [
-                                'cinema' => 'সোনার কাজল',
-                                'producer' => 'কলিম শরাফী,জহির রায়হান',
-                                'acting' => 'খলিল, সুমিতা দেবী, সুলতানা জামান, সুভাষ দত্ত, কাজী খালেক, খান আতাউর রহমান',
-                                'type' => '',
-                                'publish_date' => '২৯ জানুয়ারি ১৯৬২',
-                                'sign' => '',
-                                'info' => '-', ],
-                            [
-                                'cinema' => 'চান্দা',
-                                'producer' => 'এহতেশাম',
-                                'acting' => 'রহমান, শবনম, সুলতানা জামান, গোলাম মুস্তাফা, নারায়ণ চক্রবর্তী',
-                                'type' => '',
-                                'publish_date' => '৩ আগস্ট ১৯৬২',
-                                'sign' => 'উর্দু ভাষার চলচ্চিত্র। এ চলচ্চিত্রের মাধ্যমে শবনম ও রহমানের উর্দু চলচ্চিত্রে অভিষেক ঘটে।',
-                                'info' => '',
-                            ],
-                            [
-                                'cinema' => 'জোয়ার এলো',
-                                'producer' => 'আবদুল জব্বার খান',
-                                'acting' => 'সুলতানা জামান, ইনাম আহমেদ, সাইফুদ্দিন, আনোয়ার হোসেন',
-                                'type' => '', 'publish_date' => '২৪ আগস্ট ১৯৬২', 'sign' => '', 'info' => '',
-                            ],
-                            [
-                                'cinema' => 'নতুন সুর',
-                                'producer' => 'এহতেশাম',
-                                'acting' => 'রহমান, ড. রওশন আরা, ইনাম আহমেদ, আজিম, নারায়ণ চক্রবর্তী, সুভাষ দত্ত',
-                                'type' => '',
-                                'publish_date' => '২৩ নভেম্বর ১৯৬২',
-                                'sign' => '',
-                                'info' => '',
-                            ],
-                        ],
-                    ];
-                // dd($cinemaData["1960"][0]);
-                @endphp
-
+                    @php
+                        $cinemaData = [];
+                        foreach ($films as $film) {
+                            $year = substr($film->release_date, 0, 4); // Extract year from release_date, or use film_year if it exists
+                            if (!isset($cinemaData[$year])) {
+                                $cinemaData[$year] = [];
+                            }
+                            $cinemaData[$year][] = $film;
+                        }
+                    @endphp
                     <!-- RIGHT: Tab Content -->
                     <div class="tab-content flex-grow-1 border ms-3" style="min-width: 400px;">
                         @for($year = $startYear; $year <= $endYear; $year++)
@@ -166,12 +69,10 @@
                                 @php
                                     $yearText = [
                                         1960 => '১৯৬০ সালে বাংলাদেশের স্বাধীনতা পূর্বে তৎকালীন পূর্ব পাকিস্তানে মুক্তিপ্রপ্ত চলচ্চিত্র সংখ্যা দুইটি ।',
-                                        // 1960 => '১৯৬০ সালে বাংলাদেশের স্বাধীনতা পূর্ব তৎকালীন পূর্ব পাকিস্তানে মুক্তিপ্রাপ্ত চলচ্চিত্রের তালিকা। ঐ বছর ঢাকা থেকে মাত্র দুইটি চলচ্চিত্র মুক্তি পায়।',
                                         1961 => '১৯৬১ সালে বাংলাদেশের স্বাধীনতা পূর্বে তৎকালীন পূর্ব পাকিস্তানে মুক্তিপ্রপ্ত চলচ্চিত্র সংখ্যা চারটি ।',
                                         1962 => '১৯৬২ সালে বাংলাদেশের স্বাধীনতা পূর্বে তৎকালীন পূর্ব পাকিস্তানে মুক্তিপ্রপ্ত চলচ্চিত্র সংখ্যা পাঁচটি ।',
                                     ];
                                 @endphp
-
                                 <h3 class="text-center mt-2">
                                     <span style="font-family:SutonnyMJ;font-size:33px;font-weight:bold">{{ $year }}</span> সালের চলচ্চিত্রের তালিকা
                                 </h3>
@@ -191,27 +92,45 @@
                                                 <th>ধরন</th>
                                                 <th>মুক্তির তারিখ</th>
                                                 <th>অর্জন</th>
-                                                {{-- <th>তথ্যসূত্র</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody style="font-size:13px;vertical-align:middle">
                                             @if(isset($cinemaData[$year]) && count($cinemaData[$year]) > 0)
+
                                                 @foreach($cinemaData[$year] as $index => $film)
+
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
-                                                        <td style="white-space:nowrap">{{ $film['cinema'] }}</td>
-                                                        <td style="white-space:nowrap">{{ $film['nirmata'] ?? '' }}</td>
-                                                        <td style="white-space:nowrap">{{ $film['producer'] }}</td>
-                                                        <td>{{ $film['acting'] }}</td>
-                                                        <td>{{ $film['type'] }}</td>
-                                                        <td style="white-space:nowrap">{{ $film['publish_date'] }}</td>
-                                                        <td>{{ $film['sign'] }}</td>
-                                                        {{-- <td>{{ $film['info'] }}</td> --}}
+                                                        <td style="white-space:nowrap">
+                                                            {{ $film->film_name }}
+                                                        </td>
+                                                        <td style="white-space:nowrap">
+                                                            {{ $film->producer_name }}
+                                                        </td>
+                                                        <td style="white-space:nowrap">
+                                                            {{ $film->director_name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $film->acting }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $film->type }}
+                                                        </td>
+                                                        <td style="white-space:nowrap;font-family:SutonnyMJ;">
+                                                            {{ convertToBengaliDate($film->release_date) }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $film->achivements }}
+                                                        </td>
                                                     </tr>
+
                                                 @endforeach
+
                                             @else
                                                 <tr>
-                                                    <td colspan="8" class="text-center">এই বছরে কোন সিনেমা পাওয়া যায়নি</td>
+                                                    <td colspan="8" class="text-center">
+                                                        এই বছরে কোন সিনেমা পাওয়া যায়নি
+                                                    </td>
                                                 </tr>
                                             @endif
                                         </tbody>

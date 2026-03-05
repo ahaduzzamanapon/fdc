@@ -712,7 +712,7 @@
     @if (can('settings'))
         <li class="nav-item">
             <a class="nav-link
-                                            {!! (Request::is('siteSettings*') ||
+                {!! (Request::is('siteSettings*') ||
                     Request::is('districts*') ||
                     Request::is('departments*') ||
                     Request::is('designations*')
@@ -735,6 +735,26 @@
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> সি </i>
                             <span class="item-name">{{ __('messages.site_settings') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @if (can('history_and_heritage_of_cinema'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('decadeFilms*') ? 'active' : '' !!}"
+                            href="{{ route('decadeFilms.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> সি </i>
+                            <span class="item-name">{{ __('messages.history_and_heritage_of_cinema') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @if (can('film_photo_gallery'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('decadeFilmsPhotos*') ? 'active' : '' !!}"
+                            href="{{ route('decadeFilmsPhotos.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> সি </i>
+                            <span class="item-name">{{ __('messages.film_photo_gallery') }}</span>
                         </a>
                     </li>
                 @endif

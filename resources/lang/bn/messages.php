@@ -648,5 +648,15 @@ return [
     'owners_nid' => 'মালিকের এনআইডি',
     'packages' => 'প্যাকেজ',
     'designations' => 'পদবি',
+    'history_and_heritage_of_cinema' => 'সিনেমার ইতিহাস ও ঐতিহ্য',
+    'film_name' => 'চলচ্চিত্রের নাম',
+    'producer_name' => 'প্রযোজকের নাম',
+    'director_name' => 'পরিচালকের নাম',
+    'acting' => 'অভিনয়',
+    'type' => 'ধরন',
+    'release_date' => 'মুক্তির তারিখ',
+    'achievements' => 'অর্জন',
+    'film_photo_gallery' => 'চলচ্চিত্রের ফটো গ্যালারি',
+    'film_video_gallery' => 'চলচ্চিত্রের ভিডিও গ্যালারি',
 
 ];

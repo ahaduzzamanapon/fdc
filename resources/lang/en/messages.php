@@ -118,6 +118,14 @@ return [
     'first_name' => 'First Name',
     'last_name' => 'Last Name',
     'date_of_birth_label' => 'Date Of Birth',
+    // decade film fields
+    'film_name' => 'Film Name',
+    'producer_name' => 'Producer Name',
+    'director_name' => 'Director Name',
+    'acting' => 'Acting',
+    'type' => 'Type',
+    'release_date' => 'Release Date',
+    'achievements' => 'Achievements',
     'date_of_join_label' => 'Date Of Join',
     'image' => 'Image',
     'group_id' => 'Group Id',
@@ -532,4 +540,5 @@ return [
     'rejected' => 'Rejected',
     'owners_name' => 'Owners Name',
     'owners_nid' => 'Owners NID',
+    
 ];

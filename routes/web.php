@@ -18,6 +18,7 @@ use App\Http\Controllers\Reports;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PhotoGalleryController;
 
 // Contact form submission
 Route::post('/contact-submit', [ContactController::class, 'store'])->name('contact.submit');
@@ -41,6 +42,11 @@ Route::get('/', [FrontendController::class, 'index']);
 Route::get('/about_us', [FrontendController::class, 'about_us'])->name('about_us');
 Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinema.')->group(function () {
     Route::get('/films-released-by-decade/{decade}', [FrontendController::class, 'films_released_by_decade'])->name('films_released_by_decade');
+});
+
+Route::prefix('films-photo-gallery')->name('filmsPhotoGallery.')->group(function () {
+    Route::get('/', [FrontendController::class, 'films_photo_gallery'])->name('index');
+    Route::get('/films-photo-by-decade/{decade}', [FrontendController::class, 'films_photo_by_decade'])->name('films_photo_by_decade');
 });
 
 // verify certificate

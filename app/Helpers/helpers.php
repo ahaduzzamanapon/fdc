@@ -181,6 +181,62 @@
         }
     }
 
+    if (!function_exists('convertToBengaliDate')) {
+        /**
+         * Convert a date to Bengali format with Bengali numerals and month names
+         * 
+         * @param string $dateString The date string to convert
+         * @return string Bengali formatted date (e.g., "०२ সেপ্টেম्बर १९६०")
+         */
+        function convertToBengaliDate($dateString)
+        {
+            if (empty($dateString)) {
+                return '';
+            }
+
+            // Bengali month names
+            $bengaliMonths = [
+                'January' => 'জানুয়ারি',
+                'February' => 'ফেব্রুয়ারি',
+                'March' => 'মার্চ',
+                'April' => 'এপ্রিল',
+                'May' => 'মে',
+                'June' => 'জুন',
+                'July' => 'জুলাই',
+                'August' => 'আগস্ট',
+                'September' => 'সেপ্টেম্বর',
+                'October' => 'অক্টোবর',
+                'November' => 'নভেম্বর',
+                'December' => 'ডিসেম্বর',
+            ];
+
+            // English to Bengali digit mapping
+            $englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+            $bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+            try {
+                // Parse the date
+                $date = \Carbon\Carbon::parse($dateString);
+                
+                // Format: day Month year
+                $day = $date->format('d');
+                $month = $date->format('F');
+                $year = $date->format('Y');
+                
+                // Convert month name to Bengali
+                $bengaliMonth = $bengaliMonths[$month] ?? $month;
+                
+                // Convert digits to Bengali
+                $bengaliDay = str_replace($englishDigits, $bengaliDigits, $day);
+                $bengaliYear = str_replace($englishDigits, $bengaliDigits, $year);
+                
+                return "{$bengaliDay} {$bengaliMonth} {$bengaliYear}";
+            } catch (\Exception $e) {
+                return $dateString;
+            }
+        }
+    }
+
 
 
 
