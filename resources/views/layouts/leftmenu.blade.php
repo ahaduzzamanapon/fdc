@@ -698,7 +698,7 @@
     @if (can('settings'))
         <li class="nav-item">
             <a class="nav-link
-                                            {!! (Request::is('siteSettings*') ||
+                                                    {!! (Request::is('siteSettings*') ||
                     Request::is('districts*') ||
                     Request::is('departments*') ||
                     Request::is('designations*')
@@ -831,16 +831,14 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {!! Request::is('notices*') ? 'active' : '' !!}"
-                    href="{{ route('notices.index') }}">
+                <a class="nav-link {!! Request::is('notices*') ? 'active' : '' !!}" href="{{ route('notices.index') }}">
                     <i class="icon im im-icon-File"></i>
                     <i class="sidenav-mini-icon"> নো </i>
                     <span class="item-name">নোটিশ সমূহ</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {!! Request::is('faqs*') ? 'active' : '' !!}"
-                    href="{{ route('faqs.index') }}">
+                <a class="nav-link {!! Request::is('faqs*') ? 'active' : '' !!}" href="{{ route('faqs.index') }}">
                     <i class="icon im im-icon-File"></i>
                     <i class="sidenav-mini-icon"> স </i>
                     <span class="item-name">সচরাচর জিজ্ঞাসা</span>
@@ -874,4 +872,4 @@
             <span class="item-name">অনুমোদন প্রবাহের ধাপ</span>
         </a>
     </li>
-</ul>
+@endif

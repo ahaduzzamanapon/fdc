@@ -2,64 +2,56 @@
 
 @section('content')
     <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>সচরাচর জিজ্ঞাসা</h1>
-                </div>
-                <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('$route.create') }}">
-                        Add New
-                    </a>
-                </div>
-            </div>
-        </div>
     </section>
 
-    <div class="content px-3">
+    <div class="content">
+        <div class="clearfix"></div>
         @include('flash::message')
-
         <div class="clearfix"></div>
 
         <div class="card">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table" id="faqs-table">
-                        <thead>
+            <section class="card-header">
+                <h5 class="card-title d-inline">সচরাচর জিজ্ঞাসা</h5>
+                <span class="float-right">
+                    <a class="btn btn-primary pull-right" href="{{ route('faqs.create') }}">Add New</a>
+                </span>
+            </section>
+
+            <div class="card-body table-responsive">
+                <table class="table table_data" id="faqs-table">
+                    <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th colspan="3">Action</th>
+                            <th>Question</th>
+                            <th>Answer</th>
+                            <th>Action</th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         @foreach($faqs as $faq)
                             <tr>
                                 <td>{{ $faq->title }}</td>
-                                <td>{!! substr($faq->description, 0, 50) !!}...</td>
-                                <td width="120">
-                                    {!! Form::open(['route' => ['faqs.destroy', $faq->id], 'method' => 'delete']) !!}
-                                    <div class='btn-group'>
-                                        <a href="{{ route('faqs.edit', [$faq->id]) }}"
-                                           class='btn btn-default btn-xs'>
-                                            <i class="far fa-edit"></i>
-                                        </a>
-                                        {!! Form::button('<i class="far fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                <td>{!! Str::limit(strip_tags($faq->description), 50) !!}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Actions </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a href="{{ route('faqs.edit', [$faq->id]) }}" class="dropdown-item">
+                                                <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
+                                                    title="Edit"></i> Edit
+                                            </a>
+                                            {!! Form::open(['route' => ['faqs.destroy', $faq->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="Delete"></i> Delete', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                            {!! Form::close() !!}
+                                        </div>
                                     </div>
-                                    {!! Form::close() !!}
                                 </td>
                             </tr>
                         @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card-footer clearfix">
-                    <div class="float-right">
-                        
-                    </div>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
