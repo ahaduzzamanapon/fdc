@@ -295,8 +295,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between helper-text mb-3">
-                  <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;"
-                    href="#" class="text-link">{{ __('messages.forgot_password') }}</a>
+                  {{-- <a style="font-family: 'Noto Sans Bengali', sans-serif;font-weight: 500;font-size: 16px;line-height: 120%;color: white;" href="#" class="text-link">{{ __('messages.forgot_password') }}</a> --}}
                 </div>
                 <button type="submit" class="btn btn-login w-100">{{ __('messages.login') }}</button>
               </form>
