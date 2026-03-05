@@ -712,15 +712,7 @@
     @if (can('settings'))
         <li class="nav-item">
             <a class="nav-link
-<<<<<<< HEAD
-<<<<<<< HEAD
                 {!! (Request::is('siteSettings*') ||
-=======
-                                                    {!! (Request::is('siteSettings*') ||
->>>>>>> origin/apon
-=======
-                    {!! (Request::is('siteSettings*') ||
->>>>>>> origin/msa
                     Request::is('districts*') ||
                     Request::is('departments*') ||
                     Request::is('designations*')
@@ -837,12 +829,6 @@
             </ul>
         </li>
     @endif
-<<<<<<< HEAD
-<<<<<<< HEAD
-@endif
-=======
-=======
->>>>>>> origin/msa
 
     {{-- Page Management --}}
     <li class="nav-item">
