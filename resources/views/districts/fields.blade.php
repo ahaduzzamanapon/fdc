@@ -1,3 +1,15 @@
+@php
+    $districtList = App\Models\Division::pluck('name_bn', 'id')->toArray();
+@endphp
+
+<!-- Name Bn Field -->
+<div class="col-md-3">
+    <div class="form-group">
+        {!! Form::label('division_id', __('messages.division'),['class'=>'control-label']) !!}
+        {!! Form::select('division_id', $districtList, null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
 <!-- Name Bn Field -->
 <div class="col-md-3">
     <div class="form-group">

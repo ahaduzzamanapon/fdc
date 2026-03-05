@@ -16,11 +16,12 @@ class District extends Model
 {
 
     public $table = 'districts';
-    
+
 
 
 
     public $fillable = [
+        'division_id',
         'name_bn',
         'name_en'
     ];
@@ -32,6 +33,7 @@ class District extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'division_id' => 'integer',
         'name_bn' => 'string',
         'name_en' => 'string'
     ];
@@ -42,8 +44,8 @@ class District extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

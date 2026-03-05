@@ -83,7 +83,6 @@ class ProfileController extends Controller
     public function update(Request $request, $id)
     {
         $profile = User::find($id);
-
         if (empty($profile)) {
             Flash::error('User not found');
             return redirect(route('profile.index'));
@@ -109,9 +108,9 @@ class ProfileController extends Controller
         }
 
 
-        if ($request->has('password')) {
+        if (!empty($request->password)) {
             $input['password'] = bcrypt($request->password);
-        }else{
+        } else {
             unset($input['password']);
         }
 

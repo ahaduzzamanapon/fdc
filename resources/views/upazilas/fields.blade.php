@@ -1,8 +1,13 @@
+@php
+    $districtList = App\Models\District::pluck('name_bn', 'id')->toArray();
+@endphp
+
+
 <!-- Dis Id Field -->
 <div class="col-md-3">
     <div class="form-group">
         {!! Form::label('dis_id', 'Dis Id',['class'=>'control-label']) !!}
-        {!! Form::select('dis_id', ['select' => 'select', 'selct' => 'selct'], null, ['class' => 'form-control']) !!}
+        {!! Form::select('dis_id', $districtList, null, ['class' => 'form-control']) !!}
     </div>
 </div>
 

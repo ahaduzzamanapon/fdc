@@ -266,12 +266,12 @@
     {{-- বুকিং --}}
     @if (can('filmApplications_table')) {{-- booking_table --}}
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('producer*') || Request::is('drama-application*') ? 'active' : '' !!}"
+            <a class="nav-link {!! Request::is('producer/booking') || Request::is('producer/booking_forward_table') || Request::is('drama-application*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#producerBooking" role="button" aria-expanded="false" aria-controls="hr"> <i
                     class="icon im im-icon-Calendar-4"></i> <span class="item-name"> বুকিং </span> <i
                     class="right-icon im im-icon-Arrow-Right"></i>
             </a>
-            <ul class="sub-nav collapse {!! Request::is('producer*') ? 'show' : '' !!}" id="producerBooking"
+            <ul class="sub-nav collapse {!! Request::is('producer/booking') || Request::is('producer/booking_forward_table') ? 'show' : '' !!}" id="producerBooking"
                 data-bs-parent="#sidebar-menu">
                 @if (can('film_applications_index_list'))
                     <li class="nav-item">
@@ -713,10 +713,14 @@
         <li class="nav-item">
             <a class="nav-link
 <<<<<<< HEAD
+<<<<<<< HEAD
                 {!! (Request::is('siteSettings*') ||
 =======
                                                     {!! (Request::is('siteSettings*') ||
 >>>>>>> origin/apon
+=======
+                    {!! (Request::is('siteSettings*') ||
+>>>>>>> origin/msa
                     Request::is('districts*') ||
                     Request::is('departments*') ||
                     Request::is('designations*')
@@ -834,8 +838,11 @@
         </li>
     @endif
 <<<<<<< HEAD
+<<<<<<< HEAD
 @endif
 =======
+=======
+>>>>>>> origin/msa
 
     {{-- Page Management --}}
     <li class="nav-item">

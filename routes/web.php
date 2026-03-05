@@ -213,7 +213,7 @@ Route::prefix('reports')->name('reports.')->group(function () {
 
     Route::get('payment-reports', [Reports::class, 'payment_report_index'])->name('paymentReport');
     Route::post('show-payment-reports', [Reports::class, 'payment_report_show'])->name('showPaymentReport');
-
+    Route::post('payment/export/{type}', [Reports::class, 'payment_exportReport'])->name('payment.export');
 
 
 });

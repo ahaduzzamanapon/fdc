@@ -104,7 +104,7 @@ class ProducerController extends AppBaseController
             $input['password'] = bcrypt('12345678');
         }
 
-        $input['status'] = 'Inactive';
+        $input['status'] = 'inactive';
         $input['username'] = $input['phone_number'];
 
         /** @var Producer $producer */
@@ -180,7 +180,7 @@ class ProducerController extends AppBaseController
 
         // Handle password
         $input['password'] = bcrypt($request->input('password', '12345678'));
-        $input['status'] = 'Inactive';
+        $input['status'] = 'inactive';
         $input['username'] = $input['phone_number'];
         $input['other_attachment'] = $input['other_agreement'];
         unset(
@@ -515,7 +515,7 @@ class ProducerController extends AppBaseController
         ]);
 
         ## Check data in producers table
-        $producer = Producer::findOrFail($request->reg_id);
+        $producer = Producer::find($request->reg_id);
 
         ## Get data from approval_requests table based on application_id (Here application_id = producers table -> id)
         $steps = ApprovalRequests::where('application_id', $producer->id)->firstOrFail();
@@ -541,10 +541,10 @@ class ProducerController extends AppBaseController
 
         try {
             ## Update producers table
-            $producer->update([
+            Producer::where('id', $request->reg_id)->update([
                 'reg_status' => $status,
                 'updated_by' => $user_id,
-                'updated_at' => now(),
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
             ## Update approval_requests table
@@ -583,7 +583,6 @@ class ProducerController extends AppBaseController
                     'producer_name' => $producer->owners_name,
                     'status' => $status,
                 ]));
-
             } catch (\Throwable $e) {
                 \Log::error('Mail failed', ['error' => $e->getMessage()]);
             }
