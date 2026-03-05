@@ -3,17 +3,23 @@
         <!-- Left Links -->
         <div class="footer-column">
             <ul>
-                <li>{{ __('messages.film_related') }}</li>
-                <li>{{ __('messages.privacy_policy') }}</li>
-                <li>{{ __('messages.terms_of_use') }}</li>
+                <li><a style="text-decoration: none; color: black;"
+                        href="{{ route('film_related.page') }}">{{ __('messages.film_related') }}</a></li>
+                <li><a style="text-decoration: none; color: black;"
+                        href="{{ route('privacy_policy.page') }}">{{ __('messages.privacy_policy') }}</a></li>
+                <li><a style="text-decoration: none; color: black;"
+                        href="{{ route('terms_of_use.page') }}">{{ __('messages.terms_of_use') }}</a></li>
             </ul>
         </div>
         <!-- Center Links -->
         <div class="footer-column">
             <ul>
-                <li>{{ __('messages.notices') }}</li>
-                <li>{{ __('messages.faq') }}</li>
-                <li>{{ __('messages.contact') }}</li>
+                <li><a style="text-decoration: none; color: black;"
+                        href="{{ route('notices.page') }}">{{ __('messages.notices') }}</a></li>
+                <li><a style="text-decoration: none; color: black;"
+                        href="{{ route('faqs.page') }}">{{ __('messages.faq') }}</a></li>
+                <li><a style="text-decoration: none; color: black;"
+                        href="{{ route('contact_info.page') }}">{{ __('messages.contact') }}</a></li>
             </ul>
         </div>
         <!-- Contact Info -->
@@ -37,8 +43,9 @@
                             fill="black" />
                         <path d="M17.5244 12.5063L23.7601 20.081V4.93164L17.5244 12.5063Z" fill="black" />
                     </svg>
-                </span> info@fdc.gov.bd</p>
-           
+                </span> info@fdc.gov.bd
+            </p>
+
         </div>
     </div>
     <div class="bottom-text">
