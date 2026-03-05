@@ -154,12 +154,11 @@
     <div class="form-group">
         {!! Form::label('status', __('messages.status'), ['class' => 'control-label']) !!}
         {!! Form::select('status', [
-    'active' => __('messages.active'),
-    'inactive' => __('messages.inactive'),
-    'verified' => __('messages.verified'),
-    'approved' => __('messages.approved'),
-    'rejected' => __('messages.rejected')
-], null, ['class' => 'form-control']) !!}
+            'active' => __('messages.active'),
+            'inactive' => __('messages.inactive'),
+            'approved' => __('messages.approved'),
+            'rejected' => __('messages.rejected')
+        ], null, ['class' => 'form-control']) !!}
     </div>
 </div>
 

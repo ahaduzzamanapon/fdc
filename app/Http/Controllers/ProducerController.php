@@ -104,7 +104,7 @@ class ProducerController extends AppBaseController
             $input['password'] = bcrypt('12345678');
         }
 
-        $input['status'] = 'Inactive';
+        $input['status'] = 'inactive';
         $input['username'] = $input['phone_number'];
 
         /** @var Producer $producer */
@@ -180,7 +180,7 @@ class ProducerController extends AppBaseController
 
         // Handle password
         $input['password'] = bcrypt($request->input('password', '12345678'));
-        $input['status'] = 'Inactive';
+        $input['status'] = 'inactive';
         $input['username'] = $input['phone_number'];
         $input['other_attachment'] = $input['other_agreement'];
         unset(
