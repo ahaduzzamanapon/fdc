@@ -712,7 +712,7 @@
     @if (can('settings'))
         <li class="nav-item">
             <a class="nav-link
-                                            {!! (Request::is('siteSettings*') ||
+                    {!! (Request::is('siteSettings*') ||
                     Request::is('districts*') ||
                     Request::is('departments*') ||
                     Request::is('designations*')
@@ -806,26 +806,84 @@
                         </a>
                     </li>
                 @endif
-
-                <li class="nav-item">
-                    <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}"
-                        href="{{ route('approvalFlowMasters.index') }}">
-                        <i class="icon im im-icon-Structure"></i>
-                        <i class="sidenav-mini-icon"> প্র </i>
-                        <span class="item-name">অনুমোদন প্রবাহ</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {!! Request::is('approvalFlowSteps*') ? 'active' : '' !!}"
-                        href="{{ route('approvalFlowSteps.index') }}">
-                        <i class="icon im im-icon-Structure"></i>
-                        <i class="sidenav-mini-icon"> ধা </i>
-                        <span class="item-name">অনুমোদন প্রবাহের ধাপ</span>
-                    </a>
-                </li>
-
             </ul>
         </li>
     @endif
+
+    {{-- Page Management --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'active' : '' !!}"
+            data-bs-toggle="collapse" href="#pages_menu" role="button" aria-expanded="false" aria-controls="pages_menu">
+            <i class="icon im im-icon-File"></i>
+            <span class="item-name">পেইজ ম্যানেজমেন্ট</span>
+            <i class="right-icon im im-icon-Arrow-Right"></i>
+        </a>
+        <ul class="sub-nav collapse {!! Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'show' : '' !!}"
+            id="pages_menu" data-bs-parent="#sidebar-menu">
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('film_related*') ? 'active' : '' !!}"
+                    href="{{ route('film_related.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> চ </i>
+                    <span class="item-name">চলচ্চিত্র সম্পর্কিত</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('privacy_policies*') ? 'active' : '' !!}"
+                    href="{{ route('privacy_policies.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> গো </i>
+                    <span class="item-name">গোপনীয়তার নীতিমালা</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('terms_of_uses*') ? 'active' : '' !!}"
+                    href="{{ route('terms_of_uses.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> ব্য </i>
+                    <span class="item-name">ব্যবহারের শর্তাবলি</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('notices*') ? 'active' : '' !!}" href="{{ route('notices.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> নো </i>
+                    <span class="item-name">নোটিশ সমূহ</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('faqs*') ? 'active' : '' !!}" href="{{ route('faqs.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> স </i>
+                    <span class="item-name">সচরাচর জিজ্ঞাসা</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('contact_infos*') ? 'active' : '' !!}"
+                    href="{{ route('contact_infos.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> যো </i>
+                    <span class="item-name">যোগাযোগ</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}"
+            href="{{ route('approvalFlowMasters.index') }}">
+            <i class="icon im im-icon-Structure"></i>
+            <i class="sidenav-mini-icon"> প্র </i>
+            <span class="item-name">অনুমোদন প্রবাহ</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('approvalFlowSteps*') ? 'active' : '' !!}"
+            href="{{ route('approvalFlowSteps.index') }}">
+            <i class="icon im im-icon-Structure"></i>
+            <i class="sidenav-mini-icon"> ধা </i>
+            <span class="item-name">অনুমোদন প্রবাহের ধাপ</span>
+        </a>
+    </li>
 @endif
