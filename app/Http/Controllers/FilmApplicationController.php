@@ -33,7 +33,6 @@ class FilmApplicationController extends AppBaseController
      */
     public function index(Request $request)
     {
-
         if (!Auth::guard('producer')->check()) {
             $filmApplications = FilmApplication::latest();
         } else {

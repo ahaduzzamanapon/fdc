@@ -120,6 +120,7 @@ return [
     'date_of_birth_label' => 'জন্ম তারিখ',
     'date_of_join_label' => 'যোগদানের তারিখ',
     'image' => 'ছবি',
+    'nominee_name' => 'নমিনির নাম',
     'group_id' => 'গ্রুপ আইডি',
     'username' => 'ইউজারনেম',
     'group' => 'গ্রুপ',

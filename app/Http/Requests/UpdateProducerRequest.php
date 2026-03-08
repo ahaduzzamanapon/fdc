@@ -26,7 +26,12 @@ class UpdateProducerRequest extends FormRequest
     public function rules()
     {
         $rules = Producer::$rules;
-        
+
+        $id = $this->route('producer'); // resource route id
+
+        $rules['phone_number'] = 'required|unique:producers,phone_number,' . $id;
+        $rules['email'] = 'required|email|unique:producers,email,' . $id;
+
         return $rules;
     }
 }

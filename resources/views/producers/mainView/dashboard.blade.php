@@ -289,7 +289,7 @@
             <div class="dashboard_card">
                 <div class="tiles white added-margin new new4">
                     <div class="tiles-body">
-                        <div class="tiles-title"> রিলিটি শো সামারি রিপোর্ট </div>
+                        <div class="tiles-title"> রিয়েলিটি শো সামারি রিপোর্ট </div>
                         <div style="border-bottom:1px solid #fff; margin-bottom: 10px"></div>
                         <div class="description table-responsive">
                             <table class="report-table">

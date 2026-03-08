@@ -16,7 +16,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('profile.index');
+        if (Auth::guard('producer')->check()) {
+            return view('profile.producer');
+        } else {
+            return view('profile.index');
+        }
     }
 
     /**

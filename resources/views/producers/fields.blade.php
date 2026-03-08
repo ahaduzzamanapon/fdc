@@ -150,6 +150,7 @@
 </fieldset>
 
 <!-- Status Field -->
+@if (!Auth::guard('producer')->check())
 <div class="col-md-3">
     <div class="form-group">
         {!! Form::label('status', __('messages.status'), ['class' => 'control-label']) !!}
@@ -161,6 +162,7 @@
         ], null, ['class' => 'form-control']) !!}
     </div>
 </div>
+@endif
 
 
 <!-- Submit Field -->

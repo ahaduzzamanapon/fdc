@@ -80,7 +80,7 @@
 <div @class(['col-md-3'])>
     <div @class(['form-group'])>
         {!! Form::label('amount', __('messages.amount'),['class'=>'control-label']) !!}
-        {!! Form::text('amount', null, ['class' => 'form-control', 'required']) !!}
+        {!! Form::number('amount', null, ['class' => 'form-control', 'required']) !!}
     </div>
 </div>
 

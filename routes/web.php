@@ -234,7 +234,7 @@ Route::get('/customPackage/payment/cancel', [PaymentController::class, 'ekPayCmC
 Route::get('cm_payment_receipt/{cm}', [MakePaymentController::class, 'cm_payment_receipt'])->name('cm_payment_receipt');
 
 // GUI crud builder routes
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'middleware' => 'auth:producer'], function () {
     Route::get('builder', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@builder')->name('io_generator_builder');
 
     Route::get('field_template', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@fieldTemplate')->name('io_field_template');

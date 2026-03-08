@@ -907,3 +907,12 @@
         </a>
     </li>
 @endif
+
+<style>
+    #sidebar-menu .nav-item .sub-nav .nav-item .nav-link {
+        font-size: 14px !important;
+    }
+    #sidebar-menu .nav-item .nav-link {
+        font-size: 15px !important;
+    }
+</style>

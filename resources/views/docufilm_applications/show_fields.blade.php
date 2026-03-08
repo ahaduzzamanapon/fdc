@@ -1,7 +1,3 @@
-<tr>
-    <th scopre="row">{!! Form::label('id', 'Id:') !!}</th>
-    <td>{{ $filmApplication->id }}</td>
-</tr>
 
 
 <tr>
@@ -11,20 +7,20 @@
 
 
 <tr>
-    <th scopre="row">{!! Form::label('applicant_nam', 'Applicant Nam:') !!}</th>
-    <td>{{ $filmApplication->applicant_nam }}</td>
+    <th scopre="row">{!! Form::label('applicant_name', 'Applicant Name:') !!}</th>
+    <td>{{ $filmApplication->applicant_name }}</td>
 </tr>
 
 
 <tr>
-    <th scopre="row">{!! Form::label('father_nam', 'Father Nam:') !!}</th>
-    <td>{{ $filmApplication->father_nam }}</td>
+    <th scopre="row">{!! Form::label('father_name', 'Father Name:') !!}</th>
+    <td>{{ $filmApplication->father_name }}</td>
 </tr>
 
 
 <tr>
-    <th scopre="row">{!! Form::label('mother_nam', 'Mother Nam:') !!}</th>
-    <td>{{ $filmApplication->mother_nam }}</td>
+    <th scopre="row">{!! Form::label('mother_name', 'Mother Name:') !!}</th>
+    <td>{{ $filmApplication->mother_name }}</td>
 </tr>
 
 

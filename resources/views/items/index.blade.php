@@ -23,7 +23,7 @@ Items @parent
         <div class="clearfix"></div>
         <div class="card" width="88vw;">
             <section class="card-header">
-                <h5 class="card-title d-inline">Items</h5>
+                <h5 class="card-title d-inline"> আইটেম </h5>
                 <span class="float-right">
                     <a class="btn btn-primary pull-right" href="{{ route('items.create') }}">নতুন যোগ করুন</a>
                     <a class="btn btn-success pull-right" href="{{ route('items.export') }}"

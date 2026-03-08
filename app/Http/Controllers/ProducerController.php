@@ -352,6 +352,9 @@ class ProducerController extends AppBaseController
 
         Flash::success('Producer updated successfully.');
 
+        if (Auth::guard('producer')->check()) {
+            return redirect(route('profile.index'));
+        }
         return redirect(route('producers.index'));
     }
 
