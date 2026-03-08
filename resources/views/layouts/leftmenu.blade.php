@@ -271,8 +271,8 @@
                     class="icon im im-icon-Calendar-4"></i> <span class="item-name"> বুকিং </span> <i
                     class="right-icon im im-icon-Arrow-Right"></i>
             </a>
-            <ul class="sub-nav collapse {!! Request::is('producer/booking') || Request::is('producer/booking_forward_table') ? 'show' : '' !!}" id="producerBooking"
-                data-bs-parent="#sidebar-menu">
+            <ul class="sub-nav collapse {!! Request::is('producer/booking') || Request::is('producer/booking_forward_table') ? 'show' : '' !!}"
+                id="producerBooking" data-bs-parent="#sidebar-menu">
                 @if (can('film_applications_index_list'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('producer/booking') ? 'active' : '' !!}" aria-current="page"
@@ -712,7 +712,7 @@
     @if (can('settings'))
         <li class="nav-item">
             <a class="nav-link
-                {!! (Request::is('siteSettings*') ||
+                                {!! (Request::is('siteSettings*') ||
                     Request::is('districts*') ||
                     Request::is('departments*') ||
                     Request::is('designations*')
@@ -832,13 +832,13 @@
 
     {{-- Page Management --}}
     <li class="nav-item">
-        <a class="nav-link {!! Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'active' : '' !!}"
+        <a class="nav-link {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'active' : '' !!}"
             data-bs-toggle="collapse" href="#pages_menu" role="button" aria-expanded="false" aria-controls="pages_menu">
             <i class="icon im im-icon-File"></i>
             <span class="item-name">পেইজ ম্যানেজমেন্ট</span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
-        <ul class="sub-nav collapse {!! Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'show' : '' !!}"
+        <ul class="sub-nav collapse {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'show' : '' !!}"
             id="pages_menu" data-bs-parent="#sidebar-menu">
             <li class="nav-item">
                 <a class="nav-link {!! Request::is('film_related*') ? 'active' : '' !!}"
@@ -846,6 +846,13 @@
                     <i class="icon im im-icon-File"></i>
                     <i class="sidenav-mini-icon"> চ </i>
                     <span class="item-name">চলচ্চিত্র সম্পর্কিত</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('galleries*') ? 'active' : '' !!}" href="{{ route('galleries.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> ফ </i>
+                    <span class="item-name">ফটোগ্যালারী</span>
                 </a>
             </li>
             <li class="nav-item">

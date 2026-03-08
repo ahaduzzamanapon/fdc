@@ -540,3 +540,5 @@ return [
     'rejected' => 'Rejected',
     'owners_name' => 'Owners Name',
     'owners_nid' => 'Owners NID',
+
+];

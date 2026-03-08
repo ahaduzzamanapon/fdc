@@ -25,14 +25,14 @@ class FrontendController extends Controller
 
     public function films_released_by_decade($decade)
     {
-        $decadeStart = (int)$decade;
+        $decadeStart = (int) $decade;
         $decadeEnd = $decadeStart + 9;
-        
+
         $films = DB::table('decade_film_lists')
             ->whereRaw("YEAR(release_date) >= ? AND YEAR(release_date) <= ?", [$decadeStart, $decadeEnd])
             ->orderBy('release_date', 'ASC')
             ->get();
-        
+
         return view('font_end.films_released_by_decade', compact('decade', 'films'));
     }
 
@@ -43,14 +43,14 @@ class FrontendController extends Controller
 
     public function films_photo_by_decade($decade)
     {
-        $decadeStart = (int)$decade;
+        $decadeStart = (int) $decade;
         $decadeEnd = $decadeStart + 9;
-        
+
         $galleries = DB::table('photo_galleries')
             ->whereRaw("YEAR(release_date) >= ? AND YEAR(release_date) <= ?", [$decadeStart, $decadeEnd])
             ->orderBy('release_date', 'ASC')
             ->get();
-        
+
         return view('font_end.films_photo_gallery', compact('decade', 'galleries'));
     }
 
@@ -93,5 +93,11 @@ class FrontendController extends Controller
     {
         $data = \App\Models\ContactInfo::all();
         return view('font_end.pages.contact_info', compact('data'));
+    }
+
+    public function photoGallery()
+    {
+        $galleries = \App\Models\Gallery::latest()->get();
+        return view('font_end.pages.photo_gallery', compact('galleries'));
     }
 }

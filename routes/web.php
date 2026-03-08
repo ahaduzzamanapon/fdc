@@ -55,6 +55,7 @@ Route::get('/terms-of-use', [FrontendController::class, 'terms_of_use'])->name('
 Route::get('/notice', [FrontendController::class, 'notices'])->name('notices.page');
 Route::get('/faq', [FrontendController::class, 'faqs'])->name('faqs.page');
 Route::get('/contact-info', [FrontendController::class, 'contact_info'])->name('contact_info.page');
+Route::get('/photo-gallery', [FrontendController::class, 'photoGallery'])->name('photo_gallery.page');
 
 // verify certificate
 Route::get('certificate/verify/{producer}', [FrontendController::class, 'certificate_verify'])
@@ -275,6 +276,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('notices', \App\Http\Controllers\NoticeController::class);
     Route::resource('faqs', \App\Http\Controllers\FaqController::class);
     Route::resource('contact_infos', \App\Http\Controllers\ContactInfoController::class);
+    Route::resource('galleries', \App\Http\Controllers\GalleryController::class);
 
 
     // leave action Dept Head / MD
