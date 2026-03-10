@@ -27,7 +27,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        {!! Form::open(['route' => 'noc.store','class' => 'form-horizontal col-md-12']) !!}
+                        {!! Form::open(['route' => 'noc.store', 'class' => 'form-horizontal col-md-12', 'autocomplete' => 'off']) !!}
                         <div class="row">
                             @include('noc.fields')
                         </div>
@@ -38,5 +38,11 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.querySelector('[name="mobile_no"]').addEventListener('input', function(e){
+            this.value = this.value.replace(/[^0-9]/g,'');
+        });
+    </script>
 
 @stop

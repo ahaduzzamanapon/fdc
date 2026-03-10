@@ -100,7 +100,15 @@
 <div class="col-md-4">
     <div class="form-group">
         {!! Form::label('mobile_no', 'মোবাইল নম্বর',['class'=>'control-label']) !!}
-        {!! Form::text('mobile_no', null, ['class' => 'form-control', 'required']) !!}
+        {!! Form::text('mobile_no', null, [
+            'class' => 'form-control',
+            'required',
+            'pattern' => '01[3-9][0-9]{8}',
+            'maxlength' => '11',
+            'inputmode' => 'numeric',
+            'autocomplete' => 'off',
+            'title' => 'সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)'
+        ]) !!}
     </div>
 </div>
 
@@ -108,7 +116,10 @@
 <div class="col-md-4">
     <div class="form-group">
         {!! Form::label('email', 'ই-মেইল',['class'=>'control-label']) !!}
-        {!! Form::text('email', null, ['class' => 'form-control', 'required']) !!}
+        {!! Form::email('email', null, [
+            'class' => 'form-control',
+            'required'
+        ]) !!}
     </div>
 </div>
 

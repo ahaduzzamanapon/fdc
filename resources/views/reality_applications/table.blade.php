@@ -38,7 +38,7 @@
                                         {{ __('messages.edit_draft_button') }}</a>
                                 @endif
 
-                                @if ($film->status == 'on process')
+                                @if ($film->status == 'on process' && !Auth::guard('producer')->check())
                                     <a href="{{ route('realityApplications.forward', [$film->id, 'additional_director_finance']) }}"
                                         class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip"
                                             data-placement="top"

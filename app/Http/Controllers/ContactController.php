@@ -50,7 +50,7 @@ class ContactController extends Controller
 
         ContactMessage::create($request->all());
 
-        return response()->json(['status' => 'success', 'message' => 'Your message has been sent successfully!']);
+        return response()->json(['status' => 'success', 'message' => 'আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে!']);
     }
 
     /**

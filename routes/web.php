@@ -190,6 +190,7 @@ Route::prefix('film-applications')->name('filmApplications.')->group(function ()
     ## For save as draft section
     Route::post('/draft', [FilmApplicationController::class, 'storeFilmDraft'])->name('film.save.draft');
     Route::get('/draft/{id}/edit', [FilmApplicationController::class, 'editFilmDraft'])->name('film.edit.draft');
+    Route::post('/draft/update', [FilmApplicationController::class, 'updateDraftFilm'])->name('film.update.draft');
 });
 
 
@@ -235,7 +236,7 @@ Route::get('/customPackage/payment/cancel', [PaymentController::class, 'ekPayCmC
 Route::get('cm_payment_receipt/{cm}', [MakePaymentController::class, 'cm_payment_receipt'])->name('cm_payment_receipt');
 
 // GUI crud builder routes
-Route::group(['middleware' => 'auth', 'middleware' => 'auth:producer'], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('builder', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@builder')->name('io_generator_builder');
 
     Route::get('field_template', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@fieldTemplate')->name('io_field_template');
@@ -333,6 +334,7 @@ Route::group(["middleware" => []], function () {
             Route::get('/registration_forward/{id}', 'registration_forward')->name('producer.registration.forward');
             Route::post('/registration_forward', 'registration_forward_st')->name('producer.registration.forward.st');
         });
+    Route::resource('profile', ProfileController::class);
 });
 
 Route::get('/upload_exell', function () {
