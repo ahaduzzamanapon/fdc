@@ -191,7 +191,12 @@ class DocufilmApplicationController extends AppBaseController
     public function forward_table(Request $request)
     {
         $user = Auth::user()->user_role;
-        $films = DocufilmApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
+        $films = DocufilmApplication::latest()->where('status', 'on process');
+        if (!$user == 1) {
+            $films = $films->where('desk_id', $user)->get();
+        } else {
+            $films = $films->get();
+        }
         return view('docufilm_applications.index')->with('filmApplications', $films);
     }
     public function forward(DocufilmApplication $docufilmApplication, $desk)

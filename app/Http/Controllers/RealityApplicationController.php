@@ -191,7 +191,12 @@ class RealityApplicationController extends AppBaseController
     public function forward_table(Request $request)
     {
         $user = Auth::user()->user_role;
-        $films = RealityApplication::latest()->where('status', 'on process')->where('desk_id', $user)->get();
+        $films = RealityApplication::latest()->where('status', 'on process');
+        if (!$user == 1) {
+            $films = $films->where('desk_id', $user)->get();
+        } else {
+            $films = $films->get();
+        }
         return view('reality_applications.index')->with('filmApplications', $films);
     }
     public function forward(RealityApplication $realityApplication, $desk)
