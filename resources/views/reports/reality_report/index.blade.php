@@ -43,7 +43,7 @@ Flim Report
                 </select>
             </div>
 
-            <div class="col-12 d-flex justify-content-end gap-2">
+            <div class="col-12 d-flex justify-content-start gap-2">
                 <button type="button" class="btn btn-secondary" id="resetFilter">
                     {{ __('Reset') }}
                 </button>

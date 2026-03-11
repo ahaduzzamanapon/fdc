@@ -47,7 +47,7 @@
                             <td>{{ $payment->trn_id ?? 'N/A' }}</td>
                             <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
                             <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->review_status ?? 'N/A' }}</span></td>
-                            <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
+                            <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y') : 'N/A' }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> অ্যাকশন </button>

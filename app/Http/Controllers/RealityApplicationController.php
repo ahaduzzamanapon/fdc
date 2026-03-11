@@ -200,12 +200,14 @@ class RealityApplicationController extends AppBaseController
         $role_id = $realityApplication->desk_id;
         $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Reality Application')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
-        // dd($logs);
+        $flow = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $auth_user->flow_id)->first();
+        // dd($flow);
 
         return view('reality_applications.forward', [
             'film' => $realityApplication,
             'auth_user' => $auth_user,
             'logs' => $logs,
+            'flow' => $flow
         ]);
     }
 

@@ -411,11 +411,10 @@ class MakePaymentController extends AppBaseController
         $producer = Auth::guard('producer')->user();
         $check = Package::where('producer_id', $producer->id)->orderBy('id', 'desc')->first();
         if (empty($check)) {
-            $custom_name = 'Custom Package '. $producer->id.'.1';
+            $custom_name = 'Custom Package '. 1;
         } else {
             $ex = explode(' ', $check->name);
-            $ls = explode('.', $ex[2]);
-            $custom_name = 'Custom Package '. $producer->id .'.'. $ls[1]+1;
+            $custom_name = 'Custom Package '. $ex[2]+1;
         }
 
         // if (!empty($check)) {

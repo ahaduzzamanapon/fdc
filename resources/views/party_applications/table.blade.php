@@ -15,6 +15,32 @@
         </thead>
         <tbody>
             @foreach($filmApplications as $key => $film)
+                @php
+                    switch ($film->status) {
+                        case 'pending':
+                            $status = 'মুলতুলি';
+                            break;
+                        case 'approved':
+                            $status = 'অনুমোদিত';
+                            break;
+                        case 'inactive':
+                            $status = 'নিষ্ক্রিয়';
+                            break;
+                        case 'rejected':
+                            $status = 'প্রত্যাখ্যাত';
+                            break;
+                        case 'active':
+                            $status = 'নিষ্ক্রিয়';
+                            break;
+                        case 'verified':
+                            $status = 'যাচাইবৃত';
+                            break;
+                        default:
+                            $status = 'খসড়া';
+                            break;
+                    }
+                @endphp
+
                 <tr>
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $film->organization_name }}</td>
@@ -22,7 +48,7 @@
                     <td>{{ $film->address }}</td>
                     <td>{{ $film->bank_name }}</td>
                     <td>{{ $film->bank_account_number }}</td>
-                    <td>{{ ucfirst($film->status) }}</td>
+                    <td>{{ $status }}</td>
                     <td>{{ isset(get_role($film->desk_id)->name) ? Str::ucfirst(get_role($film->desk_id)->name) : '' }}</td>
                     <td>
                         <div class="dropdown">

@@ -204,23 +204,21 @@
 
                 <div id="booking_ui_div" class="row g-3 mt-3 align-items-end" style="display: none;">
                     <div class="col-md-4">
-                        <label class="form-label">Start Date</label>
+                        <label class="form-label">শুরুর তারিখ</label>
                         <button type="button" id="start_date_btn" class="btn btn-outline-primary w-100"
-                            data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="start">Select Start
-                            Date</button>
+                            data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="start">শুরুর তারিখ নির্বাচন করুন</button>
                         <input type="hidden" id="start_date_input">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">End Date</label>
+                        <label class="form-label">শেষ তারিখ</label>
                         <button type="button" id="end_date_btn" class="btn btn-outline-primary w-100"
-                            data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="end" disabled>Select End
-                            Date</button>
+                            data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="end" disabled>শেষ তারিখ নির্বাচন করুন</button>
                         <input type="hidden" id="end_date_input">
                     </div>
                     <div class="col-md-4" id="shift_dropdown_wrapper">
-                        <label for="shift_id_dropdown" class="form-label">Shift</label>
+                        <label for="shift_id_dropdown" class="form-label">শিফট</label>
                         <select id="shift_id_dropdown" class="form-select" disabled>
-                            <option value="">Select Shift</option>
+                            <option value="">শিফট নির্বাচন করুন</option>
                         </select>
                     </div>
                 </div>
@@ -264,7 +262,9 @@
                     <div @class(['row', 'mt-3'])>
                         <div @class(['col-md-8', 'text-end'])>
 
-                            <button type="submit" class="btn btn-warning" formaction="{{ route('producer.booking_draft') }}" formmethod="POST"> {{ __('messages.save_as_draft') }} </button>
+                            <button type="submit" class="btn btn-warning" formaction="{{ route('producer.booking_draft') }}" formmethod="POST" onclick="return checkDraft()">
+                                {{ __('messages.save_as_draft') }}
+                            </button>
 
                             <button type="button" @class(['btn', 'btn-success']) onclick="submit_booking_request()">{{ __('messages.final_booking') }}</button>
                         </div>
@@ -295,6 +295,23 @@
     </div>
 
 @section('scripts')
+    <script>
+        function checkDraft() {
+            film_type = $('#film_type').val();
+            film_id = $('#film_id').val();
+
+            if (!film_type) {
+                alert("অনুগ্রহ করে সেবা নির্বাচন করুন।");
+                return false;
+            }
+            if (!film_id) {
+                alert("অনুগ্রহ আবেদনকৃত সেবা নির্বাচন করুন।");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
     <script>
         $(document).ready(function() {
             // Film type change logic
@@ -345,8 +362,8 @@
             $('#add_cart_div, #booking_ui_div').hide();
 
             // Reset UI
-            $('#start_date_btn').text('Select Start Date');
-            $('#end_date_btn').text('Select End Date').prop('disabled', true);
+            $('#start_date_btn').text('শুরুর তারিখ নির্বাচন করুন');
+            $('#end_date_btn').text('শেষ তারিখ নির্বাচন করুন').prop('disabled', true);
             $('#start_date_input, #end_date_input').val('');
             $('#shift_id_dropdown').empty().append('<option value="">Select Shift</option>').prop('disabled', true);
 
@@ -539,11 +556,11 @@
             const shift_id = (service_type === 'shift') ? $('#shift_id_dropdown').val() : null;
 
             if (!item_id || !category_id || !booking_start_date || !booking_end_date) {
-                alert("Please select start and end dates.");
+                alert("অনুগ্রহ করে শুরু এবং শেষ তারিখ নির্বাচন করুন।");
                 return;
             }
             if (service_type === 'shift' && !shift_id) {
-                alert("Please select a shift.");
+                alert("অনুগ্রহ করে একটি শিফট নির্বাচন করুন।");
                 return;
             }
 
@@ -622,8 +639,8 @@
             }
 
             Swal.fire({
-                title: "Are you sure?",
-                icon: "warning",
+                title: "আপনি কি নিশ্চিত?",
+                icon: "সতর্কতা",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
@@ -740,7 +757,7 @@
                 } else {
                     const startDate = $('#start_date_input').val();
                     if (new Date(date) < new Date(startDate)) {
-                        alert('End date cannot be before start date.');
+                        alert('শেষ তারিখ শুরুর তারিখের আগে হতে পারবে না।');
                         return;
                     }
                     $('#end_date_btn').text(date);
@@ -760,7 +777,7 @@
                 } else {
                     const startDate = $('#start_date_input').val();
                     if (new Date(date) < new Date(startDate)) {
-                        alert('End date cannot be before start date.');
+                        alert('শেষ তারিখ শুরুর তারিখের আগে হতে পারবে না।');
                         return;
                     }
                     $('#end_date_btn').text(date);
