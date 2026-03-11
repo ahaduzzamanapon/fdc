@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FilmApplication;
 use App\Models\Producer;
+use App\Models\Booking;
+use App\Models\FilmApplication;
+use App\Models\ProducerBalance;
+use App\Models\RealityApplication;
+use App\Models\DocufilmApplication;
+use App\Models\DramaApplication;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Upazila;
@@ -31,14 +36,50 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $totalRunningMovies = FilmApplication::where('status', 'running')->count();
-        $totalCompletedMovies = FilmApplication::where('status', 'completed')->count();
-        $moviesAwaitingApproval = FilmApplication::where('status', 'pending')->count();
-        $commercialsAwaitingApproval = FilmApplication::where('status', 'pending')->count();
-        $totalProducerList = Producer::count();
-        $totalApprovedProducerPendingList = Producer::where('status', 'pending')->count();
+        $bookings = Booking::where('status', '!=', 'reject')
+            ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+            ->first();
+        $films = FilmApplication::where('status', '!=', 'reject')
+            ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+            ->first();
+        $dramas = DramaApplication::where('status', '!=', 'reject')
+            ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+            ->first();
+        $docufilms = DocufilmApplication::where('status', '!=', 'reject')
+            ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+            ->first();
+        $reality = RealityApplication::where('status', '!=', 'reject')
+            ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN status = 'on process' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approveRow
+                ")
+            ->first();
+        $producer = Producer::where('reg_status', '!=', 'rejected')
+            ->selectRaw("
+                    COUNT(*) AS totalRow,
+                    SUM(CASE WHEN reg_status = 'pending' THEN 1 ELSE 0 END) AS pendingRow,
+                    SUM(CASE WHEN reg_status = 'verified' THEN 1 ELSE 0 END) AS approveRow
+                ")
+            ->first();
 
-        return view('index', compact('totalRunningMovies', 'totalCompletedMovies', 'moviesAwaitingApproval', 'commercialsAwaitingApproval', 'totalProducerList', 'totalApprovedProducerPendingList'));
+        return view('index', compact('bookings', 'films', 'dramas', 'docufilms', 'reality', 'producer'));
     }
 
     public function get_districts(Request $request)

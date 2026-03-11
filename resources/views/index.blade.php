@@ -1,24 +1,23 @@
 @extends('layouts.default')
 {{-- Page title --}}
 @section('title')
-    Dashboard {{ __('messages.dashboard') }} @parent
+ড্যাশবোর্ড {{ __('messages.dashboard') }} @parent
 @stop
 {{-- page level styles --}}
-@section('header_styles')
-    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-@stop
+<link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+
 @section('content')
     <section class="content-header">
         <div class="col-md-12">
             <div class="row">
-                <h3 class="col-md-6 pull-left">
-                    {{ __('messages.dashboard') }}
+                <h3 class="col-md-6 pull-left" style="padding-top : 10px">
+                    ড্যাশবোর্ড {{ __('messages.dashboard') }}
                 </h3>
             </div>
         </div>
         <br>
-
     </section>
+
     <style>
         .custom-card {
             display: flex;
@@ -144,17 +143,18 @@
 
     <section class="content">
         <div class="dashboard_cards_header">
+            {{-- booking count --}}
             <div class="dashboard_card">
                 <a class="indexLink" href="#" style="text-decoration: none!important;">
                     <div class="custom-card">
-                        <div class="card-icon teal">
+                        <div class="card-icon" style="background: #78c72f;">
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_running_movies">
-                                <div class="" role="status">{{ $totalRunningMovies }}</div>
+                            <h3 id="total_students">
+                                <div class="" role="status"> {{ en2bn($bookings->totalRow) }} </div>
                             </h3>
-                            <p>{{ __('messages.total_running_movies') }}</p>
+                            <p>{{ __('messages.total_bookings') }}</p>
                         </div>
                     </div>
                 </a>
@@ -162,59 +162,14 @@
             <div class="dashboard_card">
                 <a class="indexLink" href="#" style="text-decoration: none!important;">
                     <div class="custom-card">
-                        <div class="card-icon green">
+                        <div class="card-icon" style="background: #9424b8;">
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
                             <h3 id="total_completed_movies">
-                                <div class="" role="status">{{ $totalCompletedMovies }}</div>
+                                <div class="" role="status">{{ en2bn($bookings->pendingRow) }}</div>
                             </h3>
-                            <p>{{ __('messages.total_completed_movies') }}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="dashboard_card">
-                <a class="indexLink" href="#" style="text-decoration: none!important;">
-                    <div class="custom-card">
-                        <div class="card-icon blue">
-                            <i class="icon im im-icon-User"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3 id="movies_awaiting_approval">
-                                <div class="" role="status">{{ $moviesAwaitingApproval }}</div>
-                            </h3>
-                            <p>{{ __('messages.movies_awaiting_approval') }}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="dashboard_card">
-                <a class="indexLink" href="#" style="text-decoration: none!important;">
-                    <div class="custom-card">
-                        <div class="card-icon red">
-                            <i class="icon im im-icon-User"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3 id="commercials_awaiting_approval">
-                                <div class="" role="status">{{ $commercialsAwaitingApproval }}</div>
-                            </h3>
-                            <p>{{ __('messages.commercials_awaiting_approval') }}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="dashboard_card">
-                <a class="indexLink" href="#" style="text-decoration: none!important;">
-                    <div class="custom-card">
-                        <div class="card-icon aqua">
-                            <i class="icon im im-icon-User"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3 id="total_producer_list">
-                                <div class="" role="status">{{ $totalProducerList }}</div>
-                            </h3>
-                            <p>{{ __('messages.total_producer_list') }}</p>
+                            <p>{{ 'অপেক্ষমান বুকিং' }}</p>
                         </div>
                     </div>
                 </a>
@@ -226,19 +181,174 @@
                             <i class="icon im im-icon-User"></i>
                         </div>
                         <div class="card-content">
-                            <h3 id="total_approved_producer_pending_list">
-                                <div class="" role="status">{{ $totalApprovedProducerPendingList }}</div>
+                            <h3 id="movies_awaiting_approval">
+                                <div class="" role="status">{{ en2bn($bookings->approveRow) }}</div>
                             </h3>
-                            <p>{{ __('messages.total_approved_producer_pending_list') }}</p>
+                            <p>{{ 'অনুমোদিত বুকিং' }}</p>
                         </div>
                     </div>
                 </a>
             </div>
+
+            {{-- Producer count --}}
+            <div class="dashboard_card">
+                <div class="tiles white added-margin new new3">
+                    <div class="tiles-body">
+                        <div class="tiles-title"> প্রযোজক সামারি রিপোর্ট </div>
+                        <div style="border-bottom:1px solid #fff; margin-bottom: 10px"></div>
+                        <div class="description table-responsive">
+                            <table class="report-table">
+                                <tbody>
+                                    <tr>
+                                        <td>মোট প্রযোজক</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($producer->totalRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপেক্ষমান প্রযোজক</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($producer->pendingRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অনুমোদিত প্রযোজক</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($producer->approveRow) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="triangle-up"></div>
+                </div>
+            </div>
+
+            {{-- film count --}}
+            <div class="dashboard_card">
+                <div class="tiles white added-margin new new4">
+                    <div class="tiles-body">
+                        <div class="tiles-title"> চলচ্চিত্র সামারি রিপোর্ট </div>
+                        <div style="border-bottom:1px solid #fff; margin-bottom: 10px"></div>
+                        <div class="description table-responsive">
+                            <table class="report-table">
+                            <tbody>
+                                <tr>
+                                    <td>মোট চলচ্চিত্র</td>
+                                    <td class="sub-mark">:</td>
+                                    <td>{{ en2bn($films->totalRow) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>অপেক্ষমান চলচ্চিত্র</td>
+                                    <td class="sub-mark">:</td>
+                                    <td>{{ en2bn($films->pendingRow) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>অনুমোদিত চলচ্চিত্র</td>
+                                    <td class="sub-mark">:</td>
+                                    <td>{{ en2bn($films->approveRow) }}</td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="triangle-up"></div>
+                </div>
+            </div>
+
+            {{-- drama count --}}
+            <div class="dashboard_card">
+                <div class="tiles white added-margin new new1">
+                    <div class="tiles-body">
+                        <div class="tiles-title"> নাটক সামারি রিপোর্ট </div>
+                        <div style="border-bottom:1px solid #fff; margin-bottom: 10px"></div>
+                        <div class="description table-responsive">
+                            <table class="report-table">
+                                <tbody>
+                                    <tr>
+                                        <td>মোট নাটক</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($dramas->totalRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপেক্ষমান নাটক</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($dramas->pendingRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অনুমোদিত নাটক</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($dramas->approveRow) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="triangle-up"></div>
+                </div>
+            </div>
+
+            {{-- docufilm count --}}
+            <div class="dashboard_card">
+                <div class="tiles white added-margin new new4">
+                    <div class="tiles-body">
+                        <div class="tiles-title"> প্রামান্যচিত্র সামারি রিপোর্ট </div>
+                        <div style="border-bottom:1px solid #fff; margin-bottom: 10px"></div>
+                        <div class="description table-responsive">
+                            <table class="report-table">
+                                <tbody>
+                                    <tr>
+                                        <td>মোট প্রামান্যচিত্র</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($docufilms->totalRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপেক্ষমান প্রামান্যচিত্র</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($docufilms->pendingRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অনুমোদিত প্রামান্যচিত্র</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($docufilms->approveRow) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="triangle-up"></div>
+                </div>
+            </div>
+
+            {{-- reality show count --}}
+            <div class="dashboard_card">
+                <div class="tiles white added-margin new new1">
+                    <div class="tiles-body">
+                        <div class="tiles-title"> রিয়েলিটি শো সামারি রিপোর্ট </div>
+                        <div style="border-bottom:1px solid #fff; margin-bottom: 10px"></div>
+                        <div class="description table-responsive">
+                            <table class="report-table">
+                                <tbody>
+                                    <tr>
+                                        <td>মোট রিয়েলিটি শো</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($reality->totalRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অপেক্ষমান রিয়েলিটি শো</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($reality->pendingRow) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>অনুমোদিত রিয়েলিটি শো</td>
+                                        <td class="sub-mark">:</td>
+                                        <td>{{ en2bn($reality->approveRow) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="triangle-up"></div>
+                </div>
+            </div>
         </div>
     </section>
-@section('footer_scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-@endsection
-
-
 @stop
