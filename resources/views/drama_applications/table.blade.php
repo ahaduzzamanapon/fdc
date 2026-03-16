@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th>{{ __('messages.sl_label') }}</th>
-                <th>{{ __('messages.film_title_label') }}</th>
+                <th>{{ __('messages.title') }}</th>
                 <th>{{ __('messages.applicant_name_label') }}</th>
                 <th>{{ __('messages.organization_name')}}</th>
                 <th>{{ __('messages.status') }}</th>

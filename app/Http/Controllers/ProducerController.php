@@ -671,11 +671,13 @@ class ProducerController extends AppBaseController
         if (!Auth::guard('producer')->check()) {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
                 ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->orderByDesc('bookings.id')
                 ->get();
         } else {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
                 ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
                 ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->orderByDesc('bookings.id')
                 ->get();
         }
 
@@ -1099,9 +1101,12 @@ class ProducerController extends AppBaseController
     public function forward_table(Request $request)
     {
         $user = Auth::user()->user_role;
-        $producers = Booking::latest()->where('bookings.status', 'on process')->where('bookings.desk_id', $user)->join('producers', 'producers.id', '=', 'bookings.producer_id')
-            ->select('bookings.*', 'producers.organization_name as producer_name')
-            ->get();
+        $producers = Booking::latest()->where('bookings.status', 'on process');
+        if ($user != 1) {
+            $producers =  $producers->where('bookings.desk_id', $user);
+        }
+        $producers = $producers->join('producers', 'producers.id', '=', 'bookings.producer_id')
+            ->select('bookings.*', 'producers.organization_name as producer_name')->get();
         return view('producers.mainView.booking')->with('booking_requests', $producers);
     }
 

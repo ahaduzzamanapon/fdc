@@ -19,7 +19,13 @@
                 <td>{{ $producer->owners_name }}</td>
                 <td>{{ $producer->phone_number }}</td>
                 <td>{{ $producer->email }}</td>
-                <td>{{ $producer->reg_status }}</td>
+                @if ($producer->reg_status == 'pending')
+                    <td class="text-danger"> অপেক্ষমাণ </td>
+                @elseif ($producer->reg_status == 'verified')
+                    <td class="text-success"> অনুমোদিত </td>
+                @else
+                    <td class="text-danger"> বাতিল </td>
+                @endif
 
                 <td>
                     <div class='dropdown'>

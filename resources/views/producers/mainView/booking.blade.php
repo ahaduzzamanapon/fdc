@@ -6,13 +6,6 @@
 @stop
 
 @section('content')
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    {{--<div aria-label="breadcrumb" class="card-breadcrumb">
-        <h1>{{ __('messages.producers') }}</h1>
-    </div>
-    <div class="separator-breadcrumb border-top"></div>--}}
-</section>
 
 <!-- Main content -->
 <div class="content">
@@ -24,14 +17,13 @@
     <div class="card" width="88vw;">
         <section class="card-header">
             <h5 class="card-title d-inline">{{ __('বুকিং তালিকা') }}</h5>
-@if (Auth::guard('producer')->check())
-
-            <span class="float-right">
-                <a class="btn btn-primary pull-right" href="{{ route('producer.create_page') }}">{{ __('বুকিং করুন') }}</a>
-            </span>
-@endif
-
+            @if (Auth::guard('producer')->check())
+                <span class="float-right">
+                    <a class="btn btn-primary pull-right" href="{{ route('producer.create_page') }}">{{ __('বুকিং করুন') }}</a>
+                </span>
+            @endif
         </section>
+
         <div class="card-body table-responsive" >
             <table class="table table-default table-hover table-striped">
                 <thead>
@@ -42,7 +34,7 @@
                         <th> পেমেন্ট অবস্থা </th>
                         <th>{{ __('messages.producer') }} </th>
                         <th>{{ __('messages.total_price_label') }}</th>
-                        <th>{{ __('messages.created_at') }}</th>
+                        <th>{{ __('messages.date_label') }}</th>
                         <th>{{ __('messages.action_label') }}</th>
                     </tr>
                 </thead>
@@ -63,7 +55,7 @@
                         <td>{{ $booking->pay_status }}</td>
                         <td>{{ $booking->producer_name }}</td>
                         <td>{{ $booking->total_price }}</td>
-                        <td>{{ $booking->created_at }}</td>
+                        <td>{{ date('d M Y', strtotime($booking->created_at)) }}</td>
                         <td>
                         <div class='dropdown'>
                                 <button class='btn btn-outline-primary btn-xs dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>

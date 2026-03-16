@@ -192,7 +192,7 @@ class RealityApplicationController extends AppBaseController
     {
         $user = Auth::user()->user_role;
         $films = RealityApplication::latest()->where('status', 'on process');
-        if (!$user == 1) {
+        if ($user != 1) {
             $films = $films->where('desk_id', $user)->get();
         } else {
             $films = $films->get();

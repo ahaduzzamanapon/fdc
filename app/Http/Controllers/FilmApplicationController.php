@@ -452,7 +452,7 @@ class FilmApplicationController extends AppBaseController
     {
         $user = Auth::user()->user_role;
         $films = FilmApplication::latest()->where('status', 'on process');
-        if (!$user == 1) {
+        if ($user != 1) {
             $films = $films->where('desk_id', $user)->get();
         } else {
             $films = $films->get();

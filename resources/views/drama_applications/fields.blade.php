@@ -1,17 +1,17 @@
 <!-- Section: নাটক সংক্রান্ত তথ্য -->
 <fieldset class="border p-3 mb-4">
-    <legend class="float-none w-auto px-2">{{ __('messages.film_related_information') }}</legend>
+    <legend class="float-none w-auto px-2">{{ __('নাটক সংক্রান্ত তথ্য') }}</legend>
     <div class="row">
 
         <input type="hidden" id="category" name="category" value="drama">
         <div class="mb-3 col-md-8">
-            <label for="film_title" class="form-label">{{ __('messages.name_of_produced_film_advertisement') }}</label>
+            <label for="film_title" class="form-label">{{ __('messages.name_of_produced_dl_advertisement') }}</label>
             <input type="text" class="form-control" id="film_title" name="film_title">
         </div>
 
 
         <div class="col-md-4 mb-3">
-            <label for="film_serial_no" class="form-label">{{ __('messages.applied_film_number') }}</label>
+            <label for="film_serial_no" class="form-label">{{ __('messages.applied_dl_number') }}</label>
             <input type="text" class="form-control" id="film_serial_no" name="film_serial_no">
         </div>
         <div class="col-md-4 mb-3">
@@ -54,9 +54,9 @@
         </div>
     </div>
 </fieldset>
-<!-- Section: অতিরিক্ত চলচ্চিত্র সংক্রান্ত তথ্য -->
+<!-- Section: অতিরিক্ত নাটক সংক্রান্ত তথ্য -->
 <fieldset class="border p-3 mb-4">
-    <legend class="float-none w-auto px-2">{{ __('messages.additional_film_related_information') }}</legend>
+    <legend class="float-none w-auto px-2">{{ __('অতিরিক্ত নাটক সংক্রান্ত তথ্য') }}</legend>
 
     <div class="row">
         <div class="mb-3 col-md-4">
@@ -104,7 +104,7 @@
             <input type="number" class="form-control" id="approx_cost_others" name="approx_cost_others">
         </div>
         <div class="mb-3 col-md-4">
-            <label for="film_type" class="form-label">{{ __('messages.film_type') }}</label>
+            <label for="film_type" class="form-label">{{ __('নাটক ধরন') }}</label>
             <input type="text" class="form-control" id="film_type" name="film_type">
         </div>
         <div class="mb-3 col-md-4">
@@ -116,11 +116,11 @@
             <input type="text" class="form-control" id="banner_name" name="banner_name">
         </div>
         <div class="mb-3 col-md-12">
-            <label for="freedom_film_info" class="form-label">{{ __('messages.liberation_war_film_info') }}</label>
+            <label for="freedom_film_info" class="form-label">{{ __('মুক্তিযুদ্ধ বিষয়ক নাটক হলে বিস্তারিত তথ্য') }}</label>
             <textarea class="form-control" id="freedom_film_info" name="freedom_film_info" rows="2"></textarea>
         </div>
         <div class="mb-3 col-md-12">
-            <label for="previous_films_info" class="form-label">{{ __('messages.previous_films_info') }}</label>
+            <label for="previous_films_info" class="form-label">{{ __('পূর্বে নির্মিত নাটক সম্পর্কিত তথ্য') }}</label>
             <textarea class="form-control" id="previous_films_info" name="previous_films_info" rows="2"></textarea>
         </div>
         <div class="mb-3 col-md-4">
