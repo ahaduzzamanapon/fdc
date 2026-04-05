@@ -337,6 +337,25 @@
                 $filmId = "{{ $film->film_id }}";
                 var filmType = $('#film_type').val();
                 if (!filmType) return;
+
+                if (filmType === 'film') {
+                    var appTitle = 'আবেদনকৃত সিনেমা'
+                    var appTitleOption = 'সিনেমা নির্বাচন করুন'
+                } else if (filmType === 'drama') {
+                    var appTitle = 'আবেদনকৃত নাটক'
+                    var appTitleOption = 'নাটক নির্বাচন করুন'
+                } else if (filmType === 'docufilm') {
+                    var appTitle = 'আবেদনকৃত প্রামান্যচিত্র'
+                    var appTitleOption = 'প্রামান্যচিত্র নির্বাচন করুন'
+                } else if (filmType === 'realityshow') {
+                    var appTitle = 'আবেদনকৃত রিয়েলিটি শো'
+                    var appTitleOption = 'রিয়েলিটি শো নির্বাচন করুন'
+                } else {
+                    var appTitle = 'আবেদনকৃত সেবা'
+                    var appTitleOption = 'সেবা নির্বাচন করুন'
+                }
+                $('#film_id_label').text(appTitle);
+
                 $.ajax({
                     url: "{{ route('producer.get_application') }}",
                     type: "GET",

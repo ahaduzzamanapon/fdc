@@ -10,7 +10,7 @@ Payment Receipt @parent
         <h3>Payment Receipt</h3>
         <p>-----------------------------------</p>
     </div>
-
+{{--
     <p><strong>Film Application Details:</strong></p>
     <p>Film Title: {{ $filmPackage->filmApplication->film_title ?? 'N/A' }}</p>
     <p>Applicant: {{ $filmPackage->filmApplication->applicant_name ?? 'N/A' }}</p>
@@ -22,7 +22,7 @@ Payment Receipt @parent
     <p>Film Type: {{ $filmPackage->filmApplication->film_type ?? 'N/A' }}</p>
     <p>Production Start: {{ $filmPackage->filmApplication->production_start_date ?? 'N/A' }}</p>
     <p>Film Duration: {{ $filmPackage->filmApplication->film_duration ?? 'N/A' }}</p>
-    <p>-----------------------------------</p>
+    <p>-----------------------------------</p> --}}
 
     <p><strong>Payment Details:</strong></p>
     <p>Package: {{ $filmPackage->package->name ?? 'N/A' }}</p>

@@ -203,6 +203,15 @@
                 </div>
 
                 <div id="booking_ui_div" class="row g-3 mt-3 align-items-end" style="display: none;">
+                    <div class="col-md-4" id="shift_dropdown_wrapper">
+                        <label for="shift_id_dropdown" class="form-label">শিফট</label>
+                        <select id="shift_id_dropdown" class="form-select" disabled>
+                            <option value="">শিফট নির্বাচন করুন</option>
+                            <option value="1">সকাল শিফট</option>
+                            <option value="2">বিকেল শিফট</option>
+                            <option value="3">রাতের শিফট</option>
+                        </select>
+                    </div>
                     <div class="col-md-4">
                         <label class="form-label">শুরুর তারিখ</label>
                         <button type="button" id="start_date_btn" class="btn btn-outline-primary w-100"
@@ -214,12 +223,6 @@
                         <button type="button" id="end_date_btn" class="btn btn-outline-primary w-100"
                             data-bs-toggle="modal" data-bs-target="#calendarModal" data-date-type="end" disabled>শেষ তারিখ নির্বাচন করুন</button>
                         <input type="hidden" id="end_date_input">
-                    </div>
-                    <div class="col-md-4" id="shift_dropdown_wrapper">
-                        <label for="shift_id_dropdown" class="form-label">শিফট</label>
-                        <select id="shift_id_dropdown" class="form-select" disabled>
-                            <option value="">শিফট নির্বাচন করুন</option>
-                        </select>
                     </div>
                 </div>
 
@@ -365,7 +368,7 @@
             $('#start_date_btn').text('শুরুর তারিখ নির্বাচন করুন');
             $('#end_date_btn').text('শেষ তারিখ নির্বাচন করুন').prop('disabled', true);
             $('#start_date_input, #end_date_input').val('');
-            $('#shift_id_dropdown').empty().append('<option value="">Select Shift</option>').prop('disabled', true);
+            $('#shift_id_dropdown').empty().append('<option value="">শিফট নির্বাচন করুন</option>').prop('disabled', true);
 
             if (!item_id) return;
 
@@ -387,6 +390,7 @@
                         $('#shift_dropdown_wrapper').hide();
                     } else {
                         $('#shift_dropdown_wrapper').show();
+                        $('#shift_id_dropdown').append('<option value="1">সকাল শিফট</option><option value="2">বিকেল শিফট</option><option value="3">রাতের শিফট</option>').prop('disabled', false);
                     }
                 }
             });
@@ -461,7 +465,8 @@
                 }
 
                 if (service_type === 'shift') {
-                    populateShiftsInCalendar($(this), cellDate);
+                    // populateShiftsInCalendar($(this), cellDate);  // temporarily disable
+                    populateDaysInCalendar($(this), cellDate);
                 } else { // 'day'
                     populateDaysInCalendar($(this), cellDate);
                 }
@@ -643,8 +648,9 @@
                 icon: "সতর্কতা",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
+                confirmButtonText: "হ্যাঁ",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes"
+                cancelButtonText: "না",
             }).then((result) => {
                 if (result.isConfirmed) $('#booking_request_form').submit();
             });
@@ -752,7 +758,7 @@
                     $('#shift_id_dropdown').html(`<option value="${shiftId}">${shiftName}</option>`).prop(
                         'disabled', true);
                     $('#end_date_btn').prop('disabled', false);
-                    $('#end_date_btn').text('Select End Date');
+                    $('#end_date_btn').text('শেষ তারিখ নির্বাচন করুন');
                     $('#end_date_input').val('');
                 } else {
                     const startDate = $('#start_date_input').val();
@@ -772,7 +778,7 @@
                     $('#start_date_btn').text(date);
                     $('#start_date_input').val(date);
                     $('#end_date_btn').prop('disabled', false);
-                    $('#end_date_btn').text('Select End Date');
+                    $('#end_date_btn').text('শেষ তারিখ নির্বাচন করুন');
                     $('#end_date_input').val('');
                 } else {
                     const startDate = $('#start_date_input').val();

@@ -19,8 +19,8 @@ use Eloquent as Model;
 class Shift extends Model
 {
 
-    public $table = 'shifts';
-    
+    public $table = 'item_shifts';
+
 
 
 
@@ -61,5 +61,5 @@ class Shift extends Model
         'end_time' => 'required'
     ];
 
-    
+
 }

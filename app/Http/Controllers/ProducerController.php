@@ -679,6 +679,32 @@ class ProducerController extends AppBaseController
                 ->select('bookings.*', 'producers.organization_name as producer_name')
                 ->orderByDesc('bookings.id')
                 ->get();
+
+            // $filmQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'film')
+            //     ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'filmapplications.film_title');
+
+            // $dramaQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'drama')
+            //     ->join('drama_applications', 'drama_applications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'drama_applications.film_title');
+
+            // $docuQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'docufilm')
+            //     ->join('docufilm_applications', 'docufilm_applications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'docufilm_applications.film_title');
+
+            // $realityQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'realityshow')
+            //     ->join('reality_applications', 'reality_applications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'reality_applications.film_title');
+
+            // $booking_requests = $filmQuery
+            //     ->unionAll($dramaQuery)
+            //     ->unionAll($docuQuery)
+            //     ->orderByDesc('id')
+            //     ->get();
         }
 
         return view('producers.mainView.booking', compact('booking_requests'));
@@ -720,7 +746,6 @@ class ProducerController extends AppBaseController
     // Producer Get Items by Category
     public function get_items_by_category(Request $request)
     {
-
         $cat_id = $request->category_id;
         $service_type = $request->service_type;
         $items = Item::where('cat_id', $cat_id)->where('service_type', $service_type)->get();
