@@ -273,6 +273,73 @@ class ProducerController extends AppBaseController
         return view('producers.show')->with('producer', $producer);
     }
 
+    public function profile_edit($id)
+    {
+        /** @var Producer $producer */
+        $producer = Producer::find($id);
+        if (empty($producer)) {
+            Flash::error('Producer not found');
+
+            return redirect(route('producers.index'));
+        }
+
+        return view('producers.edit')->with('producer', $producer);
+    }
+
+    public function update_profile($id, UpdateProducerRequest $request)
+    {
+        /** @var Producer $producer */
+        $producer = Producer::find($id);
+        $input = $request->all();
+
+        if (empty($producer)) {
+            Flash::error('Producer not found');
+            return redirect(route('producers.index'));
+        }
+
+        $input_file = [
+            'bank_attachment',
+            'tin_attachment',
+            'vat_attachment',
+            'trade_license_attachment',
+            'nominee_photo',
+            'partnership_agreement',
+            'ltd_company_agreement',
+            'somobay_agreement',
+            'other_attachment',
+        ];
+        foreach ($input_file as $file_name) {
+            if ($request->hasFile($file_name)) {
+                $file = $request->file($file_name);
+                $folder = 'producers_file/' . $file_name;
+                $customName = 'producers_file-' . $file_name . '-' . time();
+                $input[$file_name] = uploadFile($file, $folder, $customName);
+            } else {
+                unset($input[$file_name]);
+            }
+        }
+
+
+
+        if ($request->has('password') && !empty($request->password) && $request->password != '') {
+            $input['password'] = bcrypt($request->password);
+        } else {
+            unset($input['password']);
+        }
+
+        $input['username'] = $input['phone_number'];
+
+        $producer->fill($input);
+        $producer->save();
+
+        Flash::success('Producer updated successfully.');
+
+        if (Auth::guard('producer')->check()) {
+            return redirect(route('profile.index'));
+        }
+        return redirect(route('producers.index'));
+    }
+
     /**
      * Show the form for editing the specified Producer.
      *
@@ -284,7 +351,6 @@ class ProducerController extends AppBaseController
     {
         /** @var Producer $producer */
         $producer = Producer::find($id);
-
         if (empty($producer)) {
             Flash::error('Producer not found');
 

@@ -17,7 +17,7 @@ Producer {{ __('messages.producer') }} @parent
        <div class="card">
            <div class="card-body">
                 <div class="row">
-                    {!! Form::model($producer, ['route' => ['producers.update', $producer->id], 'method' => 'patch', 'files' => true,'class' => 'form-horizontal col-md-12']) !!}
+                    {!! Form::model($producer, ['route' => ['producer.profile.update', $producer->id], 'method' => 'post', 'files' => true,'class' => 'form-horizontal col-md-12']) !!}
                         <div class="row">
                             @include('producers.fields')
                         </div>

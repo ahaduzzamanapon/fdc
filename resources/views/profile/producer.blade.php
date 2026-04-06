@@ -61,7 +61,7 @@ Profile {{ __('messages.profile') }} @parent
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <a href="{{ route('producers.edit' , Auth::guard('producer')->user()->id ) }}" class="btn btn-outline-info mt-3 float-right">
+                                    <a href="{{ route('producer.profile.edit', Auth::guard('producer')->user()->id ) }}" class="btn btn-outline-info mt-3 float-right">
                                         <i class="fas fa-edit"></i> {{ __('messages.edit_profile') }}
                                     </a>
                                 </div>

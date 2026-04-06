@@ -335,6 +335,8 @@ Route::group(["middleware" => []], function () {
             Route::post('/registration_forward', 'registration_forward_st')->name('producer.registration.forward.st');
         });
     Route::resource('profile', ProfileController::class);
+    Route::get('producers/profile/{id}/edit', 'ProducerController@profile_edit')->name('producer.profile.edit');
+    Route::post('producers/profile/{id}/update', 'ProducerController@update_profile')->name('producer.profile.update');
 });
 
 Route::get('/upload_exell', function () {
