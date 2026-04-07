@@ -273,6 +273,73 @@ class ProducerController extends AppBaseController
         return view('producers.show')->with('producer', $producer);
     }
 
+    public function profile_edit($id)
+    {
+        /** @var Producer $producer */
+        $producer = Producer::find($id);
+        if (empty($producer)) {
+            Flash::error('Producer not found');
+
+            return redirect(route('producers.index'));
+        }
+
+        return view('producers.edit')->with('producer', $producer);
+    }
+
+    public function update_profile($id, UpdateProducerRequest $request)
+    {
+        /** @var Producer $producer */
+        $producer = Producer::find($id);
+        $input = $request->all();
+
+        if (empty($producer)) {
+            Flash::error('Producer not found');
+            return redirect(route('producers.index'));
+        }
+
+        $input_file = [
+            'bank_attachment',
+            'tin_attachment',
+            'vat_attachment',
+            'trade_license_attachment',
+            'nominee_photo',
+            'partnership_agreement',
+            'ltd_company_agreement',
+            'somobay_agreement',
+            'other_attachment',
+        ];
+        foreach ($input_file as $file_name) {
+            if ($request->hasFile($file_name)) {
+                $file = $request->file($file_name);
+                $folder = 'producers_file/' . $file_name;
+                $customName = 'producers_file-' . $file_name . '-' . time();
+                $input[$file_name] = uploadFile($file, $folder, $customName);
+            } else {
+                unset($input[$file_name]);
+            }
+        }
+
+
+
+        if ($request->has('password') && !empty($request->password) && $request->password != '') {
+            $input['password'] = bcrypt($request->password);
+        } else {
+            unset($input['password']);
+        }
+
+        $input['username'] = $input['phone_number'];
+
+        $producer->fill($input);
+        $producer->save();
+
+        Flash::success('Producer updated successfully.');
+
+        if (Auth::guard('producer')->check()) {
+            return redirect(route('profile.index'));
+        }
+        return redirect(route('producers.index'));
+    }
+
     /**
      * Show the form for editing the specified Producer.
      *
@@ -284,7 +351,6 @@ class ProducerController extends AppBaseController
     {
         /** @var Producer $producer */
         $producer = Producer::find($id);
-
         if (empty($producer)) {
             Flash::error('Producer not found');
 
@@ -679,6 +745,32 @@ class ProducerController extends AppBaseController
                 ->select('bookings.*', 'producers.organization_name as producer_name')
                 ->orderByDesc('bookings.id')
                 ->get();
+
+            // $filmQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'film')
+            //     ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'filmapplications.film_title');
+
+            // $dramaQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'drama')
+            //     ->join('drama_applications', 'drama_applications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'drama_applications.film_title');
+
+            // $docuQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'docufilm')
+            //     ->join('docufilm_applications', 'docufilm_applications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'docufilm_applications.film_title');
+
+            // $realityQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
+            //     ->where('bookings.film_type', 'realityshow')
+            //     ->join('reality_applications', 'reality_applications.id', '=', 'bookings.film_id')
+            //     ->select('bookings.*', 'reality_applications.film_title');
+
+            // $booking_requests = $filmQuery
+            //     ->unionAll($dramaQuery)
+            //     ->unionAll($docuQuery)
+            //     ->orderByDesc('id')
+            //     ->get();
         }
 
         return view('producers.mainView.booking', compact('booking_requests'));
@@ -720,7 +812,6 @@ class ProducerController extends AppBaseController
     // Producer Get Items by Category
     public function get_items_by_category(Request $request)
     {
-
         $cat_id = $request->category_id;
         $service_type = $request->service_type;
         $items = Item::where('cat_id', $cat_id)->where('service_type', $service_type)->get();
@@ -1116,7 +1207,8 @@ class ProducerController extends AppBaseController
         $role_id = $booking->desk_id;
         $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Booking Flow')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
-
+        $last = ApprovalFlowSteps::where('flow_id', $auth_user->flow_id)->orderByDesc('step_order')->first();
+        // dd($last);
         return view('producers.mainView.forward', [
             'booking' => $booking,
             'auth_user' => $auth_user,

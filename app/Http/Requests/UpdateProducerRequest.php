@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Producer;
-
+use Illuminate\Validation\Rule;
 class UpdateProducerRequest extends FormRequest
 {
 
@@ -25,13 +25,17 @@ class UpdateProducerRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = Producer::$rules;
-
-        $id = $this->route('producer'); // resource route id
-
-        $rules['phone_number'] = 'required|unique:producers,phone_number,' . $id;
-        $rules['email'] = 'required|email|unique:producers,email,' . $id;
-
-        return $rules;
+        $id = $this->route('producer') ?? $this->route('id');
+        return [
+            'phone_number' => [
+                'required',
+                Rule::unique('producers', 'phone_number')->ignore($id),
+            ],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('producers', 'email')->ignore($id),
+            ],
+        ];
     }
 }

@@ -39,16 +39,9 @@ Flim Report
     </div>
 
     <div class="col-12 d-flex justify-content-start gap-2">
-        <button type="button" class="btn btn-secondary" id="resetFilter">
-            {{ __('Reset') }}
-        </button>
-        <button type="button" class="btn btn-primary" id="showReport">
-            {{ __('Show Report') }}
-        </button>
-
-        <button type="submit" class="btn btn-success">
-            Export Film Report
-        </button>
+        <button type="button" class="btn btn-secondary" id="resetFilter"> রিসেট </button>
+        <button type="button" class="btn btn-primary" id="showReport"> রিপোর্ট দেখুন </button>
+        <button type="submit" class="btn btn-success"> এক্সেল ডাউনলোড </button>
     </div>
 </form>
         </div>

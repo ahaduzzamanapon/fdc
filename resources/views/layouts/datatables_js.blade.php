@@ -1,24 +1,31 @@
 <script>
     $(document).ready(function () {
-        var table = $('.table_data').DataTable({
-            "language": {
-                "lengthMenu": "{{ __('messages.show_menu_data') }}",
-                "zeroRecords": "{{ __('messages.no_data_found') }}",
-                "info": "{{ __('messages.page_of_pages') }}",
-                "infoEmpty": "{{ __('messages.info_empty') }}",
-                "infoFiltered": "( _MAX_   )",
-                "search": "{{ __('messages.search') }}",
-                "paginate": {
-                    "first": "{{ __('messages.first') }}",
-                    "last": "{{ __('messages.last') }}",
-                    "next": "{{ __('messages.next') }}",
-                    "previous": "{{ __('messages.previous') }}"
+
+        let table = $('.table_data').DataTable({
+            language: {
+                lengthMenu: "{{ __('messages.show_menu_data') }}",
+                zeroRecords: "{{ __('messages.no_data_found') }}",
+                info: "{{ __('messages.page_of_pages') }}",
+                infoEmpty: "{{ __('messages.info_empty') }}",
+                infoFiltered: "(_MAX_)",
+                search: "{{ __('messages.search') }}",
+                paginate: {
+                    first: "{{ __('messages.first') }}",
+                    last: "{{ __('messages.last') }}",
+                    next: "{{ __('messages.next') }}",
+                    previous: "{{ __('messages.previous') }}"
                 }
-            }
+            },
+
+            // optional but recommended
+            pageLength: 10,
+            ordering: true,
+            responsive: true
         });
 
-        // Clear the search box and redraw the table
-        table.search('').draw();
+        // ✅ Proper way to clear search (after init)
+        table.search('').columns().search('').draw();
+
     });
 </script>
 

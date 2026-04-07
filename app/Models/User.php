@@ -61,6 +61,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function designationInfo()
+    {
+        return $this->belongsTo(Designation::class, 'designation');
+    }
+
 
 }
 

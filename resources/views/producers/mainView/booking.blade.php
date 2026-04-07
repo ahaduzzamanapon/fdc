@@ -32,7 +32,8 @@
                         <th>{{ __('messages.booking_id') }}</th>
                         <th>{{ __('messages.status') }}</th>
                         <th> পেমেন্ট অবস্থা </th>
-                        <th>{{ __('messages.producer') }} </th>
+                        <th>{{ __('সিনেমার নাম') }} </th>
+                        {{-- <th>{{ __('messages.producer') }} </th> --}}
                         <th>{{ __('messages.total_price_label') }}</th>
                         <th>{{ __('messages.date_label') }}</th>
                         <th>{{ __('messages.action_label') }}</th>
@@ -53,7 +54,7 @@
                         <td>{{ $booking->book_id }}</td>
                         <td>{{ $booking->status }}</td>
                         <td>{{ $booking->pay_status }}</td>
-                        <td>{{ $booking->producer_name }}</td>
+                        <td>{{ $booking->film_title }}</td>
                         <td>{{ $booking->total_price }}</td>
                         <td>{{ date('d M Y', strtotime($booking->created_at)) }}</td>
                         <td>
