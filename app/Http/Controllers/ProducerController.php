@@ -1207,12 +1207,16 @@ class ProducerController extends AppBaseController
         $role_id = $booking->desk_id;
         $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Booking Flow')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
+        $flow = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $auth_user->flow_id)->first();
         $last = ApprovalFlowSteps::where('flow_id', $auth_user->flow_id)->orderByDesc('step_order')->first();
-        // dd($last);
+        // dd($flow);
         return view('producers.mainView.forward', [
             'booking' => $booking,
             'auth_user' => $auth_user,
             'logs' => $logs,
+            'flow' => $flow,
+            'last' => $last,
+            'current_role' => $role_id
         ]);
     }
 

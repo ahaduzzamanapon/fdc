@@ -466,14 +466,15 @@ class FilmApplicationController extends AppBaseController
         $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Film Application')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
         $flow = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $auth_user->flow_id)->first();
-        $last = ApprovalFlowSteps::where('flow_id', $flow->flow_id)->orderByDesc('step_order')->first();
+        $last = ApprovalFlowSteps::where('flow_id', $auth_user->flow_id)->orderByDesc('step_order')->first();
 
         return view('film_applications.forward', [
             'film' => $filmApplication,
             'auth_user' => $auth_user,
             'logs' => $logs,
             'flow' => $flow,
-            'last' => $last
+            'last' => $last,
+            'current_role' => $role_id
         ]);
     }
     public function update_status(Request $request)
