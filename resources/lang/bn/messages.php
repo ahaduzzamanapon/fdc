@@ -36,7 +36,7 @@ return [
     'show_menu_data' => 'দেখুন _MENU_ ডাটা',
     'no_data_found' => 'কোনো ডাটা পাওয়া যায়নি',
     'info_empty' => '০ টি তথ্য পাওয়া গিয়েছে',
-    'page_of_pages' => ' _PAGE_ এর মধ্যে _PAGES_ পেজ',
+    'page_of_pages' => 'মোট _TOTAL_ টি ডাটার মধ্যে _START_ থেকে _END_ পর্যন্ত দেখানো হচ্ছে',
     'search' => 'অনুসন্ধান',
     'first' => 'প্রথম',
     'last' => 'শেষ',

@@ -413,15 +413,7 @@
                     <!-- Navbar Content -->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
-                            {{-- <li class="nav-item dropdown language-dropdown" style="background: white;border-radius: 9px;">
-                                <a style="padding: 4px 14px;" class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="ms-2">{{ strtoupper(app()->getLocale())==='BN' ? 'বাংলা' : 'English' }}</span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="languageDropdown" style="padding: 11px;">
-                                    <li><a class="dropdown-item" href="/lang/en"><span class="ms-2">English</span></a></li>
-                                    <li><a class="dropdown-item" href="/lang/bn"><span class="ms-2">বাংলা</span></a></li>
-                                </ul>
-                            </li> --}}
+                            {{-- notification --}}
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link" id="notification-drop" data-bs-toggle="dropdown">
                                     <svg class="icon-24" width="24" viewBox="0 0 24 24" fill="none"
@@ -476,6 +468,8 @@
                                     </div>
                                 </div>
                             </li>
+                            {{-- End Notification --}}
+                            {{-- Start Profile --}}
                             <li class="nav-item dropdown custom-drop" style="margin: 4px !important;">
                                 <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -537,6 +531,10 @@
 
                                                     @if(isset(auth()->user()->group_id))
                                                         {{ auth()->user()->name }} {{ auth()->user()->email }}
+                                                        @php $user = auth()->user()->load('designationInfo');
+                                                        @endphp
+                                                        <br>
+                                                        {{ isset($user->designationInfo->desi_name) ? $user->designationInfo->desi_name : '' }}
                                                     @elseif(isset(Auth::guard('producer')->user()->group_id))
                                                         {{ Auth::guard('producer')->user()->email }}
                                                     @else
@@ -685,7 +683,7 @@
         }
     </script>
     @include('layouts/datatables_js')
-    
+
     @yield('footer_scripts')
     @yield('scripts')
     @yield('script')

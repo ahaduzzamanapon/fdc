@@ -254,15 +254,6 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('contact-messages*') ? 'active' : '' !!}" aria-current="page"
-            href="{{ route('contact-messages.index') }}">
-            <i class="icon im im-icon-Mail"></i>
-            <span class="item-name">{{ 'যোগাযোগের বার্তা' }}</span>
-        </a>
-    </li>
-
-
     {{-- বুকিং --}}
     @if (can('filmApplications_table')) {{-- booking_table --}}
         <li class="nav-item">
@@ -896,6 +887,16 @@
         </ul>
     </li>
 
+    {{-- যোগাযোগের বার্তা --}}
+    <li class="nav-item">
+        <a class="nav-link {!! Request::is('contact-messages*') ? 'active' : '' !!}" aria-current="page"
+            href="{{ route('contact-messages.index') }}">
+            <i class="icon im im-icon-Mail"></i>
+            <span class="item-name">{{ 'যোগাযোগের বার্তা' }}</span>
+        </a>
+    </li>
+
+    {{-- অনুমোদন প্রবাহ --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}"
             href="{{ route('approvalFlowMasters.index') }}">
@@ -905,6 +906,7 @@
         </a>
     </li>
 
+    {{-- অনুমোদন প্রবাহের ধাপ --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('approvalFlowSteps*') ? 'active' : '' !!}"
             href="{{ route('approvalFlowSteps.index') }}">

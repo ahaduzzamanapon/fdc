@@ -247,7 +247,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('নোটিশ') }}</a>
+                    <a class="nav-link" href="{{ route('notices.page') }}" >{{ __('নোটিশ') }}</a>
                 </li>
             </ul>
 
