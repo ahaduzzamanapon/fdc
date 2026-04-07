@@ -41,8 +41,8 @@ Route::resource('approvalRequests', 'ApprovalRequestsController');
 Route::resource('approvalLogs', 'ApprovalLogsController');
 use App\Http\Controllers\DecadeFilmListController;
 
-// separate POST route for the search form; index() handles filtering and can accept either
-Route::post('decadeFilms/search', [DecadeFilmListController::class, 'index'])->name('decadeFilms.search');
+// Keep backward compatibility for old /decadeFilms/search links while supporting pagination via GET.
+Route::match(['get', 'post'], 'decadeFilms/search', [DecadeFilmListController::class, 'index'])->name('decadeFilms.search');
 
 Route::resource('decadeFilms', DecadeFilmListController::class);
 Route::resource('decadeFilmsPhotos', PhotoGalleryController::class);

@@ -1,7 +1,6 @@
 <div class="table-responsive">
-    <!-- search form (POST) -->
-    <form id="searchForm" method="POST" action="{{ route('decadeFilms.search') }}">
-        @csrf
+    <!-- search form (GET) -->
+    <form id="searchForm" method="GET" action="{{ route('decadeFilms.index') }}">
         <div class="row mb-3">
             <div class="col-md-3">
                 <select id="year" name="year" class="form-control select2">
@@ -73,4 +72,3 @@
 </div>
 
 <!-- AJAX-based filtering removed; form submission will reload page with results -->
-

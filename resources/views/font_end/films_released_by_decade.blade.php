@@ -107,7 +107,7 @@
                                                         <td style="white-space:nowrap">
                                                             {{ $film->producer_name }}
                                                         </td>
-                                                        <td style="white-space:nowrap">
+                                                        <td style="">
                                                             {{ $film->director_name }}
                                                         </td>
                                                         <td>

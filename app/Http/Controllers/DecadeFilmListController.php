@@ -15,8 +15,9 @@ class DecadeFilmListController extends Controller
     public function index(Request $request)
     {
         // method agnostic access to the inputs
-        $year   = $request->input('year');
-        $search = $request->input('search');
+        $yearInput = $request->input('year');
+        $year = (is_numeric($yearInput) && strlen((string) $yearInput) === 4) ? (int) $yearInput : null;
+        $search = trim((string) $request->input('search', ''));
 
         // Available years: fixed range from 1960 up to the current calendar year
         // Earlier we pulled distinct years from the database, but now we always want the
@@ -26,26 +27,40 @@ class DecadeFilmListController extends Controller
         $years = range($startYear, $currentYear);
         rsort($years);
 
-        $query = DecadeFilmList::query();
+        $query = DecadeFilmList::query()->select([
+            'id',
+            'film_name',
+            'producer_name',
+            'director_name',
+            'acting',
+            'type',
+            'release_date',
+            'achivements',
+        ]);
 
         // Year filter
         if ($year) {
-            $query->whereYear('release_date', $year);
+            // release_date is stored as YYYY-MM-DD string; prefix match keeps this index-friendly.
+            $query->where(function ($q) use ($year) {
+                $q->where('release_date', 'like', $year . '-%')
+                    ->orWhere('release_date', (string) $year);
+            });
         }
 
         // Search filter
-        if ($search) {
+        if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('film_name', 'like', "%{$search}%")
-                ->orWhere('director_name', 'like', "%{$search}%")
-                ->orWhere('producer_name', 'like', "%{$search}%")
-                ->orWhere('type', 'like', "%{$search}%");
+                    ->orWhere('director_name', 'like', "%{$search}%")
+                    ->orWhere('producer_name', 'like', "%{$search}%")
+                    ->orWhere('type', 'like', "%{$search}%");
             });
         }
 
         $decadeFilmLists = $query->orderBy('release_date', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10)
-            ->appends($request->all());
+            ->withQueryString();
 
         // If AJAX request
         if ($request->ajax()) {
