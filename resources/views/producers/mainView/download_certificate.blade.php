@@ -20,6 +20,7 @@
         .text{
             position:absolute;
             font-size:12px;
+            display: inline-block;
         }
 
         /* ===== Header ===== */
@@ -29,13 +30,13 @@
         .name_main { top: 110mm; left: 19mm; right: 19mm; font-size: 10px; }
 
         .name { top: 147mm; left: 97mm; }
-        .nid  { top: 153mm; left: 97mm; }
-        .tin  { top: 159mm; left: 97mm; }
+        .nid  { top: 153mm; left: 97mm; white-space: nowrap; width: 60mm; }
+        .tin  { top: 159mm; left: 97mm; white-space: nowrap; width: 60mm; }
 
         /* ===== Organization ===== */
         .org_name { top: 182mm; left: 97mm; }
-        .org_tin  { top: 188mm; left: 97mm; }
-        .trade    { top: 194mm; left: 97mm; }
+        .org_tin  { top: 188mm; left: 97mm; white-space: nowrap; width: 60mm;}
+        .trade    { top: 194mm; left: 97mm; white-space: nowrap; width: 60mm;}
         .address  { top: 199mm; left: 97mm; }
     </style>
 </head>
