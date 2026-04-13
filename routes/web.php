@@ -124,6 +124,8 @@ Route::post('pay_cancel_request/{pay_id}', [MakePaymentController::class, 'pay_c
 
 // party applications
 Route::resource('partyApplications', 'PartyApplicationController');
+Route::get('partyApplication/approved', [PartyApplicationController::class, 'approved'])->name('partyApplications.approved');
+Route::get('partyApplication/rejected', [PartyApplicationController::class, 'rejected'])->name('partyApplications.rejected');
 Route::prefix('party-application')->name('partyApplications.')->group(function () {
     Route::get('{partyApplication}/forward/{desk}', [PartyApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [PartyApplicationController::class, 'update_status'])->name('st.status');
@@ -137,6 +139,8 @@ Route::get('partyApplications_forward_table', [PartyApplicationController::class
 
 // reality applications
 Route::resource('realityApplications', 'RealityApplicationController');
+Route::get('realityApplication/approved', [RealityApplicationController::class, 'approved'])->name('realityApplications.approved');
+Route::get('realityApplication/rejected', [RealityApplicationController::class, 'rejected'])->name('realityApplications.rejected');
 Route::prefix('reality-application')->name('realityApplications.')->group(function () {
     Route::get('{realityApplication}/forward/{desk}', [RealityApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [RealityApplicationController::class, 'update_status'])->name('st.status');
@@ -151,6 +155,8 @@ Route::get('realityApplications_forward_table', [RealityApplicationController::c
 
 // docufilm applications
 Route::resource('docufilmApplications', 'DocufilmApplicationController');
+Route::get('docufilmApplication/approved', [DocufilmApplicationController::class, 'approved'])->name('docufilmApplications.approved');
+Route::get('docufilmApplication/rejected', [DocufilmApplicationController::class, 'rejected'])->name('docufilmApplications.rejected');
 Route::prefix('docufilm-application')->name('docufilmApplications.')->group(function () {
     Route::get('{docufilmApplication}/forward/{desk}', [DocufilmApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [DocufilmApplicationController::class, 'update_status'])->name('st.status');
@@ -164,6 +170,8 @@ Route::get('docufilmApplications_forward_table', [DocufilmApplicationController:
 
 // drama applications
 Route::resource('dramaApplications', 'DramaApplicationController');
+Route::get('dramaApplication/approved', [DramaApplicationController::class, 'approved'])->name('dramaApplications.approved');
+Route::get('dramaApplication/rejected', [DramaApplicationController::class, 'rejected'])->name('dramaApplications.rejected');
 Route::prefix('drama-application')->name('dramaApplications.')->group(function () {
     Route::get('{dramaApplication}/forward/{desk}', [DramaApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [DramaApplicationController::class, 'update_status'])->name('st.status');
@@ -177,6 +185,8 @@ Route::get('dramaApplications_forward_table', [DramaApplicationController::class
 
 // film applications
 Route::resource('filmApplications', 'FilmApplicationController');
+Route::get('filmApplication/approved', [FilmApplicationController::class, 'approved'])->name('filmApplications.approved');
+Route::get('filmApplication/rejected', [FilmApplicationController::class, 'rejected'])->name('filmApplications.rejected');
 Route::prefix('film-applications')->name('filmApplications.')->group(function () {
     Route::get('{filmApplication}/forward/{desk}', [FilmApplicationController::class, 'forward'])->name('forward');
     Route::post('change_status', [FilmApplicationController::class, 'update_status'])->name('st.status');
@@ -315,9 +325,12 @@ Route::group(["middleware" => []], function () {
             Route::post('/producer_booking_request', 'producer_booking_request')->name('producer.producer_booking_request');
 
             // for booking section
-            Route::get('/booking', 'booking')->name('producer.booking');
             Route::get('/create_page', 'create_page')->name('producer.create_page');
             Route::post('/book_store', 'book_store')->name('producer.book_store');
+            Route::get('/booking', 'booking')->name('producer.booking');
+            Route::get('/approved', 'approved')->name('producer.approved');
+            Route::get('/paid', 'paid')->name('producer.paid');
+            Route::get('/rejected', 'rejected')->name('producer.rejected');
             ## For save as draft section
             Route::post('/booking_draft', 'booking_draft')->name('producer.booking_draft');
             Route::get('/draft/{id}/edit', 'edit_draft')->name('producer.edit.draft');

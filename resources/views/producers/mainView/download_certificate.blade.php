@@ -7,7 +7,7 @@
         html,body{
             margin:0;
             padding:0;
-            font-family: DejaVu Sans, sans-serif;
+            font-family: nikosh, DejaVu Sans, sans-serif;
         }
         .bg{
             position:absolute;
@@ -26,7 +26,7 @@
         .cert_no    { top: 96mm; left: 35mm; font-size: 10px; }
         .issue_date { top: 96mm; left: 155mm; font-size: 10px; }
         /* ===== Applicant ===== */
-        .name_main { top: 117mm; left: 55mm; font-size: 10px; }
+        .name_main { top: 110mm; left: 19mm; right: 19mm; font-size: 10px; }
 
         .name { top: 147mm; left: 97mm; }
         .nid  { top: 153mm; left: 97mm; }
@@ -51,9 +51,11 @@
     <div class="text issue_date">
         {{ date('d-m-Y') }}
     </div>
-    <!-- 🔥 Applicant -->
+
+
+    <!-- 🔥 Applicant with content -->
     <div class="text name_main">
-        {{ $producer->owners_name }}
+        <p style="font-size: 17px">এই মর্মে প্রত্যয়ন করা যাচ্ছে যে, নিম্নবর্ণিত তথ্য অনুযায়ী বাংলাদেশ চলচ্চিত্র উন্নয়ন কর্পোরেশন-এর যথাযথ কর্তৃপক্ষের আওতায় প্রযোজনা/নির্মাতা প্রতিষ্ঠান, &nbsp; <strong style="font-size: 12px">  {{ $producer->owners_name }}  </strong> .... কে বিএফডিসিতে তালিকাভুক্ত করা হলো।</p>
     </div>
 
 

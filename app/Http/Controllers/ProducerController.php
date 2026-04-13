@@ -511,12 +511,36 @@ class ProducerController extends AppBaseController
         }
         $producer = Auth::guard('producer')->user();
 
+        // $mpdf = new \Mpdf\Mpdf([
+        //     'format' => 'A4',
+        //     'margin_left' => 0,
+        //     'margin_right' => 0,
+        //     'margin_top' => 0,
+        //     'margin_bottom' => 0,
+        // ]);
         $mpdf = new \Mpdf\Mpdf([
             'format' => 'A4',
             'margin_left' => 0,
             'margin_right' => 0,
             'margin_top' => 0,
             'margin_bottom' => 0,
+
+            'default_font' => 'nikosh',
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts')]
+            ),
+            'fontdata' => array_merge(
+                (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'],
+                [
+                    'nikosh' => [
+                        'R' => 'Nikosh.ttf',
+                        'useOTL' => 0xFF,   // 🔥 IMPORTANT for Bangla shaping
+                    ],
+                ]
+            ),
+            'autoScriptToLang' => true,
+            'autoLangToFont' => true,
         ]);
 
         /* 🔥 HTML (NO QR HERE) */
@@ -733,48 +757,85 @@ class ProducerController extends AppBaseController
     // Producer Booking
     public function booking()
     {
-
         if (!Auth::guard('producer')->check()) {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
                 ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->where('bookings.status', 'on process')
                 ->orderByDesc('bookings.id')
                 ->get();
         } else {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
                 ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
+                ->whereIn('bookings.status', ['draft', 'on process'])
                 ->select('bookings.*', 'producers.organization_name as producer_name')
                 ->orderByDesc('bookings.id')
                 ->get();
-
-            // $filmQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
-            //     ->where('bookings.film_type', 'film')
-            //     ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id')
-            //     ->select('bookings.*', 'filmapplications.film_title');
-
-            // $dramaQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
-            //     ->where('bookings.film_type', 'drama')
-            //     ->join('drama_applications', 'drama_applications.id', '=', 'bookings.film_id')
-            //     ->select('bookings.*', 'drama_applications.film_title');
-
-            // $docuQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
-            //     ->where('bookings.film_type', 'docufilm')
-            //     ->join('docufilm_applications', 'docufilm_applications.id', '=', 'bookings.film_id')
-            //     ->select('bookings.*', 'docufilm_applications.film_title');
-
-            // $realityQuery = Booking::where('bookings.producer_id', Auth::guard('producer')->user()->id)
-            //     ->where('bookings.film_type', 'realityshow')
-            //     ->join('reality_applications', 'reality_applications.id', '=', 'bookings.film_id')
-            //     ->select('bookings.*', 'reality_applications.film_title');
-
-            // $booking_requests = $filmQuery
-            //     ->unionAll($dramaQuery)
-            //     ->unionAll($docuQuery)
-            //     ->orderByDesc('id')
-            //     ->get();
         }
 
         return view('producers.mainView.booking', compact('booking_requests'));
     }
+
+    public function approved()
+    {
+        if (!Auth::guard('producer')->check()) {
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->where('bookings.status', 'approved')->whereIn('bookings.pay_status', ['pending', 'canceled'])
+                ->orderByDesc('bookings.id')
+                ->get();
+        } else {
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
+                ->where('bookings.status', 'approved')->whereIn('bookings.pay_status', ['pending', 'canceled'])
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->orderByDesc('bookings.id')
+                ->get();
+        }
+
+        return view('producers.mainView.booking', compact('booking_requests'));
+    }
+
+    public function paid()
+    {
+        if (!Auth::guard('producer')->check()) {
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->whereIn('bookings.pay_status', ['paid', 'refound'])
+                ->orderByDesc('bookings.id')
+                ->get();
+        } else {
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
+                ->whereIn('bookings.pay_status', ['paid', 'refound'])
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->orderByDesc('bookings.id')
+                ->get();
+        }
+
+        return view('producers.mainView.booking', compact('booking_requests'));
+    }
+
+    public function rejected()
+    {
+        if (!Auth::guard('producer')->check()) {
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->where('bookings.status', 'reject')
+                ->orderByDesc('bookings.id')
+                ->get();
+        } else {
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
+                ->where('bookings.status', 'reject')
+                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->orderByDesc('bookings.id')
+                ->get();
+        }
+
+        return view('producers.mainView.booking', compact('booking_requests'));
+    }
+
+
     // Producer Create Booking Page
     public function create_page()
     {

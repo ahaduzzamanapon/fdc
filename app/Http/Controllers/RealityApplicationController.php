@@ -34,15 +34,33 @@ class RealityApplicationController extends AppBaseController
      */
     public function index(Request $request)
     {
+        if (!Auth::guard('producer')->check()) {
+            $filmApplications = RealityApplication::latest()->where('status', 'on process');
+        } else {
+            $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+        }
+        $filmApplications = $filmApplications->get();
+        return view('reality_applications.index')->with('filmApplications', $filmApplications);
+    }
 
+    public function approved()
+    {
         if (!Auth::guard('producer')->check()) {
             $filmApplications = RealityApplication::latest();
         } else {
             $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-
-        $filmApplications = $filmApplications->get();
-
+        $filmApplications = $filmApplications->where('status', 'approved')->get();
+        return view('reality_applications.index')->with('filmApplications', $filmApplications);
+    }
+    public function rejected()
+    {
+        if (!Auth::guard('producer')->check()) {
+            $filmApplications = RealityApplication::latest();
+        } else {
+            $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+        }
+        $filmApplications = $filmApplications->where('status', 'rejected')->get();
         return view('reality_applications.index')->with('filmApplications', $filmApplications);
     }
     /**

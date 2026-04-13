@@ -33,17 +33,37 @@ class PartyApplicationController extends AppBaseController
      */
     public function index(Request $request)
     {
-
         if (!Auth::guard('producer')->check()) {
-            $filmApplications = PartyApplication::latest();
+            $filmApplications = PartyApplication::latest()->where('status', 'on process');
         } else {
             $filmApplications = PartyApplication::latest()->where('id', Auth::guard('producer')->user()->id)->where('status', 'on process');
         }
-
         $filmApplications = $filmApplications->get();
-
         return view('party_applications.index')->with('filmApplications', $filmApplications);
     }
+
+    public function approved(Request $request)
+    {
+        if (!Auth::guard('producer')->check()) {
+            $filmApplications = PartyApplication::latest()->where('status', 'approved');
+        } else {
+            $filmApplications = PartyApplication::latest()->where('id', Auth::guard('producer')->user()->id)->where('status', 'approved');
+        }
+        $filmApplications = $filmApplications->get();
+        return view('party_applications.index')->with('filmApplications', $filmApplications);
+    }
+
+    public function rejected(Request $request)
+    {
+        if (!Auth::guard('producer')->check()) {
+            $filmApplications = PartyApplication::latest()->where('status', 'rejected');
+        } else {
+            $filmApplications = PartyApplication::latest()->where('id', Auth::guard('producer')->user()->id)->where('status', 'rejected');
+        }
+        $filmApplications = $filmApplications->get();
+        return view('party_applications.index')->with('filmApplications', $filmApplications);
+    }
+
     /**
      * Show the form for creating a new PartyApplication.
      *

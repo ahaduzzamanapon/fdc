@@ -34,13 +34,32 @@ class FilmApplicationController extends AppBaseController
     public function index(Request $request)
     {
         if (!Auth::guard('producer')->check()) {
+            $filmApplications = FilmApplication::latest()->where('status', 'on process');
+        } else {
+            $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+        }
+        $filmApplications = $filmApplications->get();
+        return view('film_applications.index')->with('filmApplications', $filmApplications);
+    }
+    public function approved()
+    {
+        if (!Auth::guard('producer')->check()) {
             $filmApplications = FilmApplication::latest();
         } else {
             $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
+        $filmApplications = $filmApplications->where('status', 'approved')->get();
+        return view('film_applications.index')->with('filmApplications', $filmApplications);
+    }
 
-        $filmApplications = $filmApplications->get();
-
+    public function rejected()
+    {
+        if (!Auth::guard('producer')->check()) {
+            $filmApplications = FilmApplication::latest();
+        } else {
+            $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+        }
+        $filmApplications = $filmApplications->where('status', 'reject')->get();
         return view('film_applications.index')->with('filmApplications', $filmApplications);
     }
     /**

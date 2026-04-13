@@ -34,17 +34,35 @@ class DramaApplicationController extends AppBaseController
      */
     public function index(Request $request)
     {
-
+        if (!Auth::guard('producer')->check()) {
+            $filmApplications = DramaApplication::latest()->where('status', 'on process');
+        } else {
+            $filmApplications = DramaApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+        }
+        $filmApplications = $filmApplications->get();
+        return view('drama_applications.index')->with('filmApplications', $filmApplications);
+    }
+    public function approved()
+    {
         if (!Auth::guard('producer')->check()) {
             $filmApplications = DramaApplication::latest();
         } else {
             $filmApplications = DramaApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-
-        $filmApplications = $filmApplications->get();
-
+        $filmApplications = $filmApplications->where('status', 'approved')->get();
         return view('drama_applications.index')->with('filmApplications', $filmApplications);
     }
+    public function rejected()
+    {
+        if (!Auth::guard('producer')->check()) {
+            $filmApplications = DramaApplication::latest();
+        } else {
+            $filmApplications = DramaApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
+        }
+        $filmApplications = $filmApplications->where('status', 'reject')->get();
+        return view('drama_applications.index')->with('filmApplications', $filmApplications);
+    }
+
     /**
      * Show the form for creating a new DramaApplication.
      *
