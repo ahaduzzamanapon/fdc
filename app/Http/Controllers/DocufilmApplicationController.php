@@ -39,7 +39,7 @@ class DocufilmApplicationController extends AppBaseController
         } else {
             $filmApplications = DocufilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->get();
+        $filmApplications = $filmApplications->where('category', 'docufilm')->get();
         return view('docufilm_applications.index')->with('filmApplications', $filmApplications);
     }
 
@@ -50,7 +50,7 @@ class DocufilmApplicationController extends AppBaseController
         } else {
             $filmApplications = DocufilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->where('status', 'approved')->get();
+        $filmApplications = $filmApplications->where('status', 'approved')->where('category', 'docufilm')->get();
         return view('docufilm_applications.index')->with('filmApplications', $filmApplications);
     }
     public function rejected()
@@ -60,7 +60,7 @@ class DocufilmApplicationController extends AppBaseController
         } else {
             $filmApplications = DocufilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->where('status', 'rejected')->get();
+        $filmApplications = $filmApplications->where('status', 'rejected')->where('category', 'docufilm')->get();
         return view('docufilm_applications.index')->with('filmApplications', $filmApplications);
     }
     /**
@@ -96,6 +96,7 @@ class DocufilmApplicationController extends AppBaseController
             $input['producer_id'] = $producer->id;
             $input['desk_id'] = $step->to_role_id;
             $input['status'] = 'on process';
+            $input['category'] = 'docufilm';
             $DocufilmApplication = DocufilmApplication::create($input);
             $data = array(
                 'flow_id' => $flow->id,
@@ -392,6 +393,7 @@ class DocufilmApplicationController extends AppBaseController
             ##
             $validated['producer_id'] = $producer->id;
             $validated['status'] = 'draft';
+            $validated['category'] = 'docufilm';
             $validated['desk_id'] = $step->to_role_id;
 
             ## Store the NID file

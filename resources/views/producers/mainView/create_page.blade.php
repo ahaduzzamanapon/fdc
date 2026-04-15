@@ -155,7 +155,7 @@
                             <option value="film">সিনেমা </option>
                             <option value="drama">নাটক</option>
                             <option value="docufilm">প্রামান্যচিত্র</option>
-                            <option value="realityshow">রিয়েলিটি শো</option>
+                            <option value="reality">রিয়েলিটি শো</option>
                         </select>
                     </div>
                     <div @class(['col-md-4'])>
@@ -670,7 +670,7 @@
                 } else if (filmType === 'docufilm') {
                     var appTitle = 'আবেদনকৃত প্রামান্যচিত্র'
                     var appTitleOption = 'প্রামান্যচিত্র নির্বাচন করুন'
-                } else if (filmType === 'realityshow') {
+                } else if (filmType === 'reality') {
                     var appTitle = 'আবেদনকৃত রিয়েলিটি শো'
                     var appTitleOption = 'রিয়েলিটি শো নির্বাচন করুন'
                 } else {
@@ -689,7 +689,7 @@
                     url: "{{ route('producer.get_application') }}",
                     type: "GET",
                     data: {
-                        filmId: filmType
+                        filmType: filmType
                     },
                     success: function(data) {
                         $.each(data, function(i, item) {

@@ -57,7 +57,8 @@ use Eloquent as Model;
 class DramaApplication extends Model
 {
 
-    public $table = 'drama_applications';
+    // public $table = 'drama_applications';
+    public $table = 'filmapplications';
 
 
 

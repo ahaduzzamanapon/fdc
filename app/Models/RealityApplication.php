@@ -57,7 +57,8 @@ use Eloquent as Model;
 class RealityApplication extends Model
 {
 
-    public $table = 'reality_applications';
+    // public $table = 'reality_applications';
+    public $table = 'filmapplications';
 
 
 

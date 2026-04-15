@@ -763,6 +763,7 @@ class ProducerController extends AppBaseController
                 ->where('bookings.status', 'on process')
                 ->orderByDesc('bookings.id')
                 ->get();
+            return view('producers.mainView.booking', compact('booking_requests'));
         } else {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
                 ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
@@ -770,9 +771,9 @@ class ProducerController extends AppBaseController
                 ->select('bookings.*', 'producers.organization_name as producer_name')
                 ->orderByDesc('bookings.id')
                 ->get();
+            return view('producers.mainView.prod_booking', compact('booking_requests'));
         }
-
-        return view('producers.mainView.booking', compact('booking_requests'));
+        return route('dashboard');
     }
 
     public function approved()
@@ -849,15 +850,17 @@ class ProducerController extends AppBaseController
     public function get_application(Request $request)
     {
         $user = Auth::guard('producer')->user();
-        if ($request->filmId == 'drama') {
-            $items = DramaApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
-        } elseif ($request->filmId == 'realityshow') {
-            $items = RealityApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
-        } elseif ($request->filmId == 'docufilm') {
-            $items = DocufilmApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
-        } else {
-            $items = Film::where('producer_id', $user->id)->where('status', 'approved')->get();
-        }
+        // if ($request->filmType == 'drama') {
+        //     $items = DramaApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
+        // } elseif ($request->filmType == 'realityshow') {
+        //     $items = RealityApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
+        // } elseif ($request->filmType == 'docufilm') {
+        //     $items = DocufilmApplication::where('producer_id', $user->id)->where('status', 'approved')->get();
+        // } else {
+        //     $items = Film::where('producer_id', $user->id)->where('status', 'approved')->get();
+        // }
+
+        $items = Film::where('producer_id', $user->id)->where('status', 'approved')->where('category', $request->filmType)->get();
 
         return response()->json($items);
     }

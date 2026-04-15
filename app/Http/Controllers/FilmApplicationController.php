@@ -38,7 +38,7 @@ class FilmApplicationController extends AppBaseController
         } else {
             $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->get();
+        $filmApplications = $filmApplications->where('category', 'film')->get();
         return view('film_applications.index')->with('filmApplications', $filmApplications);
     }
     public function approved()
@@ -48,7 +48,7 @@ class FilmApplicationController extends AppBaseController
         } else {
             $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->where('status', 'approved')->get();
+        $filmApplications = $filmApplications->where('status', 'approved')->where('category', 'film')->get();
         return view('film_applications.index')->with('filmApplications', $filmApplications);
     }
 
@@ -59,7 +59,7 @@ class FilmApplicationController extends AppBaseController
         } else {
             $filmApplications = FilmApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->where('status', 'reject')->get();
+        $filmApplications = $filmApplications->where('status', 'reject')->where('category', 'film')->get();
         return view('film_applications.index')->with('filmApplications', $filmApplications);
     }
     /**
@@ -95,6 +95,7 @@ class FilmApplicationController extends AppBaseController
             $input['producer_id'] = $producer->id;
             $input['desk_id'] = $step->to_role_id;
             $input['status'] = 'on process';
+            $input['category'] = 'film';
             $filmApplication = FilmApplication::create($input);
             $data = array(
                 'flow_id' => $flow->id,
@@ -214,6 +215,7 @@ class FilmApplicationController extends AppBaseController
             $input = $request->except(['_token', 'nid_file']);
             $input['producer_id'] = $producer->id;
             $input['status'] = 'draft';
+            $input['category'] = 'film';
             $input['desk_id'] = $step->to_role_id;
 
             ## Store the NID file

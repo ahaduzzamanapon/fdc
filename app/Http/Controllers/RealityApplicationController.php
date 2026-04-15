@@ -39,7 +39,7 @@ class RealityApplicationController extends AppBaseController
         } else {
             $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->get();
+        $filmApplications = $filmApplications->where('category', 'reality')->get();
         return view('reality_applications.index')->with('filmApplications', $filmApplications);
     }
 
@@ -50,7 +50,7 @@ class RealityApplicationController extends AppBaseController
         } else {
             $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->where('status', 'approved')->get();
+        $filmApplications = $filmApplications->where('status', 'approved')->where('category', 'reality')->get();
         return view('reality_applications.index')->with('filmApplications', $filmApplications);
     }
     public function rejected()
@@ -60,7 +60,7 @@ class RealityApplicationController extends AppBaseController
         } else {
             $filmApplications = RealityApplication::latest()->where('producer_id', Auth::guard('producer')->user()->id);
         }
-        $filmApplications = $filmApplications->where('status', 'rejected')->get();
+        $filmApplications = $filmApplications->where('status', 'rejected')->where('category', 'reality')->get();
         return view('reality_applications.index')->with('filmApplications', $filmApplications);
     }
     /**
@@ -96,6 +96,7 @@ class RealityApplicationController extends AppBaseController
             $input['producer_id'] = $producer->id;
             $input['desk_id'] = $step->to_role_id;
             $input['status'] = 'on process';
+            $input['category'] = 'reality';
             $realityApplication = RealityApplication::create($input);
             $data = array(
                 'flow_id' => $flow->id,
@@ -406,6 +407,7 @@ class RealityApplicationController extends AppBaseController
             ##
             $validated['producer_id'] = $producer->id;
             $validated['status'] = 'draft';
+            $validated['category'] = 'reality';
             $validated['desk_id'] = $step->to_role_id;
 
             ## Store the NID file
