@@ -414,7 +414,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
                             {{-- notification --}}
-                            <li class="nav-item dropdown">
+                            {{-- <li class="nav-item dropdown">
                                 <a href="#" class="nav-link" id="notification-drop" data-bs-toggle="dropdown">
                                     <svg class="icon-24" width="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg" style="color: aliceblue;">
@@ -467,8 +467,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
+                            </li> --}}
                             {{-- End Notification --}}
+
                             {{-- Start Profile --}}
                             <li class="nav-item dropdown custom-drop" style="margin: 4px !important;">
                                 <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
@@ -494,9 +495,6 @@
                                                 @endphp
                                             @endif
                                         </h6>
-                                        {{-- <p class="mb-0 caption-sub-title" style="color: white;">
-                                            {{ Auth::user()->role ?? 'User' }}
-                                        </p> --}}
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end profile-dropdown"
@@ -551,13 +549,13 @@
                                         </div>
                                         <div>
                                             <a href="{{ route('profile.index') }}" class="w-100">
-                                                <i class="bi bi-box-arrow-right me-1"></i> Go to Profile
+                                                <i class="bi bi-box-arrow-right me-1"></i> প্রোফাইলে যান
                                             </a>
                                         </div>
                                         <hr>
                                         <a href="{{ route('logout') }}" class="btn btn-sm btn-danger w-100"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            <i class="bi bi-box-arrow-right me-1"></i> Logout
+                                            <i class="bi bi-box-arrow-right me-1"></i> লগআউট
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             style="display: none;">
