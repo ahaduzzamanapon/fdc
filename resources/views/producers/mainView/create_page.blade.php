@@ -633,11 +633,6 @@
             const film_id = $('#form_film_id').val();
             const film_type = $('#form_film_type').val();
 
-            // if (film_type === 'film' && total_price > film_balance) {
-            //     alert("{{ __('messages.no_film_balance') }}");
-            //     return false;
-            // }
-
             if (!film_id) {
                 alert("অ্যাপ্লিকেশন নির্বাচন করুন");
                 return false;

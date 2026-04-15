@@ -765,10 +765,11 @@ class ProducerController extends AppBaseController
                 ->get();
             return view('producers.mainView.booking', compact('booking_requests'));
         } else {
-            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id', 'left')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
                 ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
                 ->whereIn('bookings.status', ['draft', 'on process'])
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->orderByDesc('bookings.id')
                 ->get();
             return view('producers.mainView.prod_booking', compact('booking_requests'));
@@ -785,10 +786,11 @@ class ProducerController extends AppBaseController
                 ->orderByDesc('bookings.id')
                 ->get();
         } else {
-            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id', 'left')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
                 ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
                 ->where('bookings.status', 'approved')->whereIn('bookings.pay_status', ['pending', 'canceled'])
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->orderByDesc('bookings.id')
                 ->get();
         }
@@ -805,10 +807,11 @@ class ProducerController extends AppBaseController
                 ->orderByDesc('bookings.id')
                 ->get();
         } else {
-            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id', 'left')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
                 ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
                 ->whereIn('bookings.pay_status', ['paid', 'refound'])
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->orderByDesc('bookings.id')
                 ->get();
         }
@@ -825,10 +828,11 @@ class ProducerController extends AppBaseController
                 ->orderByDesc('bookings.id')
                 ->get();
         } else {
-            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+            $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id', 'left')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
                 ->where('bookings.producer_id', Auth::guard('producer')->user()->id)
                 ->where('bookings.status', 'reject')
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->orderByDesc('bookings.id')
                 ->get();
         }

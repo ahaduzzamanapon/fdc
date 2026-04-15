@@ -347,7 +347,7 @@
                 } else if (filmType === 'docufilm') {
                     var appTitle = 'আবেদনকৃত প্রামান্যচিত্র'
                     var appTitleOption = 'প্রামান্যচিত্র নির্বাচন করুন'
-                } else if (filmType === 'realityshow') {
+                } else if (filmType === 'reality') {
                     var appTitle = 'আবেদনকৃত রিয়েলিটি শো'
                     var appTitleOption = 'রিয়েলিটি শো নির্বাচন করুন'
                 } else {
@@ -360,7 +360,7 @@
                     url: "{{ route('producer.get_application') }}",
                     type: "GET",
                     data: {
-                        filmId: filmType
+                        filmType: filmType
                     },
                     success: function(data) {
                         $.each(data, function(i, item) {
@@ -425,10 +425,10 @@
             $('#add_cart_div, #booking_ui_div').hide();
 
             // Reset UI
-            $('#start_date_btn').text('Select Start Date');
-            $('#end_date_btn').text('Select End Date').prop('disabled', true);
+            $('#start_date_btn').text('শুরুর তারিখ নির্বাচন করুন');
+            $('#end_date_btn').text('শেষ তারিখ নির্বাচন করুন').prop('disabled', true);
             $('#start_date_input, #end_date_input').val('');
-            $('#shift_id_dropdown').empty().append('<option value="">Select Shift</option>').prop('disabled', true);
+            $('#shift_id_dropdown').empty().append('<option value=""> শিফট নির্বাচন করুন 85</option>').prop('disabled', true);
 
             if (!item_id) return;
 
@@ -450,6 +450,7 @@
                         $('#shift_dropdown_wrapper').hide();
                     } else {
                         $('#shift_dropdown_wrapper').show();
+                        $('#shift_id_dropdown').append('<option value="1">সকাল শিফট</option><option value="2">বিকেল শিফট</option><option value="3">রাতের শিফট</option>').prop('disabled', false);
                     }
                 }
             });
@@ -619,11 +620,11 @@
             const shift_id = (service_type === 'shift') ? $('#shift_id_dropdown').val() : null;
 
             if (!item_id || !category_id || !booking_start_date || !booking_end_date) {
-                alert("Please select start and end dates.");
+                alert("অনুগ্রহ করে শুরু এবং শেষ তারিখ নির্বাচন করুন।");
                 return;
             }
             if (service_type === 'shift' && !shift_id) {
-                alert("Please select a shift.");
+                alert("অনুগ্রহ করে একটি শিফট নির্বাচন করুন।");
                 return;
             }
 
@@ -691,23 +692,19 @@
             const film_id = $('#form_film_id').val();
             const film_type = $('#form_film_type').val();
 
-            // if (film_type === 'film' && total_price > film_balance) {
-            //     alert("{{ __('messages.no_film_balance') }}");
-            //     return false;
-            // }
-
             if (!film_id) {
                 alert("অ্যাপ্লিকেশন নির্বাচন করুন");
                 return false;
             }
 
             Swal.fire({
-                title: "Are you sure?",
-                icon: "warning",
+                title: "আপনি কি নিশ্চিত?",
+                icon: "সতর্কতা",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmBuq1ttonColor: "#3085d6",
+                confirmButtonText: "হ্যাঁ",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes"
+                cancelButtonText: "না",
             }).then((result) => {
                 if (result.isConfirmed) $('#booking_request_form').submit();
             });
@@ -727,7 +724,7 @@
                 } else if (filmType === 'docufilm') {
                     var appTitle = 'আবেদনকৃত প্রামান্যচিত্র'
                     var appTitleOption = 'প্রামান্যচিত্র নির্বাচন করুন'
-                } else if (filmType === 'realityshow') {
+                } else if (filmType === 'reality') {
                     var appTitle = 'আবেদনকৃত রিয়েলিটি শো'
                     var appTitleOption = 'রিয়েলিটি শো নির্বাচন করুন'
                 } else {
@@ -746,7 +743,7 @@
                     url: "{{ route('producer.get_application') }}",
                     type: "GET",
                     data: {
-                        filmId: filmType
+                        filmType: filmType
                     },
                     success: function(data) {
                         $.each(data, function(i, item) {
@@ -815,12 +812,12 @@
                     $('#shift_id_dropdown').html(`<option value="${shiftId}">${shiftName}</option>`).prop(
                         'disabled', true);
                     $('#end_date_btn').prop('disabled', false);
-                    $('#end_date_btn').text('Select End Date');
+                    $('#end_date_btn').text('শেষ তারিখ নির্বাচন করুন');
                     $('#end_date_input').val('');
                 } else {
                     const startDate = $('#start_date_input').val();
                     if (new Date(date) < new Date(startDate)) {
-                        alert('End date cannot be before start date.');
+                        alert('শেষ তারিখ শুরুর তারিখের আগে হতে পারবে না।');
                         return;
                     }
                     $('#end_date_btn').text(date);
@@ -835,12 +832,12 @@
                     $('#start_date_btn').text(date);
                     $('#start_date_input').val(date);
                     $('#end_date_btn').prop('disabled', false);
-                    $('#end_date_btn').text('Select End Date');
+                    $('#end_date_btn').text('শেষ তারিখ নির্বাচন করুন');
                     $('#end_date_input').val('');
                 } else {
                     const startDate = $('#start_date_input').val();
                     if (new Date(date) < new Date(startDate)) {
-                        alert('End date cannot be before start date.');
+                        alert('শেষ তারিখ শুরুর তারিখের আগে হতে পারবে না।');
                         return;
                     }
                     $('#end_date_btn').text(date);
