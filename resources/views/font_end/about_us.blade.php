@@ -79,7 +79,7 @@
         }
 
     </style>
-    
+
     <!-- card section -->
     <div class="about-header">
         <h1>আমাদের সম্পর্কে</h1>
@@ -139,8 +139,8 @@
                 </div>
                 <!-- TEAM SECTION -->
                 <div class="container py-5">
-                    <h2 class="section-title text-center mb-4">জনবল</h2>
-                    <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">  
+                    <h2 class="section-title text-center mb-4">কর্মকর্তাবৃন্দ</h2>
+                    <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
                         <!-- Carousel Inner -->
                         <div class="carousel-inner">
 

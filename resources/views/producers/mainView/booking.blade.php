@@ -30,9 +30,9 @@
                     <tr>
                         <th>{{ __('messages.serial') }}</th>
                         <th>{{ __('messages.booking_id') }}</th>
+                        <th> সেবার নাম  </th>
                         <th>{{ __('messages.status') }}</th>
                         <th> পেমেন্ট অবস্থা </th>
-                        <th>{{ __('সিনেমার নাম') }} </th>
                         {{-- <th>{{ __('messages.producer') }} </th> --}}
                         <th>{{ __('messages.total_price_label') }}</th>
                         <th>{{ __('messages.date_label') }}</th>
@@ -52,9 +52,9 @@
                     <tr>
                         <td>{{  $key+1 }}</td>
                         <td>{{ $booking->book_id }}</td>
+                        <td>{{ $booking->film_title }}</td>
                         <td>{{ $booking->status }}</td>
                         <td>{{ $booking->pay_status }}</td>
-                        <td>{{ $booking->film_title }}</td>
                         <td>{{ $booking->total_price }}</td>
                         <td>{{ date('d M Y', strtotime($booking->created_at)) }}</td>
                         <td>

@@ -331,6 +331,13 @@
                             <span class="item-name">{{ __('messages.pending_list') }}</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('producer/approved') ? 'active' : '' !!}" aria-current="page"
+                            href="{{ route('producer.approved') }}">
+                            <i class="icon im im-icon-Home"></i>
+                            <span class="item-name"> অনুমোদিত তালিকা </span>
+                        </a>
+                    </li>
                 @endif
             </ul>
         </li>

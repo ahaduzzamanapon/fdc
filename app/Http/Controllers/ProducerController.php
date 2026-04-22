@@ -469,6 +469,11 @@ class ProducerController extends AppBaseController
             return redirect(url(route('login.custom', 'citizen')))->with('error', 'Login Failed');
         }
     }
+    public function logout()
+    {
+        Auth::guard('producer')->logout();
+        return redirect('/login');
+    }
 
     // Download Certificate
     public function download_certificatessssss()
@@ -759,7 +764,8 @@ class ProducerController extends AppBaseController
     {
         if (!Auth::guard('producer')->check()) {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->where('bookings.status', 'on process')
                 ->orderByDesc('bookings.id')
                 ->get();
@@ -781,7 +787,8 @@ class ProducerController extends AppBaseController
     {
         if (!Auth::guard('producer')->check()) {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->where('bookings.status', 'approved')->whereIn('bookings.pay_status', ['pending', 'canceled'])
                 ->orderByDesc('bookings.id')
                 ->get();
@@ -802,7 +809,8 @@ class ProducerController extends AppBaseController
     {
         if (!Auth::guard('producer')->check()) {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->whereIn('bookings.pay_status', ['paid', 'refound'])
                 ->orderByDesc('bookings.id')
                 ->get();
@@ -823,7 +831,8 @@ class ProducerController extends AppBaseController
     {
         if (!Auth::guard('producer')->check()) {
             $booking_requests = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
-                ->select('bookings.*', 'producers.organization_name as producer_name')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
                 ->where('bookings.status', 'reject')
                 ->orderByDesc('bookings.id')
                 ->get();
@@ -1271,15 +1280,22 @@ class ProducerController extends AppBaseController
         return view('producers.mainView.booking')->with('booking_requests', $producers);
     }
 
-    public function forward(Booking $booking, $desk)
+    public function forward($booking, $desk)
     {
+        $booking = Booking::join('producers', 'producers.id', '=', 'bookings.producer_id')
+                ->join('filmapplications', 'filmapplications.id', '=', 'bookings.film_id', 'left')
+                ->select('bookings.*', 'producers.organization_name as producer_name', 'filmapplications.film_title')
+                ->where('bookings.id', $booking)
+                ->orderByDesc('bookings.id')
+                ->first();
+
         $app_id = $booking->id;
         $role_id = $booking->desk_id;
         $auth_user = ApprovalRequests::where('application_id', $app_id)->where('request_type', 'Booking Flow')->where('current_role_id', $role_id)->first();
         $logs = ApprovalLogs::where('request_id', $auth_user->id)->where('flow_id', $auth_user->flow_id)->get();
         $flow = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $auth_user->flow_id)->first();
         $last = ApprovalFlowSteps::where('flow_id', $auth_user->flow_id)->orderByDesc('step_order')->first();
-        // dd($flow);
+        // dd($booking);
         return view('producers.mainView.forward', [
             'booking' => $booking,
             'auth_user' => $auth_user,

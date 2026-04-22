@@ -8,20 +8,18 @@
         <div class="col-md-6">
             <div class="d-flex">
                 <span class="fw-semibold me-2" style="min-width: 140px;">
-                    Booking Type:
+                    সেবার নাম:
                 </span>
-                <span>{{ $booking->film_type }}</span>
+                <span>{{ $booking->film_title }}</span>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="d-flex">
                 <span class="fw-semibold me-2" style="min-width: 140px;">
-                    Applicant Name:
+                    প্রযোজকের নাম:
                 </span>
-                <span>
-                    {{ \App\Models\Producer::find($booking->producer_id)->organization_name }}
-                </span>
+                <span>{{ $booking->producer_name }}</span>
             </div>
         </div>
     </div>
