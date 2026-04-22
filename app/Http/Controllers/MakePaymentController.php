@@ -74,7 +74,12 @@ class MakePaymentController extends AppBaseController
      */
     public function show(MakePayment $makePayment)
     {
-        //
+        $logs = ApprovalLogs::where('master_id', $makePayment->id)->get();
+        // dd($makePayment);
+        return view('make_payments.show', [
+            'film' => $makePayment,
+            'logs' => $logs,
+        ]);
     }
 
     /**
@@ -262,6 +267,7 @@ class MakePaymentController extends AppBaseController
         );
         // approval_logs
         $data2 = array(
+            'master_id' => $request->film_id,
             'request_id' => $request->request_id,
             'request_type' => $steps->request_type,
             'flow_id' => $steps->flow_id,
@@ -357,6 +363,41 @@ class MakePaymentController extends AppBaseController
             $balance_details->created_at = date('Y-m-d H:i:s');
             $balance_details->created_by = $producer->id;
             $balance_details->save();
+
+            // approval flow start
+            $role_id = $producer->group_id;
+            $flow = ApprovalFlowMaster::where('name', 'like', '%Payment Flow%')->first();
+            $step = ApprovalFlowSteps::where('from_role_id', $role_id)->where('flow_id', $flow->id)->first();
+            $next = ApprovalFlowSteps::where('from_role_id', $step->to_role_id)->where('flow_id', $flow->id)->first();
+            $data = array(
+                'flow_id' => $flow->id,
+                'request_type' => $flow->name,
+                'application_id' => $id,
+                'prev_role_id' => $role_id,
+                'current_role_id' => $step->to_role_id,
+                'next_role_id' => !empty($next) ? $next->to_role_id : $step->to_role_id,
+                'status' => 'on process',
+                'created_by' => $producer->id,
+                'updated_by' => $producer->id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert = ApprovalRequests::create($data);
+
+            $data1 = array(
+                'master_id' => $id,
+                'request_id' => $insert->id,
+                'request_type' => $flow->name,
+                'flow_id' => $flow->id,
+                'action_by' => $producer->id,
+                'action_role_id' => $role_id,
+                'next_role_id' => $step->to_role_id,
+                'status' => 'forward',
+                'remarks' => 'Payment Refound Request',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert1 = ApprovalLogs::create($data1);
 
             \DB::commit();
 
@@ -480,6 +521,7 @@ class MakePaymentController extends AppBaseController
             $insert1 = ApprovalRequests::create($data);
 
             $data1 = array(
+                'master_id' => $insert->id,
                 'request_id' => $insert1->id,
                 'request_type' => $flow->name,
                 'flow_id' => $flow->id,

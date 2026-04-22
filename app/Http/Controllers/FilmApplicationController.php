@@ -113,6 +113,7 @@ class FilmApplicationController extends AppBaseController
             $insert = ApprovalRequests::create($data);
 
             $data1 = array(
+                'master_id' => $filmApplication->id,
                 'request_id' => $insert->id,
                 'request_type' => $flow->name,
                 'flow_id' => $flow->id,
@@ -250,6 +251,7 @@ class FilmApplicationController extends AppBaseController
             $ApprovalRequests = ApprovalRequests::create($data);
 
             $data1 = array(
+                'master_id' => $filmApplication->id,
                 'request_id' => $ApprovalRequests->id,
                 'request_type' => $flow->name,
                 'flow_id' => $flow->id,
@@ -547,6 +549,7 @@ class FilmApplicationController extends AppBaseController
         );
         // approval_logs
         $data2 = array(
+            'master_id' => $request->film_id,
             'request_id' => $request->request_id,
             'request_type' => $steps->request_type,
             'flow_id' => $steps->flow_id,

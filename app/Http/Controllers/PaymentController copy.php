@@ -327,6 +327,7 @@ class PaymentController extends Controller
                 $insert = ApprovalRequests::create($data);
 
                 $data1 = array(
+                    'master_id' => $producer->id,
                     'request_id' => $insert->id,
                     'request_type' => $flow->name,
                     'flow_id' => $flow->id,

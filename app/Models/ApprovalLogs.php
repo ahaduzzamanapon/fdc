@@ -24,6 +24,7 @@ class ApprovalLogs extends Model
 
 
     public $fillable = [
+        'master_id',
         'request_id',
         'request_type',
         'flow_id',
@@ -42,6 +43,7 @@ class ApprovalLogs extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'master_id' => 'integer',
         'request_id' => 'integer',
         'request_type' => 'string',
         'flow_id' => 'integer',

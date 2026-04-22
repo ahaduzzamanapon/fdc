@@ -267,7 +267,7 @@
             url: "{{ route('producer.get_application') }}",
             type: "GET",
             data: {
-              filmId: filmType
+                filmType: filmType
             },
             success: function(data) {
               $.each(data, function(i, item) {

@@ -197,6 +197,22 @@ class PaymentController extends Controller
             $package->review_status = 'on process';
             $package->desk_id = $step->to_role_id;
             $package->save();
+
+            $data1 = array(
+                'master_id' => $package->id,
+                'request_id' => null,
+                'request_type' => $flow->name,
+                'flow_id' => $flow->id,
+                'action_by' => $producer->id,
+                'action_role_id' => $role_id,
+                'next_role_id' => $step->to_role_id,
+                'status' => 'success',
+                'remarks' => 'New Payment',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert1 = ApprovalLogs::create($data1);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -368,6 +384,7 @@ class PaymentController extends Controller
                 $insert = ApprovalRequests::create($data);
 
                 $data1 = array(
+                    'master_id' => $film_package->id,
                     'request_id' => $insert->id,
                     'request_type' => $flow->name,
                     'flow_id' => $flow->id,
