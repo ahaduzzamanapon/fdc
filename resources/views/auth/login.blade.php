@@ -194,7 +194,10 @@
         </ul>
 
         <div class="tab-content" id="myTabContent">
-          @if ($request == 'citizen')
+          @php
+              $type = $type ?? session('login_type');
+          @endphp
+          @if ($type == 'citizen')
             <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
               <form action="{{ route('producers_login') }}" method="POST">
                 @csrf

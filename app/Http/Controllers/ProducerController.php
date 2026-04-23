@@ -451,24 +451,40 @@ class ProducerController extends AppBaseController
         return redirect(route('producers.index'));
     }
 
+    // public function producers_login(Request $request)
+    // {
+    //     $username = $request->username;
+    //     $password = $request->password;
+    //     Auth::guard('producer')->attempt([
+    //         'username' => $username,
+    //         'password' => $password,
+    //         'reg_status' => 'verified',
+    //     ]);
+
+    //     if (Auth::guard('producer')->check()) {
+    //         return redirect(url('producer/dashboard'));
+    //     } else {
+    //         Flash::error('Login Failed! Please check your credentials and registration status.');
+    //         // return redirect(url('/login'));
+    //         return redirect(url(route('login.custom', 'citizen')))->with('error', 'Login Failed');
+    //     }
+    // }
     public function producers_login(Request $request)
     {
-        $username = $request->username;
-        $password = $request->password;
-        Auth::guard('producer')->attempt([
-            'username' => $username,
-            'password' => $password,
+        $attempt = Auth::guard('producer')->attempt([
+            'username' => $request->username,
+            'password' => $request->password,
             'reg_status' => 'verified',
         ]);
 
-        if (Auth::guard('producer')->check()) {
-            return redirect(url('producer/dashboard'));
-        } else {
-            Flash::error('Login Failed! Please check your credentials and registration status.');
-            // return redirect(url('/login'));
-            return redirect(url(route('login.custom', 'citizen')))->with('error', 'Login Failed');
+        if ($attempt) {
+            return redirect()->route('producer.dashboard');
         }
+
+        return redirect()->route('login.custom', 'citizen')
+            ->with('error', 'Login Failed! Please check your credentials and registration status.');
     }
+
     public function logout()
     {
         Auth::guard('producer')->logout();

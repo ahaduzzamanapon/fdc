@@ -13,7 +13,7 @@
             <section class="card-header">
                 <h5 class="card-title d-inline">সচরাচর জিজ্ঞাসা</h5>
                 <span class="float-right">
-                    <a class="btn btn-primary pull-right" href="{{ route('faqs.create') }}">Add New</a>
+                    <a class="btn btn-primary pull-right" href="{{ route('faqs.create') }}"> নতুন যোগ করুন </a>
                 </span>
             </section>
 
@@ -21,9 +21,9 @@
                 <table class="table table_data" id="faqs-table">
                     <thead>
                         <tr>
-                            <th>Question</th>
-                            <th>Answer</th>
-                            <th>Action</th>
+                            <th>প্রশ্ন</th>
+                            <th>উত্তর</th>
+                            <th>কর্ম</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,14 +36,14 @@
                                         <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
-                                            Actions </button>
+                                            কর্ম </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a href="{{ route('faqs.edit', [$faq->id]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
-                                                    title="Edit"></i> Edit
+                                                    title="সম্পাদনা"></i> সম্পাদনা
                                             </a>
                                             {!! Form::open(['route' => ['faqs.destroy', $faq->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
-                                            {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="Delete"></i> Delete', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                            {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছুন"></i> মুছুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
                                             {!! Form::close() !!}
                                         </div>
                                     </div>

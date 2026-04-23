@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1>Create ফটোগ্যালারী</h1>
+                    <h1> ফটোগ্যালারী</h1>
                 </div>
             </div>
         </div>
@@ -21,27 +21,27 @@
                 <div class="row">
                     <!-- Title Field -->
                     <div class="form-group col-sm-12">
-                        {!! Form::label('title', 'Title:') !!}
+                        {!! Form::label('title', 'শিরোনাম:') !!}
                         {!! Form::text('title', null, ['class' => 'form-control']) !!}
                     </div>
 
                     <!-- Description Field -->
                     <div class="form-group col-sm-12 col-lg-12">
-                        {!! Form::label('description', 'Description:') !!}
-                        {!! Form::textarea('description', null, ['class' => 'form-control', 'id' => 'editor']) !!}
+                        {!! Form::label('description', 'বর্ণনা:') !!}
+                        {!! Form::textarea('description', null, ['class' => 'form-control', 'id' => 'editor', 'rows' => '4']) !!}
                     </div>
 
                     <!-- Image Field -->
                     <div class="form-group col-sm-6">
-                        {!! Form::label('image', 'Image:') !!}
+                        {!! Form::label('image', 'ছবি:') !!}
                         {!! Form::file('image', ['class' => 'form-control', 'accept' => 'image/*']) !!}
                     </div>
-                </div>
-            </div>
 
-            <div class="card-footer">
-                {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('galleries.index') }}" class="btn btn-default">Cancel</a>
+                    <div class="col-sm-12">
+                        {!! Form::submit('সংরক্ষণ করুন', ['class' => 'btn btn-primary']) !!}
+                        <a href="{{ route('galleries.index') }}" class="btn btn-default"> বাতিল করুন </a>
+                    </div>
+                </div>
             </div>
 
             {!! Form::close() !!}
@@ -49,8 +49,41 @@
     </div>
 @endsection
 @section('script')
-    <script src="https://cdn.ckeditor.com/4.25.1-lts/standard/ckeditor.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+    <style>
+        .ql-container {
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .ql-editor {
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
     <script>
-        CKEDITOR.replace('editor');
+        setTimeout(function() {
+            if (typeof Quill !== 'undefined') {
+                const quill = new Quill('#editor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline'],
+                            ['link'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['blockquote'],
+                            ['clean']
+                        ]
+                    },
+                    placeholder: 'বর্ণনা লিখুন...'
+                });
+
+                // Store content back to textarea on form submit
+                document.querySelector('form').addEventListener('submit', function() {
+                    document.getElementById('editor').value = quill.root.innerHTML;
+                });
+            }
+        }, 500);
     </script>
 @endsection

@@ -13,7 +13,7 @@
             <section class="card-header">
                 <h5 class="card-title d-inline">নোটিশ সমূহ</h5>
                 <span class="float-right">
-                    <a class="btn btn-primary pull-right" href="{{ route('notices.create') }}">Add New</a>
+                    <a class="btn btn-primary pull-right" href="{{ route('notices.create') }}">নতুন যোগ করুন</a>
                 </span>
             </section>
 
@@ -21,9 +21,9 @@
                 <table class="table table_data" id="notices-table">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Action</th>
+                            <th>শিরোনাম</th>
+                            <th>বর্ণনা</th>
+                            <th> একশন </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,14 +36,14 @@
                                         <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
-                                            Actions </button>
+                                            একশন </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a href="{{ route('notices.edit', [$notice->id]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
-                                                    title="Edit"></i> Edit
+                                                    title="সম্পাদনা করুন"></i> সম্পাদনা করুন
                                             </a>
                                             {!! Form::open(['route' => ['notices.destroy', $notice->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
-                                            {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="Delete"></i> Delete', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                            {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছুন"></i> মুছুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm(' আপনি কি নিশ্চিত? ')"]) !!}
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
