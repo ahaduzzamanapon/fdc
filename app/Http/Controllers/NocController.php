@@ -54,37 +54,37 @@ class NocController extends Controller
             $input['created_at'] = date('Y-m-d H:i:s');
             $input['updated_at'] = date('Y-m-d H:i:s');
             $noc = Noc::create($input);
-            // $data = array(
-            //     'flow_id' => $flow->id,
-            //     'request_type' => $flow->name,
-            //     'application_id' => $noc->id,
-            //     'prev_role_id' => $role_id,
-            //     'current_role_id' => $step->to_role_id,
-            //     'next_role_id' => $next->to_role_id,
-            //     'status' => 'on process',
-            //     'created_by' => $producer->id,
-            //     'updated_by' => $producer->id,
-            //     'created_at' => date('Y-m-d H:i:s'),
-            //     'updated_at' => date('Y-m-d H:i:s')
-            // );
-            // $insert = ApprovalRequests::create($data);
+            $data = array(
+                'flow_id' => 0,
+                'request_type' => 'NOC Application',
+                'application_id' => $noc->id,
+                'prev_role_id' => 0,
+                'current_role_id' => 16,
+                'next_role_id' => 16,
+                'status' => 'on process',
+                'created_by' => 0,
+                'updated_by' =>0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert = ApprovalRequests::create($data);
 
-            // $data1 = array(
-            //     'request_id' => $insert->id,
-            //     'request_type' => $flow->name,
-            //     'flow_id' => $flow->id,
-            //     'action_by' => $producer->id,
-            //     'action_role_id' => $role_id,
-            //     'next_role_id' => $step->to_role_id,
-            //     'status' => 'forward',
-            //     'remarks' => 'New Application',
-            //     'created_at' => date('Y-m-d H:i:s'),
-            //     'updated_at' => date('Y-m-d H:i:s')
-            // );
-            // $insert1 = ApprovalLogs::create($data1);
+            $data1 = array(
+                'request_id' => $insert->id,
+                'request_type' => 'NOC Application',
+                'flow_id' => 0,
+                'action_by' => 0,
+                'action_role_id' => 0,
+                'next_role_id' => 16,
+                'status' => 'forward',
+                'remarks' => 'New Application',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            $insert1 = ApprovalLogs::create($data1);
             \DB::commit();
 
-            Flash::success('Application saved successfully.');
+            Flash::success('Application saved successfully. Note: Please save the Registration No. ' . $noc->token . ' and wait for approval. Thank you.');
             return redirect(route('noc.show', $noc->id));
         } catch (\Exception $e) {
             \DB::rollBack();

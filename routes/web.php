@@ -19,6 +19,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PhotoGalleryController;
+use App\Http\Controllers\NocApplicationController;
 
 // Contact form submission
 Route::post('/contact-submit', [ContactController::class, 'store'])->name('contact.submit');
@@ -205,6 +206,16 @@ Route::group(["middleware" => ['auth.multi']], function () {
         Route::post('/draft', [FilmApplicationController::class, 'storeFilmDraft'])->name('film.save.draft');
         Route::get('/draft/{id}/edit', [FilmApplicationController::class, 'editFilmDraft'])->name('film.edit.draft');
         Route::post('/draft/update', [FilmApplicationController::class, 'updateDraftFilm'])->name('film.update.draft');
+    });
+
+    // noc applications
+    Route::resource('nocApplications', 'NocApplicationController');
+    Route::get('nocApplication/pending', [NocApplicationController::class, 'pending'])->name('nocApplication.pending');
+    Route::get('nocApplication/approved', [NocApplicationController::class, 'approved'])->name('nocApplication.approved');
+    Route::get('nocApplication/rejected', [NocApplicationController::class, 'rejected'])->name('nocApplication.rejected');
+    Route::prefix('noc-application')->name('nocApplication.')->group(function () {
+        Route::get('{id}', [NocApplicationController::class, 'forward'])->name('forward');
+        Route::post('change_status', [NocApplicationController::class, 'update_status'])->name('st.status');
     });
 });
 

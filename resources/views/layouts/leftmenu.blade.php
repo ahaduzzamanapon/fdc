@@ -277,6 +277,45 @@
         </a>
     </li>
 
+    {{-- NOC--}} {{-- 23-06-2026  --}}
+    @if (Auth::user()->user_role == 16)
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('nocApplication/pending') || Request::is('nocApplication/approved') || Request::is('nocApplication/rejected') ? 'active' : '' !!}"
+                data-bs-toggle="collapse" href="#nocApplication" role="button" aria-expanded="false" aria-controls="hr"> <i
+                    class="icon im im-icon-Calendar-4"></i> <span class="item-name"> NOC আবেদন </span> <i
+                    class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('nocApplication/pending') || Request::is('nocApplication/approved') || Request::is('nocApplication/rejected') ? 'show' : '' !!}" id="nocApplication" data-bs-parent="#sidebar-menu">
+                {{-- প্রক্রিয়াধীন তালিকা --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('nocApplication/booking') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('nocApplication.pending') }}">
+                        <i class="icon im im-icon-Home"></i>
+                        <span class="item-name"> প্রক্রিয়াধীন তালিকা </span>
+                    </a>
+                </li>
+
+                {{-- অনুমোদিত তালিকা --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('nocApplication/approved') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('nocApplication.approved') }}">
+                        <i class="icon im im-icon-Home"></i>
+                        <span class="item-name"> অনুমোদিত তালিকা </span>
+                    </a>
+                </li>
+
+                {{-- বাতিল তালিকা --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('nocApplication/rejected') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('nocApplication.rejected') }}">
+                        <i class="icon im im-icon-Home"></i>
+                        <span class="item-name"> বাতিল তালিকা </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
     {{-- বুকিং --}}
     @if (can('filmApplications_table')) {{-- booking_table --}}
         <li class="nav-item">

@@ -19,6 +19,10 @@
     <!-- card section -->
     <section class="cardSection" style="background-color: #eaf9fb; padding-bottom: 50px;">
         <div class="container">
+            {{-- show flash message --}}
+            @include('flash::message')
+            {{-- show flash message --}}
+
             <div class="form-header">
                 <p class="fright"> NOC আবেদন তালিকা </p>
                 <p class="fleft"><a href="{{ route('noc.create') }}">NOC আবেদন ফরম</a></p>
