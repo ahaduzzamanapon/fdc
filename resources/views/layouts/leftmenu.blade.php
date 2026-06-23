@@ -278,7 +278,7 @@
     </li>
 
     {{-- NOC--}} {{-- 23-06-2026  --}}
-    @if (Auth::user()->user_role == 16)
+    @if (Auth::user()->user_role == 16 || Auth::user()->user_role == 1)
         <li class="nav-item">
             <a class="nav-link {!! Request::is('nocApplication/pending') || Request::is('nocApplication/approved') || Request::is('nocApplication/rejected') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#nocApplication" role="button" aria-expanded="false" aria-controls="hr"> <i
