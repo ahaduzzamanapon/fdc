@@ -888,6 +888,7 @@
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
             <ul class="sub-nav collapse {!! Request::is('siteSettings*') ||
+                    Request::is('noc*') ||
                     Request::is('designations*') ||
                     Request::is('districts*') ||
                     Request::is('departments*')
@@ -900,6 +901,14 @@
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon"> সি </i>
                             <span class="item-name">{{ __('messages.site_settings') }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('noc*') ? 'active' : '' !!}"
+                            href="{{ route('noc.index') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon"> সি </i>
+                            <span class="item-name">NOC পেমেন্ট সেটিংস</span>
                         </a>
                     </li>
                 @endif

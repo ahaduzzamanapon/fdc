@@ -9,7 +9,7 @@
         @yield('body')
         <!-- Footer -->
         @include('font_end.footer.footer')
-        @include('font_end.scripts')
+        {{-- @include('font_end.scripts') --}}
 
         {{-- font end scripts --}}
         @stack('fontEnd_script')

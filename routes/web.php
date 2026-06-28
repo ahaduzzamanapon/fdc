@@ -66,6 +66,10 @@ Route::get('/service/rate-card', [FrontendController::class, 'rate_card'])->name
 Route::resource('noc', 'NocController');
 Route::get('/noc-search-list', [App\Http\Controllers\NocController::class, 'showSearchList'])->name('noc.search.list');
 Route::post('/noc-ajax-search', [App\Http\Controllers\NocController::class, 'ajaxSearch'])->name('noc.ajax.search');
+// make noc repayment
+Route::get('make_noc_payment/{payment_id}', [App\Http\Controllers\NocController::class, 'make_noc_payment'])->name('noc.pay');
+Route::get('/noc/payment/success', [App\Http\Controllers\NocController::class, 'ekPayCmSuccess']);
+// end payments
 Route::get('/noc-download/{noc}', [App\Http\Controllers\NocController::class, 'downloadNoc'])->name('noc.download');
 // Frontend Pages end here
 

@@ -62,14 +62,13 @@
                 <thead>
                     <tr>
                         <th>Registration No</th>
-                        <th>Status</th>
                         <th>Name</th>
                         <th>Producer</th>
                         <th>Publish Date</th>
                         <th>Full Name</th>
                         <th>Designation</th>
+                        <th>Status</th>
                         <th>Action</th>
-                        <th>Download</th>
                     </tr>
                 </thead>
                 <tbody id="searchResults">
@@ -97,28 +96,46 @@
                 },
                 success: function (res) {
                     if (res.status === 'success') {
-
                         const downloadUrl = "{{ route('noc.download', ':id') }}"; // placeholder :id
                         const showUrl = "{{ route('noc.show', ':id') }}"; // placeholder :id
+                        const payLink = "{{ route('noc.pay', ':id') }}"; // placeholder :id
+                        var actionDropdown = `
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </button>
 
-                        var downloadLink = '';
-                        if (res.result.status === 'approved') {
-                            downloadLink = '<a href="' + downloadUrl.replace(':id', res.result.token) + '" target="_blank" class="btn btn-sm btn-success"> Download </a>';
-                        } else {
-                            downloadLink = '<span class="text-muted">Not Available</span>';
-                        }
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="${showUrl.replace(':id', res.result.id)}">
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+                                    ${
+                                        res.result.status === 'approved' ? `<a class="dropdown-item" href="${payLink.replace(':id', res.result.token)}" target="_blank"> <i class="fa fa-credit-card"></i> Pay </a>` : ''
+                                    }
+                                    ${
+                                        res.result.status === 'paid' ? `<a class="dropdown-item" href="${downloadUrl.replace(':id', res.result.token)}" target="_blank"> <i class="fa fa-download"></i> Download </a>`
+                                        : `<span class="dropdown-item text-muted"> <i class="fa fa-ban"></i> Download Not Available </span>`
+                                    }
+                                </div>
+                            </div>
+                        </td>`;
 
-                        var row = '<tr>' +
-                            '<td>' + res.result.token + '</td>' +
-                            '<td><span class="badge ' + (res.result.status === 'approved' ? 'badge-success' : 'badge-warning') + '">' + res.result.status + '</span></td>' +
-                            '<td>' + res.result.name + '</td>' +
-                            '<td>' + res.result.producer + '</td>' +
-                            '<td>' + res.result.publish_date + '</td>' +
-                            '<td>' + res.result.full_name + '</td>' +
-                            '<td>' + res.result.designation + '</td>' +
-                            '<td> <a href="' + showUrl.replace(':id', res.result.id) + '" class="btn btn-sm btn-info"> View </a></td>' +
-                            '<td>' + downloadLink + '</td>' +
-                            '</tr>';
+                        var row = `
+                        <tr>
+                            <td>${res.result.token}</td>
+                            <td>${res.result.name}</td>
+                            <td>${res.result.producer}</td>
+                            <td>${res.result.publish_date}</td>
+                            <td>${res.result.full_name}</td>
+                            <td>${res.result.designation}</td>
+                            <td>
+                                <span class="badge ${res.result.status === 'approved' ? 'bg-success' : 'bg-warning text-dark'}">
+                                    ${res.result.status}
+                                </span>
+                            </td>
+                            ${actionDropdown}
+                        </tr>`;
                         $('#searchResults').html(row);
                     } else {
                         $('#searchResults').html(res.result);

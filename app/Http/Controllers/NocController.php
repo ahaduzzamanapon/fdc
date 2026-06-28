@@ -2,15 +2,158 @@
 
 namespace App\Http\Controllers;
 use App\Models\Noc;
+use App\Models\NocSetting;
 use App\Models\ApprovalFlowMaster;
 use App\Models\ApprovalFlowSteps;
 use App\Models\ApprovalRequests;
 use App\Models\ApprovalLogs;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Flash;
+use Response;
+use Auth;
 
 class NocController extends Controller
 {
+
+    private function getPayStationConfig()
+    {
+        return [
+            'base_url' => env('PAYSTATION_BASE_URL', 'https://sandbox.paystation.com.bd'),
+            'merchant_id' => env('PAYSTATION_MERCHANT_ID'),
+            'password' => env('PAYSTATION_PASSWORD'),
+        ];
+    }
+
+    public function make_noc_payment($noc_id) {
+        $noc = Noc::where('token', $noc_id)->first();
+        if (empty($noc)) {
+            Flash::error('Payment Failed');
+            return redirect()->route('home');
+        }
+        if (!empty($noc) && $noc->status != 'approved') {
+            Flash::error('Payment Failed');
+            return redirect()->route('home');
+        }
+
+        $amount = NocSetting::first();
+        $config = $this->getPayStationConfig();
+        // নতুন transaction id generate
+        $tnx_id = 'TRN-' . time().rand(1000,9999);
+        $BackUrl = url('');
+        $postData = [
+            'invoice_number' => $noc_id,
+            'currency' => 'BDT',
+            'payment_amount' => $amount->total ? $amount->total : 0,
+            'reference' => $noc_id,
+            'cust_name' => $noc->organization,
+            'cust_phone' => $noc->mobile_no,
+            'cust_email' => $noc->email ?? '',
+            'cust_address' => $noc->address ?? 'Dhaka, Bangladesh (default)',
+            'callback_url' => $BackUrl . '/noc/payment/success?transId=' . $tnx_id,
+            'checkout_items' => 'NOC Application Fee',
+            'merchantId' => $config['merchant_id'],
+            'password' => $config['password'],
+        ];
+
+        try {
+            $response = Http::asForm()->post($config['base_url'] . '/initiate-payment', $postData);
+
+            if ($response->successful()) {
+                $result = $response->json();
+
+                // PayStation typically returns a payment URL to redirect to
+                if (isset($result['payment_url'])) {
+                    return redirect()->away($result['payment_url']);
+                }
+
+                // If the response itself is a redirect URL string
+                if (isset($result['url'])) {
+                    return redirect()->away($result['url']);
+                }
+
+                // If there's a redirect in the response
+                if (isset($result['redirect_url'])) {
+                    return redirect()->away($result['redirect_url']);
+                }
+
+                // Log full response for debugging
+                Log::info('PayStation initiate response', ['response' => $result]);
+
+                // Fallback: if gateway_url exists
+                if (isset($result['gateway_url'])) {
+                    return redirect()->away($result['gateway_url']);
+                }
+
+                Flash::error('Payment initiation failed: Unexpected response from payment gateway.');
+                return back();
+            } else {
+                Log::error('PayStation payment initiation failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+                Flash::error('Payment initiation failed. Please try again.');
+                return back();
+            }
+        } catch (\Exception $e) {
+            Log::error('PayStation payment exception', ['error' => $e->getMessage()]);
+            Flash::error('Payment service unavailable. Please try again later.');
+            return back();
+        }
+    }
+
+    public function ekPayCmSuccess(Request $request)
+    {
+        // Verify transaction with PayStation API
+        $trxId = $request->query('transId');
+        if ($request->status === 'Successful') {
+            DB::beginTransaction();
+            try {
+                $data = array(
+                    'status' => 'paid',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $invoice_id = $request->invoice_number;
+                $insert = Noc::where('token', $invoice_id)->update($data);
+                $get = Noc::where('token', $invoice_id)->firstOrFail();
+                $data1 = array(
+                    'master_id' => $get->id,
+                    'request_id' => null,
+                    'request_type' => 'NOC Pay',
+                    'flow_id' => '0',
+                    'action_by' => '0',
+                    'action_role_id' => '0',
+                    'next_role_id' => '0',
+                    'status' => 'success',
+                    'remarks' => 'New Payment Success and Tnx ID: ' . $request->trx_id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+                $insert1 = ApprovalLogs::create($data1);
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
+            Flash::success('Payment successful');
+            return redirect()->route('home');
+        } elseif ($request->status === 'Canceled') {
+            Flash::error('Payment Cancelled');
+            return redirect('/');
+        } elseif ($request->status === 'Failed') {
+            Flash::error('Payment Failed');
+            return redirect('/');
+        } else {
+            Flash::error('Unknown Payment Status');
+            return redirect('/');
+        }
+        return redirect()->route('home');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +161,8 @@ class NocController extends Controller
      */
     public function index()
     {
-        //
+        $noc = NocSetting::latest()->get();
+        return view('noc.index', compact('noc'));
     }
 
     /**
@@ -114,7 +258,8 @@ class NocController extends Controller
      */
     public function edit($id)
     {
-        //
+        $noc = NocSetting::findOrFail($id);
+        return view('noc.edit', compact('noc'));
     }
 
     /**
@@ -126,7 +271,14 @@ class NocController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $noc = NocSetting::findOrFail($id);
+        $input = $request->all();
+        $input['total'] = $input['amount'] + $input['charge'];
+        $input['updated_at'] = date('Y-m-d H:i:s');
+        $input['updated_by'] = Auth::user()->id;
+        $noc->update($input);
+        Flash::success('Noc updated successfully.');
+        return redirect(route('noc.index'));
     }
 
     public function showSearchList()
