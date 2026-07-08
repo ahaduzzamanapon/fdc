@@ -40,9 +40,16 @@
                 </tr>
 
                 @foreach($logs as $key => $log)
+                    @php
+                        $user = get_user($log->action_by);
+                        $role = get_role($log->action_role_id);
+                    @endphp
                     <tr>
                         <td>{{ $key+1 }}</td>
-                        <td> {{ get_user($log->action_by)->name_en }} ({{ Str::ucfirst(get_role($log->action_role_id)->name) }})</td>
+                        <td>
+                            {{ $user?->name_en ?? 'N/A' }}
+                            ({{ Str::ucfirst($role?->name ?? 'N/A') }})
+                        </td>
                         <td>{{ $log->status }}</td>
                         <td>{{ $log->remarks }}</td>
                     </tr>
