@@ -153,36 +153,53 @@ class Reports extends Controller
     }
     public function payment_report_show(Request $request)
     {
-        $producerId = Auth::guard('producer')->user()->id;
-        $payments = MakePayment::query()->where('created_by', $producerId)
-        ->when(!empty($request->from_date) && !empty($request->to_date), function ($query) use ($request) {
-            $query->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
-        })
-        ->when(!empty($request->status), function ($query) use ($request) {
-            $query->where('status', $request->status);
-        })
-        ->get();
+        $query = MakePayment::query();
+
+        // Producer লগইন করা থাকলে শুধুমাত্র তার নিজের পেমেন্ট ফিল্টার হবে
+        if (Auth::guard('producer')->check()) {
+            $producerId = Auth::guard('producer')->user()->id;
+            $query->where('created_by', $producerId);
+        }
+
+        // সাধারণ ফিল্টার (তারিখ ও স্ট্যাটাস)
+        $payments = $query
+            ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
+                $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+            })
+            ->when(!empty($request->status), function ($q) use ($request) {
+                $q->where('status', $request->status);
+            })
+            ->get();
 
         $html = view('reports.payment_report.paymentReport', compact('payments'))->render();
         return response($html);
     }
-    public function payment_exportReport(Request $request, $type )
+
+    public function payment_exportReport(Request $request, $type)
     {
-        $producerId = Auth::guard('producer')->user()->id;
-        $view = 'reports.payment_report.paymentReport';
-        $filename = 'payment_report.xlsx';
+        // এক্সেলের জন্য আলাদা ডেডিকেটেড ভিউ ফাইল
+        $view = 'reports.payment_report.payment_excel';
+        $filename = 'payment_report_' . date('Y_m_d_His') . '.xlsx';
         $compactName = 'payments';
 
-
         $query = MakePayment::query();
-        $data = $query->where('created_by', $producerId)
-        ->when(!empty($request->from_date) && !empty($request->to_date), function ($query) use ($request) {
-            $query->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
-        })
-        ->when(!empty($request->status), function ($query) use ($request) {
-            $query->where('status', $request->status);
-        })
-        ->get();
+
+        // Producer লগইন করা থাকলে শুধুমাত্র তার নিজের পেমেন্ট ফিল্টার হবে
+        if (Auth::guard('producer')->check()) {
+            $producerId = Auth::guard('producer')->user()->id;
+            $query->where('created_by', $producerId);
+        }
+
+        // সাধারণ ফিল্টার (তারিখ ও স্ট্যাটাস)
+        $data = $query
+            ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
+                $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+            })
+            ->when(!empty($request->status), function ($q) use ($request) {
+                $q->where('status', $request->status);
+            })
+            ->get();
+
         $viewData = [$compactName => $data];
 
         return Excel::download(new ViewExport($view, $viewData), $filename);

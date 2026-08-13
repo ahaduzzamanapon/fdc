@@ -763,56 +763,6 @@
         </li>
     @endif
 
-    {{-- ব্যবহারকারী ব্যবস্থাপনা --}}
-    @if (can('user_management'))
-        <li class="nav-item">
-            <a class="nav-link {!! Request::is('users*') || Request::is('roleAndPermissions*') ? 'active' : '' !!}"
-                data-bs-toggle="collapse" href="#users_menu" role="button" aria-expanded="false" aria-controls="users_menu">
-                <i class="icon im im-icon-User"></i>
-                <span class="item-name">{{ __('messages.user_management') }}</span>
-                <i class="right-icon im im-icon-Arrow-Right"></i>
-            </a>
-            <ul class="sub-nav collapse {!! Request::is('users*') || Request::is('roleAndPermissions*') ? 'show' : '' !!}"
-                id="users_menu" data-bs-parent="#sidebar-menu">
-                @if (can('user'))
-                    <li class="nav-item">
-                        <a class="nav-link {!! Request::is('users*') ? 'active' : '' !!}" href="{{ route('users.index') }}">
-                            <i class="icon im im-icon-User"></i>
-                            <i class="sidenav-mini-icon"> ব্য</i>
-                            <span class="item-name">{{ __('messages.user') }}</span>
-                        </a>
-                    </li>
-                @endif
-                @if (can('roll_and_permission'))
-                    <li class="nav-item">
-                        <a class="nav-link {!! Request::is('roleAndPermissions*') ? 'active' : '' !!}"
-                            href="{{ route('roleAndPermissions.index') }}">
-                            <i class="icon im im-icon-Security-Settings"></i>
-                            <i class="sidenav-mini-icon"> রো </i>
-                            <span class="item-name">{{ __('messages.role_management') }}</span>
-                        </a>
-                    </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link {!! Request::is('permissions*') ? 'active' : '' !!}"
-                            href="{{ route('permissions.index') }}">
-                            <i class="icon im im-icon-Security-Settings"></i>
-                            <i class="sidenav-mini-icon"> অ </i>
-                            <span class="item-name">অনুমতিসমূহ</span>
-                        </a>
-                    </li> --}}
-                    <li class="nav-item">
-                        <a class="nav-link {!! Request::is('invPermissions*') ? 'active' : '' !!}"
-                            href="{{ route('invPermissions.index') }}">
-                            <i class="icon im im-icon-Security-Settings"></i>
-                            <i class="sidenav-mini-icon"> ই </i>
-                            <span class="item-name">ইনভেন্টরি</span>
-                        </a>
-                    </li>
-                @endif
-            </ul>
-        </li>
-    @endif
-
     {{-- ইনভেন্টরি --}}
     @if (can('inventory'))
         <li class="nav-item">
@@ -1004,6 +954,77 @@
         </li>
     @endif
 
+    {{-- রিপোর্ট --}}
+    <li class="nav-item">
+        @php $isActive = Request::is('reports*'); @endphp
+        <a class="nav-link {{ $isActive ? 'active' : '' }}" data-bs-toggle="collapse" href="#reports_menu" role="button"
+            aria-expanded="{{ $isActive ? 'true' : 'false' }}" aria-controls="reports_menu">
+            <i class="icon im im-icon-Statistic"></i>
+            <span class="item-name">{{ __('রিপোর্টস') }}</span>
+            <i class="right-icon im im-icon-Arrow-Right"></i>
+        </a>
+
+        <ul class="sub-nav collapse {{ $isActive ? 'show' : '' }}" id="reports_menu" data-bs-parent="#sidebar-menu">
+            {{-- সিনেমা রিপোর্ট --}}
+            @if (can('flim_report'))
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('reports/film-reports') ? 'active' : '' }}"
+                        href="{{ route('reports.filmReport') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon">ফি</i>
+                        <span class="item-name">{{ __('সিনেমা রিপোর্ট') }}</span>
+                    </a>
+                </li>
+            @endif
+
+            {{-- নাটক রিপোর্ট --}}
+            @if (can('drama_reports'))
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('reports/drama-reports') ? 'active' : '' }}"
+                        href="{{ route('reports.dramaReport') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon">না</i>
+                        <span class="item-name">{{ __('নাটক রিপোর্ট') }}</span>
+                    </a>
+                </li>
+            @endif
+
+            {{-- প্রামান্যচিত্র রিপোর্ট --}}
+            @if (can('pramanno_report'))
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('reports/pramanno-reports') ? 'active' : '' }}"
+                        href="{{ route('reports.pramannoReport') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon">প্রা</i>
+                        <span class="item-name">{{ __('প্রামান্যচিত্র রিপোর্ট') }}</span>
+                    </a>
+                </li>
+            @endif
+
+            {{-- রিয়ালিটি রিপোর্ট --}}
+            @if (can('reality_report'))
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('reports/reality-reports') ? 'active' : '' }}"
+                        href="{{ route('reports.realityReport') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon">রি</i>
+                        <span class="item-name">{{ __('রিয়েলিটি শো রিপোর্ট') }}</span>
+                    </a>
+                </li>
+            @endif
+
+            {{-- পেমেন্ট রিপোর্ট --}}
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('reports/payment-reports') ? 'active' : '' }}"
+                    href="{{ route('reports.paymentReport') }}">
+                    <i class="icon im im-icon-Settings-Window"></i>
+                    <i class="sidenav-mini-icon">পে</i>
+                    <span class="item-name">{{ __('পেমেন্ট রিপোর্ট') }}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
     {{-- Page Management --}}
     <li class="nav-item">
         <a class="nav-link {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'active' : '' !!}"
@@ -1079,24 +1100,85 @@
         </a>
     </li>
 
-    {{-- অনুমোদন প্রবাহ --}}
-    <li class="nav-item">
-        <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}"
-            href="{{ route('approvalFlowMasters.index') }}">
-            <i class="icon im im-icon-Structure"></i>
-            <i class="sidenav-mini-icon"> প্র </i>
-            <span class="item-name">অনুমোদন প্রবাহ</span>
-        </a>
-    </li>
+    {{-- ব্যবহারকারী ব্যবস্থাপনা --}}
+    @if (can('user_management'))
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('users*') || Request::is('roleAndPermissions*') ? 'active' : '' !!}"
+                data-bs-toggle="collapse" href="#users_menu" role="button" aria-expanded="false" aria-controls="users_menu">
+                <i class="icon im im-icon-User"></i>
+                <span class="item-name">{{ __('messages.user_management') }}</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('users*') || Request::is('roleAndPermissions*') ? 'show' : '' !!}"
+                id="users_menu" data-bs-parent="#sidebar-menu">
+                @if (can('user'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('users*') ? 'active' : '' !!}" href="{{ route('users.index') }}">
+                            <i class="icon im im-icon-User"></i>
+                            <i class="sidenav-mini-icon"> ব্য</i>
+                            <span class="item-name">{{ __('messages.user') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @if (can('roll_and_permission'))
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('roleAndPermissions*') ? 'active' : '' !!}"
+                            href="{{ route('roleAndPermissions.index') }}">
+                            <i class="icon im im-icon-Security-Settings"></i>
+                            <i class="sidenav-mini-icon"> রো </i>
+                            <span class="item-name">{{ __('messages.role_management') }}</span>
+                        </a>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link {!! Request::is('permissions*') ? 'active' : '' !!}"
+                            href="{{ route('permissions.index') }}">
+                            <i class="icon im im-icon-Security-Settings"></i>
+                            <i class="sidenav-mini-icon"> অ </i>
+                            <span class="item-name">অনুমতিসমূহ</span>
+                        </a>
+                    </li> --}}
+                    <li class="nav-item">
+                        <a class="nav-link {!! Request::is('invPermissions*') ? 'active' : '' !!}"
+                            href="{{ route('invPermissions.index') }}">
+                            <i class="icon im im-icon-Security-Settings"></i>
+                            <i class="sidenav-mini-icon"> ই </i>
+                            <span class="item-name">ইনভেন্টরি</span>
+                        </a>
+                    </li>
+                @endif
+            </ul>
+        </li>
+    @endif
 
-    {{-- অনুমোদন প্রবাহের ধাপ --}}
+    {{-- রোল এন্ড পারমিশন --}}
     <li class="nav-item">
-        <a class="nav-link {!! Request::is('approvalFlowSteps*') ? 'active' : '' !!}"
-            href="{{ route('approvalFlowSteps.index') }}">
-            <i class="icon im im-icon-Structure"></i>
-            <i class="sidenav-mini-icon"> ধা </i>
-            <span class="item-name">অনুমোদন প্রবাহের ধাপ</span>
+        <a class="nav-link {!! Request::is('approvalFlowMasters*') || Request::is('approvalFlowSteps*') ? 'active' : '' !!}"
+            data-bs-toggle="collapse" href="#role_permission" role="button" aria-expanded="false" aria-controls="role_permission">
+            <i class="icon im im-icon-User"></i>
+            <span class="item-name">রোল এন্ড পারমিশন</span>
+            <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
+        <ul class="sub-nav collapse {!! Request::is('approvalFlowMasters*') || Request::is('approvalFlowSteps*') ? 'show' : '' !!}" id="role_permission" data-bs-parent="#role_permission">
+            {{-- অনুমোদন প্রবাহ --}}
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('approvalFlowMasters*') ? 'active' : '' !!}"
+                    href="{{ route('approvalFlowMasters.index') }}">
+                    <i class="icon im im-icon-Structure"></i>
+                    <i class="sidenav-mini-icon"> প্র </i>
+                    <span class="item-name">অনুমোদন প্রবাহ</span>
+                </a>
+            </li>
+
+            {{-- অনুমোদন প্রবাহের ধাপ --}}
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('approvalFlowSteps*') ? 'active' : '' !!}"
+                    href="{{ route('approvalFlowSteps.index') }}">
+                    <i class="icon im im-icon-Structure"></i>
+                    <i class="sidenav-mini-icon"> ধা </i>
+                    <span class="item-name">অনুমোদন প্রবাহের ধাপ</span>
+                </a>
+            </li>
+        </ul>
     </li>
 @endif
 

@@ -22,6 +22,7 @@ Payment Report
         <div class="card-body table-responsive">
             <form id="filmReportFilter" class="row g-3 mb-4 align-items-end" action="{{ route('reports.payment.export', ['type' => 'payment']) }}" method="POST">
             @csrf
+            
                 <div class="col-md-2">
                     <label for="from_date" class="form-label">শুরু তারিখ</label>
                     <input type="date" id="from_date" name="from_date" class="form-control">

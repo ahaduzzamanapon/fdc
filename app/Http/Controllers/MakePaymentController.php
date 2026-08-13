@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificationMail;
+use Mpdf\Mpdf;
 
 class MakePaymentController extends AppBaseController
 {
@@ -79,6 +80,80 @@ class MakePaymentController extends AppBaseController
         return view('make_payments.show', [
             'film' => $makePayment,
             'logs' => $logs,
+        ]);
+    }
+
+    // booking and package invoice
+    public function booking_invoice($id) {
+        $booking = FilmPackage::find($id);
+        if (!$booking) {
+            Flash::error('Booking not found.');
+            return redirect()->route('makePayments.index');
+        }
+
+        $items = Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($booking->package_id);
+
+        $html = view('make_payments.booking_invoice', compact('booking', 'items'))->render();
+
+        $mpdf = new Mpdf([
+            'mode'             => 'utf-8',
+            'format'           => 'A4',
+            'margin_left'      => 15,
+            'margin_right'     => 15,
+            'margin_top'       => 15,
+            'margin_bottom'    => 15,
+            'default_font'     => 'nikosh',
+            'fontDir'          => [public_path('fonts')],
+            'fontdata'         => [
+                'nikosh' => [
+                    'R'      => 'Nikosh.ttf',
+                    'useOTL' => 0xFF,
+                ],
+            ],
+            'autoScriptToLang' => true,
+            'autoLangToFont'   => true,
+        ]);
+
+        $mpdf->WriteHTML($html);
+
+        return response($mpdf->Output('booking_invoice_' . $id . '.pdf', 'I'), 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
+
+    public function package_invoice($id) {
+        $booking = FilmPackage::find($id);
+        if (!$booking) {
+            Flash::error('Booking not found.');
+            return redirect()->route('makePayments.index');
+        };
+        $items = Package::with(['details.item', 'details.shift', 'film', 'producer'])->find($booking->package_id);
+        // dd($items->details);
+        $html = view('make_payments.package_invoice', compact('booking', 'items'))->render();
+
+        $mpdf = new Mpdf([
+            'mode'             => 'utf-8',
+            'format'           => 'A4',
+            'margin_left'      => 15,
+            'margin_right'     => 15,
+            'margin_top'       => 15,
+            'margin_bottom'    => 15,
+            'default_font'     => 'nikosh',
+            'fontDir'          => [public_path('fonts')],
+            'fontdata'         => [
+                'nikosh' => [
+                    'R'      => 'Nikosh.ttf',
+                    'useOTL' => 0xFF,
+                ],
+            ],
+            'autoScriptToLang' => true,
+            'autoLangToFont'   => true,
+        ]);
+
+        $mpdf->WriteHTML($html);
+
+        return response($mpdf->Output('package_invoice_' . $id . '.pdf', 'I'), 200, [
+            'Content-Type' => 'application/pdf',
         ]);
     }
 

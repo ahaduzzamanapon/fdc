@@ -64,9 +64,20 @@ class Package extends Model
      *
      * @var array
      */
-    public static $rules = [
+    public function details()
+    {
+        return $this->hasMany(Package_details::class);
+    }
 
-    ];
+    public function film()
+    {
+        return $this->belongsTo(FilmApplication::class, 'film_id');
+    }
+
+    public function producer()
+    {
+        return $this->belongsTo(Producer::class, 'producer_id');
+    }
 
 
 }

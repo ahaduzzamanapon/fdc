@@ -53,9 +53,20 @@ class Package_details extends Model
      *
      * @var array
      */
-    public static $rules = [
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 
-    ];
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
 
 
 }

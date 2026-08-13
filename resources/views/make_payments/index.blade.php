@@ -48,6 +48,15 @@
                             <td><span @class(['badge', 'text-white']) style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
                             <td><span @class(['badge', 'text-white']) style="background-color: #8dc542;">{{ $payment->review_status ?? 'N/A' }}</span></td>
                             <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y') : 'N/A' }}</td>
+
+                            @php
+                                if ($payment->type == 'booking') {
+                                    $routeName = 'booking.invoice';
+                                } elseif ($payment->type == 'package') {
+                                    $routeName = 'package.invoice';
+                                }
+                            @endphp
+
                             <td>
                                 <div @class(['dropdown'])>
                                     <button @class(['btn', 'btn-outline-primary', 'btn-xs', 'dropdown-toggle']) type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> অ্যাকশন </button>
@@ -55,6 +64,10 @@
 
                                         <li class="nav-item">
                                             <a href="{{ route('makePayments.show', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> দেখুন </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a target="_blank" href="{{ route($routeName, $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> চালান </a>
                                         </li>
 
                                         @if ($payment->status == 'pending' && Auth::guard('producer')->check())

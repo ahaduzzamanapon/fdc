@@ -126,6 +126,10 @@ Route::group(["middleware" => ['auth.multi']], function () {
     // cancel payment process start
     Route::get('pay_cancel_request/{pay_id}', [MakePaymentController::class, 'pay_cancel_request'])->name('pay.cancel.request');
     Route::post('pay_cancel_request/{pay_id}', [MakePaymentController::class, 'pay_cancel_submit'])->name('pay.cancel.confirm');
+
+    // booking details and package details
+    Route::get('booking_invoice/{id}', [MakePaymentController::class, 'booking_invoice'])->name('booking.invoice');
+    Route::get('package_invoice/{id}', [MakePaymentController::class, 'package_invoice'])->name('package.invoice');
     // cancel payment process end
 });
 
