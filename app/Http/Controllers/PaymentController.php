@@ -275,6 +275,7 @@ class PaymentController extends Controller
     {
         $transId = $request->query('transId');
         $pstatus = $request->query('status');
+        $trx_id = $request->query('trx_id');
         $film_package = FilmPackage::where('trn_id', $transId)->first();
 
         if ($pstatus == 'Canceled') {
@@ -321,6 +322,7 @@ class PaymentController extends Controller
             $user_id = $film_package->created_by;
             if ($user_id == $producer->id) {
                 $film_package->updated_by = $producer->id;
+                $film_package->TrxID = $trx_id;
                 $film_package->trn_id = $transId;
                 $film_package->status = 'success';
                 $film_package->review_status = 'on process';

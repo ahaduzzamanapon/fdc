@@ -22,6 +22,7 @@ class Noc extends Model
 
     public $fillable = [
         'name',
+        'trx_id',
         'token',
         'status',
         'current_role_id',

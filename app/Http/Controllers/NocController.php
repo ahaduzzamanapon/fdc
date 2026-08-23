@@ -112,6 +112,7 @@ class NocController extends Controller
             DB::beginTransaction();
             try {
                 $data = array(
+                    'trx_id' => $request->trx_id,
                     'status' => 'paid',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')

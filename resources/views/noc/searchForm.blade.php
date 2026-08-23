@@ -126,7 +126,7 @@
                             <td>${res.result.token}</td>
                             <td>${res.result.name}</td>
                             <td>${res.result.producer}</td>
-                            <td>${res.result.publish_date}</td>
+                            <td>${res.result.publish_date.slice(0, 10)}</td>
                             <td>${res.result.full_name}</td>
                             <td>${res.result.designation}</td>
                             <td>
