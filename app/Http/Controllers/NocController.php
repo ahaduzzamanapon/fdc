@@ -58,6 +58,9 @@ class NocController extends Controller
             'password' => $config['password'],
         ];
 
+        $noc->amount = $amount->total ? $amount->total : 0;
+        $noc->save();
+
         try {
             $response = Http::asForm()->post($config['base_url'] . '/initiate-payment', $postData);
 

@@ -24,6 +24,7 @@ class Noc extends Model
         'name',
         'trx_id',
         'token',
+        'amount',
         'status',
         'current_role_id',
         'producer',
