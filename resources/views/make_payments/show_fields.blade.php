@@ -26,7 +26,7 @@
             <table class="table table-default">
                 <tr>
                     <th>Sl</th>
-                    <th>Role Name</th>
+                    <!-- <th>Role Name</th> -->
                     <th>Status</th>
                     <th>Remarks</th>
                 </tr>
@@ -34,7 +34,7 @@
                 @foreach($logs as $key => $log)
                     <tr>
                         <td>{{ $key+1 }}</td>
-                        <td> {{ get_user($log->action_by)->name_en }} ({{ Str::ucfirst(get_role($log->action_role_id)->name) }})</td>
+                        {{-- <td> {{ get_user($log->action_by)->name_en }} ({{ Str::ucfirst(get_role($log->action_role_id)->name) }})</td> --}}
                         <td>{{ $log->status }}</td>
                         <td>{{ $log->remarks }}</td>
                     </tr>

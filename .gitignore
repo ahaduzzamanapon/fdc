@@ -49,3 +49,5 @@ Homestead.json
 .phpactor.json
 auth.json
 /public/producers_file
+
+storage/framework/lsp-3c8977ee9ce89c61.php

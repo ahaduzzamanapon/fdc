@@ -23,7 +23,7 @@ class ItemUnitAPIController extends AppBaseController
      *
      * @param Request $request
      * @return Response
-     */
+    */
     public function index(Request $request)
     {
         $query = ItemUnit::query();
@@ -41,31 +41,13 @@ class ItemUnitAPIController extends AppBaseController
     }
 
     /**
-     * Store a newly created ItemUnit in storage.
-     * POST /itemUnits
-     *
-     * @param CreateItemUnitAPIRequest $request
-     *
-     * @return Response
-     */
-    public function store(CreateItemUnitAPIRequest $request)
-    {
-        $input = $request->all();
-
-        /** @var ItemUnit $itemUnit */
-        $itemUnit = ItemUnit::create($input);
-
-        return $this->sendResponse(new ItemUnitResource($itemUnit), 'Item Unit saved successfully');
-    }
-
-    /**
      * Display the specified ItemUnit.
      * GET|HEAD /itemUnits/{id}
      *
      * @param int $id
      *
      * @return Response
-     */
+    */
     public function show($id)
     {
         /** @var ItemUnit $itemUnit */
@@ -79,6 +61,24 @@ class ItemUnitAPIController extends AppBaseController
     }
 
     /**
+     * Store a newly created ItemUnit in storage.
+     * POST /itemUnits
+     *
+     * @param CreateItemUnitAPIRequest $request
+     *
+     * @return Response
+    */
+    // public function store(CreateItemUnitAPIRequest $request)
+    // {
+    //     $input = $request->all();
+
+    //     /** @var ItemUnit $itemUnit */
+    //     $itemUnit = ItemUnit::create($input);
+
+    //     return $this->sendResponse(new ItemUnitResource($itemUnit), 'Item Unit saved successfully');
+    // }
+
+    /**
      * Update the specified ItemUnit in storage.
      * PUT/PATCH /itemUnits/{id}
      *
@@ -86,21 +86,21 @@ class ItemUnitAPIController extends AppBaseController
      * @param UpdateItemUnitAPIRequest $request
      *
      * @return Response
-     */
-    public function update($id, UpdateItemUnitAPIRequest $request)
-    {
-        /** @var ItemUnit $itemUnit */
-        $itemUnit = ItemUnit::find($id);
+    */
+    // public function update($id, UpdateItemUnitAPIRequest $request)
+    // {
+    //     /** @var ItemUnit $itemUnit */
+    //     $itemUnit = ItemUnit::find($id);
 
-        if (empty($itemUnit)) {
-            return $this->sendError('Item Unit not found');
-        }
+    //     if (empty($itemUnit)) {
+    //         return $this->sendError('Item Unit not found');
+    //     }
 
-        $itemUnit->fill($request->all());
-        $itemUnit->save();
+    //     $itemUnit->fill($request->all());
+    //     $itemUnit->save();
 
-        return $this->sendResponse(new ItemUnitResource($itemUnit), 'ItemUnit updated successfully');
-    }
+    //     return $this->sendResponse(new ItemUnitResource($itemUnit), 'ItemUnit updated successfully');
+    // }
 
     /**
      * Remove the specified ItemUnit from storage.
@@ -111,18 +111,18 @@ class ItemUnitAPIController extends AppBaseController
      * @throws \Exception
      *
      * @return Response
-     */
-    public function destroy($id)
-    {
-        /** @var ItemUnit $itemUnit */
-        $itemUnit = ItemUnit::find($id);
+    */
+    // public function destroy($id)
+    // {
+    //     /** @var ItemUnit $itemUnit */
+    //     $itemUnit = ItemUnit::find($id);
 
-        if (empty($itemUnit)) {
-            return $this->sendError('Item Unit not found');
-        }
+    //     if (empty($itemUnit)) {
+    //         return $this->sendError('Item Unit not found');
+    //     }
 
-        $itemUnit->delete();
+    //     $itemUnit->delete();
 
-        return $this->sendSuccess('Item Unit deleted successfully');
-    }
+    //     return $this->sendSuccess('Item Unit deleted successfully');
+    // }
 }

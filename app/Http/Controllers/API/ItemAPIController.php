@@ -41,31 +41,13 @@ class ItemAPIController extends AppBaseController
     }
 
     /**
-     * Store a newly created Item in storage.
-     * POST /items
-     *
-     * @param CreateItemAPIRequest $request
-     *
-     * @return Response
-     */
-    public function store(CreateItemAPIRequest $request)
-    {
-        $input = $request->all();
-
-        /** @var Item $item */
-        $item = Item::create($input);
-
-        return $this->sendResponse(new ItemResource($item), 'Item saved successfully');
-    }
-
-    /**
      * Display the specified Item.
      * GET|HEAD /items/{id}
      *
      * @param int $id
      *
      * @return Response
-     */
+    */
     public function show($id)
     {
         /** @var Item $item */
@@ -79,6 +61,24 @@ class ItemAPIController extends AppBaseController
     }
 
     /**
+     * Store a newly created Item in storage.
+     * POST /items
+     *
+     * @param CreateItemAPIRequest $request
+     *
+     * @return Response
+    */
+    // public function store(CreateItemAPIRequest $request)
+    // {
+    //     $input = $request->all();
+
+    //     /** @var Item $item */
+    //     $item = Item::create($input);
+
+    //     return $this->sendResponse(new ItemResource($item), 'Item saved successfully');
+    // }
+
+    /**
      * Update the specified Item in storage.
      * PUT/PATCH /items/{id}
      *
@@ -86,21 +86,21 @@ class ItemAPIController extends AppBaseController
      * @param UpdateItemAPIRequest $request
      *
      * @return Response
-     */
-    public function update($id, UpdateItemAPIRequest $request)
-    {
-        /** @var Item $item */
-        $item = Item::find($id);
+    */
+    // public function update($id, UpdateItemAPIRequest $request)
+    // {
+    //     /** @var Item $item */
+    //     $item = Item::find($id);
 
-        if (empty($item)) {
-            return $this->sendError('Item not found');
-        }
+    //     if (empty($item)) {
+    //         return $this->sendError('Item not found');
+    //     }
 
-        $item->fill($request->all());
-        $item->save();
+    //     $item->fill($request->all());
+    //     $item->save();
 
-        return $this->sendResponse(new ItemResource($item), 'Item updated successfully');
-    }
+    //     return $this->sendResponse(new ItemResource($item), 'Item updated successfully');
+    // }
 
     /**
      * Remove the specified Item from storage.
@@ -111,18 +111,18 @@ class ItemAPIController extends AppBaseController
      * @throws \Exception
      *
      * @return Response
-     */
-    public function destroy($id)
-    {
-        /** @var Item $item */
-        $item = Item::find($id);
+    */
+    // public function destroy($id)
+    // {
+    //     /** @var Item $item */
+    //     $item = Item::find($id);
 
-        if (empty($item)) {
-            return $this->sendError('Item not found');
-        }
+    //     if (empty($item)) {
+    //         return $this->sendError('Item not found');
+    //     }
 
-        $item->delete();
+    //     $item->delete();
 
-        return $this->sendSuccess('Item deleted successfully');
-    }
+    //     return $this->sendSuccess('Item deleted successfully');
+    // }
 }

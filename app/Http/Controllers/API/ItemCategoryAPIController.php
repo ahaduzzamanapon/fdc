@@ -23,7 +23,7 @@ class ItemCategoryAPIController extends AppBaseController
      *
      * @param Request $request
      * @return Response
-     */
+    */
     public function index(Request $request)
     {
         $query = ItemCategory::query();
@@ -41,31 +41,13 @@ class ItemCategoryAPIController extends AppBaseController
     }
 
     /**
-     * Store a newly created ItemCategory in storage.
-     * POST /itemCategories
-     *
-     * @param CreateItemCategoryAPIRequest $request
-     *
-     * @return Response
-     */
-    public function store(CreateItemCategoryAPIRequest $request)
-    {
-        $input = $request->all();
-
-        /** @var ItemCategory $itemCategory */
-        $itemCategory = ItemCategory::create($input);
-
-        return $this->sendResponse(new ItemCategoryResource($itemCategory), 'Item Category saved successfully');
-    }
-
-    /**
      * Display the specified ItemCategory.
      * GET|HEAD /itemCategories/{id}
      *
      * @param int $id
      *
      * @return Response
-     */
+    */
     public function show($id)
     {
         /** @var ItemCategory $itemCategory */
@@ -79,6 +61,25 @@ class ItemCategoryAPIController extends AppBaseController
     }
 
     /**
+     * Store a newly created ItemCategory in storage.
+     * POST /itemCategories
+     *
+     * @param CreateItemCategoryAPIRequest $request
+     *
+     * @return Response
+    */
+    // public function store(CreateItemCategoryAPIRequest $request)
+    // {
+    //     $input = $request->all();
+
+    //     /** @var ItemCategory $itemCategory */
+    //     $itemCategory = ItemCategory::create($input);
+
+    //     return $this->sendResponse(new ItemCategoryResource($itemCategory), 'Item Category saved successfully');
+    // }
+
+
+    /**
      * Update the specified ItemCategory in storage.
      * PUT/PATCH /itemCategories/{id}
      *
@@ -86,21 +87,21 @@ class ItemCategoryAPIController extends AppBaseController
      * @param UpdateItemCategoryAPIRequest $request
      *
      * @return Response
-     */
-    public function update($id, UpdateItemCategoryAPIRequest $request)
-    {
-        /** @var ItemCategory $itemCategory */
-        $itemCategory = ItemCategory::find($id);
+    */
+    // public function update($id, UpdateItemCategoryAPIRequest $request)
+    // {
+    //     /** @var ItemCategory $itemCategory */
+    //     $itemCategory = ItemCategory::find($id);
 
-        if (empty($itemCategory)) {
-            return $this->sendError('Item Category not found');
-        }
+    //     if (empty($itemCategory)) {
+    //         return $this->sendError('Item Category not found');
+    //     }
 
-        $itemCategory->fill($request->all());
-        $itemCategory->save();
+    //     $itemCategory->fill($request->all());
+    //     $itemCategory->save();
 
-        return $this->sendResponse(new ItemCategoryResource($itemCategory), 'ItemCategory updated successfully');
-    }
+    //     return $this->sendResponse(new ItemCategoryResource($itemCategory), 'ItemCategory updated successfully');
+    // }
 
     /**
      * Remove the specified ItemCategory from storage.
@@ -111,18 +112,18 @@ class ItemCategoryAPIController extends AppBaseController
      * @throws \Exception
      *
      * @return Response
-     */
-    public function destroy($id)
-    {
-        /** @var ItemCategory $itemCategory */
-        $itemCategory = ItemCategory::find($id);
+    */
+    // public function destroy($id)
+    // {
+    //     /** @var ItemCategory $itemCategory */
+    //     $itemCategory = ItemCategory::find($id);
 
-        if (empty($itemCategory)) {
-            return $this->sendError('Item Category not found');
-        }
+    //     if (empty($itemCategory)) {
+    //         return $this->sendError('Item Category not found');
+    //     }
 
-        $itemCategory->delete();
+    //     $itemCategory->delete();
 
-        return $this->sendSuccess('Item Category deleted successfully');
-    }
+    //     return $this->sendSuccess('Item Category deleted successfully');
+    // }
 }

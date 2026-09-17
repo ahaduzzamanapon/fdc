@@ -10,6 +10,9 @@ class MakePayment extends Model
     public $fillable = [
         'amount',
         'trn_id',
+        'TrxID',
+        'name',
+        'type',
         'status'
     ];
 
@@ -21,6 +24,9 @@ class MakePayment extends Model
     protected $casts = [
         'amount',
         'trn_id',
+        'TrxID',
+        'name',
+        'type',
         'status'
     ];
 
