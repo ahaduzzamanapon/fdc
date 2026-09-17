@@ -1,0 +1,37 @@
+@extends('layouts.default')
+
+@section('title')
+    ইনক্রিমেন্ট / পদোন্নতি তথ্য এডিট
+@stop
+
+@section('content')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h3><strong>ইনক্রিমেন্ট / পদোন্নতি তথ্য সংশোধন</strong></h3>
+                </div>
+                <div class="col-sm-6 text-end">
+                    <a class="btn btn-secondary" href="{{ route('employeePromotions.index') }}">
+                        <i class="im im-icon-Arrow-Back"></i> তালিকায় ফিরে যান
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="content px-3">
+        @include('flash::message')
+        @include('adminlte-templates::common.errors')
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                {!! Form::model($promotion, ['route' => ['employeePromotions.update', $promotion->id], 'method' => 'patch']) !!}
+
+                    @include('employee_promotions.fields')
+
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+@endsection

@@ -20,6 +20,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PhotoGalleryController;
 use App\Http\Controllers\NocApplicationController;
+use App\Http\Controllers\EmployeePromotionController;
 
 // Contact form submission
 Route::post('/contact-submit', [ContactController::class, 'store'])->name('contact.submit');
@@ -315,6 +316,11 @@ Route::group(['middleware' => 'auth'], function () {
     // end leave action .....
 
     Route::get('/dashboard-data', [HomeController::class, 'getDashboardData'])->name('dashboard.data');
+
+    // Employee Promotions & Increments
+    Route::resource('employeePromotions', EmployeePromotionController::class);
+    Route::get('employeePromotions-timeline/{user_id}', [EmployeePromotionController::class, 'timeline'])->name('employeePromotions.timeline');
+    Route::get('get-user-official-info', [EmployeePromotionController::class, 'getUserInfo'])->name('employeePromotions.getUserInfo');
 });
 Route::get('empty_table', 'JoshController@emptyTable');
 Route::get('remove_all_files', 'JoshController@remove_all_files');

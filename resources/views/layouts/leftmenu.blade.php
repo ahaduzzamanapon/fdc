@@ -730,16 +730,16 @@
         </li>
     @endif
 
-    {{-- Leaves --}}
+    {{-- Leaves & HR --}}
     @if (can('hr'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
+            <a class="nav-link {!! Request::is('leaves*') || Request::is('leave-apply-list*') || Request::is('employeePromotions*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
                 role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Administrator"></i>
                 <span class="item-name">{{ __('messages.human_resources') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
-            <ul class="sub-nav collapse {!! Request::is('leaves*') ? 'show' : '' !!}" id="hr" data-bs-parent="#sidebar-menu">
+            <ul class="sub-nav collapse {!! Request::is('leaves*') || Request::is('leave-apply-list*') || Request::is('employeePromotions*') ? 'show' : '' !!}" id="hr" data-bs-parent="#sidebar-menu">
                 @if (can('leaves'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" href="{{ route('leaves.index') }}">
@@ -759,6 +759,14 @@
                         </a>
                     </li>
                 @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('employeePromotions*') ? 'active' : '' !!}"
+                        href="{{ route('employeePromotions.index') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> ই </i>
+                        <span class="item-name">ইনক্রিমেন্ট ও পদোন্নতি</span>
+                    </a>
+                </li>
             </ul>
         </li>
     @endif
