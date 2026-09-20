@@ -9,6 +9,7 @@ use App\Models\FilmApplication;
 use App\Models\DramaApplication;
 use App\Models\RealityApplication;
 use App\Models\DocufilmApplication;
+use App\Models\PartyApplication;
 use App\Models\MakePayment;
 use App\Exports\ViewExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,6 +18,40 @@ use DB;
 
 class Reports extends Controller
 {
+    public function get_applications_by_type(Request $request)
+    {
+        $filmType = $request->film_type;
+        $producerId = Auth::guard('producer')->check() ? Auth::guard('producer')->user()->id : null;
+
+        if (empty($filmType)) {
+            return response()->json([]);
+        }
+
+        if ($filmType == 'film') {
+            $query = FilmApplication::query();
+            if ($producerId) $query->where('producer_id', $producerId);
+            $items = $query->get(['id', 'film_title']);
+        } elseif ($filmType == 'drama') {
+            $query = DramaApplication::query();
+            if ($producerId) $query->where('producer_id', $producerId);
+            $items = $query->get(['id', 'film_title']);
+        } elseif ($filmType == 'docufilm') {
+            $query = DocufilmApplication::query();
+            if ($producerId) $query->where('producer_id', $producerId);
+            $items = $query->get(['id', 'film_title']);
+        } elseif ($filmType == 'reality' || $filmType == 'realityshow') {
+            $query = RealityApplication::query();
+            if ($producerId) $query->where('producer_id', $producerId);
+            $items = $query->get(['id', 'film_title']);
+        } else {
+            $query = FilmApplication::query()->where('category', $filmType);
+            if ($producerId) $query->where('producer_id', $producerId);
+            $items = $query->get(['id', 'film_title']);
+        }
+
+        return response()->json($items);
+    }
+
     public function film_report_index()
     {
         return view('reports.film_report.index');
@@ -161,13 +196,22 @@ class Reports extends Controller
             $query->where('created_by', $producerId);
         }
 
-        // সাধারণ ফিল্টার (তারিখ ও স্ট্যাটাস)
+        // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, সেবা, আবেদন)
         $payments = $query
             ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
                 $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
             })
             ->when(!empty($request->status), function ($q) use ($request) {
                 $q->where('status', $request->status);
+            })
+            ->when(!empty($request->film_type), function ($q) use ($request) {
+                $q->where(function ($sub) use ($request) {
+                    $sub->where('film_type', $request->film_type)
+                        ->orWhere('type', $request->film_type);
+                });
+            })
+            ->when(!empty($request->film_id), function ($q) use ($request) {
+                $q->where('film_id', $request->film_id);
             })
             ->get();
 
@@ -190,13 +234,22 @@ class Reports extends Controller
             $query->where('created_by', $producerId);
         }
 
-        // সাধারণ ফিল্টার (তারিখ ও স্ট্যাটাস)
+        // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, সেবা, আবেদন)
         $data = $query
             ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
                 $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
             })
             ->when(!empty($request->status), function ($q) use ($request) {
                 $q->where('status', $request->status);
+            })
+            ->when(!empty($request->film_type), function ($q) use ($request) {
+                $q->where(function ($sub) use ($request) {
+                    $sub->where('film_type', $request->film_type)
+                        ->orWhere('type', $request->film_type);
+                });
+            })
+            ->when(!empty($request->film_id), function ($q) use ($request) {
+                $q->where('film_id', $request->film_id);
             })
             ->get();
 
