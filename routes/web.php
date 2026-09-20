@@ -120,6 +120,7 @@ Route::group(["middleware" => ['auth.multi']], function () {
     Route::get('make_payment_cm/{cm_id}', [MakePaymentController::class, 'make_payment_cm'])->name('make_payment_cm');
     Route::get('makePayments/cp_forward/{desk}', [MakePaymentController::class, 'cp_forward'])->name('cp.forward');
     Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
+    Route::get('makePayments_paid_table', [MakePaymentController::class, 'paid_table'])->name('makePayments.paid.table');
     Route::get('makePayments_cp_forward_table', [MakePaymentController::class, 'cp_forward_table'])->name('makePayments.cp.forward.table');
     // make booking repayment
     Route::get('make_repayment/{payment_id}', [MakePaymentController::class, 'make_repayment'])->name('make_repayment');

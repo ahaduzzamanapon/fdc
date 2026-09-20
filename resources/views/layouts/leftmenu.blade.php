@@ -635,12 +635,12 @@
     {{-- পেমেন্ট --}}
     @if (can('filmApplications_table'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment*') ? 'active' : '' !!}"
+            <a class="nav-link {!! Request::is('makePayments*') || Request::is('make-payment*') || Request::is('makePayments_paid_table*') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#makePayments" role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Money-Bag"></i> <span class="item-name">পেমেন্ট</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
-            <ul class="sub-nav collapse {!! Request::is('makePayments*') ? 'show' : '' !!}" id="makePayments"
+            <ul class="sub-nav collapse {!! Request::is('makePayments*') || Request::is('makePayments_paid_table*') ? 'show' : '' !!}" id="makePayments"
                 data-bs-parent="#sidebar-menu">
                 @if (can('film_applications_index_list'))
                     <li class="nav-item">
@@ -660,6 +660,16 @@
                         <span class="item-name">{{ __('messages.pending_list') }}</span>
                     </a>
                 </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('makePayments_paid_table*') ? 'active' : '' !!}"
+                        href="{{ route('makePayments.paid.table') }}">
+                        <i class="icon im im-icon-Settings-Window"></i>
+                        <i class="sidenav-mini-icon"> প </i>
+                        <span class="item-name"> পরিশোধিত তালিকা </span>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('makePayments_cp_forward_table*') ? 'active' : '' !!}"
                         href="{{ route('makePayments.cp.forward.table') }}">
