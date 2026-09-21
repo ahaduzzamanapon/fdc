@@ -78,12 +78,18 @@
     if (!function_exists('who')) {
         function who($key)
         {
-            $group_id = auth()->user()->group_id;
-            $roll=\App\Models\RoleAndPermission::where('id', $group_id)
-                ->first();
-            if(!empty($roll) && $roll->key==$key){
+            if (auth()->check() && isset(auth()->user()->group_id)) {
+                $group_id = auth()->user()->group_id;
+            } elseif (Auth::guard('producer')->check() && isset(Auth::guard('producer')->user()->group_id)) {
+                $group_id = Auth::guard('producer')->user()->group_id;
+            } else {
+                return false;
+            }
+
+            $roll = \App\Models\RoleAndPermission::where('id', $group_id)->first();
+            if (!empty($roll) && strtolower($roll->key) == strtolower($key)) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }

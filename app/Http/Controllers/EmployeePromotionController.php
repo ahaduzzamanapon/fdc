@@ -24,7 +24,9 @@ class EmployeePromotionController extends Controller
         $query = EmployeePromotion::with(['user', 'departmentInfo', 'designationInfo', 'creator'])
             ->orderBy('id', 'desc');
 
-        if ($request->filled('user_id')) {
+        if (who('staff')) {
+            $query->where('user_id', Auth::id());
+        } elseif ($request->filled('user_id')) {
             $query->where('user_id', $request->user_id);
         }
 
@@ -156,6 +158,10 @@ class EmployeePromotionController extends Controller
      */
     public function timeline($user_id)
     {
+        if (who('staff')) {
+            $user_id = Auth::id();
+        }
+
         $user = User::with(['designationInfo'])->find($user_id);
 
         if (empty($user)) {
