@@ -61,6 +61,11 @@ class EmployeePromotionController extends Controller
      */
     public function create()
     {
+        if (who('staff')) {
+            Flash::error('স্টাফ ব্যবহারকারীদের জন্য নতুন তথ্য যুক্ত করার সুবিধা প্রযোজ্য নয়।');
+            return redirect(route('employeePromotions.index'));
+        }
+
         $users = User::orderBy('name_bn', 'asc')->pluck('name_bn', 'id')->prepend('কর্মকর্তা / কর্মচারী নির্বাচন করুন', '')->toArray();
         $departments = Department::pluck('name_bn', 'id')->prepend('ডিপার্টমেন্ট নির্বাচন করুন', '')->toArray();
         $designations = Designation::pluck('desi_name', 'id')->prepend('পদবী নির্বাচন করুন', '')->toArray();
@@ -76,6 +81,11 @@ class EmployeePromotionController extends Controller
      */
     public function store(Request $request)
     {
+        if (who('staff')) {
+            Flash::error('স্টাফ ব্যবহারকারীদের জন্য নতুন তথ্য যুক্ত করার সুবিধা প্রযোজ্য নয়।');
+            return redirect(route('employeePromotions.index'));
+        }
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'change_type' => 'required|string',
@@ -186,6 +196,11 @@ class EmployeePromotionController extends Controller
      */
     public function edit($id)
     {
+        if (who('staff')) {
+            Flash::error('স্টাফ ব্যবহারকারীদের জন্য তথ্য সম্পাদনার সুবিধা প্রযোজ্য নয়।');
+            return redirect(route('employeePromotions.index'));
+        }
+
         $promotion = EmployeePromotion::find($id);
 
         if (empty($promotion)) {
@@ -209,6 +224,11 @@ class EmployeePromotionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (who('staff')) {
+            Flash::error('স্টাফ ব্যবহারকারীদের জন্য তথ্য সম্পাদনার সুবিধা প্রযোজ্য নয়।');
+            return redirect(route('employeePromotions.index'));
+        }
+
         $promotion = EmployeePromotion::find($id);
 
         if (empty($promotion)) {
@@ -243,6 +263,11 @@ class EmployeePromotionController extends Controller
      */
     public function destroy($id)
     {
+        if (who('staff')) {
+            Flash::error('স্টাফ ব্যবহারকারীদের জন্য তথ্য মুছে ফেলার সুবিধা প্রযোজ্য নয়।');
+            return redirect(route('employeePromotions.index'));
+        }
+
         $promotion = EmployeePromotion::find($id);
 
         if (empty($promotion)) {

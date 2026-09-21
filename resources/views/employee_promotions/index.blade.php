@@ -12,9 +12,11 @@
         <!-- Header bar with Green background matching FDC theme -->
         <div class="card-header py-2 px-3 d-flex justify-content-between align-items-center" style="background-color: #8dc542 !important; color: #ffffff !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
             <h5 class="mb-0 font-weight-bold text-white"><i class="im im-icon-Structure me-2"></i>ইনক্রিমেন্ট ও পদোন্নতির তালিকা</h5>
-            <a class="btn btn-sm font-weight-bold shadow-sm" href="{{ route('employeePromotions.create') }}" style="background-color: #1f9303 !important; color: #ffffff !important; border: none;">
-                <i class="im im-icon-Add me-1"></i> নতুন যোগ করুন
-            </a>
+            @if(!who('staff'))
+                <a class="btn btn-sm font-weight-bold shadow-sm" href="{{ route('employeePromotions.create') }}" style="background-color: #1f9303 !important; color: #ffffff !important; border: none;">
+                    <i class="im im-icon-Add me-1"></i> নতুন যোগ করুন
+                </a>
+            @endif
         </div>
 
         <div class="card-body p-3">
@@ -125,12 +127,14 @@
                                                     <i class="im im-icon-Clock me-1"></i> টাইমলাইন
                                                 </a>
                                             @endif
-                                            <a href="{{ route('employeePromotions.edit', [$item->id]) }}" class="dropdown-item">
-                                                <i class="im im-icon-Pen me-1"></i> সম্পাদনা করুন
-                                            </a>
-                                            {!! Form::open(['route' => ['employeePromotions.destroy', $item->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
-                                                {!! Form::button('<i class="im im-icon-Remove me-1"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item text-danger', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
-                                            {!! Form::close() !!}
+                                            @if(!who('staff'))
+                                                <a href="{{ route('employeePromotions.edit', [$item->id]) }}" class="dropdown-item">
+                                                    <i class="im im-icon-Pen me-1"></i> সম্পাদনা করুন
+                                                </a>
+                                                {!! Form::open(['route' => ['employeePromotions.destroy', $item->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                                    {!! Form::button('<i class="im im-icon-Remove me-1"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item text-danger', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
+                                                {!! Form::close() !!}
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
