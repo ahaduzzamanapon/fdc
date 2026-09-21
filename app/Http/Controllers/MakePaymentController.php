@@ -281,6 +281,16 @@ class MakePaymentController extends AppBaseController
         return view('make_payments.index')->with('filmPackage', $films);
     }
 
+    public function paid_table(Request $request)
+    {
+        if (!Auth::guard('producer')->check()) {
+            $films = FilmPackage::latest()->whereIn('status', ['success', 'refound'])->get();
+        } else {
+            $films = FilmPackage::latest()->whereIn('status', ['success', 'refound'])->where('created_by', Auth::guard('producer')->user()->id)->get();
+        }
+        return view('make_payments.index')->with('filmPackage', $films);
+    }
+
     public function forward(MakePayment $makePayment, $desk)
     {
         $app_id = $makePayment->id;

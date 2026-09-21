@@ -124,6 +124,7 @@ Route::group(["middleware" => ['auth.multi']], function () {
     Route::get('make_payment_cm/{cm_id}', [MakePaymentController::class, 'make_payment_cm'])->name('make_payment_cm');
     Route::get('makePayments/cp_forward/{desk}', [MakePaymentController::class, 'cp_forward'])->name('cp.forward');
     Route::get('makePayments_forward_table', [MakePaymentController::class, 'forward_table'])->name('makePayments.forward.table');
+    Route::get('makePayments_paid_table', [MakePaymentController::class, 'paid_table'])->name('makePayments.paid.table');
     Route::get('makePayments_cp_forward_table', [MakePaymentController::class, 'cp_forward_table'])->name('makePayments.cp.forward.table');
     // make booking repayment
     Route::get('make_repayment/{payment_id}', [MakePaymentController::class, 'make_repayment'])->name('make_repayment');
@@ -247,11 +248,12 @@ Route::group(["middleware" => ['auth.multi']], function () {
         Route::get('reality-reports', [Reports::class, 'reality_report_index'])->name('realityReport');
         Route::post('show-reality-reports', [Reports::class, 'reality_report_show'])->name('showRealityReport');
 
-        Route::post('/export/{type}', [Reports::class, 'exportReport'])->name('export');
+        Route::match(['get', 'post'], '/export/{type}', [Reports::class, 'exportReport'])->name('export');
 
         Route::get('payment-reports', [Reports::class, 'payment_report_index'])->name('paymentReport');
         Route::post('show-payment-reports', [Reports::class, 'payment_report_show'])->name('showPaymentReport');
-        Route::post('payment/export/{type}', [Reports::class, 'payment_exportReport'])->name('payment.export');
+        Route::match(['get', 'post'], 'payment/export/{type}', [Reports::class, 'payment_exportReport'])->name('payment.export');
+        Route::get('get-applications-by-type', [Reports::class, 'get_applications_by_type'])->name('getApplicationsByType');
     });
 
     Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');

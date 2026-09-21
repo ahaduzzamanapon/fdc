@@ -76,6 +76,16 @@
                                     @if ($booking->status == 'on process' && !Auth::guard('producer')->check())
                                         <a href="{{ route('producerBooking.forward', [$booking->id, 'additional_director_finance']) }}" class="dropdown-item"> <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="Forward to Additional Director(Sales)"></i> চেক এবং ফরোয়ার্ড </a>
                                     @endif
+
+                                    @if ($booking->pay_status == 'paid' || $booking->pay_status == 'refound')
+                                        @php
+                                            $payment = \App\Models\FilmPackage::where('package_id', $booking->id)->where('type', 'booking')->first();
+                                        @endphp
+                                        @if ($payment)
+                                            <a target="_blank" href="{{ route('booking.invoice', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="চালান"></i> চালান </a>
+                                            <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="পেমেন্ট স্লিপ"></i> পেমেন্ট স্লিপ </a>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         </td>

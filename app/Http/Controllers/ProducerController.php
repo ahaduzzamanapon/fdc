@@ -1045,6 +1045,31 @@ class ProducerController extends AppBaseController
         }
         return response()->json($data);
     }
+    
+    private function generateBookId()
+    {
+        $todayPrefix = 'BOOK-' . date('ymd') . '-';
+        $latest = Booking::where('book_id', 'like', $todayPrefix . '%')->orderByDesc('id')->first();
+
+        if ($latest) {
+            $parts = explode('-', $latest->book_id);
+            $lastNum = (int) end($parts);
+            $nextNum = $lastNum + 1;
+        } else {
+            $nextNum = 1;
+        }
+
+        $bookId = $todayPrefix . str_pad($nextNum, 4, '0', STR_PAD_LEFT);
+
+        // Auto increment and check existence to guarantee uniqueness
+        while (Booking::where('book_id', $bookId)->exists()) {
+            $nextNum++;
+            $bookId = $todayPrefix . str_pad($nextNum, 4, '0', STR_PAD_LEFT);
+        }
+
+        return $bookId;
+    }
+
     // Booking item insert by producer
     public function booking_draft(Request $request)
     {
@@ -1082,7 +1107,7 @@ class ProducerController extends AppBaseController
             } else {
                 // New booking insert
                 $booking = Booking::create([
-                    'book_id' => 'BOOK-' . time() . '-' . Auth::guard('producer')->user()->id . '-' . rand(1000, 9999),
+                    'book_id' => $this->generateBookId(),
                     'status' => 'draft',
                     'desk_id' => $step->to_role_id,
                     'film_id' => $request->input('film_id'),
@@ -1207,7 +1232,7 @@ class ProducerController extends AppBaseController
             } else {
                 // New booking insert
                 $booking = Booking::create([
-                    'book_id' => 'BOOK-' . time() . '-' . Auth::guard('producer')->user()->id . '-' . rand(1000, 9999),
+                    'book_id' => $this->generateBookId(),
                     'status' => 'on process',
                     'desk_id' => $step->to_role_id,
                     'film_id' => $request->input('film_id'),
