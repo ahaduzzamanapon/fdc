@@ -43,6 +43,15 @@ Payment Report
                 </div>
 
                 <div class="col-md-2">
+                    <label for="payment_type" class="form-label">পেমেন্ট টাইপ</label>
+                    <select id="payment_type" name="payment_type" class="form-select">
+                        <option value="">সব টাইপ</option>
+                        <option value="booking">বুকিং</option>
+                        <option value="package">প্যাকেজ</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
                     <label for="film_type" class="form-label">সেবা নির্বাচন</label>
                     <select id="film_type" name="film_type" class="form-select">
                         <option value="">সেবা নির্বাচন করুন</option>
@@ -115,6 +124,7 @@ Payment Report
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
             var status = $('#status').val();
+            var payment_type = $('#payment_type').val();
             var film_type = $('#film_type').val();
             var film_id = $('#film_id').val();
 
@@ -167,6 +177,7 @@ Payment Report
                     from_date: from_date,
                     to_date: to_date,
                     status: status,
+                    payment_type: payment_type,
                     film_type: film_type,
                     film_id: film_id,
                     _token: "{{ csrf_token() }}"

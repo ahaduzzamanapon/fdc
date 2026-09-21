@@ -191,13 +191,16 @@ class Reports extends Controller
             $query->where('film_packages.created_by', $producerId);
         }
 
-        // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, সেবা, আবেদন)
+        // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, পেমেন্ট টাইপ, সেবা, আবেদন)
         $payments = $query
             ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
                 $q->whereBetween(DB::raw('DATE(film_packages.created_at)'), [$request->from_date, $request->to_date]);
             })
             ->when(!empty($request->status), function ($q) use ($request) {
                 $q->where('film_packages.status', $request->status);
+            })
+            ->when(!empty($request->payment_type), function ($q) use ($request) {
+                $q->where('film_packages.type', $request->payment_type);
             })
             ->when(!empty($request->film_type), function ($q) use ($request) {
                 $filmType = $request->film_type;
@@ -247,13 +250,16 @@ class Reports extends Controller
             $query->where('film_packages.created_by', $producerId);
         }
 
-        // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, সেবা, আবেদন)
+        // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, পেমেন্ট টাইপ, সেবা, আবেদন)
         $data = $query
             ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
                 $q->whereBetween(DB::raw('DATE(film_packages.created_at)'), [$request->from_date, $request->to_date]);
             })
             ->when(!empty($request->status), function ($q) use ($request) {
                 $q->where('film_packages.status', $request->status);
+            })
+            ->when(!empty($request->payment_type), function ($q) use ($request) {
+                $q->where('film_packages.type', $request->payment_type);
             })
             ->when(!empty($request->film_type), function ($q) use ($request) {
                 $filmType = $request->film_type;
