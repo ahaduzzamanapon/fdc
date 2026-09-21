@@ -44,6 +44,10 @@ Route::get('/', [FrontendController::class, 'index']);
 Route::get('/about_us', [FrontendController::class, 'about_us'])->name('about_us');
 Route::prefix('history-and-heritage-of-cinema')->name('historyAndHeritageOfCinema.')->group(function () {
     Route::get('/films-released-by-decade/{decade}', [FrontendController::class, 'films_released_by_decade'])->name('films_released_by_decade');
+    Route::get('/classic-films', [FrontendController::class, 'classic_films'])->name('classic_films');
+    Route::get('/top-grossing-films', [FrontendController::class, 'top_grossing_films'])->name('top_grossing_films');
+    Route::get('/national-film-awards', [FrontendController::class, 'national_film_awards'])->name('national_film_awards');
+    Route::get('/international-films', [FrontendController::class, 'international_films'])->name('international_films');
 });
 
 Route::prefix('films-photo-gallery')->name('filmsPhotoGallery.')->group(function () {
@@ -306,6 +310,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('faqs', \App\Http\Controllers\FaqController::class);
     Route::resource('contact_infos', \App\Http\Controllers\ContactInfoController::class);
     Route::resource('galleries', \App\Http\Controllers\GalleryController::class);
+
+    // About Us Page Management
+    Route::get('about_uses', [\App\Http\Controllers\AboutUsController::class, 'index'])->name('about_uses.index');
+    Route::post('about_uses/main', [\App\Http\Controllers\AboutUsController::class, 'updateMain'])->name('about_uses.updateMain');
+    Route::post('about_uses/feature', [\App\Http\Controllers\AboutUsController::class, 'storeFeature'])->name('about_uses.storeFeature');
+    Route::put('about_uses/feature/{id}', [\App\Http\Controllers\AboutUsController::class, 'updateFeature'])->name('about_uses.updateFeature');
+    Route::delete('about_uses/feature/{id}', [\App\Http\Controllers\AboutUsController::class, 'destroyFeature'])->name('about_uses.destroyFeature');
+    Route::post('about_uses/officer', [\App\Http\Controllers\AboutUsController::class, 'storeOfficer'])->name('about_uses.storeOfficer');
+    Route::put('about_uses/officer/{id}', [\App\Http\Controllers\AboutUsController::class, 'updateOfficer'])->name('about_uses.updateOfficer');
+    Route::delete('about_uses/officer/{id}', [\App\Http\Controllers\AboutUsController::class, 'destroyOfficer'])->name('about_uses.destroyOfficer');
+    // Cinema Heritage Page Management
+    Route::get('cinema_heritage', [\App\Http\Controllers\CinemaHeritageController::class, 'index'])->name('cinema_heritage.index');
+    Route::post('cinema_heritage/page/{id}', [\App\Http\Controllers\CinemaHeritageController::class, 'updatePage'])->name('cinema_heritage.updatePage');
+    Route::post('cinema_heritage/item', [\App\Http\Controllers\CinemaHeritageController::class, 'storeItem'])->name('cinema_heritage.storeItem');
+    Route::put('cinema_heritage/item/{id}', [\App\Http\Controllers\CinemaHeritageController::class, 'updateItem'])->name('cinema_heritage.updateItem');
+    Route::delete('cinema_heritage/item/{id}', [\App\Http\Controllers\CinemaHeritageController::class, 'destroyItem'])->name('cinema_heritage.destroyItem');
 
 
     // leave action Dept Head / MD

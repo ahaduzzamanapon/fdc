@@ -184,21 +184,10 @@
                             </ul>
                         </li>
 
-                        <li><a class="nav-link" href="#">কালজয়ী বাংলা চলচ্চিত্র</a></li>
-                        <li><a class="nav-link" href="#">বছরভিত্তিক সর্বোচ্চ ব্যবসাসফল সিনেমা</a></li>
-
-                        <li class="has-submenu2">
-                            <a class="nav-link" href="#">জাতীয় চলচ্চিত্র পুরস্কার</a>
-                            <ul class="submenu2">
-                                <li><a href="#">৭০ দশক</a></li>
-                                <li><a href="#">৮০র দশক</a></li>
-                                <li><a href="#">৯০ এর দশক</a></li>
-                                <li><a href="#">২০০০ দশক</a></li>
-                                <li><a href="#">২০১০ দশক</a></li>
-                                <li><a href="#">২০২০ দশক</a></li>
-                            </ul>
-                        </li>
-                        <li><a class="nav-link" href="#">আন্তর্জাতিক পর্যায়ে বাংলা চলচ্চিত্র</a></li>
+                        <li><a class="nav-link" href="{{ route('historyAndHeritageOfCinema.classic_films') }}">কালজয়ী বাংলা চলচ্চিত্র</a></li>
+                        <li><a class="nav-link" href="{{ route('historyAndHeritageOfCinema.top_grossing_films') }}">বছরভিত্তিক সর্বোচ্চ ব্যবসাসফল সিনেমা</a></li>
+                        <li><a class="nav-link" href="{{ route('historyAndHeritageOfCinema.national_film_awards') }}">জাতীয় চলচ্চিত্র পুরস্কার</a></li>
+                        <li><a class="nav-link" href="{{ route('historyAndHeritageOfCinema.international_films') }}">আন্তর্জাতিক পর্যায়ে বাংলা চলচ্চিত্র</a></li>
                     </ul>
                 </li>
 

@@ -20,7 +20,11 @@ class FrontendController extends Controller
     }
     public function about_us()
     {
-        return view('font_end.about_us');
+        $aboutUs = \App\Models\AboutUs::first();
+        $features = \App\Models\AboutUsFeature::orderBy('sort_order', 'asc')->get();
+        $officers = \App\Models\AboutUsOfficer::orderBy('sort_order', 'asc')->get();
+
+        return view('font_end.about_us', compact('aboutUs', 'features', 'officers'));
     }
 
     public function films_released_by_decade($decade)
@@ -34,6 +38,30 @@ class FrontendController extends Controller
             ->get();
 
         return view('font_end.films_released_by_decade', compact('decade', 'films'));
+    }
+
+    public function classic_films()
+    {
+        $page = \App\Models\CinemaHeritagePage::where('slug', 'classic_films')->with('items')->first();
+        return view('font_end.cinema_heritage.classic_films', compact('page'));
+    }
+
+    public function top_grossing_films()
+    {
+        $page = \App\Models\CinemaHeritagePage::where('slug', 'top_grossing_films')->with('items')->first();
+        return view('font_end.cinema_heritage.top_grossing_films', compact('page'));
+    }
+
+    public function national_film_awards()
+    {
+        $page = \App\Models\CinemaHeritagePage::where('slug', 'national_film_awards')->with('items')->first();
+        return view('font_end.cinema_heritage.national_film_awards', compact('page'));
+    }
+
+    public function international_films()
+    {
+        $page = \App\Models\CinemaHeritagePage::where('slug', 'international_films')->with('items')->first();
+        return view('font_end.cinema_heritage.international_films', compact('page'));
     }
 
     public function films_photo_gallery()
