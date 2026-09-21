@@ -156,7 +156,7 @@
                             <option @if ($film->film_type == 'film') selected @endif value="film">সিনেমা </option>
                             <option @if ($film->film_type == 'drama') selected @endif value="drama">নাটক</option>
                             <option @if ($film->film_type == 'docufilm') selected @endif value="docufilm">প্রামান্যচিত্র</option>
-                            <option @if ($film->film_type == 'realityshow') selected @endif value="realityshow">রিয়েলিটি শো</option>
+                            <option @if ($film->film_type == 'reality' || $film->film_type == 'realityshow') selected @endif value="reality">রিয়েলিটি শো</option>
                         </select>
                     </div>
 

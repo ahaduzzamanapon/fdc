@@ -170,36 +170,52 @@ class Reports extends Controller
     {
         return view('reports.payment_report.index');
     }
+
     public function payment_report_show(Request $request)
     {
-        $query = MakePayment::query();
+        $query = MakePayment::query()
+            ->leftJoin('filmapplications', 'film_packages.film_id', '=', 'filmapplications.id')
+            ->leftJoin('bookings', function ($join) {
+                $join->on('film_packages.package_id', '=', 'bookings.id')
+                     ->where('film_packages.type', '=', 'booking');
+            })
+            ->leftJoin('packages', function ($join) {
+                $join->on('film_packages.package_id', '=', 'packages.id')
+                     ->where('film_packages.type', '=', 'package');
+            })
+            ->select('film_packages.*');
 
         // Producer লগইন করা থাকলে শুধুমাত্র তার নিজের পেমেন্ট ফিল্টার হবে
         if (Auth::guard('producer')->check()) {
             $producerId = Auth::guard('producer')->user()->id;
-            $query->where('created_by', $producerId);
+            $query->where('film_packages.created_by', $producerId);
         }
 
         // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, সেবা, আবেদন)
         $payments = $query
             ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
-                $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+                $q->whereBetween(DB::raw('DATE(film_packages.created_at)'), [$request->from_date, $request->to_date]);
             })
             ->when(!empty($request->status), function ($q) use ($request) {
-                $q->where('status', $request->status);
+                $q->where('film_packages.status', $request->status);
             })
             ->when(!empty($request->film_type), function ($q) use ($request) {
-                $q->where(function ($sub) use ($request) {
-                    $sub->whereIn('film_id', function ($fQuery) use ($request) {
-                        $fQuery->select('id')->from('filmapplications')->where('category', $request->film_type);
-                    })
-                    ->orWhere('film_type', $request->film_type)
-                    ->orWhere('type', $request->film_type);
+                $filmType = $request->film_type;
+                $q->where(function ($sub) use ($filmType) {
+                    $sub->where('filmapplications.category', $filmType)
+                        ->orWhere('bookings.film_type', $filmType)
+                        ->orWhere('packages.film_type', $filmType);
                 });
             })
             ->when(!empty($request->film_id), function ($q) use ($request) {
-                $q->where('film_id', $request->film_id);
+                $filmId = $request->film_id;
+                $q->where(function ($sub) use ($filmId) {
+                    $sub->where('film_packages.film_id', $filmId)
+                        ->orWhere('bookings.film_id', $filmId)
+                        ->orWhere('packages.film_id', $filmId);
+                });
             })
+            ->orderByDesc('film_packages.id')
             ->get();
 
         $html = view('reports.payment_report.paymentReport', compact('payments'))->render();
@@ -213,34 +229,49 @@ class Reports extends Controller
         $filename = 'payment_report_' . date('Y_m_d_His') . '.xlsx';
         $compactName = 'payments';
 
-        $query = MakePayment::query();
+        $query = MakePayment::query()
+            ->leftJoin('filmapplications', 'film_packages.film_id', '=', 'filmapplications.id')
+            ->leftJoin('bookings', function ($join) {
+                $join->on('film_packages.package_id', '=', 'bookings.id')
+                     ->where('film_packages.type', '=', 'booking');
+            })
+            ->leftJoin('packages', function ($join) {
+                $join->on('film_packages.package_id', '=', 'packages.id')
+                     ->where('film_packages.type', '=', 'package');
+            })
+            ->select('film_packages.*');
 
         // Producer লগইন করা থাকলে শুধুমাত্র তার নিজের পেমেন্ট ফিল্টার হবে
         if (Auth::guard('producer')->check()) {
             $producerId = Auth::guard('producer')->user()->id;
-            $query->where('created_by', $producerId);
+            $query->where('film_packages.created_by', $producerId);
         }
 
         // সাধারণ ফিল্টার (তারিখ, স্ট্যাটাস, সেবা, আবেদন)
         $data = $query
             ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
-                $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+                $q->whereBetween(DB::raw('DATE(film_packages.created_at)'), [$request->from_date, $request->to_date]);
             })
             ->when(!empty($request->status), function ($q) use ($request) {
-                $q->where('status', $request->status);
+                $q->where('film_packages.status', $request->status);
             })
             ->when(!empty($request->film_type), function ($q) use ($request) {
-                $q->where(function ($sub) use ($request) {
-                    $sub->whereIn('film_id', function ($fQuery) use ($request) {
-                        $fQuery->select('id')->from('filmapplications')->where('category', $request->film_type);
-                    })
-                    ->orWhere('film_type', $request->film_type)
-                    ->orWhere('type', $request->film_type);
+                $filmType = $request->film_type;
+                $q->where(function ($sub) use ($filmType) {
+                    $sub->where('filmapplications.category', $filmType)
+                        ->orWhere('bookings.film_type', $filmType)
+                        ->orWhere('packages.film_type', $filmType);
                 });
             })
             ->when(!empty($request->film_id), function ($q) use ($request) {
-                $q->where('film_id', $request->film_id);
+                $filmId = $request->film_id;
+                $q->where(function ($sub) use ($filmId) {
+                    $sub->where('film_packages.film_id', $filmId)
+                        ->orWhere('bookings.film_id', $filmId)
+                        ->orWhere('packages.film_id', $filmId);
+                });
             })
+            ->orderByDesc('film_packages.id')
             ->get();
 
         $viewData = [$compactName => $data];
