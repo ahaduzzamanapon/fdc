@@ -1035,14 +1035,34 @@
 
     {{-- Page Management --}}
     <li class="nav-item">
-        <a class="nav-link {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'active' : '' !!}"
+        <a class="nav-link {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') || Request::is('about_uses*') || Request::is('cinema_heritage*') ? 'active' : '' !!}"
             data-bs-toggle="collapse" href="#pages_menu" role="button" aria-expanded="false" aria-controls="pages_menu">
             <i class="icon im im-icon-File"></i>
             <span class="item-name">পেইজ ম্যানেজমেন্ট</span>
             <i class="right-icon im im-icon-Arrow-Right"></i>
         </a>
-        <ul class="sub-nav collapse {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'show' : '' !!}"
+        <ul class="sub-nav collapse {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') || Request::is('about_uses*') || Request::is('cinema_heritage*') ? 'show' : '' !!}"
             id="pages_menu" data-bs-parent="#sidebar-menu">
+            @if (can('about_us'))
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('about_uses*') ? 'active' : '' !!}"
+                    href="{{ route('about_uses.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> আ </i>
+                    <span class="item-name">আমাদের সম্পর্কে</span>
+                </a>
+            </li>
+            @endif
+            @if (can('cinema_heritage') || can('about_us'))
+            <li class="nav-item">
+                <a class="nav-link {!! Request::is('cinema_heritage*') ? 'active' : '' !!}"
+                    href="{{ route('cinema_heritage.index') }}">
+                    <i class="icon im im-icon-File"></i>
+                    <i class="sidenav-mini-icon"> ই </i>
+                    <span class="item-name">চলচ্চিত্রের ইতিহাস ও ঐতিহ্য</span>
+                </a>
+            </li>
+            @endif
             <li class="nav-item">
                 <a class="nav-link {!! Request::is('film_related*') ? 'active' : '' !!}"
                     href="{{ route('film_related.index') }}">

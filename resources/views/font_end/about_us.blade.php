@@ -28,6 +28,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: 0.3s;
+            height: 100%;
         }
 
         .icon-box:hover {
@@ -45,7 +46,6 @@
 
         footer {
             background: #1f2937;
-            /* color: #fff; */
             padding: 25px 0;
         }
 
@@ -78,130 +78,117 @@
             background-color: #4f46e5 !important;
         }
 
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1);
+        }
+
     </style>
 
-    <!-- card section -->
+    <!-- Header / Banner Section -->
     <div class="about-header">
-        <h1>আমাদের সম্পর্কে</h1>
-        <p class="mt-3 container">একটি আধুনিক ও ইউজার-ফ্রেন্ডলি সল্যুশন, যা চলচ্চিত্র নির্মাতাদের জন্য এনেছে এক ছাদের নিচে সব সুবিধা। আপনার প্রোডাকশন, এখন সম্পূর্ণ ডিজিটালি নিয়ন্ত্রিত।প্রযোজকদের জন্য তৈরি একটি সহজ ও কার্যকর সফটওয়্যার</p>
+        <h1>{{ $aboutUs->banner_title ?? 'আমাদের সম্পর্কে' }}</h1>
+        @if(!empty($aboutUs->banner_subtitle))
+            <p class="mt-3 container">{{ $aboutUs->banner_subtitle }}</p>
+        @endif
     </div>
+
     <section class="cardSection pb-5" style="background-color: #eaf9fb;">
         <div class="container">
             <div class="row">
+                <!-- Main About Section -->
                 <div class="col-md-12">
-                    <h1 class="text-center">{{ __('আমাদের সম্পর্কে') }}</h1>
+                    <h1 class="text-center">{{ $aboutUs->main_title ?? 'আমাদের সম্পর্কে' }}</h1>
                 </div>
                 <div class="container py-5">
-                    <div class="row align-iitems-center">
-                        <div class="col-lg-6">`
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
                             <p class="text-justify">
-                                একটি আধুনিক ও ইউজার-ফ্রেন্ডলি সল্যুশন, যা চলচ্চিত্র নির্মাতাদের জন্য এনেছে এক ছাদের নিচে সব সুবিধা। আপনার প্রোডাকশন, এখন সম্পূর্ণ ডিজিটালি নিয়ন্ত্রিত।প্রযোজকদের জন্য তৈরি একটি সহজ ও কার্যকর সফটওয়্যার.
+                                {!! nl2br(e($aboutUs->main_description ?? '')) !!}
                             </p>
                         </div>
                         <div class="col-lg-6 text-center">
-                            <img src="{{asset('/assets/images/about.png')}}" class="img-fluid rounded shadow">
+                            @if(!empty($aboutUs->main_image))
+                                <img src="{{ \Illuminate\Support\Str::startsWith($aboutUs->main_image, 'http') ? $aboutUs->main_image : asset($aboutUs->main_image) }}" class="img-fluid rounded shadow" alt="About Image">
+                            @else
+                                <img src="{{ asset('/assets/images/about.png') }}" class="img-fluid rounded shadow" alt="About Image">
+                            @endif
                         </div>
                     </div>
                 </div>
 
-                <!-- WHAT WE DO -->
+                <!-- WHAT WE DO / FEATURES -->
+                @if(isset($features) && count($features) > 0)
                 <div class="container py-5">
-
-                    <div class="row g-4">
+                    <div class="row g-4 justify-content-center">
+                        @foreach($features as $feature)
                         <div class="col-md-4">
                             <div class="icon-box">
-                                <h5>এফডিসি</h5>
-                                <ul>
-                                    <li>বিএফডিসি সাংগঠনিক কাঠামো ১৯৮৪ (এনাম কমিটি)</li>
-                                    <li>মুক্তি প্রাপ্ত বাংলা চলচ্চিত্রের তালিকা (১৯৫৬-২০২৪)</li>
-                                </ul>
+                                <h5>{{ $feature->title }}</h5>
+                                @if(!empty($feature->items))
+                                    @php
+                                        $itemList = array_filter(explode("\n", str_replace("\r", "", $feature->items)));
+                                    @endphp
+                                    <ul>
+                                        @foreach($itemList as $item)
+                                            <li>{{ trim($item) }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="icon-box">
-                                <h5>এফডিসি</h5>
-                                <ul>
-                                    <li>বিএফডিসি সাংগঠনিক কাঠামো ১৯৮৪ (এনাম কমিটি)</li>
-                                    <li>মুক্তি প্রাপ্ত বাংলা চলচ্চিত্রের তালিকা (১৯৫৬-২০২৪)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="icon-box">
-                                <h5>এফডিসি</h5>
-                                <ul>
-                                    <li>বিএফডিসি সাংগঠনিক কাঠামো ১৯৮৪ (এনাম কমিটি)</li>
-                                    <li>মুক্তি প্রাপ্ত বাংলা চলচ্চিত্রের তালিকা (১৯৫৬-২০২৪)</li>
-                                </ul>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
-                <!-- TEAM SECTION -->
+                @endif
+
+                <!-- TEAM / OFFICERS SECTION (DYNAMIC) -->
+                @if(isset($officers) && count($officers) > 0)
                 <div class="container py-5">
-                    <h2 class="section-title text-center mb-4">কর্মকর্তাবৃন্দ</h2>
-                    <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <h2 class="section-title text-center mb-4">{{ $aboutUs->team_title ?? 'কর্মকর্তাবৃন্দ' }}</h2>
+                    <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel" data-ride="carousel">
                         <!-- Carousel Inner -->
                         <div class="carousel-inner">
-
-                            <!-- Slide 1 -->
-                            <div class="carousel-item active">
+                            @foreach($officers as $index => $officer)
+                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                 <div class="row justify-content-center">
-                                    <div class="col-md-3 text-center">
+                                    <div class="col-md-4 col-lg-3 text-center">
                                         <div class="team-card p-4 shadow rounded">
-                                            <img src="https://fdc.portal.gov.bd/sites/default/files/files/fdc.portal.gov.bd/npfblock//2025-02-26-15-05-c1bf9124772d8faf3b96b4936734d2a3.jpeg" class="team-img" alt="">
-                                            <h5 class="mt-3">মোঃ মাহফুজ আলম</h5>
-                                            <h6>মাননীয় উপদেষ্টা (তথ্য ও সম্প্রচার মন্ত্রণালয়)</h6>
+                                            @if(!empty($officer->image))
+                                                <img src="{{ \Illuminate\Support\Str::startsWith($officer->image, 'http') ? $officer->image : asset($officer->image) }}" class="team-img" alt="{{ $officer->name }}">
+                                            @else
+                                                <img src="{{ asset('/assets/images/user.png') }}" class="team-img" alt="{{ $officer->name }}">
+                                            @endif
+                                            <h5 class="mt-3">{{ $officer->name }}</h5>
+                                            <h6>{{ $officer->designation }}</h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Slide 2 -->
-                            <div class="carousel-item">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-3 text-center">
-                                        <div class="team-card p-4 shadow rounded">
-                                            <img src="https://fdc.portal.gov.bd/sites/default/files/files/fdc.portal.gov.bd/npfblock//2024-10-24-14-31-ef71a0c41b7565ef866afe9702a7c43e.jpg" class="team-img" alt="">
-                                            <h5 class="mt-3">মাহবুবা ফারজানা</h5>
-                                            <h6>সচিব (তথ্য ও সম্প্রচার মন্ত্রণালয়)</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Slide 3 -->
-                            <div class="carousel-item">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-3 text-center">
-                                        <div class="team-card p-4 shadow rounded">
-                                            <img src="https://fdc.portal.gov.bd/sites/default/files/files/fdc.portal.gov.bd/npfblock//2025-02-26-14-58-d24e5616da518d26f3331b5ca7b9c1e8.jpeg" class="team-img" alt="">
-                                            <h5 class="mt-3">মাসুমা রহমান তানি</h5>
-                                            <h6>তথ্য ও সম্প্রচার মন্ত্রণালয়</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            @endforeach
                         </div>
 
                         <!-- Controls -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
+                        @if(count($officers) > 1)
+                        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-target="#teamCarousel" data-bs-slide="prev" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </button>
 
-                        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-target="#teamCarousel" data-bs-slide="next" data-slide="next">
                             <span class="carousel-control-next-icon"></span>
                         </button>
 
                         <!-- Indicators -->
                         <div class="carousel-indicators position-relative mt-4">
-                            <button type="button" data-bs-target="#teamCarousel" data-bs-slide-to="0" class="active"></button>
-                            <button type="button" data-bs-target="#teamCarousel" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#teamCarousel" data-bs-slide-to="2"></button>
+                            @foreach($officers as $index => $officer)
+                                <button type="button" data-bs-target="#teamCarousel" data-target="#teamCarousel" data-bs-slide-to="{{ $index }}" data-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></button>
+                            @endforeach
                         </div>
+                        @endif
                     </div>
                 </div>
+                @endif
+
             </div>
         </div>
     </section>
