@@ -1050,92 +1050,95 @@
     @endif
 
     {{-- Page Management --}}
-    
     @if (can('page_management'))
-       <li class="nav-item">
-        <a class="nav-link {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') || Request::is('about_uses*') || Request::is('cinema_heritage*') ? 'active' : '' !!}"
-            data-bs-toggle="collapse" href="#pages_menu" role="button" aria-expanded="false" aria-controls="pages_menu">
-            <i class="icon im im-icon-File"></i>
-            <span class="item-name">পেইজ ম্যানেজমেন্ট</span>
-            <i class="right-icon im im-icon-Arrow-Right"></i>
-        </a>
-        <ul class="sub-nav collapse {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') || Request::is('about_uses*') || Request::is('cinema_heritage*') ? 'show' : '' !!}"
-            id="pages_menu" data-bs-parent="#sidebar-menu">
-            @if (can('about_us'))
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('about_uses*') ? 'active' : '' !!}"
-                    href="{{ route('about_uses.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> আ </i>
-                    <span class="item-name">আমাদের সম্পর্কে</span>
-                </a>
-            </li>
-            @endif
-            @if (can('cinema_heritage') || can('about_us'))
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('cinema_heritage*') ? 'active' : '' !!}"
-                    href="{{ route('cinema_heritage.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> ই </i>
-                    <span class="item-name">চলচ্চিত্রের ইতিহাস ও ঐতিহ্য</span>
-                </a>
-            </li>
-            @endif
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('film_related*') ? 'active' : '' !!}"
-                    href="{{ route('film_related.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> চ </i>
-                    <span class="item-name">চলচ্চিত্র সম্পর্কিত</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('galleries*') ? 'active' : '' !!}" href="{{ route('galleries.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> ফ </i>
-                    <span class="item-name">ফটোগ্যালারী</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('privacy_policies*') ? 'active' : '' !!}"
-                    href="{{ route('privacy_policies.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> গো </i>
-                    <span class="item-name">গোপনীয়তার নীতিমালা</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('terms_of_uses*') ? 'active' : '' !!}"
-                    href="{{ route('terms_of_uses.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> ব্য </i>
-                    <span class="item-name">ব্যবহারের শর্তাবলি</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('notices*') ? 'active' : '' !!}" href="{{ route('notices.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> নো </i>
-                    <span class="item-name">নোটিশ সমূহ</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('faqs*') ? 'active' : '' !!}" href="{{ route('faqs.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> স </i>
-                    <span class="item-name">সচরাচর জিজ্ঞাসা</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {!! Request::is('contact_infos*') ? 'active' : '' !!}"
-                    href="{{ route('contact_infos.index') }}">
-                    <i class="icon im im-icon-File"></i>
-                    <i class="sidenav-mini-icon"> যো </i>
-                    <span class="item-name">যোগাযোগ</span>
-                </a>
-            </li>
-        </ul>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('about_uses*') || Request::is('cinema_heritage*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'active' : '' !!}"
+                data-bs-toggle="collapse" href="#pages_menu" role="button" aria-expanded="false" aria-controls="pages_menu">
+                <i class="icon im im-icon-File"></i>
+                <span class="item-name">পেইজ ম্যানেজমেন্ট</span>
+                <i class="right-icon im im-icon-Arrow-Right"></i>
+            </a>
+            <ul class="sub-nav collapse {!! Request::is('galleries*') || Request::is('film_related*') || Request::is('about_uses*') || Request::is('cinema_heritage*') || Request::is('privacy_policies*') || Request::is('terms_of_uses*') || Request::is('notices*') || Request::is('faqs*') || Request::is('contact_infos*') ? 'show' : '' !!}"
+                id="pages_menu" data-bs-parent="#sidebar-menu">
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('film_related*') ? 'active' : '' !!}"
+                        href="{{ route('film_related.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> চ </i>
+                        <span class="item-name">চলচ্চিত্র সম্পর্কিত</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('galleries*') ? 'active' : '' !!}" href="{{ route('galleries.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> ফ </i>
+                        <span class="item-name">ফটোগ্যালারী</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('privacy_policies*') ? 'active' : '' !!}"
+                        href="{{ route('privacy_policies.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> গো </i>
+                        <span class="item-name">গোপনীয়তার নীতিমালা</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('terms_of_uses*') ? 'active' : '' !!}"
+                        href="{{ route('terms_of_uses.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> ব্য </i>
+                        <span class="item-name">ব্যবহারের শর্তাবলি</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('notices*') ? 'active' : '' !!}" href="{{ route('notices.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> নো </i>
+                        <span class="item-name">নোটিশ সমূহ</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('faqs*') ? 'active' : '' !!}" href="{{ route('faqs.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> স </i>
+                        <span class="item-name">সচরাচর জিজ্ঞাসা</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('contact_infos*') ? 'active' : '' !!}"
+                        href="{{ route('contact_infos.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> যো </i>
+                        <span class="item-name">যোগাযোগ</span>
+                    </a>
+                </li>
+
+                @if (can('about_us'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('about_uses*') ? 'active' : '' !!}"
+                        href="{{ route('about_uses.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> আ </i>
+                        <span class="item-name">আমাদের সম্পর্কে</span>
+                    </a>
+                </li>
+                @endif
+                @if (can('cinema_heritage') || can('about_us'))
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('cinema_heritage*') ? 'active' : '' !!}"
+                        href="{{ route('cinema_heritage.index') }}">
+                        <i class="icon im im-icon-File"></i>
+                        <i class="sidenav-mini-icon"> ই </i>
+                        <span class="item-name">চলচ্চিত্রের ইতিহাস ও ঐতিহ্য</span>
+                    </a>
+                </li>
+                @endif
+
+            </ul>
+        </li>
+
+
     @endif
 
     {{-- যোগাযোগের বার্তা --}}

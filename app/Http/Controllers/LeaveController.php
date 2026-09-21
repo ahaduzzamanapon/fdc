@@ -26,9 +26,15 @@ class LeaveController extends AppBaseController
     {
         /** @var Leave $leaves */
 
-        $leaves = Leave::select('leaves.*', 'users.name_bn as user_name')
-            ->join('users', 'leaves.employee_id', '=', 'users.id')
-            ->get();
+        $query = Leave::select('leaves.*', 'users.name_bn as user_name')
+            ->join('users', 'leaves.employee_id', '=', 'users.id');
+
+        if (who('staff')) {
+            $query->where('leaves.employee_id', Auth::id());
+        }
+
+        $leaves = $query->get();
+
         $data = [
             'leaves' => $leaves,
             'total_leaves' => LeaveType::all(),
