@@ -20,7 +20,7 @@
 <div class="col-md-3">
     <div class="form-group">
         {!! Form::label('cat_id', __('messages.cat_id'),['class'=>'control-label']) !!}
-        {!! Form::select('cat_id', $permission, null, ['class' => 'form-control']) !!}
+        {!! Form::select('cat_id', $categories ?? [], null, ['class' => 'form-control']) !!}
     </div>
 </div>
 
