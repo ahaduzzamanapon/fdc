@@ -21,34 +21,18 @@ class Reports extends Controller
     public function get_applications_by_type(Request $request)
     {
         $filmType = $request->film_type;
-        $producerId = Auth::guard('producer')->check() ? Auth::guard('producer')->user()->id : null;
 
         if (empty($filmType)) {
             return response()->json([]);
         }
 
-        if ($filmType == 'film') {
-            $query = FilmApplication::query();
-            if ($producerId) $query->where('producer_id', $producerId);
-            $items = $query->get(['id', 'film_title']);
-        } elseif ($filmType == 'drama') {
-            $query = DramaApplication::query();
-            if ($producerId) $query->where('producer_id', $producerId);
-            $items = $query->get(['id', 'film_title']);
-        } elseif ($filmType == 'docufilm') {
-            $query = DocufilmApplication::query();
-            if ($producerId) $query->where('producer_id', $producerId);
-            $items = $query->get(['id', 'film_title']);
-        } elseif ($filmType == 'reality' || $filmType == 'realityshow') {
-            $query = RealityApplication::query();
-            if ($producerId) $query->where('producer_id', $producerId);
-            $items = $query->get(['id', 'film_title']);
-        } else {
-            $query = FilmApplication::query()->where('category', $filmType);
-            if ($producerId) $query->where('producer_id', $producerId);
-            $items = $query->get(['id', 'film_title']);
+        $query = FilmApplication::where('category', $filmType);
+
+        if (Auth::guard('producer')->check()) {
+            $query->where('producer_id', Auth::guard('producer')->user()->id);
         }
 
+        $items = $query->select('id', 'film_title')->get();
         return response()->json($items);
     }
 
@@ -103,7 +87,7 @@ class Reports extends Controller
             $query->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
         })
         ->when(!empty($request->status), function ($query) use ($request) {
-            $query->where('status', $request->status);
+            $query->where('status', $query->status);
         })
         ->get();
         $html = view('reports.pramanno_report.pramannoReport', compact('pramanno'))->render();
@@ -206,8 +190,11 @@ class Reports extends Controller
             })
             ->when(!empty($request->film_type), function ($q) use ($request) {
                 $q->where(function ($sub) use ($request) {
-                    $sub->where('film_type', $request->film_type)
-                        ->orWhere('type', $request->film_type);
+                    $sub->whereIn('film_id', function ($fQuery) use ($request) {
+                        $fQuery->select('id')->from('filmapplications')->where('category', $request->film_type);
+                    })
+                    ->orWhere('film_type', $request->film_type)
+                    ->orWhere('type', $request->film_type);
                 });
             })
             ->when(!empty($request->film_id), function ($q) use ($request) {
@@ -244,8 +231,11 @@ class Reports extends Controller
             })
             ->when(!empty($request->film_type), function ($q) use ($request) {
                 $q->where(function ($sub) use ($request) {
-                    $sub->where('film_type', $request->film_type)
-                        ->orWhere('type', $request->film_type);
+                    $sub->whereIn('film_id', function ($fQuery) use ($request) {
+                        $fQuery->select('id')->from('filmapplications')->where('category', $request->film_type);
+                    })
+                    ->orWhere('film_type', $request->film_type)
+                    ->orWhere('type', $request->film_type);
                 });
             })
             ->when(!empty($request->film_id), function ($q) use ($request) {
