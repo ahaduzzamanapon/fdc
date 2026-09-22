@@ -66,6 +66,9 @@ class User extends Authenticatable
         return $this->belongsTo(Designation::class, 'designation');
     }
 
-
+    public function staffTrainings()
+    {
+        return $this->hasMany(StaffTraining::class, 'user_id');
+    }
 }
 

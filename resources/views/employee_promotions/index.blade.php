@@ -18,6 +18,9 @@
                         <i class="im im-icon-Clock me-1"></i> টাইমলাইন
                     </a>
                 @endif
+                <a class="btn btn-sm font-weight-bold text-white shadow-sm" href="{{ route('staffTrainings.index') }}" style="background-color: #0d6efd !important; border: none;">
+                    <i class="im im-icon-Diploma me-1"></i> ট্রেনিং
+                </a>
                 @if(!who('staff'))
                     <a class="btn btn-sm font-weight-bold shadow-sm" href="{{ route('employeePromotions.create') }}" style="background-color: #1f9303 !important; color: #ffffff !important; border: none;">
                         <i class="im im-icon-Add me-1"></i> নতুন যোগ করুন
@@ -140,11 +143,6 @@
                                             <a href="{{ route('employeePromotions.show', [$item->id]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Eye me-1"></i> দেখুন
                                             </a>
-                                            @if($item->user_id)
-                                                <a href="{{ route('employeePromotions.timeline', $item->user_id) }}" class="dropdown-item">
-                                                    <i class="im im-icon-Clock me-1"></i> টাইমলাইন
-                                                </a>
-                                            @endif
                                             @if(!who('staff'))
                                                 <a href="{{ route('employeePromotions.edit', [$item->id]) }}" class="dropdown-item">
                                                     <i class="im im-icon-Pen me-1"></i> সম্পাদনা করুন
