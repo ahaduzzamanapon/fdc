@@ -12,11 +12,18 @@
         <!-- Header bar with Green background matching FDC theme -->
         <div class="card-header py-2 px-3 d-flex justify-content-between align-items-center" style="background-color: #8dc542 !important; color: #ffffff !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
             <h5 class="mb-0 font-weight-bold text-white"><i class="im im-icon-Structure me-2"></i>ইনক্রিমেন্ট ও পদোন্নতির তালিকা</h5>
-            @if(!who('staff'))
-                <a class="btn btn-sm font-weight-bold shadow-sm" href="{{ route('employeePromotions.create') }}" style="background-color: #1f9303 !important; color: #ffffff !important; border: none;">
-                    <i class="im im-icon-Add me-1"></i> নতুন যোগ করুন
-                </a>
-            @endif
+            <div class="d-flex gap-2">
+                @if(who('staff') || Auth::id())
+                    <a class="btn btn-sm font-weight-bold text-white shadow-sm" href="{{ route('employeePromotions.timeline', Auth::id()) }}" style="background-color: #17a2b8 !important; border: none;">
+                        <i class="im im-icon-Clock me-1"></i> টাইমলাইন
+                    </a>
+                @endif
+                @if(!who('staff'))
+                    <a class="btn btn-sm font-weight-bold shadow-sm" href="{{ route('employeePromotions.create') }}" style="background-color: #1f9303 !important; color: #ffffff !important; border: none;">
+                        <i class="im im-icon-Add me-1"></i> নতুন যোগ করুন
+                    </a>
+                @endif
+            </div>
         </div>
 
         <div class="card-body p-3">
@@ -29,7 +36,7 @@
                     <div class="col-md-2">
                         <input type="text" name="end_date" class="form-control form-control-sm" placeholder="End Date" value="{{ request('end_date') }}" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select name="change_type" class="form-control form-control-sm">
                             <option value="">Status / সকল ধরণ</option>
                             <option value="promotion" {{ request('change_type') == 'promotion' ? 'selected' : '' }}>পদোন্নতি (Promotion)</option>
@@ -39,14 +46,25 @@
                             <option value="other" {{ request('change_type') == 'other' ? 'selected' : '' }}>অন্যান্য (Other)</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <select name="user_id" class="form-control form-control-sm">
-                            <option value="">Employee / সকল কর্মকর্তা</option>
-                            @foreach($users as $id => $name)
-                                <option value="{{ $id }}" {{ request('user_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
-                            @endforeach
+                    <div class="col-md-2">
+                        <select name="staff_class" class="form-control form-control-sm">
+                            <option value="">Staff Group / সকল শ্রেণী</option>
+                            <option value="1" {{ request('staff_class') == '1' ? 'selected' : '' }}>১ম শ্রেণী (Class A)</option>
+                            <option value="2" {{ request('staff_class') == '2' ? 'selected' : '' }}>২য় শ্রেণী (Class B)</option>
+                            <option value="3" {{ request('staff_class') == '3' ? 'selected' : '' }}>৩য় শ্রেণী (Class C)</option>
+                            <option value="4" {{ request('staff_class') == '4' ? 'selected' : '' }}>৪র্থ শ্রেণী (Class D)</option>
                         </select>
                     </div>
+                    @if(!who('staff'))
+                        <div class="col-md-2">
+                            <select name="user_id" class="form-control form-control-sm">
+                                <option value="">Employee / সকল কর্মকর্তা</option>
+                                @foreach($users as $id => $name)
+                                    <option value="{{ $id }}" {{ request('user_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
                     <div class="col-md-2 d-flex gap-1">
                         <button type="submit" class="btn btn-sm text-white flex-grow-1" style="background-color: #1f9303 !important; border-color: #1f9303 !important;">
                             ফিল্টার
