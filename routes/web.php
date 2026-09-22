@@ -347,6 +347,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get-user-official-info', [EmployeePromotionController::class, 'getUserInfo'])->name('employeePromotions.getUserInfo');
 
     // Staff Training Module
+    Route::post('staffTrainingCourses-store-ajax', [StaffTrainingCourseController::class, 'storeAjax'])->name('staffTrainingCourses.storeAjax');
     Route::resource('staffTrainings', StaffTrainingController::class);
     Route::resource('staffTrainingCourses', StaffTrainingCourseController::class);
 });

@@ -7,10 +7,10 @@
 @section('content')
     @include('flash::message')
 
-    <div class="row">
+    <div class="row g-1" style="margin: 0px !important;">
         <!-- Add / Edit Course Form -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0">
+        <div class="col-md-4 mb-3 ps-0 pe-1">
+            <div class="card shadow-sm border-0" style="margin: 0px !important;">
                 <div class="card-header py-2 px-3 text-white" style="background-color: #8dc542 !important;">
                     <h5 class="mb-0 font-weight-bold"><i class="im im-icon-Add me-2"></i>নতুন কোর্স যোগ করুন</h5>
                 </div>
@@ -55,8 +55,8 @@
         </div>
 
         <!-- Course List Table -->
-        <div class="col-md-8 mb-4">
-            <div class="card shadow-sm border-0">
+        <div class="col-md-8 mb-3 ps-1 pe-0">
+            <div class="card shadow-sm border-0" style="margin: 0px !important;">
                 <div class="card-header py-2 px-3 d-flex justify-content-between align-items-center text-white" style="background-color: #8dc542 !important;">
                     <h5 class="mb-0 font-weight-bold"><i class="im im-icon-Gear me-2"></i>প্রশিক্ষণ কোর্সসমূহ</h5>
                     <a class="btn btn-sm font-weight-bold text-white shadow-sm" href="{{ route('staffTrainings.index') }}" style="background-color: #1f9303 !important; border: none;">

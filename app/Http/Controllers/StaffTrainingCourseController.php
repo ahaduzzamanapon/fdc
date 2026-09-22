@@ -46,6 +46,31 @@ class StaffTrainingCourseController extends Controller
     }
 
     /**
+     * Store a newly created course via AJAX.
+     */
+    public function storeAjax(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'type' => 'required|string',
+            'description' => 'nullable|string',
+        ]);
+
+        $course = StaffTrainingCourse::create([
+            'title' => $request->title,
+            'type' => $request->type ?? 'local',
+            'description' => $request->description,
+            'status' => 1,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'প্রশিক্ষণ কোর্স সফলভাবে যোগ করা হয়েছে।',
+            'course' => $course
+        ]);
+    }
+
+    /**
      * Update the specified course.
      */
     public function update(Request $request, $id)

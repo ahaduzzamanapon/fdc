@@ -67,9 +67,10 @@ class StaffTrainingController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'title' => 'required_without:training_id|nullable|string|max:255',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'training_id' => 'required|exists:staff_training_courses,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'institute' => 'required|string|max:255',
             'certificate_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ];
 
@@ -77,12 +78,17 @@ class StaffTrainingController extends Controller
             $rules['user_id'] = 'required|exists:users,id';
         }
 
-        $request->validate($rules, [
+        $messages = [
             'user_id.required' => 'কর্মকর্তা / কর্মচারী নির্বাচন করুন।',
-            'title.required_without' => 'প্রশিক্ষণ কোর্স নির্বাচন করুন অথবা ট্রেনিংয়ের শিরোনাম প্রদান করুন।',
+            'training_id.required' => 'প্রশিক্ষণ কোর্স / বিষয়সূচী নির্বাচন করুন।',
+            'start_date.required' => 'শুরুর তারিখ প্রদান করুন।',
+            'end_date.required' => 'সমাপ্তির তারিখ প্রদান করুন।',
             'end_date.after_or_equal' => 'সমাপ্তির তারিখ শুরুর তারিখের সমান বা পরবর্তী হতে হবে।',
+            'institute.required' => 'ইনস্টিটিউট / প্রতিষ্ঠান / সংস্থার নাম প্রদান করুন।',
             'certificate_file.mimes' => 'সনদপত্র অবশ্যই PDF, JPG, JPEG, বা PNG ফরম্যাটে হতে হবে।',
-        ]);
+        ];
+
+        $request->validate($rules, $messages);
 
         $userId = who('staff') ? Auth::id() : $request->user_id;
 
@@ -165,9 +171,10 @@ class StaffTrainingController extends Controller
         }
 
         $rules = [
-            'title' => 'required_without:training_id|nullable|string|max:255',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'training_id' => 'required|exists:staff_training_courses,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'institute' => 'required|string|max:255',
             'certificate_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ];
 
@@ -175,7 +182,17 @@ class StaffTrainingController extends Controller
             $rules['user_id'] = 'required|exists:users,id';
         }
 
-        $request->validate($rules);
+        $messages = [
+            'user_id.required' => 'কর্মকর্তা / কর্মচারী নির্বাচন করুন।',
+            'training_id.required' => 'প্রশিক্ষণ কোর্স / বিষয়সূচী নির্বাচন করুন।',
+            'start_date.required' => 'শুরুর তারিখ প্রদান করুন।',
+            'end_date.required' => 'সমাপ্তির তারিখ প্রদান করুন।',
+            'end_date.after_or_equal' => 'সমাপ্তির তারিখ শুরুর তারিখের সমান বা পরবর্তী হতে হবে।',
+            'institute.required' => 'ইনস্টিটিউট / প্রতিষ্ঠান / সংস্থার নাম প্রদান করুন।',
+            'certificate_file.mimes' => 'সনদপত্র অবশ্যই PDF, JPG, JPEG, বা PNG ফরম্যাটে হতে হবে।',
+        ];
+
+        $request->validate($rules, $messages);
 
         $certificatePath = $training->certificate_file;
         if ($request->hasFile('certificate_file')) {
