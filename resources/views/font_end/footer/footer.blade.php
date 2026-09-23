@@ -142,7 +142,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function(e) {  
         const link = e.target.closest('.footer-modal-link');
         if (!link) return;
 
