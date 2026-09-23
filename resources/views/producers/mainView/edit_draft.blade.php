@@ -699,9 +699,9 @@
 
             Swal.fire({
                 title: "আপনি কি নিশ্চিত?",
-                icon: "সতর্কতা",
+                icon: "warning",
                 showCancelButton: true,
-                confirmBuq1ttonColor: "#3085d6",
+                confirmButtonColor: "#3085d6",
                 confirmButtonText: "হ্যাঁ",
                 cancelButtonColor: "#d33",
                 cancelButtonText: "না",

@@ -37,8 +37,12 @@
                 $group_id = auth()->user()->group_id;
             }elseif(isset(Auth::guard('producer')->user()->group_id)){
                 $group_id = Auth::guard('producer')->user()->group_id;
-            }else{
+            } else {
                 return false;
+            }
+
+            if ($group_id == 1) {
+                return true;
             }
 
             $permissions = \App\Models\RollHas::where('roll_id', $group_id)

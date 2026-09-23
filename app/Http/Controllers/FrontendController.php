@@ -16,7 +16,9 @@ class FrontendController extends Controller
 
     public function index()
     {
-        return view('font_end.body');
+        $notices = \App\Models\Notice::latest()->take(5)->get();
+        $galleries = \App\Models\Gallery::latest()->take(6)->get();
+        return view('font_end.body', compact('notices', 'galleries'));
     }
     public function about_us()
     {

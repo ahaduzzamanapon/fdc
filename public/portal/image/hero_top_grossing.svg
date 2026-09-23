@@ -1,0 +1,69 @@
+<svg width="587" height="383" viewBox="0 0 587 383" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White Organic Blob Background -->
+  <path d="M556.962 246.908C549.206 328.392 528.897 359.665 472.811 382.809H132.471C119.41 369.7 98.9527 350.922 76.8406 337.24C39.3328 314 -0.901909 268.177 17.5072 171.232C35.9162 74.2876 106.847 22.477 185.268 23.8017C209.81 24.215 243.626 20.3046 280.115 15.5358L290.566 14.1687L293.229 13.8084L298.11 13.1619C309.378 11.6677 320.806 10.1417 332.212 8.68985L334.069 8.45671L341.613 7.50294L345.73 6.99427L355.555 5.82856L360.584 5.2457L362.791 5.00196L368.479 4.37672C420.342 -1.18691 467.569 -3.04145 492.154 8.53089C591.053 55.011 566.501 145.937 556.962 246.908Z" fill="white"/>
+
+  <!-- Popcorn Bucket -->
+  <g transform="translate(90, 160) rotate(-8)">
+    <polygon points="20,50 90,50 80,180 30,180" fill="#E74C3C"/>
+    <!-- Stripes -->
+    <polygon points="34,50 48,50 42,180 30,180" fill="#FFFFFF"/>
+    <polygon points="62,50 76,50 70,180 58,180" fill="#FFFFFF"/>
+
+    <!-- Popcorn Kernels Top -->
+    <circle cx="25" cy="40" r="14" fill="#F1C40F"/>
+    <circle cx="45" cy="30" r="16" fill="#F39C12"/>
+    <circle cx="65" cy="32" r="15" fill="#F1C40F"/>
+    <circle cx="85" cy="42" r="13" fill="#F39C12"/>
+    <circle cx="35" cy="20" r="14" fill="#FFFFFF"/>
+    <circle cx="55" cy="15" r="16" fill="#F1C40F"/>
+    <circle cx="75" cy="22" r="13" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Cinema Ticket Stubs -->
+  <g transform="translate(320, 140) rotate(15)">
+    <!-- Ticket 1 Red -->
+    <rect x="0" y="0" width="160" height="80" rx="8" fill="#E74C3C"/>
+    <!-- Notches -->
+    <circle cx="0" cy="40" r="12" fill="white"/>
+    <circle cx="160" cy="40" r="12" fill="white"/>
+    <!-- Dotted Divider -->
+    <line x1="50" y1="5" x2="50" y2="75" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="6 6"/>
+    <!-- Ticket Text Graphic -->
+    <text x="70" y="38" font-family="sans-serif" font-weight="bold" font-size="16" fill="#FFFFFF">TOP FILM</text>
+    <text x="70" y="58" font-family="sans-serif" font-size="12" fill="#FADBD8">★ ADMIT ONE ★</text>
+  </g>
+
+  <g transform="translate(290, 200) rotate(-10)">
+    <!-- Ticket 2 Golden -->
+    <rect x="0" y="0" width="170" height="85" rx="8" fill="#F39C12"/>
+    <circle cx="0" cy="42.5" r="12" fill="white"/>
+    <circle cx="170" cy="42.5" r="12" fill="white"/>
+    <line x1="55" y1="5" x2="55" y2="80" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="6 6"/>
+    <text x="72" y="42" font-family="sans-serif" font-weight="bold" font-size="18" fill="#FFFFFF">BLOCKBUSTER</text>
+    <text x="78" y="64" font-family="sans-serif" font-weight="bold" font-size="13" fill="#FEF9E7">BOX OFFICE #1</text>
+  </g>
+
+  <!-- Commercial Growth Chart Bar Graphic (Box Office Success) -->
+  <g transform="translate(200, 70)">
+    <rect x="0" y="110" width="22" height="60" rx="4" fill="#3498DB"/>
+    <rect x="30" y="80" width="22" height="90" rx="4" fill="#2ECC71"/>
+    <rect x="60" y="45" width="22" height="125" rx="4" fill="#F1C40F"/>
+    <rect x="90" y="10" width="22" height="160" rx="4" fill="#E74C3C"/>
+    
+    <!-- Arrow curve up -->
+    <path d="M-10 120 Q 50 60 125 -5" stroke="#27AE60" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <polygon points="125,-15 135,5 115,-2" fill="#27AE60"/>
+  </g>
+
+  <!-- 5 Golden Star Rating Ribbon -->
+  <g transform="translate(180, 290)">
+    <rect x="0" y="0" width="220" height="46" rx="23" fill="#1A252C"/>
+    <g fill="#F1C40F" transform="translate(20, 13)">
+      <polygon points="10,0 13,7 20,7 15,12 17,19 10,15 3,19 5,12 0,7 7,7"/>
+      <polygon points="50,0 53,7 60,7 55,12 57,19 50,15 43,19 45,12 40,7 47,7"/>
+      <polygon points="90,0 93,7 100,7 95,12 97,19 90,15 83,19 85,12 80,7 87,7"/>
+      <polygon points="130,0 133,7 140,7 135,12 137,19 130,15 123,19 125,12 120,7 127,7"/>
+      <polygon points="170,0 173,7 180,7 175,12 177,19 170,15 163,19 165,12 160,7 167,7"/>
+    </g>
+  </g>
+</svg>

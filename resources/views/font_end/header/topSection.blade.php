@@ -1,6 +1,12 @@
 <nav class="navbar sticky-top navbar-expand-lg">
     <div class="container p-0">
-        <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('portal/image/logo.svg') }}" alt=""></a>
+        <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+            @if(isset($siteSetting) && !empty($siteSetting->logo))
+                <img src="{{ \Illuminate\Support\Str::startsWith($siteSetting->logo, 'http') ? $siteSetting->logo : asset($siteSetting->logo) }}" alt="{{ $siteSetting->name ?? 'Logo' }}" style="max-height: 50px;">
+            @else
+                <img src="{{ asset('images/logo.svg') }}" alt="Logo" style="max-height: 50px;">
+            @endif
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>

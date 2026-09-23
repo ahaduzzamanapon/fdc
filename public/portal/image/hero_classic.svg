@@ -1,0 +1,85 @@
+<svg width="587" height="383" viewBox="0 0 587 383" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White Organic Blob Background -->
+  <path d="M556.962 246.908C549.206 328.392 528.897 359.665 472.811 382.809H132.471C119.41 369.7 98.9527 350.922 76.8406 337.24C39.3328 314 -0.901909 268.177 17.5072 171.232C35.9162 74.2876 106.847 22.477 185.268 23.8017C209.81 24.215 243.626 20.3046 280.115 15.5358L290.566 14.1687L293.229 13.8084L298.11 13.1619C309.378 11.6677 320.806 10.1417 332.212 8.68985L334.069 8.45671L341.613 7.50294L345.73 6.99427L355.555 5.82856L360.584 5.2457L362.791 5.00196L368.479 4.37672C420.342 -1.18691 467.569 -3.04145 492.154 8.53089C591.053 55.011 566.501 145.937 556.962 246.908Z" fill="white"/>
+
+  <!-- Vintage Stage Red Curtains -->
+  <path d="M40 380V120C40 120 70 140 100 120C130 100 130 380 130 380H40Z" fill="#E64848" opacity="0.9"/>
+  <path d="M40 380V120C40 120 60 135 85 125V380H40Z" fill="#C0392B"/>
+  <path d="M540 380V120C540 120 510 140 480 120C450 100 450 380 450 380H540Z" fill="#E64848" opacity="0.9"/>
+  <path d="M540 380V120C540 120 520 135 495 125V380H540Z" fill="#C0392B"/>
+
+  <!-- Vintage Film Projector -->
+  <g transform="translate(110, 140)">
+    <!-- Light Beam -->
+    <polygon points="120,60 380,10 380,240 120,100" fill="url(#beamGrad)" opacity="0.45"/>
+    
+    <!-- Projector Body -->
+    <rect x="30" y="50" width="100" height="70" rx="10" fill="#2C3E50"/>
+    <rect x="40" y="60" width="80" height="50" rx="5" fill="#34495E"/>
+    
+    <!-- Projector Lens -->
+    <path d="M130 65L165 55V115L130 105V65Z" fill="#7F8C8D"/>
+    <ellipse cx="165" cy="85" rx="6" ry="30" fill="#BDC3C7"/>
+    <circle cx="165" cy="85" r="12" fill="#3498DB" opacity="0.8"/>
+
+    <!-- Film Reels (Top & Back) -->
+    <circle cx="50" cy="20" r="32" fill="#34495E" stroke="#BDC3C7" stroke-width="4"/>
+    <circle cx="50" cy="20" r="10" fill="#2C3E50"/>
+    <line x1="50" y1="20" x2="50" y2="0" stroke="#BDC3C7" stroke-width="3"/>
+    <line x1="50" y1="20" x2="50" y2="40" stroke="#BDC3C7" stroke-width="3"/>
+    <line x1="50" y1="20" x2="30" y2="20" stroke="#BDC3C7" stroke-width="3"/>
+    <line x1="50" y1="20" x2="70" y2="20" stroke="#BDC3C7" stroke-width="3"/>
+    
+    <circle cx="105" cy="25" r="25" fill="#34495E" stroke="#BDC3C7" stroke-width="4"/>
+    <circle cx="105" cy="25" r="8" fill="#2C3E50"/>
+
+    <!-- Stand Tripod -->
+    <polygon points="70,120 80,120 110,230 95,230" fill="#2C3E50"/>
+    <polygon points="70,120 80,120 40,230 25,230" fill="#2C3E50"/>
+    <polygon points="70,120 80,120 78,230 72,230" fill="#34495E"/>
+  </g>
+
+  <!-- Classic Film Strip Curved Arc -->
+  <path d="M120 320 C 220 220, 360 380, 480 260" stroke="#1A252C" stroke-width="44" stroke-linecap="round" fill="none"/>
+  <path d="M120 320 C 220 220, 360 380, 480 260" stroke="#FFFFFF" stroke-width="38" stroke-linecap="round" fill="none"/>
+  <path d="M120 320 C 220 220, 360 380, 480 260" stroke="#1A252C" stroke-width="30" stroke-linecap="round" fill="none"/>
+  <!-- Film Strip Holes -->
+  <path d="M120 320 C 220 220, 360 380, 480 260" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="8 12" stroke-linecap="butt" fill="none"/>
+
+  <!-- Director Clapboard -->
+  <g transform="translate(360, 170) rotate(-12)">
+    <rect x="0" y="30" width="110" height="85" rx="6" fill="#1A252C"/>
+    <!-- Clap Stick Base -->
+    <rect x="0" y="0" width="110" height="24" rx="3" fill="#1A252C"/>
+    <polygon points="10,0 30,0 20,24 0,24" fill="#FFFFFF"/>
+    <polygon points="40,0 60,0 50,24 30,24" fill="#FFFFFF"/>
+    <polygon points="70,0 90,0 80,24 60,24" fill="#FFFFFF"/>
+    <!-- Clap Stick Top Open -->
+    <g transform="rotate(-20, 0, 0)">
+      <rect x="0" y="-24" width="110" height="24" rx="3" fill="#1A252C"/>
+      <polygon points="10,-24 30,-24 20,0 0,0" fill="#FFFFFF"/>
+      <polygon points="40,-24 60,-24 50,0 30,0" fill="#FFFFFF"/>
+      <polygon points="70,-24 90,-24 80,0 60,0" fill="#FFFFFF"/>
+    </g>
+    <!-- Text Lines -->
+    <rect x="15" y="45" width="40" height="6" fill="#7F8C8D" rx="2"/>
+    <rect x="65" y="45" width="30" height="6" fill="#7F8C8D" rx="2"/>
+    <rect x="15" y="65" width="80" height="6" fill="#7F8C8D" rx="2"/>
+    <rect x="15" y="85" width="55" height="6" fill="#7F8C8D" rx="2"/>
+  </g>
+
+  <!-- Golden Classic Stars -->
+  <g fill="#F1C40F">
+    <path d="M290 60 L295 75 L310 75 L298 84 L303 99 L290 89 L277 99 L282 84 L270 75 L285 75 Z"/>
+    <path d="M440 90 L443 100 L454 100 L445 106 L448 116 L440 109 L432 116 L435 106 L426 100 L437 100 Z" transform="scale(0.8) translate(80, 20)"/>
+    <path d="M190 80 L193 90 L204 90 L195 96 L198 106 L190 99 L182 106 L185 96 L176 90 L187 90 Z" transform="scale(0.7) translate(40, 30)"/>
+  </g>
+
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="beamGrad" x1="120" y1="80" x2="380" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F39C12" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+</svg>

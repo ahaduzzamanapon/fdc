@@ -2,49 +2,76 @@
     <div class="container" style="margin: auto;display: flex;flex-wrap: wrap;justify-content: space-between;">
         <!-- Left Links -->
         <div class="footer-column">
-            <ul>
-                <li><a style="text-decoration: none; color: black;"
-                        href="{{ route('film_related.page') }}">{{ __('messages.film_related') }}</a></li>
-                <li><a style="text-decoration: none; color: black;"
-                        href="{{ route('privacy_policy.page') }}">{{ __('messages.privacy_policy') }}</a></li>
-                <li><a style="text-decoration: none; color: black;"
-                        href="{{ route('terms_of_use.page') }}">{{ __('messages.terms_of_use') }}</a></li>
+            <ul style="margin-top: 0; margin-bottom: 0;">
+                <li><a class="footer-modal-link" style="text-decoration: none; color: black;"
+                        href="{{ route('film_related.page') }}" data-title="{{ __('messages.film_related') }}">{{ __('messages.film_related') }}</a></li>
+                <li><a class="footer-modal-link" style="text-decoration: none; color: black;"
+                        href="{{ route('privacy_policy.page') }}" data-title="{{ __('messages.privacy_policy') }}">{{ __('messages.privacy_policy') }}</a></li>
+                <li><a class="footer-modal-link" style="text-decoration: none; color: black;"
+                        href="{{ route('terms_of_use.page') }}" data-title="{{ __('messages.terms_of_use') }}">{{ __('messages.terms_of_use') }}</a></li>
             </ul>
         </div>
         <!-- Center Links -->
         <div class="footer-column">
-            <ul>
-                <li><a style="text-decoration: none; color: black;"
-                        href="{{ route('notices.page') }}">{{ __('messages.notices') }}</a></li>
-                <li><a style="text-decoration: none; color: black;"
-                        href="{{ route('faqs.page') }}">{{ __('messages.faq') }}</a></li>
-                <li><a style="text-decoration: none; color: black;"
-                        href="{{ route('contact_info.page') }}">{{ __('messages.contact') }}</a></li>
+            <ul style="margin-top: 0; margin-bottom: 0;">
+                <li><a class="footer-modal-link" style="text-decoration: none; color: black;"
+                        href="{{ route('notices.page') }}" data-title="{{ __('messages.notices') }}">{{ __('messages.notices') }}</a></li>
+                <li><a class="footer-modal-link" style="text-decoration: none; color: black;"
+                        href="{{ route('faqs.page') }}" data-title="{{ __('messages.faq') }}">{{ __('messages.faq') }}</a></li>
+                <li><a class="footer-modal-link" style="text-decoration: none; color: black;"
+                        href="{{ route('contact_info.page') }}" data-title="{{ __('messages.contact') }}">{{ __('messages.contact') }}</a></li>
             </ul>
         </div>
         <!-- Contact Info -->
         <div class="footer-column">
-            <p><span class="icon">
-                    <svg width="19" height="21" viewBox="0 0 19 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M17.8911 14.3368L13.8717 12.5048C13.7 12.4269 13.5092 12.4105 13.3279 12.458C13.1467 12.5055 12.9849 12.6143 12.8668 12.7681L11.0868 15.081C8.29325 13.6802 6.04507 11.2892 4.72792 8.31818L6.90271 6.42508C7.04757 6.29977 7.15011 6.12767 7.19479 5.93484C7.23947 5.74201 7.22386 5.53895 7.15033 5.3564L5.42773 1.08166C5.34702 0.884873 5.20428 0.724202 5.02412 0.627354C4.84396 0.530506 4.63767 0.50355 4.44082 0.551134L0.708523 1.46715C0.518739 1.51376 0.349413 1.62741 0.228182 1.78954C0.10695 1.95168 0.0409719 2.15273 0.0410156 2.35988C0.0410156 12.1498 7.50203 20.0695 16.6928 20.0695C16.8877 20.0697 17.0768 19.9995 17.2293 19.8706C17.3818 19.7416 17.4887 19.5615 17.5326 19.3596L18.3939 15.3902C18.4383 15.1798 18.4125 14.9596 18.3207 14.7673C18.2289 14.575 18.077 14.4228 17.8911 14.3368Z"
-                            fill="black" />
-                    </svg>
-                </span> +880 41010414-6</p>
-            <p>
-                <span class="icon">
-                    <svg width="26" height="30" viewBox="0 0 26 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.76062 4.93164V20.081L7.9963 12.5063L1.76062 4.93164Z" fill="black" />
-                        <path
-                            d="M2.99939 3.4137L10.8939 13.0034C11.8909 14.2145 13.6298 14.2145 14.6268 13.0034L22.5213 3.4137H2.99939Z"
-                            fill="black" />
-                        <path
-                            d="M15.8708 14.5149C15.041 15.524 13.9357 16.0809 12.76 16.0809C11.5844 16.0809 10.4791 15.524 9.64924 14.5149L9.24004 14.0178L3.00964 21.5861H22.5104L16.28 14.0178L15.8708 14.5149Z"
-                            fill="black" />
-                        <path d="M17.5244 12.5063L23.7601 20.081V4.93164L17.5244 12.5063Z" fill="black" />
-                    </svg>
-                </span> info@fdc.gov.bd
-            </p>
+            @if(isset($contactInfo) && !empty($contactInfo->description))
+                <ul style="list-style: none; padding-left: 0; margin-top: 0; margin-bottom: 0;">
+                    @php
+                        $rawLines = explode("\n", str_replace(["\r", "\t"], "", $contactInfo->description));
+                        $cleanLines = [];
+                        foreach ($rawLines as $l) {
+                            $t = trim($l);
+                            if ($t !== '') {
+                                $cleanLines[] = $t;
+                            }
+                        }
+                    @endphp
+                    @foreach($cleanLines as $idx => $line)
+                        @php
+                            $lower = mb_strtolower($line);
+                            if (Str::contains($lower, ['ইমেইল', 'email', 'mail']) || $idx === 0) {
+                                $iconClass = 'fas fa-envelope';
+                            } elseif (Str::contains($lower, ['ফোন', 'phone', 'অফিস', 'tel']) || $idx === 1) {
+                                $iconClass = 'fas fa-phone';
+                            } elseif (Str::contains($lower, ['মোবাইল', 'mobile', 'cell']) || $idx === 2) {
+                                $iconClass = 'fas fa-mobile-alt';
+                            } else {
+                                $iconClass = 'fas fa-info-circle';
+                            }
+                        @endphp
+                        <li style="margin-bottom: 10px; font-family: 'SolaimanLipi', sans-serif; font-size: 16px; color: #000000; display: flex; align-items: center; line-height: 1.5;">
+                            <i class="{{ $iconClass }} text-primary me-2 mr-2" style="font-size: 16px; width: 20px; min-width: 20px; text-align: center; display: inline-block;"></i>
+                            <span>{{ $line }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <ul style="list-style: none; padding-left: 0; margin-top: 0; margin-bottom: 0;">
+                    <li style="margin-bottom: 10px; font-family: 'SolaimanLipi', sans-serif; font-size: 16px; color: #000000; display: flex; align-items: center; line-height: 1.5;">
+                        <i class="fas fa-envelope text-primary me-2 mr-2" style="font-size: 16px; width: 20px; min-width: 20px; text-align: center;"></i>
+                        <span>ইমেইল: info@fdc.gov.bd</span>
+                    </li>
+                    <li style="margin-bottom: 10px; font-family: 'SolaimanLipi', sans-serif; font-size: 16px; color: #000000; display: flex; align-items: center; line-height: 1.5;">
+                        <i class="fas fa-phone text-primary me-2 mr-2" style="font-size: 16px; width: 20px; min-width: 20px; text-align: center;"></i>
+                        <span>ফোন (অফিস): ৪১০১০৪০১</span>
+                    </li>
+                    <li style="margin-bottom: 10px; font-family: 'SolaimanLipi', sans-serif; font-size: 16px; color: #000000; display: flex; align-items: center; line-height: 1.5;">
+                        <i class="fas fa-mobile-alt text-primary me-2 mr-2" style="font-size: 16px; width: 20px; min-width: 20px; text-align: center;"></i>
+                        <span>মোবাইল:</span>
+                    </li>
+                </ul>
+            @endif
+        </div>
 
         </div>
     </div>
@@ -88,6 +115,94 @@
 </footer>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-{{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> --}}
-{{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> --}}
+
+<!-- Footer Content Dynamic Modal -->
+<div class="modal fade" id="footerContentModal" tabindex="-1" aria-labelledby="footerContentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #0d6efd, #0b5ed7); padding: 14px 20px;">
+                <h5 class="modal-title fw-bold" id="footerContentModalLabel" style="font-family: 'SolaimanLipi', sans-serif; font-size: 1.25rem;"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="footerContentModalBody" style="min-height: 220px; font-family: 'SolaimanLipi', sans-serif;">
+                <div class="text-center py-5" id="footerModalSpinner">
+                    <div class="spinner-border text-primary" role="status" style="width: 2.2rem; height: 2.2rem;">
+                        <span class="sr-only visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mt-2 small" style="font-family: 'SolaimanLipi', sans-serif;">তথ্য লোড হচ্ছে...</p>
+                </div>
+                <div id="footerModalData"></div>
+            </div>
+            <div class="modal-footer bg-light py-2 px-3">
+                <button type="button" class="btn btn-sm px-4 rounded-0 fw-bold" data-bs-dismiss="modal" style="font-family: 'SolaimanLipi', sans-serif; background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; border-radius: 0px !important;">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('.footer-modal-link');
+        if (!link) return;
+
+        e.preventDefault();
+        const url = link.getAttribute('href');
+        const title = link.getAttribute('data-title') || link.innerText.trim();
+
+        const modalEl = document.getElementById('footerContentModal');
+        const modalTitle = document.getElementById('footerContentModalLabel');
+        const spinner = document.getElementById('footerModalSpinner');
+        const modalData = document.getElementById('footerModalData');
+
+        if (!modalEl) return;
+
+        modalTitle.innerText = title;
+        modalData.innerHTML = '';
+        modalData.classList.add('d-none');
+        spinner.classList.remove('d-none');
+
+        // Show Modal using Bootstrap 5 or jQuery Bootstrap 4 fallback
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            let modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (!modalInstance) {
+                modalInstance = new bootstrap.Modal(modalEl);
+            }
+            modalInstance.show();
+        } else if (typeof $ !== 'undefined' && $.fn.modal) {
+            $(modalEl).modal('show');
+        }
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(function(response) { return response.text(); })
+        .then(function(html) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            let contentEl = doc.querySelector('.footer-page-content') || doc.querySelector('.container');
+
+            if (contentEl) {
+                const clone = contentEl.cloneNode(true);
+                const secTitle = clone.querySelector('.section-title');
+                if (secTitle) secTitle.remove();
+
+                modalData.innerHTML = clone.innerHTML;
+            } else {
+                modalData.innerHTML = doc.body.innerHTML;
+            }
+
+            spinner.classList.add('d-none');
+            modalData.classList.remove('d-none');
+        })
+        .catch(function(err) {
+            console.error(err);
+            spinner.classList.add('d-none');
+            modalData.innerHTML = '<div class="alert alert-danger text-center mb-0"><p class="m-0">তথ্য লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</p></div>';
+            modalData.classList.remove('d-none');
+        });
+    });
+});
+</script>

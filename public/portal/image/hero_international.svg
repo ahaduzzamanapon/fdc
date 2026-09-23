@@ -1,0 +1,53 @@
+<svg width="587" height="383" viewBox="0 0 587 383" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White Organic Blob Background -->
+  <path d="M556.962 246.908C549.206 328.392 528.897 359.665 472.811 382.809H132.471C119.41 369.7 98.9527 350.922 76.8406 337.24C39.3328 314 -0.901909 268.177 17.5072 171.232C35.9162 74.2876 106.847 22.477 185.268 23.8017C209.81 24.215 243.626 20.3046 280.115 15.5358L290.566 14.1687L293.229 13.8084L298.11 13.1619C309.378 11.6677 320.806 10.1417 332.212 8.68985L334.069 8.45671L341.613 7.50294L345.73 6.99427L355.555 5.82856L360.584 5.2457L362.791 5.00196L368.479 4.37672C420.342 -1.18691 467.569 -3.04145 492.154 8.53089C591.053 55.011 566.501 145.937 556.962 246.908Z" fill="white"/>
+
+  <!-- World Globe Center -->
+  <g transform="translate(293, 190)">
+    <!-- Globe Circle Outer -->
+    <circle cx="0" cy="0" r="110" fill="#2980B9"/>
+    <circle cx="0" cy="0" r="105" fill="#3498DB"/>
+
+    <!-- Map Continents Graphic -->
+    <!-- Asia/Europe/Africa Stylized Shapes -->
+    <path d="M -80,-30 C -60,-80 20,-90 60,-40 C 90,0 70,50 30,70 C -10,80 -50,60 -80,-30 Z" fill="#2ECC71" opacity="0.85"/>
+    <path d="M -70,20 C -50,10 -30,40 -40,80 C -60,90 -80,50 -70,20 Z" fill="#27AE60" opacity="0.85"/>
+    <path d="M 40,-70 C 70,-60 80,-30 60,-10 C 30,-30 20,-60 40,-70 Z" fill="#2ECC71" opacity="0.85"/>
+    
+    <!-- Longitude / Latitude Grid Lines -->
+    <ellipse cx="0" cy="0" rx="105" ry="40" stroke="#E0F7FA" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+    <ellipse cx="0" cy="0" rx="105" ry="80" stroke="#E0F7FA" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+    <line x1="0" y1="-105" x2="0" y2="105" stroke="#E0F7FA" stroke-width="2" stroke-dasharray="8 6"/>
+    <line x1="-105" y1="0" x2="105" y2="0" stroke="#E0F7FA" stroke-width="2" stroke-dasharray="8 6"/>
+
+    <!-- Film Strip Orbit Loop Ring around Globe -->
+    <path d="M -130,20 C -140,-50 140,-120 150,0 C 160,110 -120,100 -130,20 Z" stroke="#1A252C" stroke-width="26" fill="none"/>
+    <path d="M -130,20 C -140,-50 140,-120 150,0 C 160,110 -120,100 -130,20 Z" stroke="#FFFFFF" stroke-width="20" fill="none"/>
+    <path d="M -130,20 C -140,-50 140,-120 150,0 C 160,110 -120,100 -130,20 Z" stroke="#1A252C" stroke-width="14" fill="none"/>
+    <path d="M -130,20 C -140,-50 140,-120 150,0 C 160,110 -120,100 -130,20 Z" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="6 10" fill="none"/>
+
+    <!-- International Film Festival Laurel Branch Left & Right -->
+    <g stroke="#F1C40F" stroke-width="4" fill="none">
+      <!-- Left Laurel -->
+      <path d="M -125,50 C -165,10 -140,-70 -90,-110"/>
+      <!-- Right Laurel -->
+      <path d="M 125,50 C 165,10 140,-70 90,-110"/>
+    </g>
+    <!-- Leaves -->
+    <g fill="#F39C12">
+      <path d="M -140,20 C -160,0 -160,30 -140,20"/>
+      <path d="M -135,-30 C -160,-50 -150,-20 -135,-30"/>
+      <path d="M -110,-75 C -135,-90 -120,-70 -110,-75"/>
+
+      <path d="M 140,20 C 160,0 160,30 140,20"/>
+      <path d="M 135,-30 C 160,-50 150,-20 135,-30"/>
+      <path d="M 110,-75 C 135,-90 120,-70 110,-75"/>
+    </g>
+  </g>
+
+  <!-- Golden Stars & Plane Travel Icons -->
+  <g fill="#F1C40F">
+    <polygon points="120,60 124,72 136,72 126,80 130,92 120,84 110,92 114,80 104,72 116,72"/>
+    <polygon points="460,60 464,72 476,72 466,80 470,92 460,84 450,92 454,80 444,72 456,72"/>
+  </g>
+</svg>

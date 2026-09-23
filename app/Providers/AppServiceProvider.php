@@ -26,5 +26,11 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') !== 'local') {
            // \URL::forceScheme('https');
         }
+
+        \Illuminate\Support\Facades\View::composer(['welcome', 'font_end.*'], function ($view) {
+            $siteSetting = \App\Models\SiteSetting::first();
+            $contactInfo = \App\Models\ContactInfo::first();
+            $view->with('siteSetting', $siteSetting)->with('contactInfo', $contactInfo);
+        });
     }
 }

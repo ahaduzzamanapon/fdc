@@ -2,18 +2,6 @@
 @section('body')
 
     <style>
-        .heritage-header {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            padding: 70px 0;
-            color: white;
-            text-align: center;
-        }
-
-        .heritage-header h1 {
-            font-size: 42px;
-            font-weight: 700;
-        }
-
         .heritage-card {
             background: #ffffff;
             border-radius: 12px;
@@ -49,46 +37,66 @@
             display: inline-block;
             margin-bottom: 10px;
         }
+
+        .heritage-lazy-item {
+            animation: heritageFadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes heritageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 
-    <!-- Header Section -->
-    <div class="heritage-header">
-        <h1>{{ $page->title ?? 'আন্তর্জাতিক পর্যায়ে বাংলা চলচ্চিত্র' }}</h1>
-        @if(!empty($page->banner_subtitle))
-            <p class="mt-3 container fs-5" style="max-width: 800px;">{{ $page->banner_subtitle }}</p>
-        @endif
-    </div>
+    @php
+        $heroRightImg = (!empty($page->banner_image) && !\Illuminate\Support\Str::contains($page->banner_image, 'unsplash.com'))
+            ? (\Illuminate\Support\Str::startsWith($page->banner_image, 'http') ? $page->banner_image : asset($page->banner_image))
+            : asset('portal/image/hero_international.svg');
+    @endphp
+
+    <!-- Hero Header Section (Content inside Hero Section) -->
+    <section class="heroSection">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="row align-items-center">
+                    <div class="col-md-7 heroLeft">
+                        <span class="heroTitle text-white">{{ $page->title ?? 'আন্তর্জাতিক পর্যায়ে বাংলা চলচ্চিত্র' }}</span>
+                        @if(!empty($page->main_description))
+                            <span class="heroDesc text-light" style="color: #ffffff !important; font-size: 16px; line-height: 1.6;">
+                                {!! nl2br(e($page->main_description)) !!}
+                            </span>
+                        @elseif(!empty($page->banner_subtitle))
+                            <span class="heroDesc text-light" style="color: #ffffff !important;">{{ $page->banner_subtitle }}</span>
+                        @endif
+                    </div>
+                    <div class="col-md-5 text-center my-3 my-md-0">
+                        <img class="heroImg img-fluid" src="{{ $heroRightImg }}" alt="hero_international.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Content Section -->
     <section class="py-5" style="background-color: #f8fafc;">
         <div class="container">
-            @if(!empty($page->main_description))
-                <div class="row justify-content-center mb-5">
-                    <div class="col-lg-10 text-center">
-                        <p class="lead text-secondary">
-                            {!! nl2br(e($page->main_description)) !!}
-                        </p>
-                    </div>
-                </div>
-            @endif
-
-            @if(!empty($page->banner_image))
-                <div class="row justify-content-center mb-5">
-                    <div class="col-lg-10 text-center">
-                        <img src="{{ \Illuminate\Support\Str::startsWith($page->banner_image, 'http') ? $page->banner_image : asset($page->banner_image) }}" class="img-fluid rounded shadow" alt="{{ $page->title }}">
-                    </div>
-                </div>
-            @endif
-
             <!-- Items Grid -->
             @if(isset($page->items) && count($page->items) > 0)
-                <div class="row g-4">
-                    @foreach($page->items as $item)
-                        <div class="col-md-6 col-lg-4">
+                <div class="row g-4" id="heritage-grid">
+                    @foreach($page->items as $index => $item)
+                        @php
+                            $defaultImg = 'https://images.unsplash.com/photo-1513106580091-1d82408b8cd6?w=600&auto=format&fit=crop&q=80';
+                            $imgSrc = !empty($item->image) ? (\Illuminate\Support\Str::startsWith($item->image, 'http') ? $item->image : asset($item->image)) : $defaultImg;
+                        @endphp
+                        <div class="col-md-6 col-lg-4 heritage-item-col {{ $index >= 9 ? 'd-none' : '' }}" data-item-index="{{ $index }}">
                             <div class="heritage-card">
-                                @if(!empty($item->image))
-                                    <img src="{{ \Illuminate\Support\Str::startsWith($item->image, 'http') ? $item->image : asset($item->image) }}" alt="{{ $item->title }}">
-                                @endif
+                                <img src="{{ $imgSrc }}" alt="{{ $item->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ $defaultImg }}';">
                                 <div class="heritage-card-body">
                                     @if(!empty($item->sub_title))
                                         <span class="heritage-badge">{{ $item->sub_title }}</span>
@@ -102,6 +110,18 @@
                         </div>
                     @endforeach
                 </div>
+
+                @if(count($page->items) > 9)
+                    <!-- Auto Load Sentinel -->
+                    <div id="infinite-scroll-sentinel" class="text-center py-4 mt-4">
+                        <div id="auto-load-spinner" class="spinner-border text-primary d-none" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div id="all-loaded-msg" class="d-none">
+                            <span class="badge bg-secondary px-3 py-2 fs-6 rounded-pill">সবগুলো চলচ্চিত্র প্রদর্শিত হচ্ছে</span>
+                        </div>
+                    </div>
+                @endif
             @else
                 <div class="text-center py-5">
                     <p class="text-muted fs-5">কোনো তথ্য পাওয়া যায়নি।</p>
@@ -109,4 +129,63 @@
             @endif
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const itemsPerBatch = 6;
+            const sentinel = document.getElementById('infinite-scroll-sentinel');
+            const spinner = document.getElementById('auto-load-spinner');
+            const allLoadedMsg = document.getElementById('all-loaded-msg');
+
+            if (!sentinel) return;
+
+            let isLoading = false;
+
+            function loadNextBatch() {
+                const hiddenItems = document.querySelectorAll('.heritage-item-col.d-none');
+
+                if (hiddenItems.length === 0) {
+                    if (spinner) spinner.classList.add('d-none');
+                    if (allLoadedMsg) allLoadedMsg.classList.remove('d-none');
+                    if (observer) observer.disconnect();
+                    return;
+                }
+
+                isLoading = true;
+                if (spinner) spinner.classList.remove('d-none');
+
+                setTimeout(function () {
+                    let count = 0;
+                    hiddenItems.forEach(function (item) {
+                        if (count < itemsPerBatch) {
+                            item.classList.remove('d-none');
+                            item.classList.add('heritage-lazy-item');
+                            count++;
+                        }
+                    });
+
+                    if (spinner) spinner.classList.add('d-none');
+                    isLoading = false;
+
+                    const remainingHidden = document.querySelectorAll('.heritage-item-col.d-none');
+                    if (remainingHidden.length === 0) {
+                        if (allLoadedMsg) allLoadedMsg.classList.remove('d-none');
+                        if (observer) observer.disconnect();
+                    }
+                }, 300);
+            }
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && !isLoading) {
+                        loadNextBatch();
+                    }
+                });
+            }, {
+                rootMargin: '150px'
+            });
+
+            observer.observe(sentinel);
+        });
+    </script>
 @stop
