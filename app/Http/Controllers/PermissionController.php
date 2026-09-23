@@ -35,8 +35,8 @@ class PermissionController extends AppBaseController
      */
     public function create()
     {
-        $permission = Permission::where('cat_id', null)->pluck('name', 'key')->prepend('Select Cat', '');
-        return view('permissions.create', compact('permission'));
+        $categories = Permission::whereNull('cat_id')->orWhere('cat_id', '')->orWhere('cat_id', '0')->pluck('name', 'key')->prepend('Select Cat', '');
+        return view('permissions.create', compact('categories'));
     }
 
     /**
@@ -97,7 +97,9 @@ class PermissionController extends AppBaseController
             return redirect(route('permissions.index'));
         }
 
-        return view('permissions.edit')->with('permission', $permission);
+        $categories = Permission::whereNull('cat_id')->orWhere('cat_id', '')->orWhere('cat_id', '0')->pluck('name', 'key')->prepend('Select Cat', '');
+
+        return view('permissions.edit', compact('permission', 'categories'));
     }
 
     /**

@@ -9,9 +9,14 @@
         <!-- Header bar with Green background matching FDC theme -->
         <div class="card-header py-2 px-3 d-flex justify-content-between align-items-center" style="background-color: #8dc542 !important; color: #ffffff !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
             <h5 class="mb-0 font-weight-bold text-white"><i class="im im-icon-Clock me-2"></i>{{ $user->name_bn }} - ক্যারিয়ার পদোন্নতি ও ইনক্রিমেন্ট টাইমলাইন</h5>
-            <a class="btn btn-sm font-weight-bold shadow-sm" href="{{ route('employeePromotions.index') }}" style="background-color: #1f9303 !important; color: #ffffff !important; border: none;">
-                <i class="im im-icon-Arrow-Back me-1"></i> তালিকায় ফিরে যান
-            </a>
+            <div class="d-flex gap-2">
+                <a class="btn btn-sm font-weight-bold text-white shadow-sm" href="{{ route('staffTrainings.index') }}" style="background-color: #0d6efd !important; border: none;">
+                    <i class="im im-icon-Diploma me-1"></i> ট্রেনিং
+                </a>
+                <a class="btn btn-sm font-weight-bold shadow-sm" href="{{ route('employeePromotions.index') }}" style="background-color: #1f9303 !important; color: #ffffff !important; border: none;">
+                    <i class="im im-icon-Arrow-Back me-1"></i> তালিকায় ফিরে যান
+                </a>
+            </div>
         </div>
 
         <div class="card-body p-4">

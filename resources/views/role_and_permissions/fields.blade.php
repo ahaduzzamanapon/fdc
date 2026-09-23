@@ -13,7 +13,11 @@
     </div>
 </div>
 @php
-    $permissions = DB::table('permissions')->whereNull('cat_id')->get();
+    $permissions = DB::table('permissions')
+        ->where(function($q) {
+            $q->whereNull('cat_id')->orWhere('cat_id', '')->orWhere('cat_id', '0');
+        })
+        ->get();
 
     $per = [];
 

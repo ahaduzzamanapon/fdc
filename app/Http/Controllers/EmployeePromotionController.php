@@ -34,6 +34,10 @@ class EmployeePromotionController extends Controller
             $query->where('change_type', $request->change_type);
         }
 
+        if ($request->filled('staff_class')) {
+            $query->where('staff_class', $request->staff_class);
+        }
+
         if ($request->filled('department_id')) {
             $query->where('department_id', $request->department_id);
         }

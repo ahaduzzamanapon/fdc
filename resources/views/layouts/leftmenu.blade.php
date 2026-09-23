@@ -743,13 +743,13 @@
     {{-- Leaves & HR --}}
     @if (can('hr'))
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('leaves*') || Request::is('leave-apply-list*') || Request::is('employeePromotions*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
+            <a class="nav-link {!! Request::is('leaves*') || Request::is('leave-apply-list*') || Request::is('employeePromotions*') || Request::is('staffTrainings*') || Request::is('staffTrainingCourses*') ? 'active' : '' !!}" data-bs-toggle="collapse" href="#hr"
                 role="button" aria-expanded="false" aria-controls="hr">
                 <i class="icon im im-icon-Administrator"></i>
                 <span class="item-name">{{ __('messages.human_resources') }}</span>
                 <i class="right-icon im im-icon-Arrow-Right"></i>
             </a>
-            <ul class="sub-nav collapse {!! Request::is('leaves*') || Request::is('leave-apply-list*') || Request::is('employeePromotions*') ? 'show' : '' !!}" id="hr" data-bs-parent="#sidebar-menu">
+            <ul class="sub-nav collapse {!! Request::is('leaves*') || Request::is('leave-apply-list*') || Request::is('employeePromotions*') || Request::is('staffTrainings*') || Request::is('staffTrainingCourses*') ? 'show' : '' !!}" id="hr" data-bs-parent="#sidebar-menu">
                 @if (can('leaves'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('leaves*') ? 'active' : '' !!}" href="{{ route('leaves.index') }}">
@@ -769,7 +769,7 @@
                         </a>
                     </li>
                 @endif
-                @if (can('employee_promotions') || can('hr'))
+                @if (can('employee_promotions') || can('hr') || who('staff'))
                     <li class="nav-item">
                         <a class="nav-link {!! Request::is('employeePromotions*') ? 'active' : '' !!}"
                             href="{{ route('employeePromotions.index') }}">
@@ -779,6 +779,14 @@
                         </a>
                     </li>
                 @endif
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('staffTrainings*') || Request::is('staffTrainingCourses*') ? 'active' : '' !!}"
+                        href="{{ route('staffTrainings.index') }}">
+                        <i class="icon im im-icon-Diploma"></i>
+                        <i class="sidenav-mini-icon"> ট্র </i>
+                        <span class="item-name">প্রশিক্ষণ / ট্রেনিং</span>
+                    </a>
+                </li>
             </ul>
         </li>
     @endif

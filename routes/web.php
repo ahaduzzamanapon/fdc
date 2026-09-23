@@ -21,6 +21,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PhotoGalleryController;
 use App\Http\Controllers\NocApplicationController;
 use App\Http\Controllers\EmployeePromotionController;
+use App\Http\Controllers\StaffTrainingController;
+use App\Http\Controllers\StaffTrainingCourseController;
 
 // Contact form submission
 Route::post('/contact-submit', [ContactController::class, 'store'])->name('contact.submit');
@@ -343,6 +345,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('employeePromotions', EmployeePromotionController::class);
     Route::get('employeePromotions-timeline/{user_id}', [EmployeePromotionController::class, 'timeline'])->name('employeePromotions.timeline');
     Route::get('get-user-official-info', [EmployeePromotionController::class, 'getUserInfo'])->name('employeePromotions.getUserInfo');
+
+    // Staff Training Module
+    Route::post('staffTrainingCourses-store-ajax', [StaffTrainingCourseController::class, 'storeAjax'])->name('staffTrainingCourses.storeAjax');
+    Route::resource('staffTrainings', StaffTrainingController::class);
+    Route::resource('staffTrainingCourses', StaffTrainingCourseController::class);
 });
 Route::get('empty_table', 'JoshController@emptyTable');
 Route::get('remove_all_files', 'JoshController@remove_all_files');
