@@ -89,6 +89,12 @@ class FrontendController extends Controller
         return view('font_end.rate_card');
     }
 
+    public function services()
+    {
+        $categories = \App\Models\ItemCategory::with(['items.unit', 'items.department'])->get();
+        return view('font_end.pages.services', compact('categories'));
+    }
+
     public function film_related()
     {
         $data = \App\Models\FilmRelated::all();

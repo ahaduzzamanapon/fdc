@@ -48,5 +48,8 @@ class ItemCategory extends Model
         
     ];
 
-    
+    public function items()
+    {
+        return $this->hasMany(\App\Models\Item::class, 'cat_id');
+    }
 }

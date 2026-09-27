@@ -68,8 +68,18 @@
                                         </div>
                                     @else
                                         @foreach($yearGalleries as $gallery)
+                                            @php
+                                                $imageSrc = $gallery->image;
+                                                if (\Illuminate\Support\Str::startsWith($imageSrc, 'http')) {
+                                                    $imgUrl = $imageSrc;
+                                                } elseif (\Illuminate\Support\Str::startsWith($imageSrc, 'images/') || \Illuminate\Support\Str::startsWith($imageSrc, 'public/')) {
+                                                    $imgUrl = asset($imageSrc);
+                                                } else {
+                                                    $imgUrl = asset('storage/' . $imageSrc);
+                                                }
+                                            @endphp
                                             <div class="col-md-4 mb-3 text-center">
-                                                <img src="{{ asset('storage/' . $gallery->image) }}" alt="{{ $gallery->film_name }}" class="img-fluid" style="height:200px; width:100%; object-fit:cover; border:1px solid #ddd; margin-bottom:10px; border-radius: 8px;">
+                                                <img src="{{ $imgUrl }}" alt="{{ $gallery->film_name }}" class="img-fluid" style="height:200px; width:100%; object-fit:cover; border:1px solid #ddd; margin-bottom:10px; border-radius: 8px;">
                                                 <p style="font-family:SutonnyMJ; font-size:20px; font-weight:bold;">{{ $gallery->film_name }}</p>
                                             </div>
                                         @endforeach

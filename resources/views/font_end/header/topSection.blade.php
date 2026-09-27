@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-lg">
+<nav class="navbar sticky-top navbar-expand-lg" style="z-index: 1030 !important;">
     <div class="container p-0">
         <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
             @if(isset($siteSetting) && !empty($siteSetting->logo))
@@ -234,7 +234,7 @@
                     <a class="nav-link" href="#">{{ __('আমাদের সেবাসমূহ') }}</a>
 
                     <ul class="submenu">
-                        <li><a class="nav-link" href="#">সেবার তালিকা</a></li>
+                        <li><a class="nav-link" href="{{ route('services.page') }}">সেবার তালিকা</a></li>
                         <li><a class="nav-link" href="{{route('noc.create')}}">NOC আবেদন</a></li>
                         <li><a class="nav-link" href="{{route('rate_card')}}" target="_blank">রেট কার্ড (Rate Card)</a>
                         </li>

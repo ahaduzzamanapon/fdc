@@ -70,6 +70,7 @@ Route::get('certificate/verify/{producer}', [FrontendController::class, 'certifi
     ->name('certificate.verify');
 
 Route::get('/service/rate-card', [FrontendController::class, 'rate_card'])->name('rate_card');
+Route::get('/services', [FrontendController::class, 'services'])->name('services.page');
 Route::resource('noc', 'NocController');
 Route::get('/noc-search-list', [App\Http\Controllers\NocController::class, 'showSearchList'])->name('noc.search.list');
 Route::post('/noc-ajax-search', [App\Http\Controllers\NocController::class, 'ajaxSearch'])->name('noc.ajax.search');
