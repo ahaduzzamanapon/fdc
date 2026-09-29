@@ -27,9 +27,19 @@
             @if(isset($contactInfo) && !empty($contactInfo->description))
                 <ul style="list-style: none; padding-left: 0; margin-top: 0; margin-bottom: 0;">
                     @php
-                        $rawLines = explode("\n", str_replace(["\r", "\t"], "", $contactInfo->description));
+                        $desc = str_replace("\r", "", $contactInfo->description);
+                        $rawLines = explode("\n", $desc);
                         $cleanLines = [];
                         foreach ($rawLines as $l) {
+                            if (strpos($l, "\t") !== false) {
+                                if (strpos($l, ":") !== false || strpos($l, "ঃ") !== false) {
+                                    $l = str_replace("\t", " ", $l);
+                                } else {
+                                    $l = str_replace("\t", ": ", $l);
+                                }
+                            }
+                            $l = preg_replace('/:(?=[^\s])/u', ': ', $l);
+                            $l = preg_replace('/[ \t]+/u', ' ', $l);
                             $t = trim($l);
                             if ($t !== '') {
                                 $cleanLines[] = $t;
@@ -39,12 +49,20 @@
                     @foreach($cleanLines as $idx => $line)
                         @php
                             $lower = mb_strtolower($line);
-                            if (Str::contains($lower, ['ইমেইল', 'email', 'mail']) || $idx === 0) {
+                            if (Str::contains($lower, ['ইমেইল', 'email', 'mail'])) {
                                 $iconClass = 'fas fa-envelope';
-                            } elseif (Str::contains($lower, ['ফোন', 'phone', 'অফিস', 'tel']) || $idx === 1) {
+                            } elseif (Str::contains($lower, ['ফোন', 'phone', 'tel'])) {
                                 $iconClass = 'fas fa-phone';
-                            } elseif (Str::contains($lower, ['মোবাইল', 'mobile', 'cell']) || $idx === 2) {
+                            } elseif (Str::contains($lower, ['মোবাইল', 'mobile', 'cell'])) {
                                 $iconClass = 'fas fa-mobile-alt';
+                            } elseif (Str::contains($lower, ['ফ্যাক্স', 'fax'])) {
+                                $iconClass = 'fas fa-fax';
+                            } elseif (Str::contains($lower, ['নাম', 'name'])) {
+                                $iconClass = 'fas fa-user';
+                            } elseif (Str::contains($lower, ['পরিচালক', 'পরিচালনা', 'designation'])) {
+                                $iconClass = 'fas fa-user-tie';
+                            } elseif (Str::contains($lower, ['কর্পোরেশন', 'বাংলাদেশ', 'ঠিকানা', 'address', 'office'])) {
+                                $iconClass = 'fas fa-building';
                             } else {
                                 $iconClass = 'fas fa-info-circle';
                             }

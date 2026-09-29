@@ -97,7 +97,7 @@ class FooterDataSeeder extends Seeder
         ContactInfo::truncate();
         ContactInfo::create([
             'title' => 'বাংলাদেশ চলচ্চিত্র উন্নয়ন কর্পোরেশন (বিএফডিসি)',
-            'description' => "ইমেইল: md@fdc.gov.bd\nফোন (অফিস): ৪১০১০৪০১\nমোবাইল: ০১৭০০০০০০০০"
+            'description' => "নাম: মাসুমা রহমান তানি\nব্যবস্থাপনা পরিচালক\nবাংলাদেশ চলচ্চিত্র উন্নয়ন কর্পোরেশন\nইমেইল: md@fdc.gov.bd\nফোন (অফিস): ৪১০১০৪০১\nমোবাইল:\nফ্যাক্স: ৮৮-০২-৪১০১০৪২০"
         ]);
     }
 }
