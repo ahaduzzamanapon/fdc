@@ -46,7 +46,11 @@ class User extends Authenticatable
         'div_id',
         'dis_id',
         'upazila_id',
-        'present_add',
+        'village',
+        'present_div_id',
+        'present_dis_id',
+        'present_upazila_id',
+        'present_village',
         'picture',
         'signature',
         'note',
@@ -64,6 +68,46 @@ class User extends Authenticatable
     public function designationInfo()
     {
         return $this->belongsTo(Designation::class, 'designation');
+    }
+
+    public function departmentInfo()
+    {
+        return $this->belongsTo(Department::class, 'department');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(RoleAndPermission::class, 'group_id');
+    }
+
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'div_id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'dis_id');
+    }
+
+    public function upazila()
+    {
+        return $this->belongsTo(Upazila::class, 'upazila_id');
+    }
+
+    public function presentDivision()
+    {
+        return $this->belongsTo(Division::class, 'present_div_id');
+    }
+
+    public function presentDistrict()
+    {
+        return $this->belongsTo(District::class, 'present_dis_id');
+    }
+
+    public function presentUpazila()
+    {
+        return $this->belongsTo(Upazila::class, 'present_upazila_id');
     }
 
     public function staffTrainings()

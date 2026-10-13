@@ -58,28 +58,33 @@ class UserController extends Controller
                 $input['signature'] = 'no-image.png';
             }
 
-            $input['password'] = bcrypt($request->input('password', '12345678'));
+            $password = $request->filled('password') ? $request->password : '12345678';
+            $input['password'] = bcrypt($password);
 
-            if ($request->filled('mobile_no')) {
-                $input['username'] = $request->mobile_no;
-                $user = User::where('username', $request->mobile_no)->first();
-                if ($user) {
-                    Flash::error('Mobile No Already Exist.');
-                    return redirect()->back();
-                }
+            if (!$request->filled('username')) {
+                Flash::error('Username is required.');
+                return redirect()->back()->withInput();
             }
 
+            $user = User::where('username', $request->username)->first();
+            if ($user) {
+                Flash::error('Username Already Exist.');
+                return redirect()->back()->withInput();
+            }
+            $input['username'] = $request->username;
+
             $input['group_id'] = $request->user_role;
+            $input['current_status'] = 'Active';
 
             /** @var User $users */
             $users = User::create($input);
 
             Flash::success('User saved successfully.');
+            return redirect(route('users.index'));
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
+            return redirect()->back()->withInput();
         }
-
-        return redirect(route('users.index'));
     }
 
 
@@ -125,47 +130,56 @@ class UserController extends Controller
             return redirect(route('users.index'));
         }
 
-        $input = $request->all();
-        if ($request->hasFile('picture')) {
-            $file = $request->file('picture');
-            $folder = 'picture/user';
-            $customName = 'user-'.time();
-            $input['picture'] = uploadFile($file, $folder, $customName);
-        }else{
-            unset($input['picture']);
-        }
-
-        if ($request->hasFile('signature')) {
-            $file = $request->file('signature');
-            $folder = 'images/signature';
-            $customName = 'signature-'.time();
-            $input['signature'] = uploadFile($file, $folder, $customName);
-        }else{
-            unset($input['signature']);
-        }
-
-
-        if ($request->has('password') && !empty($request->password) && $request->password != '') {
-            $input['password'] = bcrypt($request->password);
-        }else{
-            unset($input['password']);
-        }
-
-        if ($request->has('mobile_no')) {
-            $input['username'] = $request->mobile_no;
-
-            $user = User::where('username', $request->mobile_no)->first();
-            if($user && $user->id != $id){
-                Flash::error('Mobile No Already Exist.');
-                return redirect()->back();
+        try {
+            $input = $request->all();
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $folder = 'picture/user';
+                $customName = 'user-'.time();
+                $input['picture'] = uploadFile($file, $folder, $customName);
+            }else{
+                unset($input['picture']);
             }
-        }
-        $input['group_id'] = $request->user_role;
 
-        $users->fill($input);
-        $users->save();
-        Flash::success('User updated successfully.');
-        return redirect(route('users.index'));
+            if ($request->hasFile('signature')) {
+                $file = $request->file('signature');
+                $folder = 'images/signature';
+                $customName = 'signature-'.time();
+                $input['signature'] = uploadFile($file, $folder, $customName);
+            }else{
+                unset($input['signature']);
+            }
+
+
+            if ($request->filled('password')) {
+                $input['password'] = bcrypt($request->password);
+            }else{
+                unset($input['password']);
+            }
+
+            if (!$request->filled('username')) {
+                Flash::error('Username is required.');
+                return redirect()->back()->withInput();
+            }
+
+            $user = User::where('username', $request->username)->first();
+            if ($user && $user->id != $id) {
+                Flash::error('Username Already Exist.');
+                return redirect()->back()->withInput();
+            }
+            $input['username'] = $request->username;
+
+
+            $input['group_id'] = $request->user_role;
+
+            $users->fill($input);
+            $users->save();
+            Flash::success('User updated successfully.');
+            return redirect(route('users.index'));
+        } catch (\Exception $e) {
+            Flash::error($e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
 

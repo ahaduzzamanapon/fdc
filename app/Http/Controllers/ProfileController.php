@@ -118,15 +118,7 @@ class ProfileController extends Controller
             unset($input['password']);
         }
 
-        if ($request->has('mobile_no')) {
-            $input['username'] = $request->mobile_no;
-
-            $user = User::where('username', $request->mobile_no)->first();
-            if($user && $user->id != $id){
-                Flash::error('Mobile No Already Exist.');
-                return redirect()->back();
-            }
-        }
+        unset($input['username']);
         // $input['group_id'] = $request->user_role;
 
         $profile->fill($input);

@@ -28,10 +28,13 @@ return new class extends Migration {
             $table->enum('marital_status', ['Single', 'Married'])->nullable();
             $table->integer('no_of_child')->nullable();
             $table->string('highest_qualification')->nullable();
-            $table->unsignedBigInteger('dis_id')->nullable();
+            $table->text('village');
+            $table->unsignedBigInteger('present_div_id')->nullable();
+            $table->unsignedBigInteger('present_dis_id')->nullable();
+            $table->unsignedBigInteger('present_upazila_id')->nullable();
+            $table->text('present_village')->nullable();
             $table->string('picture')->nullable();
             $table->string('signature')->nullable();
-            $table->text('present_add')->nullable();
             $table->text('note')->nullable();
             $table->enum('employee_type', ['Officer', 'Staff'])->nullable();
             $table->date('join_date')->nullable();
