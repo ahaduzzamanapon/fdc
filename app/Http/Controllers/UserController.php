@@ -91,7 +91,17 @@ class UserController extends Controller
     public function show($id)
     {
         /** @var User $users */
-        $users = User::find($id);
+        $users = User::with([
+            'designationInfo',
+            'departmentInfo',
+            'role',
+            'division',
+            'district',
+            'upazila',
+            'presentDivision',
+            'presentDistrict',
+            'presentUpazila'
+        ])->find($id);
 
         if (empty($users)) {
             Flash::error('User not found');

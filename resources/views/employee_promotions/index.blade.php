@@ -143,6 +143,11 @@
                                             <a href="{{ route('employeePromotions.show', [$item->id]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Eye me-1"></i> দেখুন
                                             </a>
+                                            @if($item->user_id)
+                                                <a href="{{ route('employeePromotions.timeline', $item->user_id) }}" class="dropdown-item">
+                                                    <i class="im im-icon-Clock me-1"></i> টাইমলাইন
+                                                </a>
+                                            @endif
                                             @if(!who('staff'))
                                                 <a href="{{ route('employeePromotions.edit', [$item->id]) }}" class="dropdown-item">
                                                     <i class="im im-icon-Pen me-1"></i> সম্পাদনা করুন

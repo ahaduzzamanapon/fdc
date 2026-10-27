@@ -13,34 +13,45 @@
                 <th>{{ __('messages.group') }}</th>
                 <th>{{ __('messages.email') }}</th>
                 <th>{{ __('messages.status') }}</th>
-                <th>{{ __('messages.action') }}</th>
+                <th class="text-center">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody>
-        @foreach($users as $key => $users)
+        @foreach($users as $key => $user)
             <tr>
                 <td>{{ $key+1 }}</td>
-            <td>{{ $users->name_bn }}</td>
-            <td>{{ $users->username }}</td>
-            <td>{{ $users->role }}</td>
-            <td>{{ $users->email }}</td>
-            <td>
-                @if($users->current_status == 'Active')
-                    <span class="badge badge-success">{{ __('messages.active') }}</span>
-                @else
-                    <span class="badge badge-danger">{{ __('messages.inactive') }}</span>
-                @endif
-            </td>
+                <td>{{ $user->name_bn }}</td>
+                <td>{{ $user->username }}</td>
+                <td>{{ $user->role }}</td>
+                <td>{{ $user->email }}</td>
                 <td>
-                    <div class='btn-group'>
-                        <a href="{{ route('users.show', [$users->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
-                        <a href="{{ route('users.edit', [$users->id]) }}" class='btn btn-outline-primary btn-xs'><i
-                            class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="{{ __('messages.edit') }}"></i></a>
-                        @if(can('user_delete'))
-                            {!! Form::open(['route' => ['users.destroy', $users->id], 'method' => 'delete']) !!}
-                        {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="' . __('messages.delete') . '"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('" . __('messages.are_you_sure') . "')"]) !!}
-                            {!! Form::close() !!}
-                        @endif
+                    @if($user->current_status == 'Active')
+                        <span class="badge badge-success">{{ __('messages.active') }}</span>
+                    @else
+                        <span class="badge badge-danger">{{ __('messages.inactive') }}</span>
+                    @endif
+                </td>
+                <td class="text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button" id="dropdownMenuButton{{ $user->id }}" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ __('messages.actions_button') ?? 'অ্যাকশন' }}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ $user->id }}">
+                            <a href="{{ route('users.show', [$user->id]) }}" class="dropdown-item">
+                                <i class="im im-icon-Eye me-1"></i> {{ __('messages.view') }}
+                            </a>
+                            <a href="{{ route('users.edit', [$user->id]) }}" class="dropdown-item">
+                                <i class="im im-icon-Pen me-1"></i> {{ __('messages.edit') }}
+                            </a>
+                            <a href="{{ route('employeePromotions.timeline', $user->id) }}" class="dropdown-item">
+                                <i class="im im-icon-Clock me-1"></i> টাইমলাইন
+                            </a>
+                            @if(can('user_delete'))
+                                {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                    {!! Form::button('<i class="im im-icon-Remove me-1"></i> ' . __('messages.delete'), ['type' => 'submit', 'class' => 'dropdown-item text-danger', 'onclick' => "return confirm('" . __('messages.are_you_sure') . "')"]) !!}
+                                {!! Form::close() !!}
+                            @endif
+                        </div>
                     </div>
                 </td>
             </tr>
