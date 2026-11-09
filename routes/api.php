@@ -7,6 +7,7 @@ use App\Http\Controllers\API\ItemCategoryAPIController;
 use App\Http\Controllers\API\ItemUnitAPIController;
 use App\Http\Controllers\API\ItemAPIController;
 use App\Http\Controllers\API\BookingPaymentAPIController;
+use App\Http\Controllers\API\ProducerPartyAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/items', [ItemAPIController::class, 'index']);
     Route::get('/items/{id}', [ItemAPIController::class, 'show']);
 
+    // Parties / Producers API
+    Route::get('/parties', [ProducerPartyAPIController::class, 'index']);
+    Route::get('/parties/{id}', [ProducerPartyAPIController::class, 'show']);
+
     // Booking Payments API
     Route::get('/booking-payments', [BookingPaymentAPIController::class, 'index']);
     Route::get('/booking-payments/{id}', [BookingPaymentAPIController::class, 'show']);
+
 });
