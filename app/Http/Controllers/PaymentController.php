@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificationMail;
+use App\Services\BfdcAccountingService;
 use Flash;
 
 class PaymentController extends Controller
@@ -214,6 +215,34 @@ class PaymentController extends Controller
             $insert1 = ApprovalLogs::create($data1);
 
             DB::commit();
+
+            // Auto-push to BFDC Accounting for Custom Package (silent background push)
+            if (config('services.bfdc_accounting.auto_sync', true) && !empty($package)) {
+                try {
+                    $cmFilmPackage = FilmPackage::where('package_id', $package->id)->where('type', 'package')->first();
+                    if (!$cmFilmPackage) {
+                        $cmFilmPackage = new FilmPackage();
+                        $cmFilmPackage->film_id = $package->film_id;
+                        $cmFilmPackage->package_id = $package->id;
+                        $cmFilmPackage->type = 'package';
+                        $cmFilmPackage->name = $package->name;
+                        $cmFilmPackage->amount = $package->amount;
+                        $cmFilmPackage->trn_id = $package->trn_id;
+                        $cmFilmPackage->TrxID = $package->trn_id;
+                        $cmFilmPackage->status = 'success';
+                        $cmFilmPackage->paid_at = date('Y-m-d H:i:s');
+                        $cmFilmPackage->save();
+                    } else {
+                        $cmFilmPackage->status = 'success';
+                        $cmFilmPackage->paid_at = date('Y-m-d H:i:s');
+                        $cmFilmPackage->save();
+                    }
+
+                    app(BfdcAccountingService::class)->pushToAccounting($cmFilmPackage);
+                } catch (\Throwable $e) {
+                    \Log::info('BFDC Accounting CM push skipped/ignored: ' . $e->getMessage());
+                }
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -416,6 +445,15 @@ class PaymentController extends Controller
                 }
             }
             DB::commit();
+
+            // Auto-push to BFDC Accounting (silent background push)
+            if (config('services.bfdc_accounting.auto_sync', true) && !empty($film_package)) {
+                try {
+                    app(BfdcAccountingService::class)->pushToAccounting($film_package);
+                } catch (\Throwable $e) {
+                    \Log::info('BFDC Accounting push skipped/ignored: ' . $e->getMessage());
+                }
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;

@@ -5,26 +5,24 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\MakePaymentResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\MakePayment;
-use App\Models\Booking;
-use App\Models\Package;
+use App\Models\FilmPackage;
+use App\Services\BfdcAccountingService;
 use Response;
 
 /**
  * Class BookingPaymentAPIController
  * @package App\Http\Controllers\API
  */
-
 class BookingPaymentAPIController extends AppBaseController
 {
     /**
-     * Display a listing of the BookingPayment with status 'success' or 'refound'.
+     * Display a listing of BookingPayments formatted for Accounting with Party & Bill Memo.
      * GET|HEAD /booking-payments
      *
      * @param Request $request
      * @return Response
-    */
+     */
     public function index(Request $request)
     {
         $allowedStatuses = ['success', 'refound', 'refund'];
@@ -37,19 +35,29 @@ class BookingPaymentAPIController extends AppBaseController
             $query->whereIn('status', $allowedStatuses);
         }
 
-        $filmPackage = $query->get();
+        if ($request->has('date')) {
+            $query->whereDate('paid_at', $request->date);
+        }
 
-        return $this->sendResponse(MakePaymentResource::collection($filmPackage), 'Booking Payments retrieved successfully');
+        if ($request->get('limit')) {
+            $query->limit((int) $request->get('limit'));
+        }
+
+        $filmPackages = $query->get();
+
+        return $this->sendResponse(
+            MakePaymentResource::collection($filmPackages),
+            'Booking Payments retrieved successfully'
+        );
     }
 
     /**
-     * Display the specified MakePayment by trn_id.
+     * Display a specific MakePayment by trn_id or TrxID.
      * GET|HEAD /booking-payments/{trn_id}
      *
      * @param string $trn_id
-     *
      * @return Response
-    */
+     */
     public function show($trn_id)
     {
         /** @var MakePayment $booking */
@@ -61,81 +69,52 @@ class BookingPaymentAPIController extends AppBaseController
             return $this->sendError('Booking Payment not found');
         }
 
-        $type = $booking->type;
-        $items = null;
-        if ($type == 'booking') {
-            $items = Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($booking->package_id);
-        } else {
-            $items = Package::with(['details.item', 'film', 'producer'])->find($booking->package_id);
-        }
-        $booking->details = $items;
-
-        return $this->sendResponse($booking, 'Booking Payment retrieved successfully');
+        return $this->sendResponse(
+            new MakePaymentResource($booking),
+            'Booking Payment retrieved successfully'
+        );
     }
 
     /**
-     * Store a newly created MakePayment in storage.
-     * POST /MakePayment
+     * Push payment(s) to BFDC Accounting manually from Admin or API.
+     * POST /api/booking-payments/push
      *
-     * @param CreateMakePaymentAPIRequest $request
-     *
+     * @param Request $request
+     * @param BfdcAccountingService $service
      * @return Response
-    */
-    // public function store(CreateMakePaymentAPIRequest $request)
-    // {
-    //     $input = $request->all();
+     */
+    public function pushManual(Request $request, BfdcAccountingService $service)
+    {
+        $id = $request->input('id');
+        $trnId = $request->input('trn_id');
+        $trxId = $request->input('trx_id');
 
-    //     /** @var MakePayment $MakePayment */
-    //     $MakePayment = MakePayment::create($input);
+        if ($id || $trnId || $trxId) {
+            $payment = FilmPackage::when($id, fn($q) => $q->where('id', $id))
+                ->when($trnId, fn($q) => $q->where('trn_id', $trnId))
+                ->when($trxId, fn($q) => $q->where('TrxID', $trxId))
+                ->first();
 
-    //     return $this->sendResponse(new MakePaymentResource($MakePayment), 'Approval Requests saved successfully');
-    // }
+            if (!$payment) {
+                return $this->sendError('Payment record not found');
+            }
 
-    /**
-     * Update the specified MakePayment in storage.
-     * PUT/PATCH /MakePayment/{id}
-     *
-     * @param int $id
-     * @param UpdateMakePaymentAPIRequest $request
-     *
-     * @return Response
-    */
-    // public function update($id, UpdateMakePaymentAPIRequest $request)
-    // {
-    //     /** @var MakePayment $MakePayment */
-    //     $MakePayment = MakePayment::find($id);
+            $result = $service->pushToAccounting($payment);
+            return $this->sendResponse($result, 'Payment pushed to Accounting');
+        }
 
-    //     if (empty($MakePayment)) {
-    //         return $this->sendError('Approval Requests not found');
-    //     }
+        // Batch manual push for latest successful payments
+        $limit = (int) $request->input('limit', 10);
+        $payments = FilmPackage::where('status', 'success')->latest()->limit($limit)->get();
 
-    //     $MakePayment->fill($request->all());
-    //     $MakePayment->save();
+        $results = [];
+        foreach ($payments as $p) {
+            $results[] = $service->pushToAccounting($p);
+        }
 
-    //     return $this->sendResponse(new MakePaymentResource($MakePayment), 'MakePayment updated successfully');
-    // }
-
-    /**
-     * Remove the specified MakePayment from storage.
-     * DELETE /MakePayment/{id}
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-    */
-    // public function destroy($id)
-    // {
-    //     /** @var MakePayment $MakePayment */
-    //     $MakePayment = MakePayment::find($id);
-
-    //     if (empty($MakePayment)) {
-    //         return $this->sendError('Approval Requests not found');
-    //     }
-
-    //     $MakePayment->delete();
-
-    //     return $this->sendSuccess('Approval Requests deleted successfully');
-    // }
+        return $this->sendResponse([
+            'count' => count($results),
+            'items' => $results
+        ], 'Batch push to Accounting completed');
+    }
 }

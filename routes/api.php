@@ -43,8 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/parties', [ProducerPartyAPIController::class, 'index']);
     Route::get('/parties/{id}', [ProducerPartyAPIController::class, 'show']);
 
-    // Booking Payments API
+    // Booking Payments API (Pull & Push)
     Route::get('/booking-payments', [BookingPaymentAPIController::class, 'index']);
-    Route::get('/booking-payments/{id}', [BookingPaymentAPIController::class, 'show']);
-
+    Route::get('/booking-payments/{trn_id}', [BookingPaymentAPIController::class, 'show']);
+    Route::post('/booking-payments/push', [BookingPaymentAPIController::class, 'pushManual']);
 });
