@@ -340,4 +340,103 @@ class BfdcAccountingService
             ];
         }
     }
+
+    /**
+     * Push Payment Refund record to Accounting system (Credit Note / Adjustment).
+     *
+     * @param \App\Models\PaymentRefund $refund
+     * @return array
+     */
+    public function pushRefundToAccounting(\App\Models\PaymentRefund $refund): array
+    {
+        $correlationId = (string) Str::uuid();
+        $filmPackage = \App\Models\FilmPackage::find($refund->payment_id);
+
+        $partyCode = 'PRTY-00001';
+        $partyName = 'General Producer';
+        $partyPhone = null;
+        $banner = 'General Banner';
+        $filmTitle = 'General Film';
+        $mrNo = ($filmPackage && $filmPackage->bank_payment_id) ? $filmPackage->bank_payment_id : $refund->trn_id;
+        $refundDate = $refund->created_at ? $refund->created_at->format('Y-m-d') : date('Y-m-d');
+        $refundAmount = (float) $refund->amount;
+        $chargeAmount = (float) $refund->charge;
+
+        if ($filmPackage) {
+            if ($filmPackage->type === 'booking') {
+                $booking = \App\Models\Booking::with(['film', 'producer'])->find($filmPackage->package_id);
+                if ($booking) {
+                    if ($booking->producer) {
+                        $partyCode = "PRTY-" . str_pad($booking->producer->id, 5, '0', STR_PAD_LEFT);
+                        $partyName = $booking->producer->owners_name ?: ($booking->producer->organization_name ?: $partyName);
+                        $partyPhone = $booking->producer->phone_number;
+                    }
+                    if ($booking->film) {
+                        $banner = $booking->film->banner_name ?: ($booking->film->organization_name ?: $banner);
+                        $filmTitle = $booking->film->film_title ?: $filmTitle;
+                    }
+                }
+            } else {
+                $package = \App\Models\Package::with(['film', 'producer'])->find($filmPackage->package_id);
+                if ($package) {
+                    if ($package->producer) {
+                        $partyCode = "PRTY-" . str_pad($package->producer->id, 5, '0', STR_PAD_LEFT);
+                        $partyName = $package->producer->owners_name ?: ($package->producer->organization_name ?: $partyName);
+                        $partyPhone = $package->producer->phone_number;
+                    }
+                    if ($package->film) {
+                        $banner = $package->film->banner_name ?: ($package->film->organization_name ?: $banner);
+                        $filmTitle = $package->film->film_title ?: $filmTitle;
+                    }
+                }
+            }
+        }
+
+        try {
+            // 1. Ensure Party exists in Accounting
+            $partyPayload = [
+                'partyCode' => $partyCode,
+                'name' => $partyName,
+                'clientRequestId' => (string) Str::uuid(),
+            ];
+            if ($partyPhone) {
+                $partyPayload['phoneNumber'] = $partyPhone;
+            }
+            $this->request('post', '/api/v1/party', $partyPayload, $correlationId);
+
+            // 2. Push Refund / Negative Adjustment Collection
+            // Posts the refund reversal with original receipt reference
+            $refundPayload = [
+                'collectionDate' => $refundDate,
+                'banner' => $banner,
+                'filmName' => $filmTitle,
+                'mrNo' => "RFD-{$mrNo}",
+                'originalMrNo' => $mrNo,
+                'collectionAmount' => -$refundAmount, // Negative amount for accounting reversal
+                'refundAmount' => $refundAmount,
+                'deductedCharge' => $chargeAmount,
+                'remarks' => "Payment Refund for Trx: {$mrNo} (Deducted 10% charge: {$chargeAmount})",
+                'clientRequestId' => (string) Str::uuid(),
+            ];
+
+            $response = $this->request('post', '/api/v1/collection', $refundPayload, $correlationId);
+            $isSuccess = $response->successful() || $response->status() === 409;
+
+            return [
+                'success' => $isSuccess,
+                'status' => $response->status(),
+                'data' => $response->json(),
+                'refundId' => $refund->id,
+                'trn_id' => $refund->trn_id,
+            ];
+        } catch (\Throwable $e) {
+            Log::error('Refund Accounting push error: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'refundId' => $refund->id,
+                'trn_id' => $refund->trn_id,
+            ];
+        }
+    }
 }

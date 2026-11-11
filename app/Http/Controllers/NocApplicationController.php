@@ -108,6 +108,13 @@ class NocApplicationController extends Controller
         return view('noc.rejected_list', compact('nocs'));
     }
 
+    // NOC Payment / Paid list
+    public function paid()
+    {
+        $nocs = Noc::where('status', 'paid')->latest()->get();
+        return view('noc.paid_list', compact('nocs'));
+    }
+
     // NOC Application forward
     public function forward($noc)
     {

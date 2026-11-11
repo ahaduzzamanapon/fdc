@@ -143,6 +143,7 @@ Route::group(["middleware" => ['auth.multi']], function () {
 
     // Manual push to Accounting directly from web admin
     Route::post('makePayments/{id}/push-accounting', [MakePaymentController::class, 'pushAccountingWeb'])->name('makePayments.pushAccounting');
+    Route::post('makePayments/{id}/push-refund-accounting', [MakePaymentController::class, 'pushRefundAccountingWeb'])->name('makePayments.pushRefundAccounting');
     Route::post('nocPayments/{id}/push-accounting', [\App\Http\Controllers\NocController::class, 'pushAccountingWeb'])->name('nocPayments.pushAccounting');
 });
 
@@ -233,6 +234,7 @@ Route::group(["middleware" => ['auth.multi']], function () {
     Route::resource('nocApplications', 'NocApplicationController');
     Route::get('nocApplication/pending', [NocApplicationController::class, 'pending'])->name('nocApplication.pending');
     Route::get('nocApplication/approved', [NocApplicationController::class, 'approved'])->name('nocApplication.approved');
+    Route::get('nocApplication/paid', [NocApplicationController::class, 'paid'])->name('nocApplication.paid');
     Route::get('nocApplication/rejected', [NocApplicationController::class, 'rejected'])->name('nocApplication.rejected');
     Route::prefix('noc-application')->name('nocApplication.')->group(function () {
         Route::get('{id}', [NocApplicationController::class, 'forward'])->name('forward');
@@ -261,6 +263,11 @@ Route::group(["middleware" => ['auth.multi']], function () {
         Route::post('show-payment-reports', [Reports::class, 'payment_report_show'])->name('showPaymentReport');
         Route::match(['get', 'post'], 'payment/export/{type}', [Reports::class, 'payment_exportReport'])->name('payment.export');
         Route::get('get-applications-by-type', [Reports::class, 'get_applications_by_type'])->name('getApplicationsByType');
+
+        // NOC Payment Report Routes
+        Route::get('noc-payment-reports', [Reports::class, 'noc_payment_report_index'])->name('nocPaymentReport');
+        Route::post('show-noc-payment-reports', [Reports::class, 'noc_payment_report_show'])->name('showNocPaymentReport');
+        Route::match(['get', 'post'], 'noc-payment/export/{type}', [Reports::class, 'noc_payment_exportReport'])->name('nocPayment.export');
     });
 
     Route::get('filmApplications_forward_table', [FilmApplicationController::class, 'forward_table'])->name('filmApplications.forward.table');

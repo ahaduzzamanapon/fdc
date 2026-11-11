@@ -265,6 +265,14 @@
                     <span class="item-name">{{ __('পেমেন্ট রিপোর্ট') }}</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('reports/noc-payment-reports') ? 'active' : '' }}"
+                    href="{{ route('reports.nocPaymentReport') }}">
+                    <i class="icon im im-icon-Settings-Window"></i>
+                    <i class="sidenav-mini-icon">এন</i>
+                    <span class="item-name">{{ __('NOC পেমেন্ট রিপোর্ট') }}</span>
+                </a>
+            </li>
         </ul>
     </li>
 
@@ -280,12 +288,12 @@
     {{-- NOC--}} {{-- 23-06-2026  --}}
     @if (can('noc_application') || can('noc') || Auth::user()->user_role == 16 || Auth::user()->user_role == 1)
         <li class="nav-item">
-            <a class="nav-link {!! Request::is('nocApplication/pending') || Request::is('nocApplication/approved') || Request::is('nocApplication/rejected') ? 'active' : '' !!}"
+            <a class="nav-link {!! Request::is('nocApplication/pending') || Request::is('nocApplication/approved') || Request::is('nocApplication/paid') || Request::is('nocApplication/rejected') ? 'active' : '' !!}"
                 data-bs-toggle="collapse" href="#nocApplication" role="button" aria-expanded="false" aria-controls="hr"> <i
                     class="icon im im-icon-Calendar-4"></i> <span class="item-name"> NOC আবেদন </span> <i
                     class="right-icon im im-icon-Arrow-Right"></i>
             </a>
-            <ul class="sub-nav collapse {!! Request::is('nocApplication/pending') || Request::is('nocApplication/approved') || Request::is('nocApplication/rejected') ? 'show' : '' !!}" id="nocApplication" data-bs-parent="#sidebar-menu">
+            <ul class="sub-nav collapse {!! Request::is('nocApplication/pending') || Request::is('nocApplication/approved') || Request::is('nocApplication/paid') || Request::is('nocApplication/rejected') ? 'show' : '' !!}" id="nocApplication" data-bs-parent="#sidebar-menu">
                 {{-- প্রক্রিয়াধীন তালিকা --}}
                 <li class="nav-item">
                     <a class="nav-link {!! Request::is('nocApplication/booking') ? 'active' : '' !!}" aria-current="page"
@@ -301,6 +309,15 @@
                         href="{{ route('nocApplication.approved') }}">
                         <i class="icon im im-icon-Home"></i>
                         <span class="item-name"> অনুমোদিত তালিকা </span>
+                    </a>
+                </li>
+
+                {{-- পরিশোধিত তালিকা (পেমেন্ট) --}}
+                <li class="nav-item">
+                    <a class="nav-link {!! Request::is('nocApplication/paid') ? 'active' : '' !!}" aria-current="page"
+                        href="{{ route('nocApplication.paid') }}">
+                        <i class="icon im im-icon-Money-Bag"></i>
+                        <span class="item-name"> পরিশোধিত তালিকা (পেমেন্ট) </span>
                     </a>
                 </li>
 
@@ -1050,6 +1067,14 @@
                             <i class="icon im im-icon-Settings-Window"></i>
                             <i class="sidenav-mini-icon">পে</i>
                             <span class="item-name">{{ __('পেমেন্ট রিপোর্ট') }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('reports/noc-payment-reports') ? 'active' : '' }}"
+                            href="{{ route('reports.nocPaymentReport') }}">
+                            <i class="icon im im-icon-Settings-Window"></i>
+                            <i class="sidenav-mini-icon">এন</i>
+                            <span class="item-name">{{ __('NOC পেমেন্ট রিপোর্ট') }}</span>
                         </a>
                     </li>
                 @endif

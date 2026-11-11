@@ -35,7 +35,7 @@ return [
         'base_url' => env('BFDC_ACCOUNTING_BASE_URL', 'http://localhost:12032'),
         'username' => env('BFDC_ACCOUNTING_USERNAME', ''),
         'password' => env('BFDC_ACCOUNTING_PASSWORD', ''),
-        'auto_sync' => env('BFDC_ACCOUNTING_AUTO_SYNC', false),
+        'auto_sync' => env('BFDC_ACCOUNTING_AUTO_SYNC', true),
     ],
 
 ];

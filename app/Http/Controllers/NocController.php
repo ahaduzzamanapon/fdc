@@ -139,6 +139,15 @@ class NocController extends Controller
                 $insert1 = ApprovalLogs::create($data1);
 
                 DB::commit();
+
+                // Auto-push NOC payment to BFDC Accounting
+                if (config('services.bfdc_accounting.auto_sync', true) && !empty($get)) {
+                    try {
+                        app(\App\Services\BfdcAccountingService::class)->pushNocToAccounting($get);
+                    } catch (\Throwable $e) {
+                        \Log::info('BFDC Accounting NOC auto push skipped/ignored: ' . $e->getMessage());
+                    }
+                }
             } catch (\Exception $e) {
                 DB::rollBack();
                 throw $e;

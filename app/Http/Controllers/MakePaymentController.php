@@ -500,6 +500,16 @@ class MakePaymentController extends AppBaseController
             } catch (\Throwable $e) {
                 \Log::error('Mail failed', ['error' => $e->getMessage()]);
             }
+
+            // Auto push refund to accounting if enabled
+            if (config('services.bfdc_accounting.auto_sync', false)) {
+                try {
+                    app(\App\Services\BfdcAccountingService::class)->pushRefundToAccounting($refund);
+                } catch (\Throwable $th) {
+                    \Log::error('Auto refund sync failed', ['error' => $th->getMessage()]);
+                }
+            }
+
             Flash::success('Payment refound successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();
@@ -794,6 +804,54 @@ class MakePaymentController extends AppBaseController
         } else {
             $msg = $result['error'] ?? ($result['data']['message'] ?? 'পুশ সম্পন্ন হতে সমস্যা হয়েছে।');
             Flash::error("BFDC Accounting পুশ ব্যর্থ: {$msg}");
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Manual push refund to BFDC Accounting from Admin UI.
+     */
+    public function pushRefundAccountingWeb($id, \App\Services\BfdcAccountingService $service)
+    {
+        // Security check: Only internal officers/admin can trigger accounting push
+        if (Auth::guard('producer')->check()) {
+            abort(403, 'অননুমোদিত অ্যাক্সেস। প্রযোজক এই কাজ করতে পারবেন না।');
+        }
+
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $payment = \App\Models\FilmPackage::find($realId);
+
+        if (!$payment) {
+            Flash::error('Payment record not found.');
+            return redirect()->back();
+        }
+
+        $refund = PaymentRefund::where('payment_id', $payment->id)->latest()->first();
+        if (!$refund) {
+            $refund = PaymentRefund::where('trn_id', $payment->trn_id)->latest()->first();
+        }
+
+        if (!$refund) {
+            // If refund record doesn't exist, create an on-the-fly refund model instance for push
+            $refund = new PaymentRefund([
+                'payment_id' => $payment->id,
+                'trn_id' => $payment->trn_id,
+                'amount' => $payment->amount - ($payment->amount * 0.1),
+                'charge' => $payment->amount * 0.1,
+                'type' => $payment->type,
+                'status' => 'refunded'
+            ]);
+            $refund->created_at = $payment->updated_at ?: now();
+        }
+
+        $result = $service->pushRefundToAccounting($refund);
+
+        if (!empty($result['success'])) {
+            Flash::success("BFDC Accounting-এ রিফান্ড সফলভাবে পুশ করা হয়েছে (Trx: {$payment->trn_id})");
+        } else {
+            $msg = $result['error'] ?? ($result['data']['message'] ?? 'রিফান্ড পুশ সম্পন্ন হতে সমস্যা হয়েছে।');
+            Flash::error("BFDC Accounting রিফান্ড পুশ ব্যর্থ: {$msg}");
         }
 
         return redirect()->back();

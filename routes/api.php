@@ -9,6 +9,7 @@ use App\Http\Controllers\API\ItemAPIController;
 use App\Http\Controllers\API\BookingPaymentAPIController;
 use App\Http\Controllers\API\ProducerPartyAPIController;
 use App\Http\Controllers\API\NocPaymentAPIController;
+use App\Http\Controllers\API\PaymentRefundAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,4 +54,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/noc-payments', [NocPaymentAPIController::class, 'index']);
     Route::get('/noc-payments/{identifier}', [NocPaymentAPIController::class, 'show']);
     Route::post('/noc-payments/push', [NocPaymentAPIController::class, 'pushManual']);
+
+    // Payment Refunds API (Pull & Push)
+    Route::get('/payment-refunds', [PaymentRefundAPIController::class, 'index']);
+    Route::get('/payment-refunds/{identifier}', [PaymentRefundAPIController::class, 'show']);
+    Route::post('/payment-refunds/push', [PaymentRefundAPIController::class, 'pushManual']);
 });

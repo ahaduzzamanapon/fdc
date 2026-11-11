@@ -11,6 +11,7 @@ use App\Models\RealityApplication;
 use App\Models\DocufilmApplication;
 use App\Models\PartyApplication;
 use App\Models\MakePayment;
+use App\Models\Noc;
 use App\Exports\ViewExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Auth;
@@ -278,6 +279,90 @@ class Reports extends Controller
                 });
             })
             ->orderByDesc('film_packages.id')
+            ->get();
+
+        $viewData = [$compactName => $data];
+
+        return Excel::download(new ViewExport($view, $viewData), $filename);
+    }
+
+    public function noc_payment_report_index()
+    {
+        return view('reports.noc_payment_report.index');
+    }
+
+    public function noc_payment_report_show(Request $request)
+    {
+        $query = Noc::query();
+
+        if (Auth::guard('producer')->check()) {
+            $producer = Auth::guard('producer')->user();
+            $query->where(function ($q) use ($producer) {
+                $q->where('producer', 'like', "%{$producer->owners_name}%")
+                  ->orWhere('mobile_no', $producer->phone_number)
+                  ->orWhere('email', $producer->email);
+            });
+        }
+
+        $nocPayments = $query
+            ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
+                $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+            })
+            ->when(!empty($request->status), function ($q) use ($request) {
+                $q->where('status', $request->status);
+            })
+            ->when(!empty($request->search), function ($q) use ($request) {
+                $term = $request->search;
+                $q->where(function ($sub) use ($term) {
+                    $sub->where('trx_id', 'like', "%{$term}%")
+                        ->orWhere('token', 'like', "%{$term}%")
+                        ->orWhere('name', 'like', "%{$term}%")
+                        ->orWhere('producer', 'like', "%{$term}%")
+                        ->orWhere('organization', 'like', "%{$term}%");
+                });
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        $html = view('reports.noc_payment_report.paymentReport', compact('nocPayments'))->render();
+        return response($html);
+    }
+
+    public function noc_payment_exportReport(Request $request, $type)
+    {
+        $view = 'reports.noc_payment_report.payment_excel';
+        $filename = 'noc_payment_report_' . date('Y_m_d_His') . '.xlsx';
+        $compactName = 'nocPayments';
+
+        $query = Noc::query();
+
+        if (Auth::guard('producer')->check()) {
+            $producer = Auth::guard('producer')->user();
+            $query->where(function ($q) use ($producer) {
+                $q->where('producer', 'like', "%{$producer->owners_name}%")
+                  ->orWhere('mobile_no', $producer->phone_number)
+                  ->orWhere('email', $producer->email);
+            });
+        }
+
+        $data = $query
+            ->when(!empty($request->from_date) && !empty($request->to_date), function ($q) use ($request) {
+                $q->whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date]);
+            })
+            ->when(!empty($request->status), function ($q) use ($request) {
+                $q->where('status', $request->status);
+            })
+            ->when(!empty($request->search), function ($q) use ($request) {
+                $term = $request->search;
+                $q->where(function ($sub) use ($term) {
+                    $sub->where('trx_id', 'like', "%{$term}%")
+                        ->orWhere('token', 'like', "%{$term}%")
+                        ->orWhere('name', 'like', "%{$term}%")
+                        ->orWhere('producer', 'like', "%{$term}%")
+                        ->orWhere('organization', 'like', "%{$term}%");
+                });
+            })
+            ->orderByDesc('id')
             ->get();
 
         $viewData = [$compactName => $data];

@@ -76,15 +76,30 @@
                                             </li>
                                         @endif
 
+                                        @if (in_array(strtolower($payment->status), ['refound', 'refund']))
+                                        @if (!Auth::guard('producer')->check())
+                                        <li class="nav-item">
+                                            <form action="{{ route('makePayments.pushRefundAccounting', secure_hash_id($payment->id)) }}" method="POST" style="margin: 0;" onsubmit="return confirm('আপনি কি এই রিফান্ড রেকর্ডটি BFDC Accounting-এ পুশ করতে চান?');">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left; padding: 0.25rem 1.5rem; cursor: pointer;">
+                                                    <i class="im im-icon-Upload"></i> রিফান্ড পুশ করুন
+                                                </button>
+                                            </form>
+                                        </li>
+                                        @endif
+                                        @endif
+
                                         @if ($payment->status == 'success')
                                         <li @class(['nav-item'])>
-                                            <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" @class(['btn', 'btn-sm', 'text-white']) style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
+                                            <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="dropdown-item">
+                                                <i class="im im-icon-Receipt"></i> {{ 'পেমেন্ট স্লিপ' }}
+                                            </a>
                                         </li>
                                         @if (!Auth::guard('producer')->check())
                                         <li class="nav-item">
-                                            <form action="{{ route('makePayments.pushAccounting', secure_hash_id($payment->id)) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি এই পেমেন্ট তথ্যটি BFDC Accounting-এ পুশ করতে চান?');">
+                                            <form action="{{ route('makePayments.pushAccounting', secure_hash_id($payment->id)) }}" method="POST" style="margin: 0;" onsubmit="return confirm('আপনি কি এই পেমেন্ট তথ্যটি BFDC Accounting-এ পুশ করতে চান?');">
                                                 @csrf
-                                                <button type="submit" class="dropdown-item text-primary" style="background:none; border:none;">
+                                                <button type="submit" class="dropdown-item text-primary" style="background: none; border: none; width: 100%; text-align: left; padding: 0.25rem 1.5rem; cursor: pointer;">
                                                     <i class="im im-icon-Upload"></i> অ্যাকাউন্টিংয়ে পুশ করুন
                                                 </button>
                                             </form>
@@ -92,7 +107,9 @@
                                         @endif
                                         @if (Auth::guard('producer')->check())
                                         <li @class(['nav-item'])>
-                                            <a target="_blank" href="{{ route('pay.cancel.request', Crypt::encrypt($payment->id)) }}" @class(['btn', 'btn-sm', 'text-white']) style="background-color: #dc3545; border-color: #dc3545;">{{ 'পেমেন্ট বাতিল করুন' }}</a>
+                                            <a target="_blank" href="{{ route('pay.cancel.request', Crypt::encrypt($payment->id)) }}" class="dropdown-item text-danger">
+                                                <i class="im im-icon-Close"></i> {{ 'পেমেন্ট বাতিল করুন' }}
+                                            </a>
                                         </li>
                                         @endif
                                         @endif
