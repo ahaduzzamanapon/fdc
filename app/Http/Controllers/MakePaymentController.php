@@ -768,4 +768,29 @@ class MakePaymentController extends AppBaseController
     {
         //
     }
+
+    /**
+     * Manual push payment to BFDC Accounting from Admin UI.
+     */
+    public function pushAccountingWeb($id, \App\Services\BfdcAccountingService $service)
+    {
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $payment = \App\Models\FilmPackage::find($realId);
+
+        if (!$payment) {
+            Flash::error('Payment record not found.');
+            return redirect()->back();
+        }
+
+        $result = $service->pushToAccounting($payment);
+
+        if (!empty($result['success'])) {
+            Flash::success("BFDC Accounting-এ সফলভাবে পুশ করা হয়েছে (MR No: {$result['mrNo']})");
+        } else {
+            $msg = $result['error'] ?? ($result['data']['message'] ?? 'পুশ সম্পন্ন হতে সমস্যা হয়েছে।');
+            Flash::error("BFDC Accounting পুশ ব্যর্থ: {$msg}");
+        }
+
+        return redirect()->back();
+    }
 }

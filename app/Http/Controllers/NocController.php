@@ -317,4 +317,29 @@ class NocController extends Controller
     {
         //
     }
+
+    /**
+     * Manual push NOC payment to BFDC Accounting from Admin UI.
+     */
+    public function pushAccountingWeb($id, \App\Services\BfdcAccountingService $service)
+    {
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $noc = Noc::find($realId);
+
+        if (!$noc) {
+            Flash::error('NOC record not found.');
+            return redirect()->back();
+        }
+
+        $result = $service->pushNocToAccounting($noc);
+
+        if (!empty($result['success'])) {
+            Flash::success("NOC পেমেন্ট BFDC Accounting-এ সফলভাবে পুশ করা হয়েছে (MR No: {$result['mrNo']})");
+        } else {
+            $msg = $result['error'] ?? ($result['data']['message'] ?? 'পুশ সম্পন্ন হতে সমস্যা হয়েছে।');
+            Flash::error("NOC Accounting পুশ ব্যর্থ: {$msg}");
+        }
+
+        return redirect()->back();
+    }
 }

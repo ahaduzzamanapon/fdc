@@ -140,6 +140,10 @@ Route::group(["middleware" => ['auth.multi']], function () {
     Route::get('booking_invoice/{id}', [MakePaymentController::class, 'booking_invoice'])->name('booking.invoice');
     Route::get('package_invoice/{id}', [MakePaymentController::class, 'package_invoice'])->name('package.invoice');
     // cancel payment process end
+
+    // Manual push to Accounting directly from web admin
+    Route::post('makePayments/{id}/push-accounting', [MakePaymentController::class, 'pushAccountingWeb'])->name('makePayments.pushAccounting');
+    Route::post('nocPayments/{id}/push-accounting', [\App\Http\Controllers\NocController::class, 'pushAccountingWeb'])->name('nocPayments.pushAccounting');
 });
 
 // applications

@@ -47,6 +47,12 @@ NOC তালিকা
                                 <td>{{ $noc->total }}</td>
                                 <td>
                                     <a href="{{ route('noc.edit', secure_hash_id($noc->id)) }}" class="btn btn-sm btn-info"> Action </a>
+                                    <form action="{{ route('nocPayments.pushAccounting', secure_hash_id($noc->id)) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি এই NOC পেমেন্টটি BFDC Accounting-এ পুশ করতে চান?');">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-primary" title="অ্যাকাউন্টিংয়ে পুশ করুন">
+                                            <i class="im im-icon-Upload"></i> পুশ করুন
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

@@ -80,6 +80,16 @@
                                         <li @class(['nav-item'])>
                                             <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" @class(['btn', 'btn-sm', 'text-white']) style="background-color: #8dc542; border-color: #8dc542;">{{ 'পেমেন্ট স্লিপ' }}</a>
                                         </li>
+                                        @if (!Auth::guard('producer')->check())
+                                        <li class="nav-item">
+                                            <form action="{{ route('makePayments.pushAccounting', secure_hash_id($payment->id)) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি এই পেমেন্ট তথ্যটি BFDC Accounting-এ পুশ করতে চান?');">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item text-primary" style="background:none; border:none;">
+                                                    <i class="im im-icon-Upload"></i> অ্যাকাউন্টিংয়ে পুশ করুন
+                                                </button>
+                                            </form>
+                                        </li>
+                                        @endif
                                         @if (Auth::guard('producer')->check())
                                         <li @class(['nav-item'])>
                                             <a target="_blank" href="{{ route('pay.cancel.request', Crypt::encrypt($payment->id)) }}" @class(['btn', 'btn-sm', 'text-white']) style="background-color: #dc3545; border-color: #dc3545;">{{ 'পেমেন্ট বাতিল করুন' }}</a>
