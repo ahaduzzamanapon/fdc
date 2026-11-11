@@ -98,7 +98,7 @@
                                 <a href="{{ route('employeePromotions.timeline', $users->id) }}" class="btn btn-info btn-sm font-weight-bold text-white shadow-sm mr-2 me-2" style="background-color: #17a2b8; border: none;">
                                     <i class="im im-icon-Clock mr-1 me-1"></i> টাইমলাইন
                                 </a>
-                                <a href="{{ route('users.edit', $users->id) }}" class="btn btn-light btn-sm font-weight-bold shadow-sm mr-2 me-2" style="color: #001BFE;">
+                                <a href="{{ route('users.edit', secure_hash_id($users->id)) }}" class="btn btn-light btn-sm font-weight-bold shadow-sm mr-2 me-2" style="color: #001BFE;">
                                     <i class="fas fa-edit mr-1 me-1"></i> {{ __('messages.edit') }}
                                 </a>
                                 <a href="{{ route('users.index') }}" class="btn btn-outline-light btn-sm font-weight-bold shadow-sm">
@@ -147,7 +147,7 @@
                                         <a href="{{ route('employeePromotions.timeline', $users->id) }}" class="btn btn-outline-info btn-block btn-sm shadow-sm mb-2 font-weight-bold w-100">
                                             <i class="im im-icon-Clock mr-1 me-1"></i> টাইমলাইন
                                         </a>
-                                        <a href="{{ route('users.edit', $users->id) }}" class="btn btn-outline-primary btn-block btn-sm shadow-sm mb-2 w-100">
+                                        <a href="{{ route('users.edit', secure_hash_id($users->id)) }}" class="btn btn-outline-primary btn-block btn-sm shadow-sm mb-2 w-100">
                                             <i class="fas fa-edit mr-1 me-1"></i> {{ __('messages.edit') }}
                                         </a>
                                         <a href="{{ route('users.index') }}" class="btn btn-outline-secondary btn-block btn-sm shadow-sm w-100">

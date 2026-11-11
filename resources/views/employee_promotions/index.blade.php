@@ -140,7 +140,7 @@
                                             অ্যাকশন
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ $item->id }}">
-                                            <a href="{{ route('employeePromotions.show', [$item->id]) }}" class="dropdown-item">
+                                            <a href="{{ route('employeePromotions.show', [secure_hash_id($item->id)]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Eye me-1"></i> দেখুন
                                             </a>
                                             @if($item->user_id)
@@ -149,7 +149,7 @@
                                                 </a>
                                             @endif
                                             @if(!who('staff'))
-                                                <a href="{{ route('employeePromotions.edit', [$item->id]) }}" class="dropdown-item">
+                                                <a href="{{ route('employeePromotions.edit', [secure_hash_id($item->id)]) }}" class="dropdown-item">
                                                     <i class="im im-icon-Pen me-1"></i> সম্পাদনা করুন
                                                 </a>
                                                 {!! Form::open(['route' => ['employeePromotions.destroy', secure_hash_id($item->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}

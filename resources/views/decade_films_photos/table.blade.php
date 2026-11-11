@@ -43,10 +43,10 @@
                 </td>
                 <td>
                     <div class='btn-group'>
-                        <a href="{{ route('decadeFilmsPhotos.show', $gallery->id) }}" class='btn btn-outline-primary btn-xs'>
+                        <a href="{{ route('decadeFilmsPhotos.show', secure_hash_id($gallery->id)) }}" class='btn btn-outline-primary btn-xs'>
                             <i class="im im-icon-Eye" title="View"></i>
                         </a>
-                        <a href="{{ route('decadeFilmsPhotos.edit', $gallery->id) }}" class='btn btn-outline-primary btn-xs'>
+                        <a href="{{ route('decadeFilmsPhotos.edit', secure_hash_id($gallery->id)) }}" class='btn btn-outline-primary btn-xs'>
                             <i class="im im-icon-Pen" title="Edit"></i>
                         </a>
                         {!! Form::open(['route' => ['decadeFilmsPhotos.destroy', secure_hash_id($gallery->id)], 'method' => 'delete']) !!}

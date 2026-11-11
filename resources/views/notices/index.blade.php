@@ -38,7 +38,7 @@
                                             aria-expanded="false">
                                             একশন </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a href="{{ route('notices.edit', [$notice->id]) }}" class="dropdown-item">
+                                            <a href="{{ route('notices.edit', [secure_hash_id($notice->id)]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="সম্পাদনা করুন"></i> সম্পাদনা করুন
                                             </a>

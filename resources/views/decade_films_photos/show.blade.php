@@ -17,7 +17,7 @@ Photo Details @parent
             @endif
         </div>
         <div class="card-footer">
-            <a href="{{ route('decadeFilmsPhotos.edit', $photo->id) }}" class="btn btn-primary">Edit</a>
+            <a href="{{ route('decadeFilmsPhotos.edit', secure_hash_id($photo->id)) }}" class="btn btn-primary">Edit</a>
             <a href="{{ route('decadeFilmsPhotos.index') }}" class="btn btn-secondary">Back</a>
         </div>
     </div>

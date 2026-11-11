@@ -38,7 +38,7 @@
                                             aria-expanded="false">
                                             কর্ম </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a href="{{ route('faqs.edit', [$faq->id]) }}" class="dropdown-item">
+                                            <a href="{{ route('faqs.edit', [secure_hash_id($faq->id)]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="সম্পাদনা"></i> সম্পাদনা
                                             </a>

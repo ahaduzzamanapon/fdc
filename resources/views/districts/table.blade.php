@@ -19,8 +19,8 @@
                 <td>
                     {!! Form::open(['route' => ['districts.destroy', secure_hash_id($district->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('districts.show', [$district->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
-                        <a href="{{ route('districts.edit', [$district->id]) }}" class='btn btn-outline-primary btn-xs'><i
+                        <a href="{{ route('districts.show', [secure_hash_id($district->id)]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
+                        <a href="{{ route('districts.edit', [secure_hash_id($district->id)]) }}" class='btn btn-outline-primary btn-xs'><i
                                 class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="{{ __('messages.edit') }}"></i></a>
                         {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="' . __('messages.delete') . '"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('" . __('messages.are_you_sure') . "')"]) !!}
                     </div>

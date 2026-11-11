@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class="card-footer bg-light text-end">
-            <a href="{{ route('employeePromotions.edit', $promotion->id) }}" class="btn btn-warning text-white">
+            <a href="{{ route('employeePromotions.edit', secure_hash_id($promotion->id)) }}" class="btn btn-warning text-white">
                 <i class="im im-icon-Pen"></i> সম্পাদনা করুন
             </a>
         </div>

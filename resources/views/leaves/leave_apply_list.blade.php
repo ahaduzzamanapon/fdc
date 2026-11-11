@@ -70,8 +70,8 @@ Leaves @parent
                                         </button>
                                         <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
                                             @if($leave->status != 0 || $leave->status != 2)
-                                            {{-- <a href="{{ route('leaves.show', [$leave->leave_id]) }}" class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a> --}}
-                                            <a href="{{ route('leaves.edit', [$leave->id]) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="সম্পাদনা করুন"></i> সম্পাদনা করুন</a>
+                                            {{-- <a href="{{ route('leaves.show', [secure_hash_id($leave->leave_id)]) }}" class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a> --}}
+                                            <a href="{{ route('leaves.edit', [secure_hash_id($leave->id)]) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="সম্পাদনা করুন"></i> সম্পাদনা করুন</a>
                                             <a href="{{ route('forward.to.md', $leave->leave_id) }}" class='dropdown-item'>
                                                 <i class="im im-icon-Forward" data-toggle="tooltip" data-placement="top" title="প্রেরণ করুন"></i> প্রেরণ করুন
                                             </a>
@@ -121,8 +121,8 @@ Leaves @parent
                                             ক্রিয়া
                                         </button>
                                         <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                                            <a href="{{ route('leaves.show', [$leave->id]) }}" class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
-                                            <a href="{{ route('leaves.edit', [$leave->id]) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="সম্পাদনা করুন"></i> সম্পাদনা করুন</a>
+                                            <a href="{{ route('leaves.show', [secure_hash_id($leave->id)]) }}" class='dropdown-item'><i class="im im-icon-Eye" data-placement="top" title="দেখুন"></i> দেখুন</a>
+                                            <a href="{{ route('leaves.edit', [secure_hash_id($leave->id)]) }}" class='dropdown-item'><i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="সম্পাদনা করুন"></i> সম্পাদনা করুন</a>
                                             <a href="{{ route('leaves.approved', $leave->id) }}" class='dropdown-item'>
                                                 <i class="im im-icon-Check" data-toggle="tooltip" data-placement="top" title="অনুমোদন করুন"></i> অনুমোদন করুন
                                             </a>

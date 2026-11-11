@@ -51,10 +51,10 @@
                 <td>{{ $decadeFilmList->achivements }}</td>
                 <td>
                     <div class='btn-group'>
-                        <a href="{{ route('decadeFilms.show', [$decadeFilmList->id]) }}" class='btn btn-outline-primary btn-xs'>
+                        <a href="{{ route('decadeFilms.show', [secure_hash_id($decadeFilmList->id)]) }}" class='btn btn-outline-primary btn-xs'>
                             <i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i>
                         </a>
-                        <a href="{{ route('decadeFilms.edit', [$decadeFilmList->id]) }}" class='btn btn-outline-primary btn-xs'>
+                        <a href="{{ route('decadeFilms.edit', [secure_hash_id($decadeFilmList->id)]) }}" class='btn btn-outline-primary btn-xs'>
                             <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="{{ __('messages.edit') }}"></i>
                         </a>
                         {!! Form::open(['route' => ['decadeFilms.destroy', secure_hash_id($decadeFilmList->id)], 'method' => 'delete']) !!}

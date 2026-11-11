@@ -18,8 +18,8 @@
 
                 <td>
                     <div class='btn-group'>
-                        <a href="{{ route('designations.show', [$designation->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
-                        <a href="{{ route('designations.edit', [$designation->id]) }}" class='btn btn-outline-primary btn-xs'><i
+                        <a href="{{ route('designations.show', [secure_hash_id($designation->id)]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
+                        <a href="{{ route('designations.edit', [secure_hash_id($designation->id)]) }}" class='btn btn-outline-primary btn-xs'><i
                             class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="{{ __('messages.edit') }}"></i></a>
                         @if(can('delete_option'))
                             {!! Form::open(['route' => ['designations.destroy', secure_hash_id($designation->id)], 'method' => 'delete']) !!}

@@ -38,7 +38,7 @@
                                             aria-expanded="false">
                                              একশন  </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a href="{{ route('terms_of_uses.edit', [$termsOfUse->id]) }}"
+                                            <a href="{{ route('terms_of_uses.edit', [secure_hash_id($termsOfUse->id)]) }}"
                                                 class="dropdown-item">
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title=" Edit "></i> সম্পাদনা করুন

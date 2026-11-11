@@ -26,7 +26,7 @@
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ __('messages.actions_button') }} </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a href="{{ route('dramaApplications.show', [$film->id]) }}" class="dropdown-item"><i
+                                <a href="{{ route('dramaApplications.show', [secure_hash_id($film->id)]) }}" class="dropdown-item"><i
                                         class="im im-icon-Eye" data-placement="top"
                                         title="{{ __('messages.view_label') }}"></i> {{ __('messages.view_label') }}</a>
                                 {{--For draft edit--}}

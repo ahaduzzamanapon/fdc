@@ -19,8 +19,8 @@
                 <td>
                     {!! Form::open(['route' => ['itemCategories.destroy', secure_hash_id($itemCategory->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('itemCategories.show', [$itemCategory->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
-                        <a href="{{ route('itemCategories.edit', [$itemCategory->id]) }}" class='btn btn-outline-primary btn-xs'><i
+                        <a href="{{ route('itemCategories.show', [secure_hash_id($itemCategory->id)]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
+                        <a href="{{ route('itemCategories.edit', [secure_hash_id($itemCategory->id)]) }}" class='btn btn-outline-primary btn-xs'><i
                                 class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
                         {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>

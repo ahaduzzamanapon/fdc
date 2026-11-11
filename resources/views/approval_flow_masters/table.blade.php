@@ -23,8 +23,8 @@
                 <td>
                     {!! Form::open(['route' => ['approvalFlowMasters.destroy', secure_hash_id($approvalFlowMaster->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('approvalFlowMasters.show', [$approvalFlowMaster->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
-                        <a href="{{ route('approvalFlowMasters.edit', [$approvalFlowMaster->id]) }}" class='btn btn-outline-primary btn-xs'><i
+                        <a href="{{ route('approvalFlowMasters.show', [secure_hash_id($approvalFlowMaster->id)]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
+                        <a href="{{ route('approvalFlowMasters.edit', [secure_hash_id($approvalFlowMaster->id)]) }}" class='btn btn-outline-primary btn-xs'><i
                                 class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
                         {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>

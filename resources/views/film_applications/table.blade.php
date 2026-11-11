@@ -26,7 +26,7 @@
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ __('messages.actions_button') }} </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a href="{{ route('filmApplications.show', [$film->id]) }}" class="dropdown-item"><i
+                                <a href="{{ route('filmApplications.show', [secure_hash_id($film->id)]) }}" class="dropdown-item"><i
                                         class="im im-icon-Eye" data-placement="top"
                                         title="{{ __('messages.view_label') }}"></i> {{ __('messages.view_label') }}</a>
 
@@ -112,7 +112,7 @@
 
 
                                 @if ($film->state == 'forward' && $film->desk == 'director_production')
-                                    <a href="{{ route('filmApplications.edit', [$film->id]) }}" class="dropdown-item"><i
+                                    <a href="{{ route('filmApplications.edit', [secure_hash_id($film->id)]) }}" class="dropdown-item"><i
                                             class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                             title="{{ __('messages.edit') }}"></i> {{ __('messages.edit') }}</a>
                                     {!! Form::open(['route' => ['filmApplications.destroy', secure_hash_id($film->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}

@@ -38,7 +38,7 @@
                                             aria-expanded="false">
                                             একশন </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a href="{{ route('privacy_policies.edit', [$privacyPolicy->id]) }}"
+                                            <a href="{{ route('privacy_policies.edit', [secure_hash_id($privacyPolicy->id)]) }}"
                                                 class="dropdown-item">
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="Edit"></i> সম্পাদনা করুন

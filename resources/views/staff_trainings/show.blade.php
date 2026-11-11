@@ -11,7 +11,7 @@
         <div class="card-header py-2 px-3 d-flex justify-content-between align-items-center" style="background-color: #8dc542 !important; color: #ffffff !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
             <h5 class="mb-0 font-weight-bold text-white"><i class="im im-icon-Diploma me-2"></i>প্রশিক্ষণ বিস্তারিত বিবরণ</h5>
             <div class="d-flex gap-2">
-                <a href="{{ route('staffTrainings.edit', $training->id) }}" class="btn btn-sm btn-warning text-white font-weight-bold">
+                <a href="{{ route('staffTrainings.edit', secure_hash_id($training->id)) }}" class="btn btn-sm btn-warning text-white font-weight-bold">
                     <i class="im im-icon-Pen me-1"></i> সম্পাদনা করুন
                 </a>
                 <a class="btn btn-sm font-weight-bold text-white shadow-sm" href="{{ route('staffTrainings.index') }}" style="background-color: #1f9303 !important; border: none;">

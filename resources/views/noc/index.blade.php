@@ -46,7 +46,7 @@ NOC তালিকা
                                 <td>{{ $noc->charge }}</td>
                                 <td>{{ $noc->total }}</td>
                                 <td>
-                                    <a href="{{ route('noc.edit', $noc->id) }}" class="btn btn-sm btn-info"> Action </a>
+                                    <a href="{{ route('noc.edit', secure_hash_id($noc->id)) }}" class="btn btn-sm btn-info"> Action </a>
                                 </td>
                             </tr>
                         @endforeach

@@ -33,7 +33,7 @@
                             {{ __('messages.action_label') }}
                         </button>
                         <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                            <a class='dropdown-item' href="{{ route('producers.show', [$producer->id]) }}"><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i> {{ __('messages.view_label') }}</a>
+                            <a class='dropdown-item' href="{{ route('producers.show', [secure_hash_id($producer->id)]) }}"><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i> {{ __('messages.view_label') }}</a>
                             @if ($producer->reg_status == 'pending')
                                 <a class='dropdown-item' href="{{ route('producer.registration.forward', [$producer->id]) }}"><i class="im im-icon-Eye" data-placement="top" title="approval"></i> Approval/Reject </a>
                             @endif

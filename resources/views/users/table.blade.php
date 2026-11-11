@@ -37,10 +37,10 @@
                             {{ __('messages.actions_button') ?? 'অ্যাকশন' }}
                         </button>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ $user->id }}">
-                            <a href="{{ route('users.show', [$user->id]) }}" class="dropdown-item">
+                            <a href="{{ route('users.show', [secure_hash_id($user->id)]) }}" class="dropdown-item">
                                 <i class="im im-icon-Eye me-1"></i> {{ __('messages.view') }}
                             </a>
-                            <a href="{{ route('users.edit', [$user->id]) }}" class="dropdown-item">
+                            <a href="{{ route('users.edit', [secure_hash_id($user->id)]) }}" class="dropdown-item">
                                 <i class="im im-icon-Pen me-1"></i> {{ __('messages.edit') }}
                             </a>
                             <a href="{{ route('employeePromotions.timeline', $user->id) }}" class="dropdown-item">

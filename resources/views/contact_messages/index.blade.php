@@ -37,7 +37,7 @@
                                         <td>{{ $message->created_at->format('d-m-Y') }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="{{ route('contact-messages.show', $message->id) }}"
+                                                <a href="{{ route('contact-messages.show', secure_hash_id($message->id)) }}"
                                                     class="btn btn-sm btn-primary">
                                                     <i class="im im-icon-Eye"></i> দেখুন
                                                 </a>

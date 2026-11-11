@@ -135,10 +135,10 @@
                                             অ্যাকশন
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ $item->id }}">
-                                            <a href="{{ route('staffTrainings.show', [$item->id]) }}" class="dropdown-item">
+                                            <a href="{{ route('staffTrainings.show', [secure_hash_id($item->id)]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Eye me-1"></i> দেখুন
                                             </a>
-                                            <a href="{{ route('staffTrainings.edit', [$item->id]) }}" class="dropdown-item">
+                                            <a href="{{ route('staffTrainings.edit', [secure_hash_id($item->id)]) }}" class="dropdown-item">
                                                 <i class="im im-icon-Pen me-1"></i> সম্পাদনা
                                             </a>
                                             {!! Form::open(['route' => ['staffTrainings.destroy', secure_hash_id($item->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}

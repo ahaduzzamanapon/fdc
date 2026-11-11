@@ -27,8 +27,8 @@
             </td>
                 <td>
                     <div class='btn-group'>
-                        <a href="{{ route('invPermissions.show', [$users->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
-                        <a href="{{ route('invPermissions.edit', [$users->id]) }}" class='btn btn-outline-primary btn-xs'><i
+                        <a href="{{ route('invPermissions.show', [secure_hash_id($users->id)]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
+                        <a href="{{ route('invPermissions.edit', [secure_hash_id($users->id)]) }}" class='btn btn-outline-primary btn-xs'><i
                             class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="{{ __('messages.edit') }}"></i></a>
                         @if(can('user_delete'))
                             {!! Form::open(['route' => ['invPermissions.destroy', secure_hash_id($users->id)], 'method' => 'delete']) !!}

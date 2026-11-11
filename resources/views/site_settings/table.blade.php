@@ -20,8 +20,8 @@
           
                 <td>
                     <div class='btn-group'>
-                        <a href="{{ route('siteSettings.show', [$siteSetting->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
-                        <a href="{{ route('siteSettings.edit', [$siteSetting->id]) }}" class='btn btn-outline-primary btn-xs'><i
+                        <a href="{{ route('siteSettings.show', [secure_hash_id($siteSetting->id)]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
+                        <a href="{{ route('siteSettings.edit', [secure_hash_id($siteSetting->id)]) }}" class='btn btn-outline-primary btn-xs'><i
                                 class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
                     </div>
                 </td>

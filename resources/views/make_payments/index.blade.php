@@ -63,7 +63,7 @@
                                     <div @class(['dropdown-menu']) aria-labelledby="dropdownMenuButton">
 
                                         <li class="nav-item">
-                                            <a href="{{ route('makePayments.show', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> দেখুন </a>
+                                            <a href="{{ route('makePayments.show', secure_hash_id($payment->id)) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> দেখুন </a>
                                         </li>
 
                                         <li class="nav-item">

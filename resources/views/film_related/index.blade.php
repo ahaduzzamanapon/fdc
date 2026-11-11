@@ -38,7 +38,7 @@
                                             aria-expanded="false">
                                             একশন </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a href="{{ route('film_related.edit', [$filmRelated->id]) }}"
+                                            <a href="{{ route('film_related.edit', [secure_hash_id($filmRelated->id)]) }}"
                                                 class="dropdown-item">
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="Edit"></i> সম্পাদনা করুন
