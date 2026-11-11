@@ -52,4 +52,5 @@ Route::middleware('auth:sanctum')->group(function () {
     // NOC Payments API
     Route::get('/noc-payments', [NocPaymentAPIController::class, 'index']);
     Route::get('/noc-payments/{identifier}', [NocPaymentAPIController::class, 'show']);
+    Route::post('/noc-payments/push', [NocPaymentAPIController::class, 'pushManual']);
 });

@@ -97,4 +97,47 @@ class NocPaymentAPIController extends AppBaseController
             'NOC Payment retrieved successfully'
         );
     }
+
+    /**
+     * Push NOC payment(s) to BFDC Accounting manually from Admin or API.
+     * POST /api/noc-payments/push
+     *
+     * @param Request $request
+     * @param \App\Services\BfdcAccountingService $service
+     * @return Response
+     */
+    public function pushManual(Request $request, \App\Services\BfdcAccountingService $service)
+    {
+        $id = $request->input('id');
+        $token = $request->input('token');
+        $trxId = $request->input('trx_id');
+
+        if ($id || $token || $trxId) {
+            $noc = Noc::when($id, fn($q) => $q->where('id', $id))
+                ->when($token, fn($q) => $q->where('token', $token))
+                ->when($trxId, fn($q) => $q->where('trx_id', $trxId))
+                ->first();
+
+            if (!$noc) {
+                return $this->sendError('NOC record not found');
+            }
+
+            $result = $service->pushNocToAccounting($noc);
+            return $this->sendResponse($result, 'NOC Payment pushed to Accounting');
+        }
+
+        // Batch manual push for latest paid NOCs
+        $limit = (int) $request->input('limit', 10);
+        $nocs = Noc::where('status', 'paid')->latest()->limit($limit)->get();
+
+        $results = [];
+        foreach ($nocs as $n) {
+            $results[] = $service->pushNocToAccounting($n);
+        }
+
+        return $this->sendResponse([
+            'count' => count($results),
+            'items' => $results
+        ], 'Batch push for NOC completed');
+    }
 }

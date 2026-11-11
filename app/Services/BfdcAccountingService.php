@@ -267,4 +267,77 @@ class BfdcAccountingService
             ];
         }
     }
+
+    /**
+     * Push a NOC payment to BFDC Accounting API.
+     */
+    public function pushNocToAccounting(\App\Models\Noc $noc): array
+    {
+        $correlationId = (string) Str::uuid();
+        $mrNo = $noc->trx_id ?: ($noc->token ?: "NOC-{$noc->id}");
+        $date = $noc->updated_at ? $noc->updated_at->format('Y-m-d') : ($noc->created_at ? $noc->created_at->format('Y-m-d') : date('Y-m-d'));
+        $banner = $noc->organization ?: ($noc->producer ?: 'General Organization');
+        $filmOrWork = $noc->name ?: 'NOC Certificate Application';
+        $producer = $noc->producer ?: ($noc->full_name ?: 'Applicant');
+        $amount = (float) ($noc->amount ?: 0);
+
+        try {
+            // 1. Ensure Party
+            $this->request('post', '/api/v1/party', [
+                'eventType' => 'Film',
+                'banner' => $banner,
+                'film' => $filmOrWork,
+                'producer' => $producer,
+                'type' => 'Party',
+                'clientRequestId' => (string) Str::uuid(),
+            ], $correlationId);
+
+            // 2. Ensure Bill
+            $this->request('post', '/api/v1/billing', [
+                'billDate' => $date,
+                'jobReportNo' => $noc->token ?: "NOC-JOB-{$noc->id}",
+                'banner' => $banner,
+                'filmName' => $filmOrWork,
+                'shift' => 'Morning',
+                'remarks' => "NOC Fee Trx: {$mrNo}",
+                'clientRequestId' => (string) Str::uuid(),
+                'lineItems' => [
+                    [
+                        'section' => 'Certificate',
+                        'subSection' => 'NOC Application Fee',
+                        'rateType' => 'GeneralRate',
+                        'rate' => $amount,
+                        'unit' => 'Shift',
+                        'quantity' => 1,
+                    ]
+                ],
+            ], $correlationId);
+
+            // 3. Collection Push
+            $colResponse = $this->request('post', '/api/v1/collection', [
+                'collectionDate' => $date,
+                'banner' => $banner,
+                'filmName' => $filmOrWork,
+                'mrNo' => $mrNo,
+                'collectionAmount' => $amount,
+                'clientRequestId' => (string) Str::uuid(),
+            ], $correlationId);
+
+            $isSuccess = $colResponse->successful() || $colResponse->status() === 409;
+
+            return [
+                'success' => $isSuccess,
+                'status' => $colResponse->status(),
+                'data' => $colResponse->json(),
+                'mrNo' => $mrNo,
+            ];
+        } catch (\Throwable $e) {
+            Log::error('NOC Accounting push error: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'mrNo' => $mrNo,
+            ];
+        }
+    }
 }
