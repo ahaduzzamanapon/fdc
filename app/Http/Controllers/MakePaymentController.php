@@ -774,6 +774,11 @@ class MakePaymentController extends AppBaseController
      */
     public function pushAccountingWeb($id, \App\Services\BfdcAccountingService $service)
     {
+        // Security check: Only internal officers/admin can trigger accounting push
+        if (Auth::guard('producer')->check()) {
+            abort(403, 'অননুমোদিত অ্যাক্সেস। প্রযোজক এই কাজ করতে পারবেন না।');
+        }
+
         $realId = decode_secure_hash_id($id) ?: $id;
         $payment = \App\Models\FilmPackage::find($realId);
 
