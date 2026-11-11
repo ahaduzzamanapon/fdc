@@ -17,7 +17,7 @@
                 <td>{{ $division->name_en }}</td>
                 <td>{{ $division->status }}</td>
                 <td>
-                    {!! Form::open(['route' => ['divisions.destroy', $division->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['divisions.destroy', secure_hash_id($division->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('divisions.show', [$division->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
                         <a href="{{ route('divisions.edit', [$division->id]) }}" class='btn btn-outline-primary btn-xs'><i

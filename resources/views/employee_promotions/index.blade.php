@@ -152,7 +152,7 @@
                                                 <a href="{{ route('employeePromotions.edit', [$item->id]) }}" class="dropdown-item">
                                                     <i class="im im-icon-Pen me-1"></i> সম্পাদনা করুন
                                                 </a>
-                                                {!! Form::open(['route' => ['employeePromotions.destroy', $item->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                                {!! Form::open(['route' => ['employeePromotions.destroy', secure_hash_id($item->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                                     {!! Form::button('<i class="im im-icon-Remove me-1"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item text-danger', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
                                                 {!! Form::close() !!}
                                             @endif

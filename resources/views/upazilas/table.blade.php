@@ -18,7 +18,7 @@
             <td>{{ $upazila->name_bn }}</td>
           
                 <td>
-                    {!! Form::open(['route' => ['upazilas.destroy', $upazila->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['upazilas.destroy', secure_hash_id($upazila->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('upazilas.show', [$upazila->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
                         <a href="{{ route('upazilas.edit', [$upazila->id]) }}" class='btn btn-outline-primary btn-xs'><i

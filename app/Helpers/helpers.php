@@ -245,3 +245,63 @@
             }
         }
     }
+
+    if (!function_exists('secure_hash_id')) {
+        /**
+         * Generate a secure, URL-safe signed hash for an ID.
+         */
+        function secure_hash_id($id)
+        {
+            if (empty($id) && $id !== 0 && $id !== '0') {
+                return $id;
+            }
+            $secret = config('app.key') ?: 'fdc_secure_salt_key_2026';
+            $sig = substr(hash_hmac('sha256', (string) $id, $secret), 0, 16);
+            $combined = $id . '.' . $sig;
+            return rtrim(strtr(base64_encode($combined), '+/', '-_'), '=');
+        }
+    }
+
+    if (!function_exists('decode_secure_hash_id')) {
+        /**
+         * Verify and decode a secure hashed ID.
+         * Returns original ID if valid, or original input if already numeric (backwards compatibility).
+         * Returns null if tampered/invalid.
+         */
+        function decode_secure_hash_id($hashed)
+        {
+            if (is_numeric($hashed)) {
+                return $hashed;
+            }
+
+            if (!is_string($hashed) || empty($hashed)) {
+                return null;
+            }
+
+            // Decode base64 URL-safe
+            $remainder = strlen($hashed) % 4;
+            if ($remainder) {
+                $hashed .= str_repeat('=', 4 - $remainder);
+            }
+            $decoded = base64_decode(strtr($hashed, '-_', '+/'));
+
+            if (!$decoded || !str_contains($decoded, '.')) {
+                // Try Crypt decrypt as fallback if someone used Crypt::encrypt
+                try {
+                    return \Illuminate\Support\Facades\Crypt::decrypt($hashed);
+                } catch (\Throwable $e) {
+                    return null;
+                }
+            }
+
+            [$id, $sig] = explode('.', $decoded, 2);
+            $secret = config('app.key') ?: 'fdc_secure_salt_key_2026';
+            $expectedSig = substr(hash_hmac('sha256', (string) $id, $secret), 0, 16);
+
+            if (hash_equals($expectedSig, $sig)) {
+                return $id;
+            }
+
+            return null;
+        }
+    }

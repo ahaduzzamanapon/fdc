@@ -17,7 +17,7 @@
             <td>{{ $district->name_en }}</td>
          
                 <td>
-                    {!! Form::open(['route' => ['districts.destroy', $district->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['districts.destroy', secure_hash_id($district->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('districts.show', [$district->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
                         <a href="{{ route('districts.edit', [$district->id]) }}" class='btn btn-outline-primary btn-xs'><i

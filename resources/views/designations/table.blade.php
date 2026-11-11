@@ -22,7 +22,7 @@
                         <a href="{{ route('designations.edit', [$designation->id]) }}" class='btn btn-outline-primary btn-xs'><i
                             class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="{{ __('messages.edit') }}"></i></a>
                         @if(can('delete_option'))
-                            {!! Form::open(['route' => ['designations.destroy', $designation->id], 'method' => 'delete']) !!}
+                            {!! Form::open(['route' => ['designations.destroy', secure_hash_id($designation->id)], 'method' => 'delete']) !!}
                             {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="' . __('messages.delete') . '"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('" . __('messages.are_you_sure') . "')"]) !!}
                             {!! Form::close() !!}
                         @endif

@@ -49,7 +49,7 @@
                         <a href="{{ route('decadeFilmsPhotos.edit', $gallery->id) }}" class='btn btn-outline-primary btn-xs'>
                             <i class="im im-icon-Pen" title="Edit"></i>
                         </a>
-                        {!! Form::open(['route' => ['decadeFilmsPhotos.destroy', $gallery->id], 'method' => 'delete']) !!}
+                        {!! Form::open(['route' => ['decadeFilmsPhotos.destroy', secure_hash_id($gallery->id)], 'method' => 'delete']) !!}
                             {!! Form::button('<i class="im im-icon-Remove" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                         {!! Form::close() !!}
                     </div>

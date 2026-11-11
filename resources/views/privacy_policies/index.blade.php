@@ -43,7 +43,7 @@
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="Edit"></i> সম্পাদনা করুন
                                             </a>
-                                            {!! Form::open(['route' => ['privacy_policies.destroy', $privacyPolicy->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::open(['route' => ['privacy_policies.destroy', secure_hash_id($privacyPolicy->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                             {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছুন"></i> মুছুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm(' আপনি কি নিশ্চিত? ')"]) !!}
                                             {!! Form::close() !!}
                                         </div>

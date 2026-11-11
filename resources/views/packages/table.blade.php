@@ -21,7 +21,7 @@
             <td>{{ $package->status }}</td>
             <td>{{ $package->description }}</td>
                 <td>
-                    {!! Form::open(['route' => ['packages.destroy', $package->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['packages.destroy', secure_hash_id($package->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('packages.show', [$package->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
                         <a href="{{ route('packages.edit', [$package->id]) }}" class='btn btn-outline-primary btn-xs'><i

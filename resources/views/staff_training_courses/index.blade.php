@@ -96,7 +96,7 @@
                                                 <i class="im im-icon-Pen"></i> সম্পাদনা
                                             </button>
 
-                                            {!! Form::open(['route' => ['staffTrainingCourses.destroy', $course->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::open(['route' => ['staffTrainingCourses.destroy', secure_hash_id($course->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                                 {!! Form::button('<i class="im im-icon-Remove"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
                                             {!! Form::close() !!}
 

@@ -82,7 +82,7 @@ Leaves @parent
                                                 <i class="im im-icon-Close" data-toggle="tooltip" data-placement="top" title="বাতিল করুন"></i> বাতিল করুন
                                             </a>
 
-                                            {!! Form::open(['route' => ['leaves.destroy', $leave->leave_id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::open(['route' => ['leaves.destroy', secure_hash_id($leave->leave_id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                                 {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছে ফেলুন"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
                                             {!! Form::close() !!}
 
@@ -129,7 +129,7 @@ Leaves @parent
                                             <a href="{{ route('leaves.rejected', $leave->id) }}" class='dropdown-item'>
                                                 <i class="im im-icon-Close" data-toggle="tooltip" data-placement="top" title="বাতিল করুন"></i> বাতিল করুন
                                             </a>
-                                            {!! Form::open(['route' => ['leaves.destroy', $leave->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::open(['route' => ['leaves.destroy', secure_hash_id($leave->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                                 {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছে ফেলুন"></i> মুছে ফেলুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
                                             {!! Form::close() !!}
                                         </div>

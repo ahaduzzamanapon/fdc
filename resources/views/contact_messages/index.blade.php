@@ -41,7 +41,7 @@
                                                     class="btn btn-sm btn-primary">
                                                     <i class="im im-icon-Eye"></i> দেখুন
                                                 </a>
-                                                <form action="{{ route('contact-messages.destroy', $message->id) }}"
+                                                <form action="{{ route('contact-messages.destroy', secure_hash_id($message->id)) }}"
                                                     method="POST" onsubmit="return confirm('Are you sure?')">
                                                     @csrf
                                                     @method('DELETE')

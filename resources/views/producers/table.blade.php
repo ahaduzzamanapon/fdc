@@ -35,7 +35,7 @@
                         @endif
                     </td>
                     <td>
-                        {!! Form::open(['route' => ['producers.destroy', $producer->id], 'method' => 'delete']) !!}
+                        {!! Form::open(['route' => ['producers.destroy', secure_hash_id($producer->id)], 'method' => 'delete']) !!}
                         <div class='btn-group'>
                             <a href="{{ route('producers.show', [$producer->id]) }}"
                                 class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top"

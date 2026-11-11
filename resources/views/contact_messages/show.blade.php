@@ -30,7 +30,7 @@
                     </div>
 
                     <hr>
-                    {{-- <form action="{{ route('contact-messages.destroy', $message->id) }}" method="POST"
+                    {{-- <form action="{{ route('contact-messages.destroy', secure_hash_id($message->id)) }}" method="POST"
                         onsubmit="return confirm('Are you sure?')">
                         @csrf
                         @method('DELETE')

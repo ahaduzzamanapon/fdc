@@ -16,6 +16,8 @@ class MakePaymentResource extends JsonResource
      */
     public function toArray($request)
     {
+        $partyId = null;
+        $filmId = null;
         $banner = 'General Banner';
         $filmTitle = 'General Film';
         $producerName = 'Producer';
@@ -26,13 +28,17 @@ class MakePaymentResource extends JsonResource
         if ($this->type === 'booking') {
             $booking = Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($this->package_id);
             if ($booking) {
+                $partyId = $booking->producer_id;
+                $filmId = $booking->film_id;
                 $jobReportNo = $booking->book_id ?: "BKG-{$booking->id}";
                 if ($booking->film) {
+                    $filmId = $booking->film->id;
                     $banner = $booking->film->banner_name ?: ($booking->film->organization_name ?: $banner);
                     $filmTitle = $booking->film->film_title ?: $filmTitle;
                     $producerName = $booking->film->applicant_name ?: $producerName;
                 }
                 if ($booking->producer) {
+                    $partyId = $booking->producer->id;
                     $producerName = $booking->producer->owners_name ?: ($booking->producer->organization_name ?: $producerName);
                     $producerPhone = $booking->producer->phone_number;
                 }
@@ -49,6 +55,7 @@ class MakePaymentResource extends JsonResource
                         }
 
                         $lineItems[] = [
+                            'item_id' => $d->item_id,
                             'section' => $d->catagori ?: ($d->item ? $d->item->name_en : 'General Section'),
                             'subSection' => $d->item ? $d->item->name_en : 'General Item',
                             'shift' => $shiftName,
@@ -63,13 +70,17 @@ class MakePaymentResource extends JsonResource
         } else {
             $package = Package::with(['details.item', 'film', 'producer'])->find($this->package_id);
             if ($package) {
+                $partyId = $package->producer_id;
+                $filmId = $package->film_id;
                 $jobReportNo = $package->trn_id ?: ($package->name ?: "PKG-{$package->id}");
                 if ($package->film) {
+                    $filmId = $package->film->id;
                     $banner = $package->film->banner_name ?: ($package->film->organization_name ?: $banner);
                     $filmTitle = $package->film->film_title ?: $filmTitle;
                     $producerName = $package->film->applicant_name ?: $producerName;
                 }
                 if ($package->producer) {
+                    $partyId = $package->producer->id;
                     $producerName = $package->producer->owners_name ?: ($package->producer->organization_name ?: $producerName);
                     $producerPhone = $package->producer->phone_number;
                 }
@@ -77,6 +88,7 @@ class MakePaymentResource extends JsonResource
                 if ($package->details && count($package->details) > 0) {
                     foreach ($package->details as $pd) {
                         $lineItems[] = [
+                            'item_id' => $pd->item_id,
                             'section' => $pd->item ? ($pd->item->category ? $pd->item->category->name_en : 'Package Section') : 'Package Section',
                             'subSection' => $pd->item ? $pd->item->name_en : 'Package Item',
                             'shift' => 'Morning',
@@ -92,6 +104,7 @@ class MakePaymentResource extends JsonResource
 
         if (empty($lineItems)) {
             $lineItems[] = [
+                'item_id' => null,
                 'section' => 'Service',
                 'subSection' => $this->name ?: 'Booking Package Fee',
                 'shift' => 'Morning',
@@ -105,8 +118,14 @@ class MakePaymentResource extends JsonResource
         $mrNo = $this->TrxID ?: ($this->trn_id ?: "MR-{$this->id}");
         $date = $this->paid_at ? date('Y-m-d', strtotime($this->paid_at)) : date('Y-m-d', strtotime($this->created_at));
 
+        // Format prefixed universal codes to protect raw DB primary keys
+        $formattedPartyId = $partyId ? sprintf("PRTY-%05d", $partyId) : null;
+        $formattedAppId = $filmId ? sprintf("APP-%05d", $filmId) : null;
+
         return [
             // Standard Accounting fields (matching BFDC Doc)
+            'partyId' => $formattedPartyId,
+            'applicationId' => $formattedAppId,
             'mrNo' => $mrNo,
             'collectionDate' => $date,
             'collectionAmount' => (float) $this->amount,
@@ -122,6 +141,8 @@ class MakePaymentResource extends JsonResource
             'auditTrail' => [
                 'trn_id' => $this->trn_id,
                 'TrxID' => $this->TrxID,
+                'party_code' => $formattedPartyId,
+                'application_code' => $formattedAppId,
                 'package_id' => $this->package_id,
                 'type' => $this->type,
                 'producerContact' => $producerPhone,

@@ -21,7 +21,7 @@
             <td>{{ $shift->start_time }}</td>
             <td>{{ $shift->end_time }}</td>
                 <td>
-                    {!! Form::open(['route' => ['shifts.destroy', $shift->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['shifts.destroy', secure_hash_id($shift->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('shifts.show', [$shift->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
                         <a href="{{ route('shifts.edit', [$shift->id]) }}" class='btn btn-outline-primary btn-xs'><i

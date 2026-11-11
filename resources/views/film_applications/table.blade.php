@@ -115,7 +115,7 @@
                                     <a href="{{ route('filmApplications.edit', [$film->id]) }}" class="dropdown-item"><i
                                             class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                             title="{{ __('messages.edit') }}"></i> {{ __('messages.edit') }}</a>
-                                    {!! Form::open(['route' => ['filmApplications.destroy', $film->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                    {!! Form::open(['route' => ['filmApplications.destroy', secure_hash_id($film->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                     {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="' . __('messages.delete_button') . '"></i> ' . __('messages.delete_button'), ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('" . __('messages.are_you_sure') . "')"]) !!}
                                     {!! Form::close() !!}
                                 @endif

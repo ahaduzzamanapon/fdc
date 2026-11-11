@@ -43,7 +43,7 @@
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="Edit"></i> সম্পাদনা করুন
                                             </a>
-                                            {!! Form::open(['route' => ['film_related.destroy', $filmRelated->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::open(['route' => ['film_related.destroy', secure_hash_id($filmRelated->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                             {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="Delete"></i> মুছুন ', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
                                             {!! Form::close() !!}
                                         </div>

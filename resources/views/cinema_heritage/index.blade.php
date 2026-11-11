@@ -253,7 +253,7 @@
                                                 <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item->id }}" data-toggle="modal" data-target="#editItemModal{{ $item->id }}">
                                                     <i class="im im-icon-Pen"></i> সম্পাদনা
                                                 </button>
-                                                <form action="{{ route('cinema_heritage.destroyItem', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি নিশ্চিত এই তথ্যটি মুছতে চান?');">
+                                                <form action="{{ route('cinema_heritage.destroyItem', secure_hash_id($item->id)) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি নিশ্চিত এই তথ্যটি মুছতে চান?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">

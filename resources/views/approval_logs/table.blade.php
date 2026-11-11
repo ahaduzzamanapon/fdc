@@ -25,7 +25,7 @@
             <td>{{ $approvalLogs->created_at }}</td>
             <td>{{ $approvalLogs->updated_at }}</td>
                 <td>
-                    {!! Form::open(['route' => ['approvalLogs.destroy', $approvalLogs->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['approvalLogs.destroy', secure_hash_id($approvalLogs->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('approvalLogs.show', [$approvalLogs->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
                         <a href="{{ route('approvalLogs.edit', [$approvalLogs->id]) }}" class='btn btn-outline-primary btn-xs'><i

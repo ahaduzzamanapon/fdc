@@ -21,7 +21,7 @@
                 <td>{{ $leaveType->day }}</td>
                 <td>{{ $leaveType->status }}</td>
                 <td>
-                    {!! Form::open(['route' => ['leaveTypes.destroy', $leaveType->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['leaveTypes.destroy', secure_hash_id($leaveType->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('leaveTypes.show', [$leaveType->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
                         <a href="{{ route('leaveTypes.edit', [$leaveType->id]) }}" class='btn btn-outline-primary btn-xs'><i

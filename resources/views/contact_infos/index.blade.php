@@ -43,7 +43,7 @@
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="Edit"></i> সম্পাদনা করুন
                                             </a>
-                                            {!! Form::open(['route' => ['contact_infos.destroy', $contactInfo->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::open(['route' => ['contact_infos.destroy', secure_hash_id($contactInfo->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                             {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="বাতিল করুন"></i> Delete', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm(' আপনি কি নিশ্চিত? ')"]) !!}
                                             {!! Form::close() !!}
                                         </div>

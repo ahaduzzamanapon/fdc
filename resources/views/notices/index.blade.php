@@ -42,7 +42,7 @@
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="সম্পাদনা করুন"></i> সম্পাদনা করুন
                                             </a>
-                                            {!! Form::open(['route' => ['notices.destroy', $notice->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! Form::open(['route' => ['notices.destroy', secure_hash_id($notice->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                             {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছুন"></i> মুছুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm(' আপনি কি নিশ্চিত? ')"]) !!}
                                             {!! Form::close() !!}
                                         </div>

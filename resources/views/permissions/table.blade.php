@@ -21,7 +21,7 @@
             <td>{{ $permission->created_at }}</td>
             <td>{{ $permission->updated_at }}</td>
                 <td>
-                    {!! Form::open(['route' => ['permissions.destroy', $permission->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['permissions.destroy', secure_hash_id($permission->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('permissions.show', [$permission->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="{{ __('messages.view') }}"></i></a>
                         <a href="{{ route('permissions.edit', [$permission->id]) }}" class='btn btn-outline-primary btn-xs'><i

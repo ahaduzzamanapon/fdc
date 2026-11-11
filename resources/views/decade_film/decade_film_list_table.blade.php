@@ -57,7 +57,7 @@
                         <a href="{{ route('decadeFilms.edit', [$decadeFilmList->id]) }}" class='btn btn-outline-primary btn-xs'>
                             <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top" title="{{ __('messages.edit') }}"></i>
                         </a>
-                        {!! Form::open(['route' => ['decadeFilms.destroy', $decadeFilmList->id], 'method' => 'delete']) !!}
+                        {!! Form::open(['route' => ['decadeFilms.destroy', secure_hash_id($decadeFilmList->id)], 'method' => 'delete']) !!}
                             {!! Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="' . __('messages.delete') . '"></i>', ['type' => 'submit', 'class' => 'btn btn-outline-danger btn-xs', 'onclick' => "return confirm('" . __('messages.are_you_sure') . "')"]) !!}
                         {!! Form::close() !!}
                     </div>

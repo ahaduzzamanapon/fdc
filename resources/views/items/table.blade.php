@@ -36,7 +36,7 @@
                 <td>{{ $item->amount }}</td>
                 <td>{{ $item->description }}</td>
                 <td>
-                    {!! Form::open(['route' => ['items.destroy', $item->id], 'method' => 'delete', 'id' => 'delete-form-'.$item->id]) !!}
+                    {!! Form::open(['route' => ['items.destroy', secure_hash_id($item->id)], 'method' => 'delete', 'id' => 'delete-form-'.$item->id]) !!}
                     <div class='btn-group'>
                         <a href="{{ route('items.show', [$item->id]) }}" class='btn btn-outline-primary btn-xs'>
                             <i class="im im-icon-Eye" title="View"></i>

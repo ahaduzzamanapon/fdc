@@ -21,7 +21,7 @@
             <td>{{ $approvalFlowMaster->created_at }}</td>
             <td>{{ $approvalFlowMaster->updated_at }}</td>
                 <td>
-                    {!! Form::open(['route' => ['approvalFlowMasters.destroy', $approvalFlowMaster->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['approvalFlowMasters.destroy', secure_hash_id($approvalFlowMaster->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('approvalFlowMasters.show', [$approvalFlowMaster->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
                         <a href="{{ route('approvalFlowMasters.edit', [$approvalFlowMaster->id]) }}" class='btn btn-outline-primary btn-xs'><i

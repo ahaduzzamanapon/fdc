@@ -51,7 +51,7 @@
                                                 <i class="im im-icon-Pen" data-toggle="tooltip" data-placement="top"
                                                     title="সম্পাদনা"></i> সম্পাদনা
                                             </a>
-                                            {!! \Form::open(['route' => ['galleries.destroy', $gallery->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                            {!! \Form::open(['route' => ['galleries.destroy', secure_hash_id($gallery->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                             {!! \Form::button('<i class="im im-icon-Remove" data-toggle="tooltip" data-placement="top" title="মুছুন"></i> মুছুন', ['type' => 'submit', 'class' => 'dropdown-item', 'onclick' => "return confirm('আপনি কি নিশ্চিত?')"]) !!}
                                             {!! \Form::close() !!}
                                         </div>

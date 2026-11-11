@@ -13,7 +13,7 @@
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $itemUnit->name }}</td>
                 <td>
-                    {!! Form::open(['route' => ['itemDepartments.destroy', $itemUnit->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['itemDepartments.destroy', secure_hash_id($itemUnit->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('itemDepartments.show', [$itemUnit->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
                         <a href="{{ route('itemDepartments.edit', [$itemUnit->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Pen"  data-toggle="tooltip" data-placement="top" title="Edit"></i></a>

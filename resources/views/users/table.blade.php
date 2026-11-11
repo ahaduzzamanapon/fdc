@@ -47,7 +47,7 @@
                                 <i class="im im-icon-Clock me-1"></i> টাইমলাইন
                             </a>
                             @if(can('user_delete'))
-                                {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                {!! Form::open(['route' => ['users.destroy', secure_hash_id($user->id)], 'method' => 'delete', 'style' => 'display:inline']) !!}
                                     {!! Form::button('<i class="im im-icon-Remove me-1"></i> ' . __('messages.delete'), ['type' => 'submit', 'class' => 'dropdown-item text-danger', 'onclick' => "return confirm('" . __('messages.are_you_sure') . "')"]) !!}
                                 {!! Form::close() !!}
                             @endif

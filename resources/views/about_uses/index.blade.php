@@ -174,7 +174,7 @@
                                                 <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editFeatureModal{{ $feature->id }}" data-toggle="modal" data-target="#editFeatureModal{{ $feature->id }}">
                                                     <i class="im im-icon-Pen"></i> সম্পাদনা
                                                 </button>
-                                                <form action="{{ route('about_uses.destroyFeature', $feature->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি নিশ্চিত এই ফিচারটি মুছতে চান?');">
+                                                <form action="{{ route('about_uses.destroyFeature', secure_hash_id($feature->id)) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি নিশ্চিত এই ফিচারটি মুছতে চান?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -266,7 +266,7 @@
                                                 <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editOfficerModal{{ $officer->id }}" data-toggle="modal" data-target="#editOfficerModal{{ $officer->id }}">
                                                     <i class="im im-icon-Pen"></i> সম্পাদনা
                                                 </button>
-                                                <form action="{{ route('about_uses.destroyOfficer', $officer->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি নিশ্চিত এই কর্মকর্তা তথ্যটি মুছতে চান?');">
+                                                <form action="{{ route('about_uses.destroyOfficer', secure_hash_id($officer->id)) }}" method="POST" style="display:inline;" onsubmit="return confirm('আপনি কি নিশ্চিত এই কর্মকর্তা তথ্যটি মুছতে চান?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">

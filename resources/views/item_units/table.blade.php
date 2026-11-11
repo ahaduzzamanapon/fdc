@@ -17,7 +17,7 @@
                 <td>{{ $itemUnit->name_en }}</td>
                 <td>{{ $itemUnit->status }}</td>
                 <td>
-                    {!! Form::open(['route' => ['itemUnits.destroy', $itemUnit->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['itemUnits.destroy', secure_hash_id($itemUnit->id)], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('itemUnits.show', [$itemUnit->id]) }}" class='btn btn-outline-primary btn-xs'><i class="im im-icon-Eye" data-placement="top" title="View"></i></a>
                         <a href="{{ route('itemUnits.edit', [$itemUnit->id]) }}" class='btn btn-outline-primary btn-xs'><i
