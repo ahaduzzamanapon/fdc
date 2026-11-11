@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ItemUnitAPIController;
 use App\Http\Controllers\API\ItemAPIController;
 use App\Http\Controllers\API\BookingPaymentAPIController;
 use App\Http\Controllers\API\ProducerPartyAPIController;
+use App\Http\Controllers\API\NocPaymentAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +48,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/booking-payments', [BookingPaymentAPIController::class, 'index']);
     Route::get('/booking-payments/{trn_id}', [BookingPaymentAPIController::class, 'show']);
     Route::post('/booking-payments/push', [BookingPaymentAPIController::class, 'pushManual']);
+
+    // NOC Payments API
+    Route::get('/noc-payments', [NocPaymentAPIController::class, 'index']);
+    Route::get('/noc-payments/{identifier}', [NocPaymentAPIController::class, 'show']);
 });
