@@ -54,10 +54,15 @@ class MakePaymentResource extends JsonResource
                             elseif (str_contains($sn, 'month')) $shiftName = 'Monthly';
                         }
 
+                        $categoryName = $d->catagori ?: ($d->item && $d->item->category ? ($d->item->category->name_en ?: $d->item->category->name_bn) : 'General Section');
+                        $categoryId = $d->item ? $d->item->cat_id : null;
+
                         $lineItems[] = [
                             'item_id' => $d->item_id,
-                            'section' => $d->catagori ?: ($d->item ? $d->item->name_en : 'General Section'),
-                            'subSection' => $d->item ? $d->item->name_en : 'General Item',
+                            'category_id' => $categoryId,
+                            'category' => $categoryName,
+                            'section' => $categoryName,
+                            'subSection' => $d->item ? ($d->item->name_en ?: $d->item->name_bn) : 'General Item',
                             'shift' => $shiftName,
                             'rateType' => 'GeneralRate',
                             'rate' => (float) ($d->amount ?: 0),
@@ -87,10 +92,15 @@ class MakePaymentResource extends JsonResource
 
                 if ($package->details && count($package->details) > 0) {
                     foreach ($package->details as $pd) {
+                        $catName = $pd->item && $pd->item->category ? ($pd->item->category->name_en ?: $pd->item->category->name_bn) : 'Package Section';
+                        $catId = $pd->item ? $pd->item->cat_id : null;
+
                         $lineItems[] = [
                             'item_id' => $pd->item_id,
-                            'section' => $pd->item ? ($pd->item->category ? $pd->item->category->name_en : 'Package Section') : 'Package Section',
-                            'subSection' => $pd->item ? $pd->item->name_en : 'Package Item',
+                            'category_id' => $catId,
+                            'category' => $catName,
+                            'section' => $catName,
+                            'subSection' => $pd->item ? ($pd->item->name_en ?: $pd->item->name_bn) : 'Package Item',
                             'shift' => 'Morning',
                             'rateType' => 'GeneralRate',
                             'rate' => (float) ($pd->item_amt ?: ($pd->request_total_amt ?: 0)),
