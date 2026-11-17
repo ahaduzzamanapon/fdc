@@ -228,7 +228,22 @@ class BfdcAccountingService
                 'clientRequestId' => (string) Str::uuid(),
             ], $correlationId);
 
-            // 2. Ensure Bill
+            // 2. Ensure Rate Cards for line items
+            if (!empty($formatted['lineItems'])) {
+                foreach ($formatted['lineItems'] as $itemLine) {
+                    $rateVal = (float) ($itemLine['rate'] ?? 0);
+                    $this->request('post', '/api/v1/rate-card', [
+                        'section' => $itemLine['section'] ?? 'General Section',
+                        'subSection' => $itemLine['subSection'] ?? 'General Item',
+                        'shift' => 'Morning',
+                        'generalRate' => $rateVal,
+                        'include15PercentRate' => round($rateVal * 1.15, 2),
+                        'clientRequestId' => (string) Str::uuid(),
+                    ], $correlationId);
+                }
+            }
+
+            // 3. Ensure Bill
             $this->request('post', '/api/v1/billing', [
                 'billDate' => $formatted['billDate'],
                 'jobReportNo' => $formatted['jobReportNo'],
@@ -275,11 +290,20 @@ class BfdcAccountingService
     {
         $correlationId = (string) Str::uuid();
         $mrNo = $noc->trx_id ?: ($noc->token ?: "NOC-{$noc->id}");
+        $amount = (float) ($noc->amount ?: 0);
+
+        if ($amount <= 0) {
+            return [
+                'success' => false,
+                'error' => 'NOC collection amount must be greater than zero to sync with Accounting.',
+                'mrNo' => $mrNo,
+            ];
+        }
+
         $date = $noc->updated_at ? $noc->updated_at->format('Y-m-d') : ($noc->created_at ? $noc->created_at->format('Y-m-d') : date('Y-m-d'));
         $banner = $noc->organization ?: ($noc->producer ?: 'General Organization');
         $filmOrWork = $noc->name ?: 'NOC Certificate Application';
         $producer = $noc->producer ?: ($noc->full_name ?: 'Applicant');
-        $amount = (float) ($noc->amount ?: 0);
 
         try {
             // 1. Ensure Party
@@ -292,7 +316,17 @@ class BfdcAccountingService
                 'clientRequestId' => (string) Str::uuid(),
             ], $correlationId);
 
-            // 2. Ensure Bill
+            // 2. Ensure Rate Card for NOC
+            $this->request('post', '/api/v1/rate-card', [
+                'section' => 'Certificate',
+                'subSection' => 'NOC Application Fee',
+                'shift' => 'Morning',
+                'generalRate' => $amount,
+                'include15PercentRate' => round($amount * 1.15, 2),
+                'clientRequestId' => (string) Str::uuid(),
+            ], $correlationId);
+
+            // 3. Ensure Bill
             $this->request('post', '/api/v1/billing', [
                 'billDate' => $date,
                 'jobReportNo' => $noc->token ?: "NOC-JOB-{$noc->id}",
@@ -337,6 +371,92 @@ class BfdcAccountingService
                 'success' => false,
                 'error' => $e->getMessage(),
                 'mrNo' => $mrNo,
+            ];
+        }
+    }
+
+    /**
+     * Push a Rate Card entry to Accounting API (POST /api/v1/rate-card).
+     */
+    public function pushRateCardToAccounting(\App\Models\Item $item, string $shift = 'Morning'): array
+    {
+        $correlationId = (string) Str::uuid();
+        $section = $item->category ? ($item->category->name_en ?: $item->category->name_bn) : 'General Section';
+        $subSection = $item->name_en ?: ($item->name_bn ?: "Item-{$item->id}");
+        $generalRate = (float) ($item->amount ?: 0);
+        $include15PercentRate = round($generalRate * 1.15, 2);
+
+        try {
+            $payload = [
+                'section' => $section,
+                'subSection' => $subSection,
+                'shift' => $shift,
+                'generalRate' => $generalRate,
+                'include15PercentRate' => $include15PercentRate,
+                'clientRequestId' => (string) Str::uuid(),
+            ];
+
+            $response = $this->request('post', '/api/v1/rate-card', $payload, $correlationId);
+            $isSuccess = $response->successful() || $response->status() === 409;
+
+            return [
+                'success' => $isSuccess,
+                'status' => $response->status(),
+                'data' => $response->json(),
+                'itemId' => $item->id,
+                'section' => $section,
+                'subSection' => $subSection,
+            ];
+        } catch (\Throwable $e) {
+            Log::error('Rate-card Accounting push error: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'itemId' => $item->id,
+            ];
+        }
+    }
+
+    /**
+     * Push a Producer (Party) record to Accounting API.
+     */
+    public function pushProducerToAccounting(Producer $producer, ?string $filmTitle = null): array
+    {
+        $correlationId = (string) Str::uuid();
+        $banner = $producer->organization_name ?: ($producer->owners_name ?: 'General Banner');
+        $producerName = $producer->owners_name ?: ($producer->organization_name ?: 'General Producer');
+        $film = $filmTitle ?: 'General / Registered Project';
+
+        try {
+            $payload = [
+                'eventType' => 'Film',
+                'banner' => $banner,
+                'film' => $film,
+                'producer' => $producerName,
+                'startDate' => $producer->created_at ? $producer->created_at->format('c') : date('c'),
+                'openingDebit' => 0.0,
+                'openingCredit' => 0.0,
+                'type' => 'Party',
+                'category' => 'Producer',
+                'clientRequestId' => (string) Str::uuid(),
+            ];
+
+            $response = $this->request('post', '/api/v1/party', $payload, $correlationId);
+            $isSuccess = $response->successful() || $response->status() === 409;
+
+            return [
+                'success' => $isSuccess,
+                'status' => $response->status(),
+                'data' => $response->json(),
+                'producerId' => $producer->id,
+                'banner' => $banner,
+            ];
+        } catch (\Throwable $e) {
+            Log::error('Producer Accounting push error: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'producerId' => $producer->id,
             ];
         }
     }

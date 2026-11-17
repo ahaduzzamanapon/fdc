@@ -46,5 +46,15 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated. Invalid, expired, or missing Bearer token.',
+                    'error' => 'Unauthorized'
+                ], 401);
+            }
+        });
     }
 }
