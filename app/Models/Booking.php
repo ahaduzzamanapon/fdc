@@ -8,7 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     use HasFactory;
-    protected $fillable = ['producer_id','desk_id','film_id','film_type','book_id','status','total_price'];
+    protected $fillable = [
+        'producer_id',
+        'desk_id',
+        'film_id',
+        'film_type',
+        'book_id',
+        'status',
+        'pay_status',
+        'exprired_at',
+        'total_price',
+        'updated_by'
+    ];
 
     public function details()
     {
