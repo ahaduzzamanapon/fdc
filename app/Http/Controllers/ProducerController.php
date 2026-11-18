@@ -1215,6 +1215,15 @@ class ProducerController extends AppBaseController
 
         DB::beginTransaction();
         try {
+            // Check if environment is development or local
+            $isDev = app()->environment('local', 'dev', 'development')
+                || str_contains($request->getHost(), 'dev.fdcmis.com')
+                || config('app.env') === 'local';
+
+            $defaultStatus = $isDev ? 'approved' : 'on process';
+            $defaultPayStatus = $isDev ? 'pending' : null;
+            $defaultExpiredAt = $isDev ? \Carbon\Carbon::now()->addDays(30)->format('Y-m-d H:i:s') : null;
+
             // 1. Create Booking
             // Check if booking exists (edit mode)
             $booking_id = $request->input('booking_id'); // edit page থেকে hidden input
@@ -1225,7 +1234,9 @@ class ProducerController extends AppBaseController
                     'film_id' => $request->input('film_id'),
                     'film_type' => $request->input('film_type'),
                     'total_price' => $request->input('total_price_input_total'),
-                    'status' => 'on process', // বা form থেকে নেওয়া status
+                    'status' => $defaultStatus,
+                    'pay_status' => $defaultPayStatus,
+                    'exprired_at' => $defaultExpiredAt,
                 ]);
                 // Delete old details
                 BookingDetail::where('booking_id', $booking_id)->delete();
@@ -1233,7 +1244,9 @@ class ProducerController extends AppBaseController
                 // New booking insert
                 $booking = Booking::create([
                     'book_id' => $this->generateBookId(),
-                    'status' => 'on process',
+                    'status' => $defaultStatus,
+                    'pay_status' => $defaultPayStatus,
+                    'exprired_at' => $defaultExpiredAt,
                     'desk_id' => $step->to_role_id,
                     'film_id' => $request->input('film_id'),
                     'film_type' => $request->input('film_type'),
@@ -1249,7 +1262,7 @@ class ProducerController extends AppBaseController
                     'prev_role_id' => $role_id,
                     'current_role_id' => $step->to_role_id,
                     'next_role_id' => $next->to_role_id ?? $step->to_role_id,
-                    'status' => 'on process',
+                    'status' => $defaultStatus,
                     'created_by' => $producer->id,
                     'updated_by' => $producer->id,
                     'created_at' => date('Y-m-d H:i:s'),
@@ -1265,8 +1278,8 @@ class ProducerController extends AppBaseController
                     'action_by' => $producer->id,
                     'action_role_id' => $role_id,
                     'next_role_id' => $step->to_role_id,
-                    'status' => 'forward',
-                    'remarks' => 'New Booking Created',
+                    'status' => $isDev ? 'approved' : 'forward',
+                    'remarks' => $isDev ? 'Auto-approved on Dev Server' : 'New Booking Created',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 );
@@ -1300,6 +1313,10 @@ class ProducerController extends AppBaseController
             }
 
             DB::commit();
+            if ($isDev) {
+                Flash::success('Booking created and auto-approved for testing!');
+                return redirect(route('producer.approved'));
+            }
             Flash::success('Booking created successfully!');
             return redirect(route('producer.booking'));
         } catch (\Exception $e) {
