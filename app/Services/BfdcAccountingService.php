@@ -109,14 +109,19 @@ class BfdcAccountingService
             $booking = Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($filmPackage->package_id);
             if ($booking) {
                 $jobReportNo = $booking->book_id ?: "BKG-{$booking->id}";
-                if ($booking->film) {
-                    $banner = $booking->film->banner_name ?: ($booking->film->organization_name ?: $banner);
-                    $filmTitle = $booking->film->film_title ?: $filmTitle;
-                    $producerName = $booking->film->applicant_name ?: $producerName;
-                }
                 if ($booking->producer) {
+                    $banner = $booking->producer->organization_name ?: ($booking->producer->owners_name ?: $banner);
                     $producerName = $booking->producer->owners_name ?: ($booking->producer->organization_name ?: $producerName);
                     $producerPhone = $booking->producer->phone_number;
+                }
+                if ($booking->film) {
+                    $filmTitle = $booking->film->film_title ?: $filmTitle;
+                    if (empty($banner) || $banner === 'General Banner') {
+                        $banner = $booking->film->banner_name ?: ($booking->film->organization_name ?: $banner);
+                    }
+                    if (empty($producerName) || $producerName === 'Producer') {
+                        $producerName = $booking->film->applicant_name ?: $producerName;
+                    }
                 }
 
                 if ($booking->details && count($booking->details) > 0) {
@@ -145,14 +150,19 @@ class BfdcAccountingService
             $package = Package::with(['details.item', 'film', 'producer'])->find($filmPackage->package_id);
             if ($package) {
                 $jobReportNo = $package->trn_id ?: ($package->name ?: "PKG-{$package->id}");
-                if ($package->film) {
-                    $banner = $package->film->banner_name ?: ($package->film->organization_name ?: $banner);
-                    $filmTitle = $package->film->film_title ?: $filmTitle;
-                    $producerName = $package->film->applicant_name ?: $producerName;
-                }
                 if ($package->producer) {
+                    $banner = $package->producer->organization_name ?: ($package->producer->owners_name ?: $banner);
                     $producerName = $package->producer->owners_name ?: ($package->producer->organization_name ?: $producerName);
                     $producerPhone = $package->producer->phone_number;
+                }
+                if ($package->film) {
+                    $filmTitle = $package->film->film_title ?: $filmTitle;
+                    if (empty($banner) || $banner === 'General Banner') {
+                        $banner = $package->film->banner_name ?: ($package->film->organization_name ?: $banner);
+                    }
+                    if (empty($producerName) || $producerName === 'Producer') {
+                        $producerName = $package->film->applicant_name ?: $producerName;
+                    }
                 }
 
                 if ($package->details && count($package->details) > 0) {
