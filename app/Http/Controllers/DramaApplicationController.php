@@ -328,6 +328,18 @@ class DramaApplicationController extends AppBaseController
                 }
             }
 
+            ## Auto push to Accounting on approval
+            if ($request->status === 'approved') {
+                try {
+                    $filmModel = DramaApplication::find($request->film_id);
+                    if ($filmModel) {
+                        app(\App\Services\BfdcAccountingService::class)->pushFilmApplicationToAccounting($filmModel);
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error('Auto push DramaApplication to Accounting failed: ' . $e->getMessage());
+                }
+            }
+
             Flash::success('Drama Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();

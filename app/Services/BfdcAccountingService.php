@@ -247,7 +247,7 @@ class BfdcAccountingService
                         'subSection' => $itemLine['subSection'] ?? 'General Item',
                         'shift' => 'Morning',
                         'generalRate' => $rateVal,
-                        'include15PercentRate' => round($rateVal * 1.15, 2),
+                        'include15PercentRate' => $rateVal,
                         'clientRequestId' => (string) Str::uuid(),
                     ], $correlationId);
                 }
@@ -332,7 +332,7 @@ class BfdcAccountingService
                 'subSection' => 'NOC Application Fee',
                 'shift' => 'Morning',
                 'generalRate' => $amount,
-                'include15PercentRate' => round($amount * 1.15, 2),
+                'include15PercentRate' => $amount,
                 'clientRequestId' => (string) Str::uuid(),
             ], $correlationId);
 
@@ -386,15 +386,61 @@ class BfdcAccountingService
     }
 
     /**
+     * Map arbitrary or Bengali shift string into Subrahost canonical shift.
+     * Allowed: Morning, Evening, Night, Both, Monthly.
+     */
+    public function mapShiftName(?string $rawShift): string
+    {
+        if (empty($rawShift)) {
+            return 'Morning';
+        }
+
+        $s = mb_strtolower(trim($rawShift), 'UTF-8');
+
+        if (str_contains($s, 'morning') || str_contains($s, 'সকাল') || str_contains($s, 'day') || str_contains($s, 'দিন')) {
+            return 'Morning';
+        }
+        if (str_contains($s, 'evening') || str_contains($s, 'বিকাল') || str_contains($s, 'সন্ধ্যা')) {
+            return 'Evening';
+        }
+        if (str_contains($s, 'night') || str_contains($s, 'রাত')) {
+            return 'Night';
+        }
+        if (str_contains($s, 'both') || str_contains($s, 'উভয়')) {
+            return 'Both';
+        }
+        if (str_contains($s, 'month') || str_contains($s, 'মাস')) {
+            return 'Monthly';
+        }
+
+        return 'Morning';
+    }
+
+    /**
      * Push a Rate Card entry to Accounting API (POST /api/v1/rate-card).
      */
-    public function pushRateCardToAccounting(\App\Models\Item $item, string $shift = 'Morning'): array
+    public function pushRateCardToAccounting(\App\Models\Item $item, ?string $shift = null): array
     {
         $correlationId = (string) Str::uuid();
-        $section = $item->category ? ($item->category->name_en ?: $item->category->name_bn) : 'General Section';
-        $subSection = $item->name_en ?: ($item->name_bn ?: "Item-{$item->id}");
+        $section = $item->category ? ($item->category->name_bn ?: $item->category->name_en) : 'General Section';
+        $subSection = $item->name_bn ?: ($item->name_en ?: "Item-{$item->id}");
+
+        // If shift not explicitly passed, detect from item's defined shifts or default to 'Morning'
+        if (empty($shift)) {
+            $itemShift = \App\Models\Shift::where('item_id', $item->id)->first();
+            $rawShift = $itemShift ? ($itemShift->name ?: 'Morning') : 'Morning';
+            $shift = $this->mapShiftName($rawShift);
+        } else {
+            $shift = $this->mapShiftName($shift);
+        }
+
         $generalRate = (float) ($item->amount ?: 0);
-        $include15PercentRate = round($generalRate * 1.15, 2);
+        $include15PercentRate = $generalRate; // সিস্টেমে একটি প্রাইস থাকায় দুটোই সমান হবে
+
+        // Subrahost expects a standard UUID (Guid).
+        // Format: fdc00000-0000-0000-0000-[item_id]
+        $hexId = str_pad(dechex((int) $item->id), 12, '0', STR_PAD_LEFT);
+        $clientRequestId = "fdc00000-0000-0000-0000-{$hexId}";
 
         try {
             $payload = [
@@ -403,7 +449,7 @@ class BfdcAccountingService
                 'shift' => $shift,
                 'generalRate' => $generalRate,
                 'include15PercentRate' => $include15PercentRate,
-                'clientRequestId' => (string) Str::uuid(),
+                'clientRequestId' => $clientRequestId,
             ];
 
             $response = $this->request('post', '/api/v1/rate-card', $payload, $correlationId);
@@ -416,6 +462,7 @@ class BfdcAccountingService
                 'itemId' => $item->id,
                 'section' => $section,
                 'subSection' => $subSection,
+                'shift' => $shift,
             ];
         } catch (\Throwable $e) {
             Log::error('Rate-card Accounting push error: ' . $e->getMessage());
@@ -423,6 +470,77 @@ class BfdcAccountingService
                 'success' => false,
                 'error' => $e->getMessage(),
                 'itemId' => $item->id,
+            ];
+        }
+    }
+
+    /**
+     * Push a Film/Application (Party) record to Accounting API (POST /api/v1/party).
+     */
+    public function pushFilmApplicationToAccounting(FilmApplication $film): array
+    {
+        $correlationId = (string) Str::uuid();
+
+        // 1. Resolve Banner (organization name or fallback)
+        $producer = $film->producer ?: Producer::find($film->producer_id);
+        $banner = $producer ? ($producer->organization_name ?: $film->organization_name) : $film->organization_name;
+        if (empty($banner)) {
+            $banner = $film->banner_name ?: 'General Banner';
+        }
+
+        // 2. Film Title
+        $filmTitle = $film->film_title ?: 'Untitled Project';
+
+        // 3. Producer Name
+        $producerName = $film->applicant_name ?: ($producer ? ($producer->owners_name ?: $producer->organization_name) : 'General Producer');
+
+        // 4. Category and EventType
+        // Category holds: 'film', 'drama', 'realityshow', 'docufilm'
+        $category = $film->category ?: 'film';
+        $eventType = 'Film'; // Subrahost API strictly validates EventType must be 'Film' or 'Advertise'
+
+        // Subrahost strictly parses clientRequestId as a standard GUID (8-4-4-4-12 hex).
+        // Format: fdc00000-0000-0000-[producer_id]-[application_id]
+        $prodId = (int) ($film->producer_id ?: 1);
+        $appId = (int) $film->id;
+        $clientRequestId = sprintf("fdc00000-0000-0000-%04x-%012x", $prodId, $appId);
+
+        $nowIso = date('c');
+
+        try {
+            $payload = [
+                'eventType' => $eventType,
+                'banner' => $banner,
+                'film' => $filmTitle,
+                'producer' => $producerName,
+                'startDate' => $nowIso,
+                'openingDebit' => 0.0,
+                'openingCredit' => 0.0,
+                'type' => 'Party', // Subrahost live format: 'Party' for dbo.Bill_PartyDetails
+                'category' => $category,
+                'releaseDate' => $nowIso,
+                'remarks' => "Approved {$category} application (App #{$appId}) from BFDC MIS",
+                'clientRequestId' => $clientRequestId,
+            ];
+
+            $response = $this->request('post', '/api/v1/party', $payload, $correlationId);
+            $isSuccess = $response->successful() || $response->status() === 409;
+
+            return [
+                'success' => $isSuccess,
+                'status' => $response->status(),
+                'data' => $response->json(),
+                'filmId' => $film->id,
+                'banner' => $banner,
+                'film' => $filmTitle,
+                'category' => $category,
+            ];
+        } catch (\Throwable $e) {
+            Log::error('FilmApplication Accounting push error: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'filmId' => $film->id,
             ];
         }
     }

@@ -24,7 +24,7 @@
                 <th>Category</th>
                 <th>Amount</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th>{{ __('messages.action_label') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -36,20 +36,30 @@
                 <td>{{ $item->amount }}</td>
                 <td>{{ $item->description }}</td>
                 <td>
-                    {!! Form::open(['route' => ['items.destroy', secure_hash_id($item->id)], 'method' => 'delete', 'id' => 'delete-form-'.$item->id]) !!}
-                    <div class='btn-group'>
-                        <a href="{{ route('items.show', [secure_hash_id($item->id)]) }}" class='btn btn-outline-primary btn-xs'>
-                            <i class="im im-icon-Eye" title="View"></i>
-                        </a>
-                        <a href="{{ route('items.edit', [secure_hash_id($item->id)]) }}" class='btn btn-outline-primary btn-xs'>
-                            <i class="im im-icon-Pen" title="Edit"></i>
-                        </a>
-                        {!! Form::button('<i class="im im-icon-Remove" title="Delete"></i>', [
-                            'type' => 'button',
-                            'class' => 'btn btn-outline-danger btn-xs',
-                            'onclick' => "confirmDelete('delete-form-".$item->id."')"
-                        ]) !!}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary btn-xs dropdown-toggle" type="button"
+                            id="dropdownMenuButton-{{ $item->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ __('messages.actions_button') }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-{{ $item->id }}">
+                            <a href="{{ route('items.show', [secure_hash_id($item->id)]) }}" class="dropdown-item">
+                                <i class="im im-icon-Eye" title="View"></i> {{ __('messages.view_label') }}
+                            </a>
+                            <a href="{{ route('items.edit', [secure_hash_id($item->id)]) }}" class="dropdown-item">
+                                <i class="im im-icon-Pen" title="Edit"></i> {{ __('messages.edit') }}
+                            </a>
+                            <form action="{{ route('items.pushRateCard', secure_hash_id($item->id)) }}" method="POST" style="margin: 0;" onsubmit="return confirm('আপনি কি এই আইটেমটি Rate Card হিসেবে BFDC Accounting-এ পুশ করতে চান?');">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-primary" style="background: none; border: none; width: 100%; text-align: left; padding: 0.25rem 1.5rem; cursor: pointer;">
+                                    <i class="im im-icon-Upload"></i> রেট কার্ড পুশ করুন
+                                </button>
+                            </form>
+                            <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="confirmDelete('delete-form-{{ $item->id }}')">
+                                <i class="im im-icon-Remove" title="Delete"></i> {{ __('messages.delete_button') }}
+                            </a>
+                        </div>
                     </div>
+                    {!! Form::open(['route' => ['items.destroy', secure_hash_id($item->id)], 'method' => 'delete', 'id' => 'delete-form-'.$item->id, 'style' => 'display:none;']) !!}
                     {!! Form::close() !!}
                 </td>
             </tr>

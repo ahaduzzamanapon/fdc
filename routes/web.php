@@ -145,6 +145,7 @@ Route::group(["middleware" => ['auth.multi']], function () {
     Route::post('makePayments/{id}/push-accounting', [MakePaymentController::class, 'pushAccountingWeb'])->name('makePayments.pushAccounting');
     Route::post('makePayments/{id}/push-refund-accounting', [MakePaymentController::class, 'pushRefundAccountingWeb'])->name('makePayments.pushRefundAccounting');
     Route::post('nocPayments/{id}/push-accounting', [\App\Http\Controllers\NocController::class, 'pushAccountingWeb'])->name('nocPayments.pushAccounting');
+    Route::post('filmApplications/{id}/push-accounting', [FilmApplicationController::class, 'pushAccountingWeb'])->name('filmApplications.pushAccounting');
 });
 
 // applications

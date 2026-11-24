@@ -327,6 +327,18 @@ class DocufilmApplicationController extends AppBaseController
                 }
             }
 
+            ## Auto push to Accounting on approval
+            if ($request->status === 'approved') {
+                try {
+                    $filmModel = DocufilmApplication::find($request->film_id);
+                    if ($filmModel) {
+                        app(\App\Services\BfdcAccountingService::class)->pushFilmApplicationToAccounting($filmModel);
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error('Auto push DocufilmApplication to Accounting failed: ' . $e->getMessage());
+                }
+            }
+
             Flash::success('Documentary Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();

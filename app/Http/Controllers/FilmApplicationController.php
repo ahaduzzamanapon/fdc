@@ -593,7 +593,17 @@ class FilmApplicationController extends AppBaseController
             Flash::error('Film Application update failed. Please try again later.');
         }
 
-
+        ## Auto push to Accounting on approval
+        if ($request->status === 'approved') {
+            try {
+                $filmModel = FilmApplication::find($request->film_id);
+                if ($filmModel) {
+                    app(\App\Services\BfdcAccountingService::class)->pushFilmApplicationToAccounting($filmModel);
+                }
+            } catch (\Throwable $e) {
+                \Log::error('Auto push FilmApplication to Accounting failed: ' . $e->getMessage());
+            }
+        }
 
         return redirect(route('filmApplications.forward.table'));
     }
@@ -710,5 +720,34 @@ class FilmApplicationController extends AppBaseController
         $filmPackage->load('filmApplication', 'package');
         $filmApplication = $filmPackage->filmApplication;
         return view('film_applications.payment_receipt', compact('filmPackage', 'filmApplication'));
+    }
+
+    /**
+     * Manual push a Film/Drama/Docufilm/Reality Application to BFDC Accounting.
+     */
+    public function pushAccountingWeb($id, \App\Services\BfdcAccountingService $service)
+    {
+        if (Auth::guard('producer')->check()) {
+            abort(403, 'অননুমোদিত অ্যাক্সেস। প্রযোজক এই কাজ করতে পারবেন না।');
+        }
+
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $film = FilmApplication::find($realId);
+
+        if (!$film) {
+            Flash::error('Application record not found.');
+            return redirect()->back();
+        }
+
+        $result = $service->pushFilmApplicationToAccounting($film);
+
+        if (!empty($result['success'])) {
+            Flash::success("Party accounting-এ সফলভাবে পুশ করা হয়েছে (Party Details ID: " . ($result['data']['partyDetailsId'] ?? 'N/A') . ")");
+        } else {
+            $msg = $result['error'] ?? ($result['data']['message'] ?? 'পুশ সম্পন্ন হতে সমস্যা হয়েছে।');
+            Flash::error("Party Accounting পুশ ব্যর্থ: {$msg}");
+        }
+
+        return redirect()->back();
     }
 }

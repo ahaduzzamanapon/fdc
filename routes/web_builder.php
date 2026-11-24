@@ -21,6 +21,8 @@ Route::resource('itemUnits', 'ItemUnitController');
 Route::resource('itemCategories', 'ItemCategoryController');
 Route::get('items/export', 'ItemController@export')->name('items.export');
 Route::post('items/import', 'ItemController@import')->name('items.import');
+Route::post('items/{id}/push-rate-card', 'ItemController@pushRateCardWeb')->name('items.pushRateCard');
+Route::post('items/push-all-rate-cards', 'ItemController@pushAllRateCardsWeb')->name('items.pushAllRateCards');
 Route::resource('items', 'ItemController');
 
 

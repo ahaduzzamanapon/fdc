@@ -337,6 +337,18 @@ class RealityApplicationController extends AppBaseController
                 }
             }
 
+            ## Auto push to Accounting on approval
+            if ($request->status === 'approved') {
+                try {
+                    $filmModel = RealityApplication::find($request->film_id);
+                    if ($filmModel) {
+                        app(\App\Services\BfdcAccountingService::class)->pushFilmApplicationToAccounting($filmModel);
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error('Auto push RealityApplication to Accounting failed: ' . $e->getMessage());
+                }
+            }
+
             Flash::success('Reality Application updated successfully.');
         } catch (\Exception $e) {
             \DB::rollBack();

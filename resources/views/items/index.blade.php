@@ -26,6 +26,12 @@ Items @parent
                 <h5 class="card-title d-inline"> আইটেম </h5>
                 <span class="float-right">
                     <a class="btn btn-primary pull-right" href="{{ route('items.create') }}">নতুন যোগ করুন</a>
+                    <form action="{{ route('items.pushAllRateCards') }}" method="POST" class="d-inline" onsubmit="return confirm('আপনি কি পূর্বের সকল আইটেম রেট কার্ড (Rate Card) হিসেবে BFDC Accounting-এ পুশ করতে চান?');">
+                        @csrf
+                        <button type="submit" class="btn btn-warning pull-right" style="margin-right: 5px;">
+                            <i class="im im-icon-Upload"></i> সকল রেট কার্ড পুশ করুন
+                        </button>
+                    </form>
                     <a class="btn btn-success pull-right" href="{{ route('items.export') }}"
                         style="margin-right: 5px;">Export</a>
                     <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#importModal"

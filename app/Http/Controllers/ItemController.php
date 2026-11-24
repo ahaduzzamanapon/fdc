@@ -58,16 +58,78 @@ class ItemController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateItemRequest $request)
+    public function store(CreateItemRequest $request, \App\Services\BfdcAccountingService $accountingService)
     {
         $input = $request->all();
 
         /** @var Item $item */
         $item = Item::create($input);
 
-        Flash::success('Item saved successfully.');
+        // Auto push rate card to Accounting on create
+        try {
+            $accountingService->pushRateCardToAccounting($item);
+        } catch (\Throwable $e) {
+            \Log::error('Auto push rate card failed on item create: ' . $e->getMessage());
+        }
+
+        Flash::success('Item saved and pushed to Rate Card successfully.');
 
         return redirect(route('items.index'));
+    }
+
+    /**
+     * Manual push a single Item Rate Card to BFDC Accounting.
+     */
+    public function pushRateCardWeb($id, \App\Services\BfdcAccountingService $service)
+    {
+        if (Auth::guard('producer')->check()) {
+            abort(403, 'অননুমোদিত অ্যাক্সেস। প্রযোজক এই কাজ করতে পারবেন না।');
+        }
+
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $item = Item::with('category')->find($realId);
+
+        if (!$item) {
+            Flash::error('Item not found.');
+            return redirect()->back();
+        }
+
+        $result = $service->pushRateCardToAccounting($item);
+
+        if (!empty($result['success'])) {
+            Flash::success("Rate Card accounting-এ সফলভাবে পুশ করা হয়েছে (Section ID: " . ($result['data']['sectionDetailsId'] ?? 'N/A') . ")");
+        } else {
+            $msg = $result['error'] ?? ($result['data']['message'] ?? 'পুশ সম্পন্ন হতে সমস্যা হয়েছে।');
+            Flash::error("Rate Card পুশ ব্যর্থ: {$msg}");
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Batch push all existing items to Rate Card Accounting.
+     */
+    public function pushAllRateCardsWeb(\App\Services\BfdcAccountingService $service)
+    {
+        if (Auth::guard('producer')->check()) {
+            abort(403, 'অননুমোদিত অ্যাক্সেস। প্রযোজক এই কাজ করতে পারবেন না।');
+        }
+
+        $items = Item::with('category')->get();
+        $successCount = 0;
+        $failCount = 0;
+
+        foreach ($items as $item) {
+            $res = $service->pushRateCardToAccounting($item);
+            if (!empty($res['success'])) {
+                $successCount++;
+            } else {
+                $failCount++;
+            }
+        }
+
+        Flash::success("মোট {$successCount} টি আইটেম সফলভাবে Rate Card-এ পুশ করা হয়েছে।" . ($failCount > 0 ? " ({$failCount} টি ব্যর্থ)" : ""));
+        return redirect()->back();
     }
 
     /**

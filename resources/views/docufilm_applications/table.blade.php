@@ -44,6 +44,15 @@
                                             data-placement="top"
                                             title="{{ __('messages.check_and_forward') }}"></i>{{ __('messages.check_and_forward') }}</a>
                                 @endif
+
+                                @if ($film->status == 'approved' && !Auth::guard('producer')->check())
+                                    <form action="{{ route('filmApplications.pushAccounting', secure_hash_id($film->id)) }}" method="POST" style="margin: 0;" onsubmit="return confirm('আপনি কি এই প্রামাণ্যচিত্র আবেদন তথ্যটি BFDC Accounting-এ পুশ করতে চান?');">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-primary" style="background: none; border: none; width: 100%; text-align: left; padding: 0.25rem 1.5rem; cursor: pointer;">
+                                            <i class="im im-icon-Upload"></i> অ্যাকাউন্টিংয়ে পুশ করুন
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </td>
