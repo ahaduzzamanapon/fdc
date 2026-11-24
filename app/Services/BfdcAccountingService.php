@@ -481,11 +481,11 @@ class BfdcAccountingService
     {
         $correlationId = (string) Str::uuid();
 
-        // 1. Resolve Banner (organization name or fallback)
+        // 1. Resolve Banner (Application's organization/banner name takes top priority, matching MIS table)
+        $banner = $film->organization_name ?: ($film->banner_name ?: null);
         $producer = $film->producer ?: Producer::find($film->producer_id);
-        $banner = $producer ? ($producer->organization_name ?: $film->organization_name) : $film->organization_name;
         if (empty($banner)) {
-            $banner = $film->banner_name ?: 'General Banner';
+            $banner = $producer ? ($producer->organization_name ?: $producer->owners_name) : 'General Banner';
         }
 
         // 2. Film Title
