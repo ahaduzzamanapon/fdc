@@ -1,3 +1,7 @@
+@php
+    $currentProducer = Auth::guard('producer')->check() ? Auth::guard('producer')->user() : null;
+@endphp
+
 <!-- Section: সিনেমা সংক্রান্ত তথ্য -->
 <fieldset class="border p-3 mb-4">
     <legend class="float-none w-auto px-2">{{ __('messages.film_related_information') }}</legend>
@@ -114,7 +118,7 @@
         </div>
         <div class="mb-3 col-md-4">
             <label for="banner_name" class="form-label">{{ __('messages.banner_name') }}</label>
-            <input type="text" class="form-control" id="banner_name" name="banner_name" required>
+            <input type="text" class="form-control" id="banner_name" name="banner_name" value="{{ old('banner_name', $currentProducer ? $currentProducer->organization_name : '') }}" required>
         </div>
         <div class="mb-3 col-md-12">
             <label for="freedom_film_info" class="form-label">{{ __('messages.liberation_war_film_info') }}</label>
@@ -163,44 +167,44 @@
     <div class="row">
         <div class="col-md-4 mb-3">
             <label for="applicant_name" class="form-label">{{ __('messages.name') }}</label>
-            <input type="text" class="form-control" id="applicant_name" name="applicant_name" required>
+            <input type="text" class="form-control" id="applicant_name" name="applicant_name" value="{{ old('applicant_name', $currentProducer ? ($currentProducer->owners_name ?: $currentProducer->organization_name) : '') }}" required>
         </div>
         <div class="col-md-4 mb-3">
             <label for="father_name" class="form-label">{{ __('messages.father_name') }}</label>
-            <input type="text" class="form-control" id="father_name" name="father_name" required>
+            <input type="text" class="form-control" id="father_name" name="father_name" value="{{ old('father_name') }}" required>
         </div>
         <div class="col-md-4 mb-3">
             <label for="mother_name" class="form-label">{{ __('messages.mother_name') }}</label>
-            <input type="text" class="form-control" id="mother_name" name="mother_name" required>
+            <input type="text" class="form-control" id="mother_name" name="mother_name" value="{{ old('mother_name') }}" required>
         </div>
     </div>
 
     <div class="mb-3">
         <label for="permanent_address" class="form-label">{{ __('messages.permanent_address') }}</label>
-        <textarea class="form-control" id="permanent_address" name="permanent_address" rows="2" required></textarea>
+        <textarea class="form-control" id="permanent_address" name="permanent_address" rows="2" required>{{ old('permanent_address', $currentProducer ? $currentProducer->address : '') }}</textarea>
     </div>
 
     <div class="mb-3">
         <label for="present_address" class="form-label">{{ __('messages.present_address') }}</label>
-        <textarea class="form-control" id="present_address" name="present_address" rows="2" required></textarea>
+        <textarea class="form-control" id="present_address" name="present_address" rows="2" required>{{ old('present_address', $currentProducer ? $currentProducer->address : '') }}</textarea>
     </div>
 
     <div class="row">
         <div class="col-md-3 mb-3">
             <label for="nid_number" class="form-label">{{ __('messages.national_id_card_no') }}</label>
-            <input type="text" class="form-control" id="nid_number" name="nid_number" required>
+            <input type="text" class="form-control" id="nid_number" name="nid_number" value="{{ old('nid_number', $currentProducer ? $currentProducer->owners_nid : '') }}" required>
         </div>
         <div class="col-md-3 mb-3">
-            <label for="nid_number" class="form-label">{{ __('messages.national_id_card_copy') }}</label>
+            <label for="nid_file" class="form-label">{{ __('messages.national_id_card_copy') }}</label>
             <input type="file" class="form-control" id="nid_file" name="nid_file" accept=".pdf,.jpg,.jpeg,.png" required>
         </div>
         <div class="col-md-3 mb-3">
             <label for="phone_number" class="form-label">{{ __('messages.phone_number') }}</label>
-            <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ old('phone_number', $currentProducer ? $currentProducer->phone_number : '') }}" required>
         </div>
         <div class="col-md-3 mb-3">
             <label for="email" class="form-label">{{ __('messages.email') }}</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $currentProducer ? $currentProducer->email : '') }}" required>
         </div>
     </div>
 </fieldset>
@@ -211,22 +215,22 @@
 
     <div class="mb-3">
         <label for="organization_name" class="form-label">{{ __('messages.organization_name') }}</label>
-        <input type="text" class="form-control" id="organization_name" name="organization_name" required>
+        <input type="text" class="form-control" id="organization_name" name="organization_name" value="{{ old('organization_name', $currentProducer ? $currentProducer->organization_name : '') }}" required>
     </div>
 
     <div class="mb-3">
         <label for="organization_address" class="form-label">{{ __('messages.contact_address') }}</label>
-        <textarea class="form-control" id="organization_address" name="organization_address" rows="2" required></textarea>
+        <textarea class="form-control" id="organization_address" name="organization_address" rows="2" required>{{ old('organization_address', $currentProducer ? $currentProducer->address : '') }}</textarea>
     </div>
 
     <div class="row">
         <div class="col-md-6 mb-3">
             <label for="organization_phone" class="form-label">{{ __('messages.phone_number') }}</label>
-            <input type="text" class="form-control" id="organization_phone" name="organization_phone" required>
+            <input type="text" class="form-control" id="organization_phone" name="organization_phone" value="{{ old('organization_phone', $currentProducer ? $currentProducer->phone_number : '') }}" required>
         </div>
         <div class="col-md-6 mb-3">
             <label for="organization_email" class="form-label">{{ __('messages.email') }}</label>
-            <input type="email" class="form-control" id="organization_email" name="organization_email" required>
+            <input type="email" class="form-control" id="organization_email" name="organization_email" value="{{ old('organization_email', $currentProducer ? $currentProducer->email : '') }}" required>
         </div>
     </div>
 
