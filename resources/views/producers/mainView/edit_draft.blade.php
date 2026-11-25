@@ -295,6 +295,14 @@
                         </table>
                     </div>
 
+                    {{-- Remarks Field --}}
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label for="remarks" class="form-label fw-bold">মন্তব্য / বিবরণ (Remarks):</label>
+                            <textarea name="remarks" id="remarks" class="form-control" rows="2" placeholder="বুকিং সংক্রান্ত কোনো বিশেষ মন্তব্য বা বিবরণ থাকলে এখানে লিখুন...">{{ $film->remarks ?? '' }}</textarea>
+                        </div>
+                    </div>
+
                     <!-- Final Submit -->
                     <div @class(['row', 'mt-3'])>
                         <div @class(['col-md-8', 'text-end'])>

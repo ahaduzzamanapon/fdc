@@ -18,6 +18,7 @@ class Booking extends Model
         'pay_status',
         'exprired_at',
         'total_price',
+        'remarks',
         'updated_by'
     ];
 

@@ -43,6 +43,9 @@ Booking Details {{ __('messages.booking_details') }} @parent
                         <div class="card-body">
                             <p><strong>{{ __('messages.producer') }}:</strong> {{ $booking->producer->organization_name ?? 'N/A' }}</p>
                             <p><strong>{{ __('messages.film_label') }}</strong> {{ $booking->film->film_title ?? 'N/A' }}</p>
+                            @if(!empty($booking->remarks))
+                                <p><strong>মন্তব্য (Remarks):</strong> {{ $booking->remarks }}</p>
+                            @endif
                         </div>
                     </div>
                 </div>

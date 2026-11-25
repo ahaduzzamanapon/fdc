@@ -1100,6 +1100,7 @@ class ProducerController extends AppBaseController
                     'film_id' => $request->input('film_id'),
                     'film_type' => $request->input('film_type'),
                     'total_price' => $request->input('total_price_input_total'),
+                    'remarks' => $request->input('remarks'),
                     'status' => 'draft', // বা form থেকে নেওয়া status
                 ]);
                 // Delete old details
@@ -1114,6 +1115,7 @@ class ProducerController extends AppBaseController
                     'film_type' => $request->input('film_type'),
                     'producer_id' => $producer->id, // or pass producer_id from $request
                     'total_price' => $request->input('total_price_input_total'),
+                    'remarks' => $request->input('remarks'),
                 ]);
 
                 // 3. Create approval request
@@ -1234,6 +1236,7 @@ class ProducerController extends AppBaseController
                     'film_id' => $request->input('film_id'),
                     'film_type' => $request->input('film_type'),
                     'total_price' => $request->input('total_price_input_total'),
+                    'remarks' => $request->input('remarks'),
                     'status' => $defaultStatus,
                     'pay_status' => $defaultPayStatus,
                     'exprired_at' => $defaultExpiredAt,
@@ -1252,6 +1255,7 @@ class ProducerController extends AppBaseController
                     'film_type' => $request->input('film_type'),
                     'producer_id' => $producer->id, // or pass producer_id from $request
                     'total_price' => $request->input('total_price_input_total'),
+                    'remarks' => $request->input('remarks'),
                 ]);
 
                 // 3. Create approval request
