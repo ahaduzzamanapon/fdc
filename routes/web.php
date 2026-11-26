@@ -213,10 +213,9 @@ Route::group(["middleware" => ['auth.multi']], function () {
 
     // film applications
     Route::resource('filmApplications', 'FilmApplicationController');
-    Route::get('film-applications/single_payment_receipt/{id}', [FilmApplicationController::class, 'single_payment_receipt']);
-    Route::get('single_payment_receipt/{id}', [FilmApplicationController::class, 'single_payment_receipt'])->name('direct.single_payment_receipt');
     Route::get('filmApplication/approved', [FilmApplicationController::class, 'approved'])->name('filmApplications.approved');
     Route::get('filmApplication/rejected', [FilmApplicationController::class, 'rejected'])->name('filmApplications.rejected');
+    Route::get('single_payment_receipt/{id}', [FilmApplicationController::class, 'single_payment_receipt'])->name('direct.single_payment_receipt');
     Route::prefix('film-applications')->name('filmApplications.')->group(function () {
         Route::get('{filmApplication}/forward/{desk}', [FilmApplicationController::class, 'forward'])->name('forward');
         Route::post('change_status', [FilmApplicationController::class, 'update_status'])->name('st.status');
@@ -226,7 +225,6 @@ Route::group(["middleware" => ['auth.multi']], function () {
         Route::get('{filmApplication}/make_payment/{package_id}', [FilmApplicationController::class, 'make_payment'])->name('make_payment');
         Route::get('{filmApplication}/payment_data', [FilmApplicationController::class, 'payment_data'])->name('payment_data');
         Route::get('single_payment_receipt/{id}', [FilmApplicationController::class, 'single_payment_receipt'])->name('single_payment_receipt');
-        Route::get('/single_payment_receipt/{id}', [FilmApplicationController::class, 'single_payment_receipt']);
 
         ## For save as draft section
         Route::post('/draft', [FilmApplicationController::class, 'storeFilmDraft'])->name('film.save.draft');
