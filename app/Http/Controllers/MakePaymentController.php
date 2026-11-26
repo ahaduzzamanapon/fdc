@@ -85,7 +85,8 @@ class MakePaymentController extends AppBaseController
 
     // booking and package invoice
     public function booking_invoice($id) {
-        $booking = FilmPackage::find($id);
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $booking = FilmPackage::find($realId);
         if (!$booking) {
             Flash::error('Booking not found.');
             return redirect()->route('makePayments.index');
@@ -116,13 +117,14 @@ class MakePaymentController extends AppBaseController
 
         $mpdf->WriteHTML($html);
 
-        return response($mpdf->Output('booking_invoice_' . $id . '.pdf', 'I'), 200, [
+        return response($mpdf->Output('booking_invoice_' . $realId . '.pdf', 'I'), 200, [
             'Content-Type' => 'application/pdf',
         ]);
     }
 
     public function package_invoice($id) {
-        $booking = FilmPackage::find($id);
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $booking = FilmPackage::find($realId);
         if (!$booking) {
             Flash::error('Booking not found.');
             return redirect()->route('makePayments.index');
@@ -152,7 +154,7 @@ class MakePaymentController extends AppBaseController
 
         $mpdf->WriteHTML($html);
 
-        return response($mpdf->Output('package_invoice_' . $id . '.pdf', 'I'), 200, [
+        return response($mpdf->Output('package_invoice_' . $realId . '.pdf', 'I'), 200, [
             'Content-Type' => 'application/pdf',
         ]);
     }

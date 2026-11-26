@@ -715,11 +715,19 @@ class FilmApplicationController extends AppBaseController
         return view('film_applications.payment_data', compact('filmPackage', 'filmApplication'));
     }
 
-    public function single_payment_receipt(FilmPackage $filmPackage)
+    public function single_payment_receipt($id)
     {
-        $filmPackage->load('filmApplication', 'package');
+        $realId = decode_secure_hash_id($id) ?: $id;
+        $filmPackage = FilmPackage::with(['filmApplication', 'package'])->findOrFail($realId);
         $filmApplication = $filmPackage->filmApplication;
-        return view('film_applications.payment_receipt', compact('filmPackage', 'filmApplication'));
+        $booking = null;
+        if ($filmPackage->type === 'booking') {
+            $booking = \App\Models\Booking::with(['details.item', 'details.shift', 'film', 'producer'])->find($filmPackage->package_id);
+            if ($booking && $booking->film && !$filmApplication) {
+                $filmApplication = $booking->film;
+            }
+        }
+        return view('film_applications.payment_receipt', compact('filmPackage', 'filmApplication', 'booking'));
     }
 
     /**

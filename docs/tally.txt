@@ -1,0 +1,5 @@
+https://fdcacc.subrahost.com/AppGateway/Login.aspx
+user:admin
+pass: fdc@12345
+
+https://api-fdcacc.subrahost.com/swagger/index.html

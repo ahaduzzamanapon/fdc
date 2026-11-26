@@ -44,7 +44,7 @@
                             <td><span class="badge text-white" style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
                             <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y H:i A') : 'N/A' }}</td>
                             <td>
-                                <a href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ __('messages.view_receipt') }}</a>
+                                <a href="{{ route('filmApplications.single_payment_receipt', secure_hash_id($payment->id)) }}" class="btn btn-sm text-white" style="background-color: #8dc542; border-color: #8dc542;">{{ __('messages.view_receipt') }}</a>
                             </td>
                         </tr>
                         @empty

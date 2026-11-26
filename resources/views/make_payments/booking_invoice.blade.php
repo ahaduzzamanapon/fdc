@@ -189,6 +189,8 @@
                     <div class="card-header">{{ __('messages.booking_information') }}</div>
                     <p><strong>{{ __('messages.status_label') }}:</strong> <span class="badge-status">{{ $booking->status ?? 'N/A' }}</span></p>
                     <p><strong>বুকিং আইডি:</strong> {{ $booking->name ?? 'N/A' }}</p>
+                    <p><strong>ইনভয়েস:</strong> {{ $booking->trn_id ?? 'N/A' }}</p>
+                    <p><strong>লেনদেন আইডি:</strong> {{ $booking->TrxID ?: ($booking->trn_id ?? 'N/A') }}</p>
                     <p><strong>{{ __('messages.total_price') }}:</strong> {{ number_format($booking->amount ?? 0, 2) }} BDT</p>
                     <p><strong>{{ __('messages.created_at') }}:</strong> {{ $booking->created_at ? $booking->created_at->format('M d, Y H:i A') : 'N/A' }}</p>
                 </div>

@@ -82,8 +82,8 @@
                                             $payment = \App\Models\FilmPackage::where('package_id', $booking->id)->where('type', 'booking')->first();
                                         @endphp
                                         @if ($payment)
-                                            <a target="_blank" href="{{ route('booking.invoice', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="চালান"></i> চালান </a>
-                                            <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="পেমেন্ট স্লিপ"></i> পেমেন্ট স্লিপ </a>
+                                            <a target="_blank" href="{{ route('booking.invoice', secure_hash_id($payment->id)) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="চালান"></i> চালান </a>
+                                            <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', secure_hash_id($payment->id)) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="পেমেন্ট স্লিপ"></i> পেমেন্ট স্লিপ </a>
                                         @endif
                                     @endif
                                 </div>

@@ -31,6 +31,7 @@
                             <th>{{ 'নং' }}</th>
                             <th>{{ 'নাম' }}</th>
                             <th>{{ __('messages.amount') }}</th>
+                            <th>{{ 'ইনভয়েস' }}</th>
                             <th>{{ 'লেনদেন আইডি' }}</th>
                             <th>{{ 'অবস্থা' }}</th>
                             <th>{{ '​পর্যালোচনা' }}</th>
@@ -44,7 +45,14 @@
                             <td>{{ ++$key ?? 'N/A' }}</td>
                             <td>{{ $payment->name ?? 'N/A' }}</td>
                             <td>{{ $payment->amount ?? 'N/A' }}</td>
-                            <td>{{ $payment->trn_id ?? 'N/A' }}</td>
+                            <td><code>{{ $payment->trn_id ?? 'N/A' }}</code></td>
+                            <td>
+                                @if(!empty($payment->TrxID))
+                                    <span style="font-family: monospace; font-size: 13px; color: #333;">{{ $payment->TrxID }}</span>
+                                @else
+                                    <span class="text-muted">N/A</span>
+                                @endif
+                            </td>
                             <td><span @class(['badge', 'text-white']) style="background-color: #8dc542;">{{ $payment->status ?? 'N/A' }}</span></td>
                             <td><span @class(['badge', 'text-white']) style="background-color: #8dc542;">{{ $payment->review_status ?? 'N/A' }}</span></td>
                             <td>{{ $payment->updated_at ? $payment->updated_at->format('M d, Y') : 'N/A' }}</td>
@@ -67,7 +75,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a target="_blank" href="{{ route($routeName, $payment->id) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> চালান </a>
+                                            <a target="_blank" href="{{ route($routeName, secure_hash_id($payment->id)) }}" class="dropdown-item"> <i class="im im-icon-Eye" data-toggle="tooltip" data-placement="top" title="Payment Confirm"></i> চালান </a>
                                         </li>
 
                                         @if ($payment->status == 'pending' && Auth::guard('producer')->check())
@@ -91,7 +99,7 @@
 
                                         @if ($payment->status == 'success')
                                         <li @class(['nav-item'])>
-                                            <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', $payment->id) }}" class="dropdown-item">
+                                            <a target="_blank" href="{{ route('filmApplications.single_payment_receipt', secure_hash_id($payment->id)) }}" class="dropdown-item">
                                                 <i class="im im-icon-Receipt"></i> {{ 'পেমেন্ট স্লিপ' }}
                                             </a>
                                         </li>
